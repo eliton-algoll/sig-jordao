@@ -1,0 +1,23 @@
+# Cache, logs e session da aplicação
+var/cache
+var/logs
+var/sessions
+var/bootstrap.php.cache
+
+# Dependências do Symfony
+vendor/
+
+# Arquivo carregado quando é feito o build
+app/config/parameters.yml
+
+bin/symfony_requirements
+
+# Assets gerados pelo assetic:dump
+web/bundles
+web/css/*[0-9]*.css
+web/js/*[0-9]*.js
+web/uploads
+
+.idea
+.nbproject
+

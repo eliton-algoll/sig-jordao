@@ -1,0 +1,123 @@
+{% set label = (report.folhaPagamento.situacao.coSeqSituacaoFolha == 2) ? 'autoriza' : 'homologa' %}
+
+<style type="text/css">
+    * {
+        font-family: arial;
+    }
+    table {
+        margin-top: 10px;
+        width: 100%;
+        border-collapse: collapse;
+    }
+    table tr th, table tr td {
+        border: 1px solid #000;        
+    }
+    table thead th {
+        background-color: #EAEAEA;
+    }
+</style>
+
+<div style="text-align: center; font-weight: bold;">
+    FOLHA DE PAGAMENTO {{ not report.folhaPagamento.isMensal() ? 'SUPLEMENTAR' : 'MENSAL' }}, {{ report.folhaPagamento.nuMes|strmes|upper }} / {{ report.folhaPagamento.nuAno }}
+</div>
+
+<div style="text-align: center; margin-top: 10px; font-weight: bold;">
+    Situação da folha: {{ report.folhaPagamento.situacao.dsSituacaoFolha }}
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th colspan="2">
+                Programa: {{ report.folhaPagamento.publicacao.programa.dsPrograma }} - {{ report.folhaPagamento.publicacao.dsPublicacao }}
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th style="width: 50%;">Número Total de participantes {{ label ~ 'dos' }}</th>
+            <th style="width: 50%;">Valor Total de bolsas {{ label ~ 'das' }}</th>
+        </tr>
+    </tbody>
+        <tr>
+            <th>{{ report.qtParticipantes }}</th>
+            <th>R$ {{ report.vlTotalBolsa|number_format(2, ',', '.') }}</th>
+        </tr>
+    <tfoot>
+        
+    </tfoot>
+</table>
+            
+{% for projeto in report.projetos %}
+    {% if loop.index > 1 %}
+        <hr style="margin-top: 20px; margin-bottom: 20px;">
+    {% endif %}
+    <table>
+        <thead>
+            <tr>
+                <th>SEI Projeto</th>
+                <th>Coordenador do Projeto</th>
+                <th>Data e Hora de Autorização</th>
+                <th>Número de Participantes Autorizados</th>
+                <th>Valor de Bolsas Autorizadas</th>
+            </tr> 
+        </thead>
+        <tbody>
+            <tr>
+                <th>{{ projeto.nuSipar }}</th>
+                <th>{{ projeto.noCoordenador }}</th>
+                <th>{{ projeto.dtInclusao|date('d/m/Y H:i:s') }}</th>
+                <th>{{ projeto.participantes|length }}</th>
+                <th>R$ {{ projeto.vlTotalProjeto|number_format(2, ',', '.') }}</th>
+            </tr>
+        </tbody>
+    </table>
+                    
+    {% if projeto.stDeclaracao %}
+    <div style="width: 48%; float: left; margin-top: 10px;">
+        <label>Relatório Mensal de Atividade:</label>
+        <div style="width: 96%; border: 1px solid #000; padding: 2%; min-height: 130px;">
+            {{ projeto.dsJustificativa }}
+        </div>
+    </div>            
+    
+    <div style="width: 48%; float: right; margin-top: 10px;">
+        <label>Declaração de Ciência de Responsabilidade:</label>
+        <div style="width: 96%; border: 1px solid #000; padding: 2%; text-align: justify;">
+            Eu, {{ projeto.noCoordenador }}, Coordenador do Projeto {{ projeto.nuSipar }} - PET-Saúde/GraduaSUS - {{ report.folhaPagamento.publicacao.programa.dsPrograma }} - {{ report.folhaPagamento.publicacao.dsPublicacao }}, atesto que os bolsistas acima relacionados desenvolveram as atividades previstas no projeto PET-Saúde em {{ report.folhaPagamento.nuMes|strmes }} / {{ report.folhaPagamento.nuAno }},  e declaro para os devidos fins, que estou de acordo com as normativas do Programa de Educação pelo Trabalho para a Saúde (PET-Saúde)  e ciente da responsabilidade pela autorização de pagamento dos participantes selecionados na lista apresentada, pela prestação de contas e por eventuais divergências.
+        </div>
+    </div>
+    {% else %}
+    <div style="width: 100%; margin-top: 10px;">
+        <label>Relatório Mensal de Atividade:</label>
+        <div style="width: 96%; border: 1px solid #000; padding: 2%; min-height: 130px;">
+            {{ projeto.dsJustificativa }}
+        </div>
+    </div>
+    {% endif %}
+            
+    <div style="clear: both;"></div>
+        
+    <table>
+        <thead>
+            <tr>
+                <th>Nome do Participante</th>
+                <th>CPF</th>
+                <th>Perfil</th>
+                <th>Grupo Atuação</th>
+                <th>Valor da Bolsa</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for participante in projeto.participantes %}
+                <tr>
+                    <td>{{ participante.noPessoa }}</td>
+                    <td>{{ participante.nuCpf|cpf }}</td>
+                    <td>{{ participante.dsPerfil }}</td>
+                    <td>{{ participante.grupoAtuacao|join(',') }}</td>
+                    <td>R$ {{ participante.vlBolsa|number_format(2, ',', '.') }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}

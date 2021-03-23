@@ -1,0 +1,23 @@
+<div class="form-group">
+    <label class="control-label">Ano de Referência</label>
+    <input type="text" class="form-control" disabled="disabled" value="{{ planejamentoAnoFolha.getNuAno() }}" />
+</div>
+
+<hr class="clear-both">
+        
+
+<table class="table table-striped">
+    <thead>
+        <th>Mês de Referência</th>
+        <th>Dia para Abertura</th>
+    </thead>
+    <tbody>            
+    {% for planejamentoMesFolha in planejamentoAnoFolha.getPlanejamentoMesesFolhaAtivos %}
+    <tr>
+        <td>{{ planejamentoMesFolha.getNoMes()|trans }}</td>
+        <td>{{ planejamentoMesFolha.getNuDiaAbertura() }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+

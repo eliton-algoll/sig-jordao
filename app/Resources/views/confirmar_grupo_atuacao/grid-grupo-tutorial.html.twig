@@ -1,0 +1,51 @@
+<hr>
+{% if projetosPessaGrupoAtuacao|length() == 0 %}
+    Nenhum participante encontrado.
+{% else %}
+    <div class="margin-bottom-10">
+        Situação:
+        <strong class="{{ grupoAtuacao.isConfirmado() ? 'text-success' : 'text-danger' }}">
+            {{ grupoAtuacao.getDescricaoConfirmacao() }}
+        </strong>
+    </div>
+
+    <table class="table table-condensed table-striped">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Tipo Participante</th>
+                <th>Área de Atuação</th>
+                <th class="text-center">Voluntário</th>
+                <th class="text-center">Ativo</th>
+                <th class="text-center">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ppga in projetosPessaGrupoAtuacao %}
+            <tr>
+                <td>{{ ppga.getProjetoPessoa().getPessoaPerfil().getPessoaFisica().getPessoa().getNoPessoa() }}</td>
+                <td>{{ ppga.getProjetoPessoa().getPessoaPerfil().getPessoaFisica().getNuCpf()|cpf }}</td>
+                <td>{{ ppga.getProjetoPessoa().getPessoaPerfil().getPerfil().getDsPerfil() }}</td>
+                <td>{{ ppga.getJoinedAreasTematicas()|resume(50)|default('-')|raw }}</td>
+                <td class="text-center">{{ ppga.getProjetoPessoa().getStVoluntarioProjeto()|strst }}</td>
+                <td class="text-center">{{ ppga.getProjetoPessoa().getStRegistroAtivo()|strst }}</td>
+                <td class="text-center">
+                    <a  href="{{ path('participante_atualizar', { 'projetoPessoa' : ppga.getProjetoPessoa().getCoSeqProjetoPessoa()}) }}"
+                        class="glyphicon glyphicon-pencil"
+                        title="Editar cadastro de participante"
+                        target="_blank"></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if not grupoAtuacao.isConfirmado() %}
+    <button
+        id="btn-confimar-grupo-tutorial"
+        class="btn btn-primary">
+        Confirmar Grupo Tutorial
+    </button>
+    {% endif %}
+{% endif %}

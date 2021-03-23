@@ -1,0 +1,16 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: oci8
+    database_host: srvoradf20-scan.saude.gov
+    database_port: 1521
+    database_user: PETWEB
+    database_password: XD2G4R3001W5
+    database_service_name: DFDO1.SAUDE.GOV
+    database_service_use: true
+    #database_role_name: RO_PET_T
+    #database_role_pass: D462NFEX1A6J
+    mailer_transport: smtp
+    mailer_host: smtpaplicacao.saude.gov
+    mailer_user: null
+    mailer_password: null
+    secret: 78179a965aee5941e88a4f37898e9bec1730ce81

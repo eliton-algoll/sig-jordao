@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}
+    Relatório Gerencial de Pagamento
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}        
+        <div class="form-group {% if not form.publicacao.vars.valid %}has-error{% endif %}">
+            {{ form_label(form.publicacao) }}
+            {{ form_widget(form.publicacao) }}
+            {{ form_errors(form.publicacao) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.nuSipar) }}
+            {{ form_widget(form.nuSipar) }}
+            {{ form_errors(form.nuSipar) }}
+        </div>
+        <div class="form-group {% if not form.nuMes.vars.valid %}has-error{% endif %}">
+            {{ form_label(form.nuMes) }}
+            {{ form_widget(form.nuMes) }}
+            {{ form_errors(form.nuMes) }}
+        </div>
+        <div class="form-group {% if not form.nuAno.vars.valid %}has-error{% endif %}">
+            {{ form_label(form.nuAno) }}
+            {{ form_widget(form.nuAno) }}
+            {{ form_errors(form.nuAno) }}
+        </div>
+        <div class="form-group col-md-5 pull-left padding-0">
+            {{ form_label(form.from_customizacao) }}
+            {{ form_widget(form.from_customizacao) }}
+            {{ form_errors(form.from_customizacao) }}
+        </div>
+        <div class="pull-left col-md-2 text-center margin-top-50">
+            <div class="margin-top-100">
+                <a class="btn btn-primary" id="btn-add-item"><i class="glyphicon glyphicon-arrow-right"></i></a>
+            </div>
+            <div class="margin-top-10">
+                <a class="btn btn-primary" id="btn-remove-item"><i class="glyphicon glyphicon-arrow-left"></i></a>
+            </div>
+        </div>
+        <div class="form-group col-md-5 pull-right padding-0 {% if not form.to_customizacao.vars.valid %}has-error{% endif %}">
+            {{ form_label(form.to_customizacao) }}
+            {{ form_widget(form.to_customizacao) }}
+            {{ form_errors(form.to_customizacao) }}
+        </div>
+        <div class="clear-both">
+            <span style="color: red;">*</span> Obrigatório informar pelo menos uma das Informações Principais (agrupador) e um dos totalizadores de quantidade e valor, para emissão do relatório.
+        </div>
+        <div class="margin-top-10">
+            <button type="button" id="btn-search" class="btn btn-primary">Pesquisar</button> 
+            <button type="button" id="btn-download" class="btn btn-default"><i class="glyphicon glyphicon-list-alt"></i> Baixar</button>
+            <button type="button" id="btn-clear" class="btn btn-link">Limpar</button>
+        </div>
+    {{ form_end(form) }}
+    
+    <hr>
+    {% if report.data %}
+    <table class="table table-striped">
+        <thead>            
+            <tr>
+                {% for title in report.titles %}
+                    <th>{{ title }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in report.data %}
+            <tr>
+               {% for colName,col in row %}
+                    {% if colName == 'qtValorFolha' %}
+                        <td>R$ {{ col|number_format(2, ',', '.') }}</td>
+                    {% else %}
+                        <td>{{ col }}</td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% elseif report is not null %}
+        Nenhum registro encontrado.
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/relatorio/gerencial_pagamento.js') }}"></script>
+{% endblock %}

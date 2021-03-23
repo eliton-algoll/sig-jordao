@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}Devel{% endblock %}
+
+{% block body %}
+cache:clear / assetic:dump / assets:install
+<br/>
+<a href="{{ path('devel_console') }}" class="btn btn-primary">GO</a>
+<br>
+<br>
+last logs
+<br/>
+<a href="{{ path('devel_last_logs') }}" class="btn btn-primary">GO</a>
+<br>
+<br>
+all logs
+<br/>
+<a href="{{ path('devel_all_logs') }}" class="btn btn-primary">GO</a>
+<br>
+<br>
+file paths
+<br/>
+<a href="{{ path('devel_files') }}" class="btn btn-primary">GO</a>
+<br>
+<br>
+delete cache
+<br/>
+<a href="{{ path('devel_delete_cache') }}" class="btn btn-primary">GO</a>
+
+{% endblock %}

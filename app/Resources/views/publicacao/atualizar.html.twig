@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}Atualizar Publicação{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form, {'method': 'post'}) }}
+                {{ form_row(form.coSeqPublicacao, {value: publicacao.coSeqPublicacao}) }}
+                {{ form_row(form.tpPublicacao, {value: publicacao.tpPublicacao}) }}
+                {{ form_row(form.nuPublicacao, {value: publicacao.nuPublicacao}) }}
+                {{ form_row(form.dtPublicacao, {value: publicacao.dtPublicacao|date('d/m/Y'), attr: {'class': 'datepicker dmY'}}) }}
+                {{ form_row(form.dtInicioVigencia, {value: publicacao.dtInicioVigencia|date('d/m/Y'), attr: {'class': 'datepicker dmY'}}) }}
+                {{ form_row(form.dtFimVigencia, {value: publicacao.dtFimvigencia|date('d/m/Y'), attr: {'class': 'datepicker dmY'}}) }}
+                {{ form_row(form.dsPublicacao, {value: publicacao.dsPublicacao}) }}
+                {{ form_row(form.qtdMinimaBolsistasGrupo, {value: publicacao.quantidades[0].qtParticipante}) }}
+                {{ form_row(form.qtdMaximaBolsistasGrupo, {value: publicacao.quantidades[1].qtParticipante}) }}
+                <a href="{{ path('programa_atualizar', {programa: publicacao.programa.coSeqPrograma}) }}" class="btn btn-default">Voltar</a>
+                <input type="submit" class="btn btn-primary" value="Salvar">
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {% javascripts 'js/programa/atualizar.js' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
+{% endblock %}

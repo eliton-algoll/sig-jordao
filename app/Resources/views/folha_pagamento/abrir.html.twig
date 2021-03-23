@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}Abrir Folha de Pagamento{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form, {'method': 'post', 'attr': {'novalidate': 'novalidate'} }) }}
+                {{ form_row(form.publicacao) }}
+                {{ form_row(form.nuMes) }}
+                {{ form_row(form.nuAno) }}
+                <p class="text-info">
+                    Ao clicar em Abrir folha, o sistema vai permitir que os 
+                    coordenadores de projeto possam escolher quais participantes 
+                    serão incluídos nessa folha.
+                </p>
+                <a href="{{ path('folha_pagamento') }}" class="btn btn-default">Voltar</a>
+                <a href="javascript:void(0)" id="btn-salvar" class="btn btn-primary">Abrir folha</a>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {% javascripts 'js/folha_pagamento/abrir.js' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
+{% endblock %}

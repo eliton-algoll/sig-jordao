@@ -1,0 +1,127 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}Cadastrar Participante{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form, {'method': 'post', 'attr': {'novalidate': 'novalidate', 'autocomplete': 'off'} }) }}
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="active"><a href="#dados-pessoais" data-toggle="tab">Dados Pessoais</a></li>
+                <li><a href="#dados-de-contato" data-toggle="tab">Dados de Contato</a></li>
+                {% if not is_granted('ADMINISTRADOR') %}
+                <li><a href="#dados-complementares" data-toggle="tab">Dados Complementares</a></li>
+                {% endif %}
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="dados-pessoais">
+                    {{ form_row(form.nuSei) }}
+                    {{ form_row(form.perfil) }}
+                    {% if projeto and projeto.getPublicacao().getPrograma().isAreaAtuacao() %}
+                        {{ form_row(form.stVoluntarioProjeto) }}
+                    {% endif %}
+                    {{ form_row(form.nuCpf) }}
+                    {{ form_row(form.noPessoa) }}
+                    {{ form_row(form.sexo) }}
+                    {{ form_row(form.noMae) }}
+                    {{ form_row(form.coBanco) }}
+                    {{ form_row(form.coAgenciaBancaria) }}
+                    <br/>
+                    <a href="{{ path('participante') }}" class="btn btn-default">Voltar</a>
+                </div>
+                <div class="tab-pane" id="dados-de-contato">
+                    {{ form_start(formTelefone, {'method': 'get'}) }}
+                        {{ form_row(formTelefone.tpTelefone) }}
+                        {{ form_row(formTelefone.nuDdd) }}
+                        {{ form_row(formTelefone.nuTelefone) }}
+                        <a href="javascript:;" id="btn-incluir-telefone" class="btn btn-primary">Incluir Telefone</a>
+                    <br>
+                    <br>
+                    <span id="helpBlock" class="help-block">Todas informações serão salvas após a conclusão do cadastro.</span>
+                    <table class="table table-striped" id="table-telefones">
+                        <thead>
+                            <tr>
+                                <th>DDD</th>
+                                <th>Telefone</th>
+                                <th>Tipo Telefone</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set telefones = form.vars.data.telefones %}
+                            <tr class="telefones-placeholder
+                                {% if telefonesSubmited.tpTelefone is defined or telefones.tpTelefone is defined %}    
+                                    hide
+                                {% endif %}
+                            ">
+                                <td colspan="4">Nenhum telefone encontrado</td>
+                            </tr>
+                            {% for telefone in telefones.tpTelefone if telefones.tpTelefone is defined %}
+                                <tr>
+                                <input type="hidden" name="cadastrar_participante[telefones][tpTelefone][]" value="{{ telefones.tpTelefone[loop.index0] }}" />
+                                <input type="hidden" name="cadastrar_participante[telefones][nuDdd][]" value="{{ telefones.nuDdd[loop.index0] }}" />
+                                <input type="hidden" name="cadastrar_participante[telefones][nuTelefone][]" value="{{ telefones.nuTelefone[loop.index0] }}" />
+                                    <td>{{ telefones.nuDdd[loop.index0] }}</td>
+                                    <td>{{ telefones.nuTelefone[loop.index0] }}</td>
+                                    <td>{{ telefones.tpTelefone[loop.index0] }}</td>
+                                    <td>
+                                        <a href="javascript:;" class="btn-excluir-telefone">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {{ form_end(formTelefone) }}
+                    <br/>
+                    <br/>
+                    {{ form_row(form.dsEnderecoWeb) }}
+                    {{ form_row(form.coCep) }}
+                    {{ form_row(form.noLogradouro) }}
+                    {{ form_row(form.nuLogradouro) }}
+                    {{ form_row(form.dsComplemento) }}
+                    {{ form_row(form.noBairro) }}
+                    {{ form_row(form.coUf) }}
+                    {{ form_row(form.coMunicipioIbge) }}
+                    <br/>
+                </div>
+                <div class="tab-pane" id="dados-complementares">
+                    {% if projeto and projeto.getPublicacao().getPrograma().isGrupoTutorial() %}
+                        {{ form_row(form.stVoluntarioProjeto) }}
+                        {{ form_row(form.grupoTutorial) }}
+                    {% endif %}
+                    {{ form_row(form.categoriaProfissional) }}
+                    {{ form_row(form.coCnes) }}
+                    {{ form_row(form.titulacao) }}
+                    {{ form_row(form.cursoGraduacao) }}
+                    {{ form_row(form.nuAnoIngresso) }}
+                    {{ form_row(form.nuMatriculaIES) }}
+                    {{ form_row(form.nuSemestreAtual) }}
+                    {% if projeto and projeto.getPublicacao().getPrograma().isAreaAtuacao() %}
+                        {{ form_row(form.cursosLecionados) }}
+                    {% endif %}
+                    {% if not is_granted('ADMINISTRADOR') %}
+                        {{ form_label(form.areaTematica) }}
+                        <div>
+                            <small>Para selecionar mais de uma área pressionar a tecla Ctrl e marcar as áreas desejadas</small>
+                        </div>
+                        <div class="form-error">
+                            {{ form_errors(form.areaTematica) }}
+                        </div>
+                        {{ form_widget(form.areaTematica) }}
+                    {% endif %}
+                    <br/>
+                    <a class="btn btn-primary" href="javascript:;" id="btn-salvar">Salvar</a>
+                </div>
+            </div>
+            {{ form_end(form) }}
+            <input type="hidden" name="prejetoAreaAtuacao" id="prejetoAreaAtuacao" value="{{ projeto.getPublicacao().getPrograma().isAreaAtuacao() ? 1 : 0 }}">
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {% javascripts 'js/participante/participante.js' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
+{% endblock %}

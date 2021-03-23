@@ -1,0 +1,108 @@
+<?php
+
+namespace AppBundle\Query;
+
+use Symfony\Component\HttpFoundation\ParameterBag;
+use Knp\Component\Pager\Paginator;
+use AppBundle\Repository\ProjetoRepository;
+use AppBundle\Repository\ProjetoPessoaRepository;
+use AppBundle\Entity\PessoaPerfil;
+
+class ProjetoQuery
+{
+    /**
+     * @var ProjetoPessoaRepository
+     */
+    private $projetoPessoaRepository;
+    
+    /**
+     * @var ProjetoRepository
+     */
+    private $projetoRepository;
+    
+    /**
+     * @var Paginator
+     */
+    private $paginator;
+    
+    /**
+     * @param Paginator $paginator
+     * @param ProjetoPessoaRepository repository
+     * @param ProjetoRepository $projetoRepository
+     */
+    public function __construct($paginator, $projetoPessoaRepository, $projetoRepository)
+    {
+        $this->projetoPessoaRepository = $projetoPessoaRepository;
+        $this->projetoRepository = $projetoRepository;
+        $this->paginator = $paginator;
+    }
+    
+    /**
+     * @param ParameterBag $params
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     */
+    public function search(ParameterBag $params)
+    {
+        return $this->paginator->paginate(
+            $this->projetoRepository->search($params),
+            $params->getInt('page', 1),
+            $params->getInt('limit', 10)
+        );
+    }
+    
+    /**
+     * @param integer $coProjeto
+     * @return \AppBundle\Entity\Projeto | null
+     */
+    public function findById($coProjeto)
+    {
+        return $this->projetoRepository->find($coProjeto);
+    }
+    
+    /**
+     * @param PessoaPerfil $pessoaPerfil
+     * @return array
+     */
+    public function listProjetosAutorizados(PessoaPerfil $pessoaPerfil)
+    {
+        $projetos = $pessoaPerfil->getProjetos();
+        
+        $result = array();
+        
+        foreach ($projetos as $projeto) {
+            $result[] = array(
+                'coSeqProjeto' => $projeto->getCoSeqProjeto(),
+                'dsPrograma' => $projeto->getPublicacao()->getPrograma()->getDsPrograma(),
+                'nuSipar' => $projeto->getNuSipar(),
+                'dsPublicacao' => $projeto->getPublicacao()->getDescricaoCompleta(false)
+            );
+        }
+        
+        return $result;
+    }
+    
+    public function searchRelatorioPagamento(ParameterBag $params)
+    {
+        return $this->paginator->paginate(
+            $this->projetoRepository->searchRelatorioPagamento($params),
+            $params->getInt('page', 1),
+            $params->getInt('limit', 10)
+        );
+    }
+    
+    public function searchRelatorioProjeto(ParameterBag $params)
+    {
+        return $this->projetoRepository->searchRelatorioProjeto($params);
+    }
+    
+    /**
+     * 
+     * @param string $nuSipar
+     * @return \AppBundle\Entity\Projeto|null
+     * @throws SiparInvalidoException
+     */
+    public function getBySipar($nuSipar)
+    {
+        return $this->projetoRepository->getBySipar($nuSipar);
+    }
+}

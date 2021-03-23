@@ -1,0 +1,70 @@
+{% extends "base.html.twig" %}
+
+{% block subtitle %}
+    Consultar Formulários de Avaliação de Atividade
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">Pesquisar</button>
+    {{ form_end(form) }}
+    
+    {% if pagination is not null and pagination.count() > 0 %}
+        <hr>
+        
+        <table class="table table-striped">
+            <tr>
+                <th>{{ knp_pagination_sortable(pagination, '#', 'tf.coSeqTramitacaoFormulario') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Título', 'faa.noFormulario') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Data de Envio', 'efa.dtInclusao') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Período de Validade', 'efa.dtInicioPeriodo') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Último Tramite (Data - Situação)', 'tf.dtInclusao') }}</th>
+                <th>Ação</th>
+            </tr>
+            {% for tramitacaoFormulario in pagination %}
+                <tr>
+                    <td>{{ tramitacaoFormulario.getCoSeqTramitacaoFormulario() }}</td>
+                    <td>
+                        {{ tramitacaoFormulario.getEnvioFormularioAvaliacaoAtividade().getFormularioAvaliacaoAtividade().getNoFormulario() }}
+                        <div class="pull-right">
+                            {% if tramitacaoFormulario.getEnvioFormularioAvaliacaoAtividade().getFormularioAvaliacaoAtividade().getNoArquivoFormulario() %}
+                                <a href="{{ asset('uploads/' ~ tramitacaoFormulario.getEnvioFormularioAvaliacaoAtividade().getFormularioAvaliacaoAtividade().getNoArquivoFormulario()) }}" target="_blank" class="glyphicon glyphicon-save" title="Download do formulário anexado"></a>
+                            {% endif %}
+                            {% if tramitacaoFormulario.getEnvioFormularioAvaliacaoAtividade().getFormularioAvaliacaoAtividade().getDsUrlFormulario() %}
+                                <a href="{{ tramitacaoFormulario.getEnvioFormularioAvaliacaoAtividade().getFormularioAvaliacaoAtividade().getDsUrlFormulario() }}" target="_blank" class="glyphicon glyphicon-circle-arrow-right" title="Acessar o formulário no FormSUS"></a>
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td>{{ tramitacaoFormulario.getEnvioFormularioAvaliacaoAtividade().getDtInclusao()|date('d/m/Y') }}</td>
+                    <td>{{ tramitacaoFormulario.getEnvioFormularioAvaliacaoAtividade().getDtInicioPeriodo()|date('d/m/Y') }} a {{ tramitacaoFormulario.getEnvioFormularioAvaliacaoAtividade().getDtFimPeriodo()|date('d/m/Y') }}</td>
+                    <td>
+                        {{ tramitacaoFormulario.getDtInclusao()|date('d/m/Y') ~ ' - ' ~ tramitacaoFormulario.getSituacaoTramiteFormulario().getNoSituacaoTramiteFormulario() }}
+                                                
+                        {% if tramitacaoFormulario.getNoArquivoRetornoFormulario() %}                                
+                            <a href="{{ asset('uploads/' ~ tramitacaoFormulario.getNoArquivoRetornoFormulario()) }}" target="_blank" class="glyphicon glyphicon-save" title="Download do formulário anexado"></a>
+                        {% endif %}                        
+                        {% if tramitacaoFormulario.getSituacaoTramiteFormulario().isDevolvido() %}
+                            <a class="glyphicon glyphicon-eye-open cursor-pointer btn-detail-justificativa" ds-justificativa="{{ tramitacaoFormulario.getDsJustificativa() }}" title="Visualizar justificativa do resultado de análise do preenchimento do formulário"></a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if tramitacaoFormulario.getSituacaoTramiteFormulario().isDevolvido() or
+                              tramitacaoFormulario.getSituacaoTramiteFormulario().isPendente()
+                        %}
+                        <a href="{{ path('tramita_formulario_atividade_retorno', { id : tramitacaoFormulario.getCoSeqTramitacaoFormulario() }) }}" class="glyphicon glyphicon-edit" title="Cadastrar novo retorno para o formulário de avaliação"></a>
+                        {% endif %}
+                        <a class="glyphicon glyphicon-list-alt cursor-pointer btn-historico" title="Histórico de tramitação do formulário" data-id="{{ tramitacaoFormulario.getCoSeqTramitacaoFormulario() }}"></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% elseif pagination is not null %}        
+        <hr>
+        Nenhum registro encontrado.
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/tramita_formulario_atividade/index_retorno.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}
+    Cadastrar Formulário de Avaliação de Atividades
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a href="{{ path('gerenciar_formulario_atividade') }}" class="btn btn-default">Voltar</a>
+    {{ form_end(form) }}    
+{% endblock %}

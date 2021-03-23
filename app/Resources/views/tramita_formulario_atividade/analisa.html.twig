@@ -1,0 +1,20 @@
+{% extends "base.html.twig" %}
+
+{% block subtitle %}
+    Analisar Retorno - Formulário de Avaliação de Atividades
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_row(form.noFormulario) }}
+        {{ form_row(form.participante) }}
+        
+        <h4 class="text-info">Análise do retorno</h4>
+        <hr>
+        {{ form_row(form.situacaoTramiteFormulario) }}
+        {{ form_row(form.dsJustificativa) }}
+        
+        <button type="submit" class="btn btn-primary">Confirmar</button>
+        <a href="{{ path('tramita_formulario_atividade') }}" class="btn btn-default">Cancelar</a>
+    {{ form_end(form) }}
+{% endblock %}

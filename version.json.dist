@@ -1,0 +1,6 @@
+{
+    project : 'SIGPET',
+    version : '1.3.4',
+    deploy : '21/05/2018',
+    redmine : '#1519'
+}

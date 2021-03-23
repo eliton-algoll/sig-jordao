@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}Relatório de pagamento de bolsas{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-12">
+        {{ form_start(form, { attr: { 'novalidate': 'novalidate' } }) }}
+            {{ form_row(form.nuSipar, { attr: {'class': 'nuSipar'} }) }}
+            {{ form_row(form.nuMes) }}
+            {{ form_row(form.stProjetoFolha) }}
+        
+            <div class="col-md-12">
+                <p class="text-info">Instituição de ensino superior</p>
+                {{ form_row(form.ufCampus) }}
+                {{ form_row(form.municipioCampus) }}
+                {{ form_row(form.instituicao) }}
+                {{ form_row(form.campus) }}
+            </div>
+            <div class="col-md-12">
+                <p class="text-info">Secretaria municipal de saúde</p>
+                {{ form_row(form.ufSecretaria) }}
+                {{ form_row(form.municipioSecretaria) }}
+                {{ form_row(form.secretaria) }}
+            </div>
+            <input type="submit" class="btn btn-primary" value="Pesquisar">
+            <button class="btn btn-default btn-download"><span class="glyphicon glyphicon-list-alt"></span> Baixar</button>
+            <input type="reset" class="btn btn-link" value="Limpar">
+        {{ form_end(form) }}
+    </div>
+</div>
+
+<hr>
+
+<div class="row">
+    <div class="col-md-12">
+        {#{% if queryParams.stProjetoFolha == constant('AppBundle\\Entity\\SituacaoProjetoFolha::AUTORIZADA') %}#}
+            {#{% include 'relatorio/pagamento_autorizado.html.twig' %}#}
+        {#{% endif %}#}
+        {#{% if queryParams.stProjetoFolha == constant('AppBundle\\Entity\\SituacaoProjetoFolha::HOMOLOGADA') %}#}
+            {#{% include 'relatorio/pagamento_homologado.html.twig' %}#}
+        {#{% endif %}#}
+        {% include 'relatorio/pagamento.html.twig' %}
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {% javascripts 'js/relatorio/pagamento.js' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
+{% endblock %}

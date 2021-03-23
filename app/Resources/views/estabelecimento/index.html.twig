@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}Estabelecimentos de Saúde{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form, {'method': 'post', 'attr': {'novalidate': 'novalidate'}}) }}
+                {{ form_row(form.coCnes) }}
+                <input type="submit" class="btn btn-primary" value="Cadastrar">
+                <hr>
+                <table class="table table-striped" id="table-campus">
+                    <thead>
+                        <tr>
+                            <th>Número CNES</th>
+{#                            <th>Nome do Estabelecimento</th>#}
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cnes in estabelecimentos %}
+                            <tr>
+                                <td>{{ cnes.coCnes }}</td>
+{#                                <td>{{ cnes.noEstabelecimento }}</td>#}
+                                <td>
+                                    <a href="javascript:;" class="inativar-estabelecimento" data-estabelecimento="{{ cnes.coProjetoEstabelecimento }}">
+                                        <span class="glyphicon glyphicon-remove" title="Remover"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr class="grupo-placeholder">
+                                <td colspan="5">Nenhum estabelecimento cadastrado</td>
+                            </tr>
+                        {% endfor %}                            
+                    </tbody>
+                </table>
+            {{ form_end(form) }}                 
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {% javascripts 'js/estabelecimento/index.js' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
+{% endblock %}

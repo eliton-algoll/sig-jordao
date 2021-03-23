@@ -1,0 +1,68 @@
+<table class="table table-striped small table-fixed">
+    <thead>
+        <tr>
+            <th class="col-xs-1 text-center">
+                <input type="checkbox" name="checkall" title="Clique para selecionar os registros da lista de resultado. Ao selecionar a opção de seleção do cabeçalho da lista, o sistema selecionará todos os registros da lista.">
+            </th>
+            <th class="col-xs-5">Nome</th>
+            <th class="col-xs-1">CPF</th>
+            <th class="col-xs-1">Perfil</th>
+            <th class="col-xs-1 text-center">Ativo</th>
+            <th class="col-xs-2">SEI</th>
+            <th class="col-xs-1">Valor da Bolsa</th>
+        </tr>
+    </thead>
+    <tbody style="font-size: 11px;">
+        {% set total = 0 %}
+        {% if participantes is not empty %}
+            {% for participante in participantes %}
+                <tr id="{{ participante.coSeqProjetoPessoa }}"
+                    class="{{  participante.pessoaPerfil.pessoaFisica.tpSituacaoCpf == '0' ? '' : 'alert-danger' }}"
+                    >
+                    <td class="col-xs-1 text-center">
+                        {% if participante.pessoaPerfil.pessoaFisica.tpSituacaoCpf == '0' %}
+                            <input type="checkbox" name="participante[]" value="{{ participante.coSeqProjetoPessoa }}">
+                        {% else %}
+                            <input type="checkbox" disabled="disabled">
+                        {% endif %}
+                    </td>
+                    <td class="col-xs-5">{{ participante.pessoaPerfil.pessoaFisica.pessoa.noPessoa }}</td>
+                    <td class="col-xs-1">{{ participante.pessoaPerfil.pessoaFisica.nuCpf|cpf }}</td>
+                    <td class="col-xs-1">{{ participante.pessoaPerfil.perfil.dsPerfil }}</td>
+                    <td class="col-xs-1 text-center">{{ participante.stRegistroAtivo|strst }}</td>
+                    <td class="col-xs-2">{{ participante.projeto.nuSipar }}</td>
+                    <td class="col-xs-1">R$ {{ participante.projeto.publicacao.valorBolsaPrograma[0].vlBolsa|number_format(2, ',', '.') }}</td>
+                </tr>
+                {% set total = total + participante.projeto.publicacao.valorBolsaPrograma[0].vlBolsa %}
+            {% endfor %}
+        {% elseif autorizacoes is not empty %}
+            {% for autorizacao in autorizacoes %}
+                <tr id="{{ autorizacao.projetoPessoa.coSeqProjetoPessoa }}">
+                    <td class="col-xs-1 text-center">
+                        <input type="checkbox" name="participante[]" value="{{ autorizacao.coSeqAutorizacaoFolha }}">
+                    </td>
+                    <td class="col-xs-5">{{ autorizacao.projetoPessoa.pessoaPerfil.pessoaFisica.pessoa.noPessoa }}</td>
+                    <td class="col-xs-1">{{ autorizacao.projetoPessoa.pessoaPerfil.pessoaFisica.nuCpf|cpf }}</td>
+                    <td class="col-xs-1">{{ autorizacao.projetoPessoa.pessoaPerfil.perfil.dsPerfil }}</td>
+                    <td class="col-xs-1 text-center">{{ autorizacao.projetoPessoa.stRegistroAtivo|strst }}</td>
+                    <td class="col-xs-2">{{ autorizacao.projetoPessoa.projeto.nuSipar }}</td>
+                    <td class="col-xs-1">R$ {{ autorizacao.vlBolsa|number_format(2, ',', '.') }}</td>
+                </tr>
+                {% set total = total + autorizacao.vlBolsa %}
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="8">Nenhum resultado encontrado.</td>
+            </tr>
+        {% endif %}
+    </tbody>
+    {% if autorizacoes is not empty %}
+    <tfoot>
+        <tr>
+            <td colspan="7" class="text-right">
+                <strong>Total:</strong> R$ {{ total|number_format(2, ',', '.') }}
+            </td>
+        </tr>
+    </tfoot>
+    {% endif %}
+</table>

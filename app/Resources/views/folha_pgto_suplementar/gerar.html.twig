@@ -1,0 +1,150 @@
+{% extends "::base.html.twig" %}
+
+{% block subtitle %}
+    Folha de Pagamento Suplementar
+{% endblock %}
+
+{% block body %}
+    <style type="text/css">
+
+        .table-fixed {
+            width: 100%;
+        }
+
+        .table-fixed tbody {
+            min-height: 40px;
+            max-height: 205px;
+            overflow-y: auto;
+            width: 100%;
+        }
+
+        .table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+            display: block;
+        }
+
+        .table-fixed tbody tr {
+            clear: both;
+        }
+
+        .table-fixed tbody td {
+            float: left;
+            min-height: 40px;
+        }
+
+        .table-fixed thead tr th {
+            float: left;
+            height: 40px;
+            background-color: #EAEAEA;
+        }
+    </style>
+
+    {{ form_start(form) }}
+    {{ form_row(form.publicacao) }}
+    {{ form_row(form.folhaPagamento) }}
+    {{ form_row(form.projeto) }}
+    {{ form_row(form.cpf) }}
+
+    <button class="btn btn-primary"
+            type="button"
+            id="btn-buscar">
+        <i class="glyphicon glyphicon-search"></i> Buscar
+    </button>
+
+    <hr>
+
+    <div class="has-error">
+        {{ form_errors(form.participantes) }}
+    </div>
+
+    <div id="div-participantes" class="hidden">
+        <strong>Lista de participantes</strong>
+        <div id="grid-participantes" style="width: 100%;"></div>
+
+        <hr style="clear: both;">
+
+        <div class="pull-right">
+            <a class="btn btn-success" id="btn-add"
+               title="Adicionar os participantes selecionados na lista para Folha de Pagamento COMPLEMENTAR."><i
+                        class="glyphicon glyphicon-plus"></i> Adicionar</a>
+        </div>
+    </div>
+
+    <div style="clear: both;" id="div-selecionados"
+         class="{{ not form.vars.data.getFolhaPagamentoSuplementar() ? 'hidden' : '' }}">
+        <strong>Lista de participantes selecionados para a Folha de Pagamento SUPLEMENTAR</strong>
+        <div id="grid-selecionados" style="width: 100%; clear: both;">
+            <table class="table table-striped small table-fixed">
+                <thead>
+                <tr>
+                    <th class="col-xs-1 text-center">
+                        <input type="checkbox" name="checkall" id="check-all-selecionados"
+                               title="Clique para selecionar os registros da lista de resultado. Ao selecionar a opção de seleção do cabeçalho da lista, o sistema selecionará todos os registros da lista.">
+                    </th>
+                    <th class="col-xs-5">Nome</th>
+                    <th class="col-xs-1">CPF</th>
+                    <th class="col-xs-1">Perfil</th>
+                    <th class="col-xs-1 text-center">Ativo</th>
+                    <th class="col-xs-2">SEI</th>
+                    <th class="col-xs-1">Valor da Bolsa</th>
+                </tr>
+                </thead>
+                <tbody style="font-size: 11px;">
+                {% set total = 0 %}
+                {% if form.vars.data %}
+                    {% for projetoFolha in form.vars.data.getFolhaPagamentoSuplementar().getProjetosFolhaPagamentoAtivos() %}
+                        {% for autorizacao in projetoFolha.getAutorizacoesAtivas() %}
+                            <tr id="{{ autorizacao.getCoSeqAutorizacaoFolha() }}">
+                                <td class="col-xs-1 text-center">
+                                    <input type="checkbox" name="autorizacao[]"
+                                           value="{{ autorizacao.getCoSeqAutorizacaoFolha() }}">
+                                </td>
+                                <td class="col-xs-5">{{ autorizacao.projetoPessoa.pessoaPerfil.pessoaFisica.pessoa.noPessoa }}</td>
+                                <td class="col-xs-1">{{ autorizacao.projetoPessoa.pessoaPerfil.pessoaFisica.nuCpf|cpf }}</td>
+                                <td class="col-xs-1">{{ autorizacao.projetoPessoa.pessoaPerfil.perfil.dsPerfil }}</td>
+                                <td class="col-xs-1 text-center">{{ autorizacao.projetoPessoa.stRegistroAtivo|strst }}</td>
+                                <td class="col-xs-2">{{ autorizacao.projetoFolhaPagamento.projeto.nuSipar }}</td>
+                                <td class="col-xs-1">R$ {{ autorizacao.vlBolsa|number_format(2, ',', '.') }}</td>
+                            </tr>
+                            {% set total = total + autorizacao.vlBolsa %}
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="7" class="text-right">
+                            <strong>Total:</strong> R$ <span id="vlTotalSelecionado">{{ total|number_format(2, ',', '.') }}</span>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <hr style="clear: both;">
+
+        <div class="pull-right">
+            <a class="btn btn-danger" id="btn-remove"
+               title="Remover os participantes selecionados da lista para Folha Complementar. Os participantes retornarão para a lista da Folha de Pagamento MENSAL e poderão ser novamente selecionados posteriormente."><i
+                        class="glyphicon glyphicon-remove"></i> Remover</a>
+        </div>
+    </div>
+
+    <div style="clear: both; margin-top: 10px;"></div>
+
+    {{ form_row(form.dsJustificativa) }}
+
+    <input type="hidden" id="folha-suplementar"
+           value="{{ form.vars.data ? form.vars.data.getFolhaPagamentoSuplementar().getCoSeqFolhaPagamento() : '' }}">
+    <a class="btn btn-primary" style="cursor: pointer;" id="btn-salva-fecha"
+       title="Salvar os participantes selecionados para a Folha de Pagamento COMPLEMENTAR. Essa opção fechará a respectiva folha, ou seja, não será mais possível remover ou adicionar participantes. Confirma o fechamento da folha complementar? <SIM> / <Não>">Salvar
+                                                                                                                                                                                                                                                                  e
+                                                                                                                                                                                                                                                                  Fechar</a>
+    <a class="btn btn-primary" style="cursor: pointer;" id="btn-salva"
+       title="Salvar os participantes selecionados para a Folha de Pagamento COMPLEMENTAR. Essa opção deixará a respectiva folha aberta e permitirá sua edição posteriormente, ou seja, será possível remover ou adicionar participantes.">Salvar</a>
+    <a class="btn btn-default" style="cursor: pointer;" id="btn-voltar" title="Retornar à tela de consulta.">Voltar</a>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/folha_pgto_suplementar/gerar.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}Pesquisar Participante{% endblock %}  
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form, {'method': 'get', attr: {'novalidate': 'novalidate'}}) }}
+            {{ form_row(form.noPessoa, {value: queryParams.noPessoa}) }}
+            {{ form_row(form.nuCpf, {value: queryParams.nuCpf}) }}
+            {{ form_row(form.coPerfil, {value: queryParams.coPerfil}) }}
+            {% if form.nuSipar %}
+                {{ form_row(form.nuSipar, {value: queryParams.nuSipar}) }}
+            {% endif %}
+            {% if form.coPrograma %}
+                {{ form_row(form.coPrograma, {value: queryParams.coPrograma}) }}
+            {% endif %}
+            {% if form.grupoTutorial %}
+                {{ form_row(form.grupoTutorial, {value: queryParams.grupoTutorial}) }}
+            {% endif %}
+            {% if form.stRegistroAtivo %}
+                {{ form_row(form.stRegistroAtivo, {value: queryParams.stRegistroAtivo}) }}
+            {% endif %}
+            <input type="submit" class="btn btn-default" value="Pesquisar">
+            <a class="btn btn-primary" href="{{ path('participante_cadastrar') }}">Cadastrar Participante</a>
+            {% if projeto.getPublicacao().getPrograma().isGrupoTutorial() %}
+                <a  href="{{ path('confirmar_grupo_tutorial') }}"
+                    class="btn btn-primary">
+                    Confirmar Grupo Tutorial
+                </a>
+            {% endif %}
+            {{ form_end(form) }}
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        {% if projeto.getPublicacao().getPrograma().isGrupoTutorial() %}
+                            <th>{{ knp_pagination_sortable(pagination, 'Grupo', 'ga.noGrupoAtuacao') }}</th>
+                        {% else %}
+                            <th>#</th>
+                        {% endif %}
+                        <th>{{ knp_pagination_sortable(pagination, 'Nome', 'p.noPessoa') }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'CPF', 'pes.nuCpf') }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Nº SEI', 'pr.nuSipar') }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Tipo Participante', 'per.dsPerfil') }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Data de Desligamento', 'prp.dtInclusao') }}</th>
+                        {% if form.stRegistroAtivo %}
+                            <th>{{ knp_pagination_sortable(pagination, 'Ativo', 'prp.stRegistroAtivo') }}</th>
+                        {% endif %}
+                        <th>{{ knp_pagination_sortable(pagination, 'Voluntário', 'prp.stVoluntarioProjeto') }}</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for participante in pagination %}
+                        <tr>
+                            {% if projeto.getPublicacao().getPrograma().isGrupoTutorial() %}
+                                <td>{{ participante.noGrupoAtuacao }}</td>
+                            {% else %}
+                                <td>{{ participante.coSeqProjetoPessoa }}</td>
+                            {% endif %}
+                            <td>{{ participante.noPessoa }}</td>
+                            <td>{{ participante.nuCpfCnpjPessoa|cpf }}</td>
+                            <td>{{ participante.nuSipar }}</td>
+                            <td>{{ participante.dsPerfil }}</td>
+                            <td>{{ (participante.dtDesligamento) ? participante.dtDesligamento|date('d/m/Y') : '-' }}</td>
+                            {% if form.stRegistroAtivo %}
+                                <td>{{ participante.stRegistroAtivo|strst }}</td>
+                            {% endif %}
+                            <td>{{ participante.stVoluntarioProjeto|strst }}</td>
+                            <td>
+                                <a href="{{ path('participante_atualizar', { 'projetoPessoa': participante.coSeqProjetoPessoa }) }}" title="Editar cadastro de participante" class=""><span class="glyphicon glyphicon-pencil"></span></a>
+                                {% if participante.dsPerfil|upper != constant('AppBundle\\Entity\\Perfil::ROLE_ADMINISTRADOR') %}
+                                    <a href="{{ path('participante_termo', { 'projetoPessoa': participante.coSeqProjetoPessoa }) }}" target="_blank" title="Download do Termo de Compromisso"><span class="glyphicon glyphicon-save"></span></a>
+                                {% endif %}
+                                {% if 
+                                    participante.stRegistroAtivo == 'S' and 
+                                    (globals_pper.perfil.isAdministrador or  
+                                    globals_pper.perfil.isCoordenadorProjeto)
+                                %}
+                                    <a href="javascript:;" class="inativar-participante" data-participante="{{ participante.coSeqProjetoPessoa }}"><span class="glyphicon glyphicon-trash" title="Inativar cadastro de participante"></span></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="2">Nenhum participante encontrado.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}
+
+{% block javascripts %}
+    {% javascripts 'js/participante/all.js' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
+{% endblock %}
