@@ -69,19 +69,11 @@ final class CadastarFolhaSuplementarType extends AbstractType
             'attr' => [
                 'title' => 'Selecione o mês/ano de referência da folha de pagamento MENSAL para a qual deseja gerar uma folha complementar.',
             ],
-        ])->add('projeto', EntityType::class, [
-            'label' => 'Projeto',
-            'class' => Projeto::class,
-            'query_builder' => function (EntityRepository $repo) use ($publicacao) {
-                return $repo->createQueryBuilder('p')
-                    ->where('p.publicacao = :publicacao')
-                    ->orderBy('p.nuSipar')
-                    ->setParameter('publicacao', $publicacao);
-            },
-            'choice_label' => function(Projeto $projeto) {
-                return $projeto->getNuSipar();
-            },
-            'placeholder' => 'Selecione',
+        ])->add('projeto', TextType::class, [
+            'label' => 'Nº SEI',
+            'attr' => [
+                'class' => 'nuSipar',
+            ],
             'mapped' => false,
             'required' => false,
         ])->add('cpf', TextType::class, [

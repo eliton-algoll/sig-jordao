@@ -34,10 +34,9 @@ class DadoPessoal extends AbstractEntity
     private $pessoaFisica;
 
     /**
-     * @var AgenciaBancaria
+     * @var string
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AgenciaBancaria")
-     * @ORM\JoinColumn(name="CO_AGENCIA", referencedColumnName="CO_AGENCIA_BANCARIA")
+     * @ORM\Column(name="CO_AGENCIA", type="string", nullable=false)
      */
     private $agencia;
 
@@ -50,18 +49,27 @@ class DadoPessoal extends AbstractEntity
     private $banco;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="CO_CONTA", type="string", nullable=false)
+     */
+    private $conta;
+
+    /**
      * @param PessoaFisica $pessoaFisica
-     * @param AgenciaBancaria $agencia
+     * @param string $agencia
      * @param Banco $banco
      */
     public function __construct(
         PessoaFisica $pessoaFisica, 
-        AgenciaBancaria $agencia = null, 
-        Banco $banco = null
+        Banco $banco = null,
+        $agencia = null,
+        $conta = null
     ) {
         $this->pessoaFisica     = $pessoaFisica;
-        $this->agencia          = $agencia;
         $this->banco            = $banco;
+        $this->agencia          = $agencia;
+        $this->conta            = null;
         $this->stRegistroAtivo  = 'S';
         $this->dtInclusao       = new \DateTime();
     }
@@ -87,9 +95,19 @@ class DadoPessoal extends AbstractEntity
     }
 
     /**
+     * Get conta
+     *
+     * @return string
+     */
+    public function getConta()
+    {
+        return $this->conta;
+    }
+
+    /**
      * Get agencia
      *
-     * @return AgenciaBancaria
+     * @return string
      */
     public function getAgencia()
     {
@@ -107,10 +125,10 @@ class DadoPessoal extends AbstractEntity
     }
 
     /**
-     * @param AgenciaBancaria $agencia
+     * @param string $agencia
      * @return DadoPessoal
      */
-    public function setAgencia(AgenciaBancaria $agencia)
+    public function setAgencia($agencia)
     {
         $this->agencia = $agencia;
         return $this;
@@ -125,4 +143,15 @@ class DadoPessoal extends AbstractEntity
         $this->banco = $banco;
         return $this;
     }
+
+    /**
+     * @param string $conta
+     * @return DadoPessoal
+     */
+    public function setConta($conta)
+    {
+        $this->conta = $conta;
+        return $this;
+    }
+
 }

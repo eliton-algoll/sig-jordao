@@ -228,7 +228,25 @@ services:
         arguments: ["@app.valor_bolsa_programa_repository", "@app.folha_pagamento_repository"]
         tags:
             - { name: tactician.handler, command: AppBundle\CommandBus\InativarValorBolsaCommand }
-            
+
+    app.cadastrar_banco_handler:
+        class: AppBundle\CommandBus\CadastrarBancoHandler
+        arguments: ["@app.banco_repository"]
+        tags:
+            - { name: tactician.handler, command: AppBundle\CommandBus\CadastrarBancoCommand }
+
+    app.inativar_banco_handler:
+        class: AppBundle\CommandBus\InativarBancoHandler
+        arguments: ["@app.banco_repository"]
+        tags:
+            - { name: tactician.handler, command: AppBundle\CommandBus\InativarBancoCommand }
+
+    app.excluir_banco_handler:
+        class: AppBundle\CommandBus\ExcluirBancoHandler
+        arguments: ["@app.banco_repository"]
+        tags:
+            - { name: tactician.handler, command: AppBundle\CommandBus\ExcluirBancoCommand }
+
     app.salvar_emissao_certificado_handler:
         class: AppBundle\CommandBus\SalvarEmissaoCertificadoHandler
         arguments: ["@app.emissao_certificado_repository", "@app.projeto_pessoa_repository"]
@@ -416,6 +434,10 @@ services:
     app.valor_bolsa_query:
         class: AppBundle\Query\ValorBolsaQuery
         arguments: ["@knp_paginator", "@app.valor_bolsa_programa_repository"]
+
+    app.banco_query:
+        class: AppBundle\Query\BancoQuery
+        arguments: ["@knp_paginator", "@app.banco_repository"]
         
     app.planejamento_abertura_folha_query:
         class: AppBundle\Query\PlanejamentoAberturaFolhaQuery

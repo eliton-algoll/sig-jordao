@@ -158,7 +158,10 @@ SQL;
                                    A.NO_INSTITUICAO_PROJETO,
                                    A.SECRETARIA_SAUDE,
                                    A.NO_PESSOA,
+                                   A.CO_BANCO,
+                                   A.NO_BANCO,
                                    A.CO_AGENCIA,
+                                   DP.CO_CONTA,
                                    A.NU_ANO_INGRESSO,
                                    A.DS_CATEGORIA_PROFISSIONAL,
                                    A.CURSO_GRADUACAO,
@@ -192,6 +195,8 @@ SQL;
                                    TO_CHAR(A.DT_DESLIGAMENTO, 'DD/MM/YYYY')         AS
                                    DT_DESLIGAMENTO
                             FROM   DBPET.VW_PARTICIPANTE A
+                                   LEFT JOIN DBPET.TB_DADO_PESSOAL DP
+                                           ON A.NU_CPF_CNPJ_PESSOA = DP.NU_CPF
                                    INNER JOIN DBPET.TB_PROJETO B
                                            ON A.CO_SEQ_PROJETO = B.CO_SEQ_PROJETO
                                    INNER JOIN DBPET.TB_PUBLICACAO C
@@ -306,4 +311,5 @@ SQL;
         $conn = $this->getEntityManager()->getConnection();
         return $conn->executeQuery($sql, $parameters->values, $parameters->types)->fetchAll();
     }
+
 }

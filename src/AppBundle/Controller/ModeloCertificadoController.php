@@ -132,8 +132,13 @@ final class ModeloCertificadoController extends ControllerAbstract
      */
     public function preview(ModeloCertificado $modeloCertificado)
     {
+        $fileUploaderFacade = $this->get('app.file_uploader_facade');
+
         $html = $this->renderView('modelo_certificado/preview.pdf.twig', [
-            'modelo' => $modeloCertificado
+            'modelo' => $modeloCertificado,
+            'imagemCertificado' => $fileUploaderFacade->convertToBase64($modeloCertificado->getNoImagemCertificado()),
+            'imagemRodape' => $modeloCertificado->getNoImagemRodape() ?
+                $fileUploaderFacade->convertToBase64($modeloCertificado->getNoImagemRodape()) : null,
         ]);
 
         $pdfFacade = $this->get('app.wkhtmltopdf_facade');

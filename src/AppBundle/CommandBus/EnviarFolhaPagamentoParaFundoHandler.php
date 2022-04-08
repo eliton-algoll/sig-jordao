@@ -92,7 +92,8 @@ class EnviarFolhaPagamentoParaFundoHandler
                     $pessoaFisica->getNuCpf(),
                     $autorizacaoFolha->getVlBolsa(),
                     $autorizacaoFolha->getCoBanco(),
-                    $autorizacaoFolha->getCoAgenciaBancaria()
+                    $autorizacaoFolha->getCoAgenciaBancaria(),
+                    $autorizacaoFolha->getCoConta()
                 );
                 
                 $this->integracaoRepository->add($integracao);

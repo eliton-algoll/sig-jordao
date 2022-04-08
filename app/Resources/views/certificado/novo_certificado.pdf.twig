@@ -10,63 +10,72 @@
         }
 
         body {
-            background-image: url("{{ absolute_url(asset('uploads/' ~ modelo.noImagemCertificado)) }}");
+            background-image: url("data:image/jpeg;base64,{{ imagemCertificado }}");
             background-repeat: no-repeat;
+            background-size: 100%;
+            background-position: 0 0;
             font-family: sans-serif;
             font-size: 20px;
         }
 
         .container {
+            width: 75%;
             float: left;
-            margin: 420px 160px 0;
-        }
-
-        .clear {
-            clear: both;
+            position: absolute;
+            top: 46%;
+            left: 12.5%;
         }
 
         .text {
+            width: 100%;
             float: left;
             text-align: justify;
             word-wrap: break-word;
         }
 
         .date {
-            float: right;
+            width: 100%;
+            float: left;
             text-align: right;
             margin-top: 50px;
         }
 
         .signature {
+            width: 100%;
             float: left;
             margin-top: 50px;
             text-align: center;
         }
 
+        .signature span {
+            float: left;
+        }
+
         .footer {
+            width: 100%;
             float: right;
-            text-align: right;
             position: absolute;
             bottom: 0;
             right: 0;
+            text-align: right;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="text">{{ modelo.dsModeloCertificado | replaceTokenModeloCertificado(projetoPessoa, qtCargaHoraria) }}</div>
-        <div class="clear"></div>
         <div class="date">{{ municipio.getNoMunicipio() ~ ' / ' ~ municipio.getSgUf() }}, {{ date|date('d') ~ ' de ' ~ date|date('F')|trans ~ ' de ' ~ date|date('Y') }}</div>
-        <div class="clear"></div>
         <div class="signature">
-            {{ projetoPessoa.getProjeto().getCoordenadorDeProjeto().getPessoaPerfil().getPessoaFisica().getPessoa().getNoPessoa() }}<br>
-            Coordenador do Projeto PET-Saúde
+            <span>
+                {{ projetoPessoa.getProjeto().getCoordenadorDeProjeto().getPessoaPerfil().getPessoaFisica().getPessoa().getNoPessoa() }}<br>
+                Coordenador do Projeto PET-Saúde
+            </span>
         </div>
     </div>
 
-    {% if modelo.noImagemRodape %}
+    {% if imagemRodape %}
         <div class="footer">
-            <img src="{{ absolute_url(asset('uploads/' ~ modelo.noImagemRodape)) }}" alt="">
+            <img src="data:image/jpeg;base64,{{ imagemRodape }}" alt="">
         </div>
     {% endif %}
 </body>

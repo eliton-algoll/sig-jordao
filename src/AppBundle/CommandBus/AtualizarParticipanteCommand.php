@@ -2,9 +2,9 @@
 
 namespace AppBundle\CommandBus;
 
+use AppBundle\Entity\ProjetoPessoa;
 use AppBundle\Entity\ProjetoPessoaGrupoAtuacaoAreaTematica;
 use Symfony\Component\Validator\Constraints as Assert;
-use AppBundle\Entity\ProjetoPessoa;
 
 class AtualizarParticipanteCommand extends CadastrarParticipanteCommand
 {
@@ -13,14 +13,14 @@ class AtualizarParticipanteCommand extends CadastrarParticipanteCommand
      * @Assert\NotBlank()
      */
     private $coSeqProjetoPessoa;
-    
+
     public function __construct(ProjetoPessoa $projetoPessoa = null)
     {
-        if($projetoPessoa){
+        if ($projetoPessoa) {
             $this->setValuesByEntity($projetoPessoa);
         }
     }
-    
+
     /**
      * @return integer
      */
@@ -38,51 +38,53 @@ class AtualizarParticipanteCommand extends CadastrarParticipanteCommand
         $this->coSeqProjetoPessoa = $coSeqProjetoPessoa;
         return $this;
     }
-        
+
     /**
      * @param ProjetoPessoa $projetoPessoa
      */
     public function setValuesByEntity(ProjetoPessoa $projetoPessoa)
     {
         $pessoaFisica = $projetoPessoa->getPessoaPerfil()->getPessoaFisica();
-        $this->coSeqProjetoPessoa       = $projetoPessoa->getCoSeqProjetoPessoa();
-        $this->projeto                  = $projetoPessoa->getProjeto();
-        $this->perfil                   = $projetoPessoa->getPessoaPerfil()->getPerfil();
-        $this->stVoluntarioProjeto      = $projetoPessoa->getStVoluntarioProjeto();
-        $this->nuCpf                    = $pessoaFisica->getNuCpf();
-        $this->noPessoa                 = $pessoaFisica->getPessoa()->getNoPessoa();
-        $this->sexo                     = $pessoaFisica->getSexo();
-        
+        $this->coSeqProjetoPessoa = $projetoPessoa->getCoSeqProjetoPessoa();
+        $this->projeto = $projetoPessoa->getProjeto();
+        $this->perfil = $projetoPessoa->getPessoaPerfil()->getPerfil();
+        $this->stVoluntarioProjeto = $projetoPessoa->getStVoluntarioProjeto();
+        $this->nuCpf = $pessoaFisica->getNuCpf();
+        $this->noPessoa = $pessoaFisica->getPessoa()->getNoPessoa();
+        $this->sexo = $pessoaFisica->getSexo();
+
         $dadoPessoal = $pessoaFisica->getDadoPessoal();
-        $this->noMae                    = $dadoPessoal->getPessoaFisica()->getNoMae();
-        $this->coAgenciaBancaria        = $dadoPessoal->getAgencia() instanceof \AppBundle\Entity\AgenciaBancaria?$dadoPessoal->getAgencia()->getCoAgenciaBancaria():'';
-        $this->coBanco                  = $dadoPessoal->getBanco()->getCoBanco();
-        
+        $this->noMae = $dadoPessoal->getPessoaFisica()->getNoMae();
+        $this->coBanco = $dadoPessoal->getBanco();//->getCoBanco();
+        $this->coAgenciaBancaria = $dadoPessoal->getAgencia();
+        $this->coConta = $dadoPessoal->getConta();
+
         $endereco = $pessoaFisica->getPessoa()->getEnderecoAtivo();
-        $this->noLogradouro             = $endereco->getNoLogradouro();
-        $this->nuLogradouro             = $endereco->getNuLogradouro();
-        $this->dsComplemento            = $endereco->getDsComplemento();
-        $this->noBairro                 = $endereco->getNoBairro();
-        $this->coUf                     = $endereco->getMunicipio()->getCoUfIbge();
-        $this->coMunicipioIbge          = $endereco->getMunicipio();
-        $this->dsEnderecoWeb            = $pessoaFisica->getPessoa()->getEnderecoWebAtivo();
-        
-        $this->coCep                    = $endereco->getCep()->getNuCep();
-        
+        if (is_object($endereco)) {
+            $this->noLogradouro = $endereco->getNoLogradouro();
+            $this->nuLogradouro = $endereco->getNuLogradouro();
+            $this->dsComplemento = $endereco->getDsComplemento();
+            $this->noBairro = $endereco->getNoBairro();
+            $this->coUf = $endereco->getMunicipio()->getCoUfIbge();
+            $this->coMunicipioIbge = $endereco->getMunicipio();
+            $this->dsEnderecoWeb = $pessoaFisica->getPessoa()->getEnderecoWebAtivo();
+            $this->coCep = $endereco->getCep()->getNuCep();
+        }
+
         $dadoAcademico = $projetoPessoa->getDadoAcademicoAtivo();
-        $this->categoriaProfissional    = $dadoAcademico ? $dadoAcademico->getCategoriaProfissional() : null;
-        $this->coCnes                   = $dadoAcademico ? $dadoAcademico->getCoCnes() : null;
-        $this->titulacao                = $dadoAcademico ? $dadoAcademico->getTitulacao() : null;
-        $this->cursoGraduacao           = $projetoPessoa->getCursoGraduacaoEstudante();
-        $this->nuAnoIngresso            = $dadoAcademico ? $dadoAcademico->getNuAnoIngresso() : null;
-        $this->nuMatriculaIES           = $dadoAcademico ? $dadoAcademico->getNuMatricula() : null;
-        $this->nuSemestreAtual          = $dadoAcademico ? $dadoAcademico->getNuSemestre() : null;
+        $this->categoriaProfissional = $dadoAcademico ? $dadoAcademico->getCategoriaProfissional() : null;
+        $this->coCnes = $dadoAcademico ? $dadoAcademico->getCoCnes() : null;
+        $this->titulacao = $dadoAcademico ? $dadoAcademico->getTitulacao() : null;
+        $this->cursoGraduacao = $projetoPessoa->getCursoGraduacaoEstudante();
+        $this->nuAnoIngresso = $dadoAcademico ? $dadoAcademico->getNuAnoIngresso() : null;
+        $this->nuMatriculaIES = $dadoAcademico ? $dadoAcademico->getNuMatricula() : null;
+        $this->nuSemestreAtual = $dadoAcademico ? $dadoAcademico->getNuSemestre() : null;
 
         $projetosPessoaGrupoAtuacao = $projetoPessoa->getProjetoPessoaGrupoAtuacaoAtivo();
 
         if (
-            0 !== $projetosPessoaGrupoAtuacao->count() &&
-            $projetoPessoa->getProjeto()->getPublicacao()->getPrograma()->isGrupoTutorial()
+            (0 !== $projetosPessoaGrupoAtuacao->count()) &&
+            ($projetoPessoa->getProjeto()->getPublicacao()->getPrograma()->isGrupoTutorial())
         ) {
             $this->grupoTutorial = $projetosPessoaGrupoAtuacao->first()->getGrupoAtuacao();
         }
@@ -90,14 +92,13 @@ class AtualizarParticipanteCommand extends CadastrarParticipanteCommand
         $this->telefones = array();
         foreach ($pessoaFisica->getPessoa()->getTelefonesAtivos() as $telefone) {
             $this->telefones[] = $telefone;
-
         }
-        
+
         $this->cursosLecionados = array();
         foreach ($projetoPessoa->getCursosLecionados() as $cursoGraduacao) {
             $this->cursosLecionados[] = $cursoGraduacao;
         }
-        
+
         $this->areaTematica = array();
         if ($projetoPessoa->getProjeto()->getPublicacao()->getPrograma()->isAreaAtuacao()) {
             foreach ($projetoPessoa->getProjetoPessoaGrupoAtuacaoAtivo() as $projetoPessoaGrupoAtuacao) {
@@ -113,4 +114,5 @@ class AtualizarParticipanteCommand extends CadastrarParticipanteCommand
             }
         }
     }
+
 }

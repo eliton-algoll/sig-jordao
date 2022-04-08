@@ -13,8 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
 class AutorizacaoFolha extends AbstractEntity
 {
     use \AppBundle\Traits\DeleteLogicoTrait;
-    use \AppBundle\Traits\DataInclusaoTrait;    
-    
+    use \AppBundle\Traits\DataInclusaoTrait;
+
     /**
      * @var int
      *
@@ -54,25 +54,32 @@ class AutorizacaoFolha extends AbstractEntity
      * @ORM\Column(name="ST_PARECER", type="string", length=1)
      */
     private $stParecer;
-    
+
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(name="CO_BANCO", type="string")
      */
     private $coBanco;
-    
+
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(name="CO_AGENCIA_BANCARIA", type="string")
      */
     private $coAgenciaBancaria;
-    
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="CO_CONTA", type="string")
+     */
+    private $coConta;
+
     /**
      *
      * @var DetalheArquivoRetornoPagamento
-     * 
+     *
      * @ORM\OneToOne(targetEntity="\AppBundle\Entity\DetalheArquivoRetornoPagamento")
      * @ORM\JoinColumn(name="CO_DETALHE_ARQUIVO_RETORNO", referencedColumnName="CO_SEQ_DETALHE_ARQUIVO_RETORNO")
      */
@@ -85,26 +92,29 @@ class AutorizacaoFolha extends AbstractEntity
      * @param string $stParecer
      */
     public function __construct(
-        ProjetoFolhaPagamento $projetoFolhaPagamento, 
-        ProjetoPessoa $projetoPessoa, 
-        $vlBolsa, 
+        ProjetoFolhaPagamento $projetoFolhaPagamento,
+        ProjetoPessoa $projetoPessoa,
+        $vlBolsa,
         $stParecer = 'S',
         $coBanco,
-        $coAgenciaBancaria
-    ) {
+        $coAgenciaBancaria,
+        $coConta
+    )
+    {
         $this->projetoFolhaPagamento = $projetoFolhaPagamento;
         $this->projetoPessoa = $projetoPessoa;
         $this->vlBolsa = $vlBolsa;
         $this->stParecer = $stParecer;
         $this->coBanco = $coBanco;
         $this->coAgenciaBancaria = $coAgenciaBancaria;
+        $this->coConta = $coConta;
         $this->dtInclusao = new \DateTime();
         $this->stRegistroAtivo = 'S';
         $this->projetoFolhaPagamento->addAutorizacaoFolha($this);
     }
-    
+
     /**
-     * 
+     *
      * @param DetalheArquivoRetornoPagamento $detalheArquivoRetornoPagamento
      */
     public function setDetalheArquivoRetornoPagamento(DetalheArquivoRetornoPagamento $detalheArquivoRetornoPagamento)
@@ -123,7 +133,7 @@ class AutorizacaoFolha extends AbstractEntity
     {
         return $this->coSeqAutorizacaoFolha;
     }
-    
+
     /**
      * Get projetoFolhaPagamento
      *
@@ -153,7 +163,7 @@ class AutorizacaoFolha extends AbstractEntity
     {
         return $this->vlBolsa;
     }
-    
+
     /**
      * Get stParecer
      *
@@ -163,10 +173,10 @@ class AutorizacaoFolha extends AbstractEntity
     {
         return $this->stParecer;
     }
-    
+
     /**
      * Get coBanco
-     * 
+     *
      * @return string
      */
     public function getCoBanco()
@@ -176,14 +186,24 @@ class AutorizacaoFolha extends AbstractEntity
 
     /**
      * Get coAgenciaBancaria
-     * 
+     *
      * @return string
      */
     public function getCoAgenciaBancaria()
     {
         return $this->coAgenciaBancaria;
-    }        
-    
+    }
+
+    /**
+     * Get coConta
+     *
+     * @return string
+     */
+    public function getCoConta()
+    {
+        return $this->coConta;
+    }
+
     public function removeDetalheArquivoRetornoPagamento()
     {
         $this->detalheArquivoRetornoPagamento = null;
@@ -193,11 +213,12 @@ class AutorizacaoFolha extends AbstractEntity
     {
         $this->projetoFolhaPagamento = $projetoFolhaPagamento;
     }
-        
+
     public function __clone()
     {
         $this->projetoFolhaPagamento = null;
         $this->dtInclusao = new \DateTime();
     }
+
 }
 

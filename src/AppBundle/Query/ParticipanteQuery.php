@@ -74,18 +74,18 @@ class ParticipanteQuery
         );
     }
     
-    /**
-     * @param DadoPessoal $dadoPessoal
-     * @return AgenciaBancaria|null
-     */
-    public function getAgenciaBancariaByDadoPessoal(DadoPessoal $dadoPessoal)
-    {
-        return $this->agenciaBancariaRepository->findOneBy(array(
-            'coAgenciaBancaria' => $dadoPessoal->getAgencia()->getCoAgenciaBancaria(),
-            'coBanco' => $dadoPessoal->getBanco()->getCoBanco(),
-            'stRegistroAtivo' => 'S'
-        ));
-    }
+//    /**
+//     * @param DadoPessoal $dadoPessoal
+//     * @return AgenciaBancaria|null
+//     */
+//    public function getAgenciaBancariaByDadoPessoal(DadoPessoal $dadoPessoal)
+//    {
+//        return $this->agenciaBancariaRepository->findOneBy(array(
+//            'coAgenciaBancaria' => $dadoPessoal->getAgencia()->getCoAgenciaBancaria(),
+//            'coBanco' => $dadoPessoal->getBanco()->getCoBanco(),
+//            'stRegistroAtivo' => 'S'
+//        ));
+//    }
     
     /**
      * @param ParameterBag $params

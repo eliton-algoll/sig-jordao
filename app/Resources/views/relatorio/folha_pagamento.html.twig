@@ -23,6 +23,9 @@
         <th>Nome do Participante</th>
         <th>CPF</th>
         <th>Perfil</th>
+        <th>Banco</th>
+        <th>Agência</th>
+        <th>Conta</th>
         <th>Valor da Bolsa</th>
         <th>Nº SEI Projeto</th>
     </tr>
@@ -40,6 +43,15 @@
             </td>
             <td>
                 {{ row.projetoPessoa.pessoaPerfil.perfil.dsPerfil }}
+            </td>
+            <td>
+                {{ row.projetoPessoa.pessoaPerfil.pessoaFisica.dadoPessoal.banco }}
+            </td>
+            <td>
+                {{ row.projetoPessoa.pessoaPerfil.pessoaFisica.dadoPessoal.agencia }}
+            </td>
+            <td>
+                {{ row.projetoPessoa.pessoaPerfil.pessoaFisica.dadoPessoal.conta }}
             </td>
             <td>
                 R$ {{ row.vlBolsa|number_format(2, ',', '.') }}

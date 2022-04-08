@@ -3,11 +3,12 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Banco
  *
- * @ORM\Table(name="DBGERAL.TB_BANCO")
+ * @ORM\Table(name="DBPET.TB_BANCO")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\BancoRepository")
  */
 class Banco extends AbstractEntity
@@ -57,7 +58,14 @@ class Banco extends AbstractEntity
      */
     private $dsSite;
 
-    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="DT_REMOCAO", type="datetime", nullable=true)
+     * @Assert\Type("\DateTime")
+     */
+    private $dtRemocao;
+
     /**
      * @param int $coBanco
      */
@@ -153,4 +161,23 @@ class Banco extends AbstractEntity
     {
         return $this->stRegistroAtivo;
     }
+
+    /**
+     * @param \DateTime $dtRemocao
+     * @return $this
+     */
+    public function setDtRemocao(\DateTime $dtRemocao)
+    {
+        $this->dtRemocao = $dtRemocao;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDtRemocao()
+    {
+        return $this->dtRemocao;
+    }
+
 }

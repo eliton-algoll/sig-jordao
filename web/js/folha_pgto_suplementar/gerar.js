@@ -1,8 +1,7 @@
-var gerar_folha_suplementar = (function() {
-    
-    function init()
-    {
-        $("#cadastar_folha_suplementar_publicacao").on('change', function() {
+var gerar_folha_suplementar = (function () {
+
+    function init() {
+        $("#cadastar_folha_suplementar_publicacao").on('change', function () {
             loadProjetos($(this).val());
             loadReferencias($(this).val());
             resetGrids();
@@ -13,22 +12,21 @@ var gerar_folha_suplementar = (function() {
         $(document).on('click', '#grid-selecionados input[type="checkbox"]', checkUncheckAllGridSelecionados);
         $(document).on('click', '#btn-add', addRows);
         $(document).on('click', '#btn-remove', removeRows);
-        $("#btn-buscar").on('click', loadParticipantes);
+        $("#btn-buscar").on('click', checkSiparBeforeLoadParticipantes);
         $("#btn-salva").on('click', salvar);
         $("#btn-salva-fecha").on('click', salvarFechar);
         $("#btn-voltar").on('click', voltar);
     }
-    
-    function loadReferencias(publicacao)
-    {
+
+    function loadReferencias(publicacao) {
         if (publicacao === '') {
             $("#cadastar_folha_suplementar_folhaPagamento option:not(:first)").remove();
             return;
         }
-        
+
         helper.makeOptions(
             '#cadastar_folha_suplementar_folhaPagamento',
-            Routing.generate('folha_pgto_suplementar_list_folhas_mensais', { publicacao : publicacao }),
+            Routing.generate('folha_pgto_suplementar_list_folhas_mensais', {publicacao: publicacao}),
             [],
             'coSeqFolhaPagamento',
             'referencia',
@@ -42,8 +40,7 @@ var gerar_folha_suplementar = (function() {
         );
     }
 
-    function loadProjetos(publicacao)
-    {
+    function loadProjetos(publicacao) {
         if (publicacao === '') {
             $("#cadastar_folha_suplementar_projeto option:not(:first)").remove();
             return;
@@ -51,7 +48,7 @@ var gerar_folha_suplementar = (function() {
 
         helper.makeOptions(
             '#cadastar_folha_suplementar_projeto',
-            Routing.generate('projeto_list_by_publicacao', { publicacao : publicacao }),
+            Routing.generate('projeto_list_by_publicacao', {publicacao: publicacao}),
             [],
             'coSeqProjeto',
             'nuSipar',
@@ -59,15 +56,45 @@ var gerar_folha_suplementar = (function() {
             null
         );
     }
-    
-    function loadParticipantes()
+
+    function checkSiparBeforeLoadParticipantes()
     {
+        var publicacao = $("#cadastar_folha_suplementar_publicacao").val();
+        var projeto = $("#cadastar_folha_suplementar_projeto").val();
+
+        if (!projeto) {
+            loadParticipantes();
+            return;
+        }
+
+        $.ajax({
+            url: Routing.generate('projeto_get_by_sipar'),
+            data: {
+                publicacao: publicacao,
+                nuSipar: projeto,
+                ignoreVigencia: 1
+            },
+            success: function(response) {
+                if (response.status) {
+                    if (publicacao != response.projeto.publicacao.coSeqPublicacao) {
+                        $("#cadastar_folha_suplementar_publicacao option[value='" + response.projeto.publicacao.coSeqPublicacao + "']").prop('selected', true);
+                        $("#cadastar_folha_suplementar_publicacao").trigger('change');
+                    }
+                    loadParticipantes();
+                } else {
+                    bootbox.alert(response.error);
+                }
+            }
+        });
+    }
+
+    function loadParticipantes() {
         var publicacao = $("#cadastar_folha_suplementar_publicacao").val();
         var projeto = $("#cadastar_folha_suplementar_projeto").val();
         var cpf = $("#cadastar_folha_suplementar_cpf").val();
         var folha = $("#folha-suplementar").val();
         var selecionados = [];
-        
+
         if (projeto === '' && cpf === '') {
 
             bootbox.alert('Nº SEI ou CPF obrigatório.');
@@ -84,99 +111,91 @@ var gerar_folha_suplementar = (function() {
                 }
             ).toArray();
         }
-        
+
         $.ajax({
-            url : Routing.generate('folha_pgto_suplementar_grid_participantes'),
-            data : {
-                publicacao : publicacao,
-                projeto : projeto,
-                folhaPagamento : folha,
-                participantes : selecionados,
-                cpf : cpf
+            url: Routing.generate('folha_pgto_suplementar_grid_participantes'),
+            data: {
+                publicacao: publicacao,
+                nuSipar: projeto,
+                folhaPagamento: folha,
+                participantes: selecionados,
+                cpf: cpf
             },
-            datatype : 'html',
-            success : function (response) {
+            datatype: 'html',
+            success: function (response) {
                 $("#div-participantes").removeClass('hidden');
                 $("#grid-participantes").html(response);
             }
         });
     }
-    
-    function loadSelecionados()
-    {
+
+    function loadSelecionados() {
         var folha = $("#folha-suplementar").val();
-        
+
         if (folha === '') {
             $("#grid-selecionados tbody tr").remove();
             return;
         }
-        
+
         $.ajax({
-            url : Routing.generate(
+            url: Routing.generate(
                 'folha_pgto_suplementar_grid_autorizacoes',
-                { folhaPagamento : folha }
+                {folhaPagamento: folha}
             ),
-            datatype : 'html',            
-            success : function (response) {
+            datatype: 'html',
+            success: function (response) {
                 $("#div-selecionados").removeClass('hidden');
                 $("#grid-selecionados").html(response);
             }
         });
     }
-    
-    function checkGridAutorizado()
-    {
+
+    function checkGridAutorizado() {
         var check = $(this);
-        
+
         checkUncheckGrid(check.is(':checked'), '#grid-participantes');
     }
-    
-    function checkGridSelecionados()
-    {
+
+    function checkGridSelecionados() {
         var check = $(this);
-        
+
         checkUncheckGrid(check.is(':checked'), '#grid-selecionados');
     }
-    
-    function checkUncheckGrid(check, selector)
-    {
+
+    function checkUncheckGrid(check, selector) {
         $(selector + ' input[type="checkbox"]:not(:disabled)').prop('checked', check);
     }
-    
-    function checkUncheckAllGridAutorizados()
-    {
+
+    function checkUncheckAllGridAutorizados() {
         if ($(this).attr('name') !== 'checkall') {
             checkUncheckAll('#grid-participantes');
         }
     }
-    
-    function checkUncheckAllGridSelecionados()
-    {
+
+    function checkUncheckAllGridSelecionados() {
         if ($(this).attr('name') !== 'checkall') {
             checkUncheckAll('#grid-selecionados');
         }
     }
-    
-    function checkUncheckAll(selector)
-    {
+
+    function checkUncheckAll(selector) {
         var check = true;
-        
+
         $(selector + ' input[type="checkbox"]').each(function (key, inputSelector) {
             if (!$(inputSelector).is(':checked') && $(inputSelector).attr('name') !== 'checkall') {
-                check = false;                
+                check = false;
             }
         });
-        
+
         $(selector + ' input[name="checkall"]').prop('checked', check);
     }
-    
-    function addRows()
-    {
+
+    function addRows() {
         if (0 === $('#grid-participantes table tbody input[type="checkbox"]:checked').length) {
             bootbox.alert('Selecione os participantes que deseja adicionar/remover na Folha de Pagamento Complementar.');
             return;
         }
-        
+
         if ($("#folha-suplementar").val() === '') {
             moveRows('#grid-participantes', '#grid-selecionados');
 
@@ -188,27 +207,26 @@ var gerar_folha_suplementar = (function() {
         } else {
             addToDataBase();
         }
-        checkUncheckAllGridSelecionados();        
+        checkUncheckAllGridSelecionados();
     }
-    
-    function removeRows()
-    {
+
+    function removeRows() {
         if (0 === $('#grid-selecionados table tbody input[type="checkbox"]:checked').length) {
             bootbox.alert('Selecione os participantes que deseja adicionar/remover na Folha de Pagamento Complementar.');
             return;
         }
-        
+
         bootbox.confirm({
-            message : 'Confirma a exclusão dos participantes selecionados da folha complementar?',
-            buttons : {
-                confirm : {
-                    label : 'Sim'
+            message: 'Confirma a exclusão dos participantes selecionados da folha complementar?',
+            buttons: {
+                confirm: {
+                    label: 'Sim'
                 },
-                cancel : {
-                    label : 'Não'
+                cancel: {
+                    label: 'Não'
                 }
             },
-            callback : function (result) {
+            callback: function (result) {
                 if (result) {
                     if ($("#folha-suplementar").val() === '') {
                         $('#grid-selecionados table tbody input[type="checkbox"]:checked').each(function (key, inputSelector) {
@@ -232,9 +250,8 @@ var gerar_folha_suplementar = (function() {
             }
         });
     }
-    
-    function moveRows(selectorGrid1, selectorGrid2)
-    {
+
+    function moveRows(selectorGrid1, selectorGrid2) {
         $(selectorGrid1 + ' table tbody input[type="checkbox"]').each(function (key, inputSelector) {
             if ($(inputSelector).is(':checked')) {
                 $(selectorGrid2 + ' table tbody').append($(inputSelector).prop('checked', false).closest('tr').clone());
@@ -246,41 +263,39 @@ var gerar_folha_suplementar = (function() {
 
                 $(inputSelector).closest('tr').remove();
             }
-        });        
+        });
     }
-    
-    function fillInputSelecionados()
-    {
+
+    function fillInputSelecionados() {
         var participantes = [];
-        
+
         $('#grid-selecionados table tbody input[type="checkbox"]').each(function (key, inputSelector) {
             participantes.push($(inputSelector).val());
         });
-        
+
         $('#cadastar_folha_suplementar_participantes').val(participantes.join(','));
     }
-    
-    function addToDataBase()
-    {
+
+    function addToDataBase() {
         var folha = $("#folha-suplementar").val();
-        var autorizacoes = $('#grid-participantes table tbody input[type="checkbox"]:checked').map(function() {
+        var autorizacoes = $('#grid-participantes table tbody input[type="checkbox"]:checked').map(function () {
             return this.value;
         }).get();
-        
+
         if (folha === '' || autorizacoes.lenght === 0) return;
-        
+
         $.ajax({
-            url : Routing.generate('folha_pgto_suplementar_add', { folhaPagamento : folha }),
-            type : 'POST',
-            data : {
-                autorizacoes : autorizacoes
+            url: Routing.generate('folha_pgto_suplementar_add', {folhaPagamento: folha}),
+            type: 'POST',
+            data: {
+                autorizacoes: autorizacoes
             },
-            success : function (response) {
+            success: function (response) {
                 if (response.status) {
-                    $.each(autorizacoes, function (key, value){
+                    $.each(autorizacoes, function (key, value) {
                         $("#" + value).remove();
                     });
-                    
+
                     loadSelecionados();
                 } else {
                     bootbox.alert(response.error);
@@ -288,25 +303,24 @@ var gerar_folha_suplementar = (function() {
             }
         });
     }
-    
-    function removeFromDataBase()
-    {
+
+    function removeFromDataBase() {
         var folha = $("#folha-suplementar").val();
-        var selecionados = $('#grid-selecionados table tbody input[type="checkbox"]:checked').map(function() {
+        var selecionados = $('#grid-selecionados table tbody input[type="checkbox"]:checked').map(function () {
             return this.value;
         }).get();
-        
+
         if (folha === '' || selecionados.lenght === 0) return;
-        
+
         $.ajax({
-            url : Routing.generate('folha_pgto_suplementar_remove', { folhaPagamento : folha }),
-            type : 'POST',
-            data : {
-                autorizacoes : selecionados
+            url: Routing.generate('folha_pgto_suplementar_remove', {folhaPagamento: folha}),
+            type: 'POST',
+            data: {
+                autorizacoes: selecionados
             },
-            success : function (response) {
+            success: function (response) {
                 if (response.status) {
-                    $.each(selecionados, function (key, value){
+                    $.each(selecionados, function (key, value) {
                         $("#" + value).remove();
                     });
 
@@ -318,27 +332,25 @@ var gerar_folha_suplementar = (function() {
         });
     }
 
-    function resetGrids()
-    {
+    function resetGrids() {
         $('#div-selecionados').addClass('hidden');
         $('#grid-selecionados table tbody tr').remove();
         $("#div-participantes").addClass('hidden');
         $("#grid-participantes").empty();
     }
-    
-    function salvarFechar()
-    {
+
+    function salvarFechar() {
         bootbox.confirm({
-            message : 'Ao confirmar essa opção, o sistema fechará a respectiva Folha de Pagamento Suplementar e NÃO será mais permitido adicionar ou remover participantes dessa folha. Confirma o fechamento da folha suplementar?',
-            buttons : {
-                confirm : {
-                    label : 'Sim'
+            message: 'Ao confirmar essa opção, o sistema fechará a respectiva Folha de Pagamento Suplementar e NÃO será mais permitido adicionar ou remover participantes dessa folha. Confirma o fechamento da folha suplementar?',
+            buttons: {
+                confirm: {
+                    label: 'Sim'
                 },
-                cancel : {
-                    label : 'Não'
+                cancel: {
+                    label: 'Não'
                 }
             },
-            callback : function (result) {
+            callback: function (result) {
                 if (result) {
                     fillInputSelecionados();
                     $("#cadastar_folha_suplementar_salvaEfecha").val('S');
@@ -347,36 +359,34 @@ var gerar_folha_suplementar = (function() {
             }
         });
     }
-    
-    function salvar()
-    {
+
+    function salvar() {
         fillInputSelecionados();
         $("#cadastar_folha_suplementar_salvaEfecha").val('N');
         $("form").submit();
     }
-    
-    function voltar()
-    {
+
+    function voltar() {
         bootbox.confirm({
-            message : 'Ao confirmar a ação VOLTAR, as atualizações que não foram salvas poderão ser perdidas. Deseja realmente VOLTAR?',
-            buttons : {
-                confirm : {
-                    label : 'Sim'
+            message: 'Ao confirmar a ação VOLTAR, as atualizações que não foram salvas poderão ser perdidas. Deseja realmente VOLTAR?',
+            buttons: {
+                confirm: {
+                    label: 'Sim'
                 },
-                cancel : {
-                    label : 'Não'
+                cancel: {
+                    label: 'Não'
                 }
             },
-            callback : function (result) {
+            callback: function (result) {
                 if (result) {
                     window.location.href = Routing.generate('folha_pagamento');
                 }
             }
         });
     }
-    
+
     return {
-        init : init()
+        init: init()
     };
 })();
 

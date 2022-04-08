@@ -320,14 +320,18 @@ class ParticipanteController extends ControllerAbstract
     public function termoAction(Request $request, ProjetoPessoa $projetoPessoa)
     {  
         $dsPrograma = $projetoPessoa->getProjeto()->getPublicacao()->getPrograma()->getDsPrograma();   
-        $dadoPessoal = $projetoPessoa->getPessoaPerfil()->getPessoaFisica()->getDadoPessoal();       
-        $agenciaBancaria = $this->get('app.participante_query')->getAgenciaBancariaByDadoPessoal($dadoPessoal);
+        $dadoPessoal = $projetoPessoa->getPessoaPerfil()->getPessoaFisica()->getDadoPessoal();
+        $banco = $dadoPessoal->getBanco();
+        $agenciaBancaria = $dadoPessoal->getAgencia();//$this->get('app.participante_query')->getAgenciaBancariaByDadoPessoal($dadoPessoal);
+        $conta = $dadoPessoal->getConta();
 
         return $this->render(
             'participante/termo.html.twig', 
             array(
                 'projetoPessoa' => $projetoPessoa,
-                'agenciaBancaria' => $agenciaBancaria, 
+                'banco' => $banco,
+                'agenciaBancaria' => $agenciaBancaria,
+                'conta' => $conta,
                 'dsPrograma' => $dsPrograma
             )
         );

@@ -41,9 +41,9 @@ class CadastrarParticipanteCommand
     /**
      * @var string 
      * @Assert\NotBlank()
-     * @Assert\Type(
-     *     type="numeric"
-     * )
+     * #@ A s s e r t \ T y p e (
+     * #    t y p e = " n u m e r i c "
+     * #)
      */
     protected $coBanco;
     
@@ -53,6 +53,13 @@ class CadastrarParticipanteCommand
      * @Assert\Length(max = 6)
      */
     protected $coAgenciaBancaria;
+
+    /**
+     * @var string
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 10)
+     */
+    protected $coConta;
     
     /**
      * @var string 
@@ -260,6 +267,16 @@ class CadastrarParticipanteCommand
     public function setCoAgenciaBancaria($coAgenciaBancaria)
     {
         $this->coAgenciaBancaria = $coAgenciaBancaria;
+        return $this;
+    }
+
+    /**
+     * @param string $coConta
+     * @return CadastrarParticipanteCommand
+     */
+    public function setCoConta($coConta)
+    {
+        $this->coConta = $coConta;
         return $this;
     }
 
@@ -509,6 +526,14 @@ class CadastrarParticipanteCommand
     public function getCoAgenciaBancaria()
     {
         return $this->coAgenciaBancaria;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getCoConta()
+    {
+        return $this->coConta;
     }
 
     /**

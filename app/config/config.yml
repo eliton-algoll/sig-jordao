@@ -69,10 +69,6 @@ doctrine:
         auto_mapping: true
         quote_strategy: app.doctrine_orm.quote_strategy
 
-        metadata_cache_driver: array
-        query_cache_driver: array
-        result_cache_driver: array
-
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"
@@ -110,13 +106,13 @@ services:
         class: Doctrine\DBAL\Event\Listeners\OracleSessionInit
         tags:
             - { name: doctrine.event_listener, event: postConnect }
-    #oracle.role_listener:
-    #    class: AppBundle\Doctrine\Event\Listeners\RoleListener
-    #    calls:
-    #        - [setRoleName, ["%database_role_name%"]]
-    #        - [setRolePass, ["%database_role_pass%"]]
-    #    tags:
-    #        - { name: doctrine.event_listener, event: postConnect }
+    oracle.role_listener:
+        class: AppBundle\Doctrine\Event\Listeners\RoleListener
+        calls:
+            - [setRoleName, ["%database_role_name%"]]
+            - [setRolePass, ["%database_role_pass%"]]
+        tags:
+            - { name: doctrine.event_listener, event: postConnect }
 #    twig.extension.intl:
 #        class: Twig_Extensions_Extension_Intl
 #        tags:

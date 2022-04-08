@@ -2,6 +2,9 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Banco;
+use Symfony\Component\HttpFoundation\ParameterBag;
+
 /**
  * BancoRepository
  *
@@ -10,5 +13,41 @@ namespace AppBundle\Repository;
  */
 class BancoRepository extends RepositoryAbstract
 {
-    
+
+    /**
+     *
+     * @param ParameterBag $pb
+     * @return Doctrine\ORM\Query
+     */
+    public function findByFilter(ParameterBag $pb)
+    {
+        $qb = $this->createQueryBuilder('b');
+        $qb->select('b');
+        $qb->andWhere('b.dtRemocao IS NULL');
+
+        if (!is_null($pb->get('coBanco'))) {
+            $qb->andWhere('b.coBanco LIKE :coBanco');
+            $qb->setParameter('coBanco', $pb->get('coBanco') . '%', \PDO::PARAM_STR);
+        }
+
+        if (!is_null($pb->get('noBanco'))) {
+            $qb->andWhere('b.noBanco LIKE :noBanco');
+            $qb->setParameter('noBanco', '%' . $pb->get('noBanco') . '%', \PDO::PARAM_STR);
+        }
+
+        if (!is_null($pb->get('stRegistroAtivo'))) {
+            $qb->andWhere('b.stRegistroAtivo = :stAtivo');
+            $qb->setParameter('stAtivo', $pb->get('stRegistroAtivo'), \PDO::PARAM_STR);
+        }
+
+        $this->orderPagination($qb, $pb);
+
+        return $qb->getQuery();
+    }
+
+    public function merge(Banco $banco) {
+        $this->getEntityManager()->merge($banco); // MERGE not PERSIST
+        $this->getEntityManager()->flush();
+    }
+
 }

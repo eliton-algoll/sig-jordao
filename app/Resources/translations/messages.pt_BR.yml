@@ -45,7 +45,10 @@ AREA_ATUACAO_PROJETO: Área de atuação no projeto
 NO_INSTITUICAO_PROJETO:	Instituição de Ensino
 SECRETARIA_SAUDE: Secretaria de Saúde
 NO_PESSOA: Nome do Participante
+CO_BANCO: Código do Banco
+NO_BANCO: Nome do Banco
 CO_AGENCIA: Agência Bancária
+CO_CONTA: Conta
 NU_ANO_INGRESSO: Ano de Ingresso no curso
 DS_CATEGORIA_PROFISSIONAL: Categoria Profissional
 CURSO_GRADUACAO: Curso de Graduação
@@ -62,12 +65,3 @@ DS_PERFIL: Tipo de Participante
 ST_VOLUNTARIO_PROJETO: Tipo de Participação
 TELEFONE: Telefone
 CO_CNES: Número CNES
-Estabelecimentos: Estabelecimentos
-Autorização de pagamento: Autorização de pagamento
-Certificado/Declaração: Certificado/Declaração
-Gerencial de Participantes: Gerencial de Participantes
-Grupos de atuação: Grupos de atuação
-Gerenciar Sistema: Gerenciar Sistema
-Planejar Abertura de Folha: Planejar Abertura de Folha
-Avaliação de Atividades: Avaliação de Atividades
-Tramitar Formulário de Atividades: Tramitar Formulário de Atividades

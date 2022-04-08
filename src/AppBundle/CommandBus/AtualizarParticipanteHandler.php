@@ -25,7 +25,6 @@ use AppBundle\Entity\ProjetoPessoa;
 use AppBundle\Entity\Projeto;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-
 class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
 {
 
@@ -91,18 +90,21 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
         $projeto       = $this->projetoRepository->find($command->getProjeto());
         
         $pessoaFisica    = $this->getPessoaFisicaIfCPFExists($command->getNuCpf());
-        $banco           = $this->getBancoIfExists($command->getCoBanco());
+        $banco           = $command->getCoBanco();//$this->getBancoIfExists($command->getCoBanco()->getCoBanco());
         $cep             = $this->getCEPIfExists($command->getCoCep());
-        $agenciaBancaria = $this->getAgenciaBancariaIfExists($command);
+        //$agenciaBancaria = $this->getAgenciaBancariaIfExists($command);
+        $agenciaBancaria = $command->getCoAgenciaBancaria();
+        $conta           = $command->getCoConta();
         $perfil          = $this->getPerfilIfNonViolatedConstraints($command);
         
 //        $this->constraintCNES($command);
-                
+
         if ($pessoaFisica->getDadoPessoal()) {
             $pessoaFisica->getDadoPessoal()->setBanco($banco);
             $pessoaFisica->getDadoPessoal()->setAgencia($agenciaBancaria);
+            $pessoaFisica->getDadoPessoal()->setConta($conta);
         } else {
-            $pessoaFisica->setDadoPessoal($agenciaBancaria, $banco);
+            $pessoaFisica->setDadoPessoal($banco, $agenciaBancaria, $conta);
         }
         
         $pessoaFisica->getPessoa()->addEnderecoWeb($command->getDsEnderecoWeb());

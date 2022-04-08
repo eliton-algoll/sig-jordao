@@ -72,18 +72,20 @@ class AutorizarPagamentoHandler
         
         if ($command->getCoordenadorDeProjetoNaoVoluntario()) {
             $projetoPessoa = $this->projetoPessoaRepository->find($command->getCoordenadorDeProjetoNaoVoluntario());
+
             if ($projetoPessoa) {
                 $dadoPessoal = $projetoPessoa->getPessoaPerfil()->getPessoaFisica()->getDadoPessoal();
-                new AutorizacaoFolha($projetoFolha, $projetoPessoa, $projetoPessoa->getVlBolsa(), 'S', $dadoPessoal->getBanco()->getCoBanco(), $dadoPessoal->getAgencia()->getCoAgenciaBancaria());
+                new AutorizacaoFolha($projetoFolha, $projetoPessoa, $projetoPessoa->getVlBolsa(), 'S', $dadoPessoal->getBanco()->getCoBanco(), $dadoPessoal->getAgencia(), $dadoPessoal->getConta());
             }
         }
         
         foreach ($command->getParticipantes() as $grupo) {           
             foreach ($grupo as $participante) {
-                $projetoPessoa = $this->projetoPessoaRepository->find($participante);        
+                $projetoPessoa = $this->projetoPessoaRepository->find($participante);
+
                 if ($projetoPessoa) {
                     $dadoPessoal = $projetoPessoa->getPessoaPerfil()->getPessoaFisica()->getDadoPessoal();
-                    new AutorizacaoFolha($projetoFolha, $projetoPessoa, $projetoPessoa->getVlBolsa(), 'S', $dadoPessoal->getBanco()->getCoBanco(), $dadoPessoal->getAgencia()->getCoAgenciaBancaria());
+                    new AutorizacaoFolha($projetoFolha, $projetoPessoa, $projetoPessoa->getVlBolsa(), 'S', $dadoPessoal->getBanco()->getCoBanco(), $dadoPessoal->getAgencia(), $dadoPessoal->getConta());
                 }
             }
         }        

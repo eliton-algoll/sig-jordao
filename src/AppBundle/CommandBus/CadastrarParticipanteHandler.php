@@ -2,28 +2,26 @@
 
 namespace AppBundle\CommandBus;
 
-use AppBundle\CommandBus\CadastrarParticipanteCommand;
 use AppBundle\Entity\ProjetoPessoa;
 use AppBundle\Event\HandleSituacaoGrupoAtuacaoEvent;
-use AppBundle\Repository\AreaTematicaRepository;
-use AppBundle\WebServices\Cnes;
-use AppBundle\Repository\PerfilRepository;
-use AppBundle\Repository\ProjetoPessoaRepository;
-use AppBundle\Repository\ProjetoRepository;
-use AppBundle\Repository\PessoaFisicaRepository;
-use AppBundle\Repository\GrupoAtuacaoRepository;
-use AppBundle\Repository\EnderecoRepository;
-use AppBundle\Repository\CursoGraduacaoRepository;
-use AppBundle\Repository\TitulacaoRepository;
-use AppBundle\Repository\BancoRepository;
 use AppBundle\Repository\AgenciaBancariaRepository;
-use AppBundle\Repository\MunicipioRepository;
+use AppBundle\Repository\AreaTematicaRepository;
+use AppBundle\Repository\BancoRepository;
 use AppBundle\Repository\CategoriaProfissionalRepository;
 use AppBundle\Repository\CepRepository;
+use AppBundle\Repository\CursoGraduacaoRepository;
 use AppBundle\Repository\DadoPessoalRepository;
+use AppBundle\Repository\EnderecoRepository;
 use AppBundle\Repository\EnderecoWebRepository;
-use AppBundle\Repository\TelefoneRepository;
+use AppBundle\Repository\GrupoAtuacaoRepository;
+use AppBundle\Repository\MunicipioRepository;
+use AppBundle\Repository\PerfilRepository;
+use AppBundle\Repository\PessoaFisicaRepository;
 use AppBundle\Repository\ProjetoPessoaGrupoAtuacaoRepository;
+use AppBundle\Repository\ProjetoPessoaRepository;
+use AppBundle\Repository\ProjetoRepository;
+use AppBundle\Repository\TelefoneRepository;
+use AppBundle\Repository\TitulacaoRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
@@ -69,7 +67,8 @@ class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
         ProjetoPessoaGrupoAtuacaoRepository $projetoPessoaGrupoAtuacaoRepository,
         AreaTematicaRepository $areaTematicaRepository,
         EventDispatcherInterface $eventDispatcher
-    ) {
+    )
+    {
 //        $this->wsCnes = $wsCnes;
         $this->perfilRepository = $perfilRepository;
         $this->projetoPessoaRepository = $projetoPessoaRepository;
@@ -91,7 +90,7 @@ class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
         $this->areaTematicaRepository = $areaTematicaRepository;
         $this->eventDispatcher = $eventDispatcher;
     }
-    
+
     /**
      * @param CadastrarParticipanteCommand $command
      * @return ProjetoPessoa
@@ -99,44 +98,47 @@ class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
      */
     public function handle(CadastrarParticipanteCommand $command)
     {
-        $pessoaFisica    = $this->getPessoaFisicaIfCPFExists($command->getNuCpf());
-        $cep             = $this->getCEPIfExists($command->getCoCep());
-        $banco           = $this->getBancoIfExists($command->getCoBanco());
-        $agenciaBancaria = $this->getAgenciaBancariaIfExists($command);
-        $projeto         = $this->getProjetoIfNotExistsProjetoVinculado($pessoaFisica, $command);
-        $perfil          = $this->getPerfilIfNonViolatedConstraints($command);
-        
+        $pessoaFisica = $this->getPessoaFisicaIfCPFExists($command->getNuCpf());
+        $cep = $this->getCEPIfExists($command->getCoCep());
+        $banco = $this->getBancoIfExists($command->getCoBanco());
+        //$agenciaBancaria = $this->getAgenciaBancariaIfExists($command);
+        $agenciaBancaria = $command->getCoAgenciaBancaria();
+        $conta = $command->getCoConta();
+        $projeto = $this->getProjetoIfNotExistsProjetoVinculado($pessoaFisica, $command);
+        $perfil = $this->getPerfilIfNonViolatedConstraints($command);
+
 //        $this->constraintCNES($command);
-        
+
         $pessoaPerfil = $pessoaFisica->addPerfil($perfil);
-        
+
         $projetoPessoa = $pessoaPerfil->addProjetoPessoa($projeto, $command->getStVoluntarioProjeto());
-        
-        $this->addDadosAcademicos($projetoPessoa, $command);   
-        
+
+        $this->addDadosAcademicos($projetoPessoa, $command);
+
         $this->addCursoGraduacao($projetoPessoa, $command);
-        
+
         $this->addCursoLecionados($projetoPessoa, $command);
-        
+
         $this->addGrupoAtuacao($projetoPessoa, $projeto, $perfil, $command);
 
         $this->addGrupoTutorial($projetoPessoa, $command);
-        
+
         $this->addEndereco($pessoaFisica, $cep, $command);
 
         $this->addTelefones($pessoaFisica, $command);
-        
+
         $pessoaFisica->getPessoa()->addEnderecoWeb($command->getDsEnderecoWeb());
-        
+
         $dadoPessoal = $this->dadoPessoalRepository->findOneBy(array(
             'pessoaFisica' => $command->getNuCpf()
         ));
-        
+
         if (!$dadoPessoal) {
-            $pessoaFisica->setDadoPessoal($agenciaBancaria, $banco);
+            $pessoaFisica->setDadoPessoal($banco, $agenciaBancaria, $conta);
         } else {
             $pessoaFisica->getDadoPessoal()->setBanco($banco);
-            $pessoaFisica->getDadoPessoal()->setAgencia($agenciaBancaria);            
+            $pessoaFisica->getDadoPessoal()->setAgencia($agenciaBancaria);
+            $pessoaFisica->getDadoPessoal()->setConta($conta);
         }
 
         $this->projetoPessoaRepository->add($projetoPessoa);
@@ -145,7 +147,8 @@ class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
             HandleSituacaoGrupoAtuacaoEvent::NAME,
             new HandleSituacaoGrupoAtuacaoEvent($projetoPessoa)
         );
-        
+
         return $projetoPessoa;
     }
+
 }

@@ -108,12 +108,14 @@ final class CertificadoController extends ControllerAbstract
             $modelo = $this->get('app.modelo_certificado_query')->getModeloByProgramaAndTipo($programa, $tpDocumento);
 
             if (!$modelo) {
-                throw new \DomainException('Nenhum modelo cadastrado para este programa e tipo de documento.');
+                throw new \UnexpectedValueException('Nenhum modelo cadastrado para este programa e tipo de documento.');
             }
 
             $filename = str_replace(' ', '_', strtolower(
                 $projetoPessoa->getPessoaPerfil()->getPessoaFisica()->getPessoa()->getNoPessoa()
             ));
+
+            $fileUploaderFacade = $this->get('app.file_uploader_facade');
 
             $html = $this->renderView('certificado/novo_certificado.pdf.twig', [
                 'title' => $filename,
@@ -121,13 +123,16 @@ final class CertificadoController extends ControllerAbstract
                 'projetoPessoa' => $projetoPessoa,
                 'municipio' => $municipio,
                 'qtCargaHoraria' => $qtCargaHoraria,
+                'imagemCertificado' => $fileUploaderFacade->convertToBase64($modelo->getNoImagemCertificado()),
+                'imagemRodape' => $modelo->getNoImagemRodape() ?
+                    $fileUploaderFacade->convertToBase64($modelo->getNoImagemRodape()) : null,
             ]);
             
             $pdfFacade = $this->get('app.wkhtmltopdf_facade');
             return $pdfFacade->generate($html, $filename, [
                 'orientation' => 'Landscape'
             ]);
-        } catch (\DomainException $e) {
+        } catch (\UnexpectedValueException $e) {
             return new Response('<script>alert("' . $e->getMessage() . '"); window.close();</script>');
         } catch (\Exception $e) {
             $logger = $this->get('logger');

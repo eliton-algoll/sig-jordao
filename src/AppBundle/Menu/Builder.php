@@ -104,6 +104,7 @@ class Builder implements ContainerAwareInterface
         $menu['Gerenciar Sistema']->addChild('Manter Valor de Bolsa', array('route' => 'valor_bolsa_index'));
         $menu['Gerenciar Sistema']->addChild('Planejar Abertura de Folha', array('route' => 'planejamento_abertura_folha'));
         $menu['Gerenciar Sistema']->addChild('Manter Modelo de Certificado', array('route' => 'modelo_certificado', 'routeParameters' => ['filter' => 'clear']));
+        $menu['Gerenciar Sistema']->addChild('Manter Banco', ['route' => 'banco_index']);
         
         $menu->addChild('Folha de Pagamento/Arquivos Bancários')->setAttribute('dropdown', true);
         $menu['Folha de Pagamento/Arquivos Bancários']->addChild('Retorno de Cadastro', array('route' => 'arquivo_retorno_cadastro'));

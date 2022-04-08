@@ -24,7 +24,10 @@ final class YearMonthFacade
                 continue;
             }
 
-            $month = \DateTime::createFromFormat('m', $i);
+            $month = \DateTime::createFromFormat(
+                'md',
+                str_pad($i . '01', 4, '0', STR_PAD_LEFT)
+            );
             $this->months[$month->format('F')] = $i;
         }
     }

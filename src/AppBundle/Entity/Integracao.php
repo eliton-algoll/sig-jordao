@@ -147,6 +147,13 @@ class Integracao extends AbstractEntity
     /**
      * @var string
      *
+     * @ORM\Column(name="CO_CONTA", type="string", length=10, nullable=true)
+     */
+    private $coConta;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="NU_PROCESSO_JUDICIAL", type="string", length=25, nullable=true)
      */
     private $nuProcessoJudicial;
@@ -243,6 +250,7 @@ class Integracao extends AbstractEntity
      * @param integer $vlBruto
      * @param string $coBanco
      * @param string $coAgenciaBancaria
+     * @param string $coConta
      * @param integer $coProgramaFundo
      * @param string $stImportado
      * @param string $tpCategoria
@@ -256,6 +264,7 @@ class Integracao extends AbstractEntity
         $vlBruto,
         $coBanco,
         $coAgenciaBancaria,
+        $coConta,
         $coProgramaFundo = self::CO_PROGRAMA_FUNDO,
         $stImportado = 'N',
         $tpCategoria = '0',
@@ -269,6 +278,7 @@ class Integracao extends AbstractEntity
         $this->vlBruto           = $vlBruto;
         $this->coBanco           = $coBanco;
         $this->coAgenciaBancaria = $coAgenciaBancaria;
+        $this->coConta           = $coConta;
         $this->coProgramaFundo   = $coProgramaFundo;
         $this->stImportado       = $stImportado;
         $this->tpCategoria       = $tpCategoria;
@@ -705,6 +715,30 @@ class Integracao extends AbstractEntity
     public function getCoAgenciaBancaria()
     {
         return $this->coAgenciaBancaria;
+    }
+
+    /**
+     * Set coConta
+     *
+     * @param string $coConta
+     *
+     * @return Integracao
+     */
+    public function setCoConta($coConta)
+    {
+        $this->coConta = $coConta;
+
+        return $this;
+    }
+
+    /**
+     * Get coConta
+     *
+     * @return string
+     */
+    public function getCoConta()
+    {
+        return $this->coConta;
     }
 
     /**

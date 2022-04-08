@@ -20,9 +20,9 @@ final class FileUploaderFacade
     {
         $this->uploadDir = $uploadDir;        
     }
-    
+
     /**
-     * 
+     *
      * @return type
      * @throws \InvalidArgumentException
      */
@@ -44,5 +44,18 @@ final class FileUploaderFacade
     public function upload(UploadedFile $file, $newName)
     {
         $file->move($this->getUploadDir(), $newName);
+    }
+
+    /**
+     * @param string $filename
+     * @return string
+     */
+    public function convertToBase64($filename)
+    {
+        $filepath = $this->getUploadDir() . DIRECTORY_SEPARATOR . $filename;
+        if (!file_exists($filepath) || !is_file($filepath)) {
+            throw new \RuntimeException('O arquivo ' . $filename . ' não foi encontrado.');
+        }
+        return base64_encode(file_get_contents($filepath));
     }
 }

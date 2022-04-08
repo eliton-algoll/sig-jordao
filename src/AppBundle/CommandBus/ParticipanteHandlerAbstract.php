@@ -224,25 +224,25 @@ class ParticipanteHandlerAbstract
         return $banco;
     }
     
-    /**
-     * @param CadastrarParticipanteCommand $command
-     * @return AgenciaBancaria $agenciaBancaria
-     * @throws \UnexpectedValueException
-     */
-    protected function getAgenciaBancariaIfExists(CadastrarParticipanteCommand $command)
-    {
-        $agenciaBancaria = $this->agenciaBancariaRepository->findOneBy(array(
-            'coAgenciaBancaria' => str_pad($command->getCoAgenciaBancaria(), 6, 0, STR_PAD_LEFT),
-            'coBanco'           => $command->getCoBanco(),
-            'stRegistroAtivo'   => 'S'
-        ));
-        
-        if (!$agenciaBancaria) {
-            throw new \UnexpectedValueException('Agência Bancária não pertencente ao Banco do Brasil');
-        }
-        
-        return $agenciaBancaria;
-    }
+//    /**
+//     * @param CadastrarParticipanteCommand $command
+//     * @return AgenciaBancaria $agenciaBancaria
+//     * @throws \UnexpectedValueException
+//     */
+//    protected function getAgenciaBancariaIfExists(CadastrarParticipanteCommand $command)
+//    {
+//        $agenciaBancaria = $this->agenciaBancariaRepository->findOneBy(array(
+//            'coAgenciaBancaria' => str_pad($command->getCoAgenciaBancaria(), 6, 0, STR_PAD_LEFT),
+//            'coBanco'           => $command->getCoBanco(),
+//            'stRegistroAtivo'   => 'S'
+//        ));
+//
+//        if (!$agenciaBancaria) {
+//            throw new \UnexpectedValueException('Agência Bancária não pertencente ao Banco do Brasil');
+//        }
+//
+//        return $agenciaBancaria;
+//    }
     
     /**
      * @param PessoaFisica $pessoaFisica

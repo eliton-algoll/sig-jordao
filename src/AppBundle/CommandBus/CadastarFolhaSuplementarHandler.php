@@ -131,7 +131,8 @@ final class CadastarFolhaSuplementarHandler
                     $projetoPessoa->getVlBolsa(),
                     'S',
                     $dadoPessoal->getBanco()->getCoBanco(),
-                    $dadoPessoal->getAgencia()->getCoAgenciaBancaria()
+                    $dadoPessoal->getAgencia(),
+                    $dadoPessoal->getConta()
                 );
             }
 

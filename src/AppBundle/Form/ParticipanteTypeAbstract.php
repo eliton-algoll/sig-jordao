@@ -18,6 +18,7 @@ use AppBundle\Repository\PerfilRepository;
 use AppBundle\Repository\UfRepository;
 use AppBundle\Repository\TitulacaoRepository;
 use AppBundle\Repository\CursoGraduacaoRepository;
+use AppBundle\Repository\BancoRepository;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
@@ -45,16 +46,35 @@ class ParticipanteTypeAbstract extends AbstractType
                 ));
         }
 
-        $builder->add('coBanco', ChoiceType::class, array(
+        $builder
+//            ->add('coBanco', ChoiceType::class, array(
+//                'label' => 'Banco',
+//                'choices' => array(
+//                    '001 - Banco do Brasil S.A' => '001'
+//                ),
+//                'required' => true,
+//            ))
+            ->add('coBanco', EntityType::class, array(
                 'label' => 'Banco',
-                'choices' => array(
-                    '001 - Banco do Brasil S.A' => '001'
-                ),
+                'class' => 'AppBundle:Banco',
+                'placeholder' => '',
+                'query_builder' => function (BancoRepository $repo) {
+                    return $repo->createQueryBuilder('banco')
+                        ->where('banco.stRegistroAtivo = \'S\' AND banco.dtRemocao IS NULL')
+                        ->orderBy('banco.coBanco', 'ASC');
+                },
+                'choice_label' => function ($banco) {
+                    return $banco->getCoBanco() . ' - ' . $banco->getNoBanco();
+                },
                 'required' => true,
             ))
             ->add('coAgenciaBancaria', TextType::class, array(
                 'label' => 'Agência Bancária',
                 'attr' => array('maxlength' => 6)
+            ))
+            ->add('coConta', TextType::class, array(
+                'label' => 'Conta',
+                'attr' => array('maxlength' => 10)
             ))
             ##############################################
             ->add('dsEnderecoWeb', EmailType::class, array(
@@ -153,7 +173,6 @@ class ParticipanteTypeAbstract extends AbstractType
         $this->buildAreaAtuacao($builder, $projeto);
                 
         $formModifierUf = function (FormInterface $form, Uf $uf = null) {
-
             $municipios = null === $uf ? array() : $uf->getMunicipios();
 
             $form->add('coMunicipioIbge', EntityType::class, array(
@@ -181,9 +200,6 @@ class ParticipanteTypeAbstract extends AbstractType
                 $formModifierUf($event->getForm()->getParent(), $uf);
             }
         );
-
-
-
     }
 
     /**
