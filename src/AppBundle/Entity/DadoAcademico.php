@@ -119,7 +119,7 @@ class DadoAcademico extends AbstractEntity
         $this->nuSemestre = $nuSemestre;
         $this->coCnes = $coCnes;
         $this->stAlunoRegular = $stAlunoRegular;
-        $this->stDeclaracaoCursoPenultimo = $stDeclaracaoCursoPenultimo;
+        $this->stDeclaracaoCursoPenultimo = $stDeclaracaoCursoPenultimo ? 'S' : 'N';
         $this->stRegistroAtivo = 'S';
         $this->dtInclusao = new \DateTime();
     }

@@ -82,7 +82,13 @@ class AtualizarParticipanteCommand extends CadastrarParticipanteCommand
         $this->nuMatriculaIES = $dadoAcademico ? $dadoAcademico->getNuMatricula() : null;
         $this->nuSemestreAtual = $dadoAcademico ? $dadoAcademico->getNuSemestre() : null;
         $this->stAlunoRegular = $dadoAcademico ? $dadoAcademico->getStAlunoRegular() : null;
-        $this->stDeclaracaoCursoPenultimo = $dadoAcademico ? $dadoAcademico->getStDeclaracaoCursoPenultimo() : null;
+
+        $stDeclaracaoCursoPenultimo = null;
+        if (($dadoAcademico) && (!is_null($dadoAcademico->getStDeclaracaoCursoPenultimo()))) {
+            $stDeclaracaoCursoPenultimo = ($dadoAcademico->getStDeclaracaoCursoPenultimo() === 'S');
+        }
+
+        $this->stDeclaracaoCursoPenultimo = $stDeclaracaoCursoPenultimo;
 
         $projetosPessoaGrupoAtuacao = $projetoPessoa->getProjetoPessoaGrupoAtuacaoAtivo();
 
