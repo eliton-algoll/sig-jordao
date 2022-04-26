@@ -80,5 +80,6 @@ class CadastrarParticipanteType extends ParticipanteTypeAbstract
     public function configureOptions(\Symfony\Component\OptionsResolver\OptionsResolver $resolver)
     {
         $resolver->setDefaults(array('projeto' => null, 'pessoaPerfil' => null));
-    }    
+    }
+
 }

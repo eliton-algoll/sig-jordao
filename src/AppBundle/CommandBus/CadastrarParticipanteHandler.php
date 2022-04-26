@@ -111,7 +111,8 @@ class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
 
         $pessoaPerfil = $pessoaFisica->addPerfil($perfil);
 
-        $projetoPessoa = $pessoaPerfil->addProjetoPessoa($projeto, $command->getStVoluntarioProjeto());
+        $projetoPessoa = $pessoaPerfil->addProjetoPessoa($projeto, $command->getStVoluntarioProjeto(),
+            $command->getCoEixoAtuacao());
 
         $this->addDadosAcademicos($projetoPessoa, $command);
 

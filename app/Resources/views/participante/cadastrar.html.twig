@@ -26,6 +26,7 @@
                     {{ form_row(form.noMae) }}
                     {{ form_row(form.coBanco) }}
                     {{ form_row(form.coAgenciaBancaria) }}
+                    {{ form_row(form.coConta) }}
                     <br/>
                     <a href="{{ path('participante') }}" class="btn btn-default">Voltar</a>
                 </div>
@@ -89,7 +90,10 @@
                 <div class="tab-pane" id="dados-complementares">
                     {% if projeto and projeto.getPublicacao().getPrograma().isGrupoTutorial() %}
                         {{ form_row(form.stVoluntarioProjeto) }}
+                        {{ form_row(form.stAlunoRegular) }}
                         {{ form_row(form.grupoTutorial) }}
+                        {{ form_row(form.coEixoAtuacao) }}
+                        {{ form_row(form.stDeclaracaoCursoPenultimo) }}
                     {% endif %}
                     {{ form_row(form.categoriaProfissional) }}
                     {{ form_row(form.coCnes) }}

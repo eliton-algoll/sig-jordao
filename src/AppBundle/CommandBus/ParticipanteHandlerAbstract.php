@@ -303,7 +303,9 @@ class ParticipanteHandlerAbstract
             $command->getNuAnoIngresso(), 
             $command->getNuMatriculaIES(), 
             $command->getNuSemestreAtual(), 
-            $command->getCoCnes()
+            $command->getCoCnes(),
+            $command->getStAlunoRegular(),
+            $command->getStDeclaracaoCursoPenultimo()
         );
     }
     

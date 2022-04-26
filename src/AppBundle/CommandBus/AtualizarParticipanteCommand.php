@@ -71,6 +71,8 @@ class AtualizarParticipanteCommand extends CadastrarParticipanteCommand
             $this->coCep = $endereco->getCep()->getNuCep();
         }
 
+        $this->coEixoAtuacao = $projetoPessoa->getCoEixoAtuacao();
+
         $dadoAcademico = $projetoPessoa->getDadoAcademicoAtivo();
         $this->categoriaProfissional = $dadoAcademico ? $dadoAcademico->getCategoriaProfissional() : null;
         $this->coCnes = $dadoAcademico ? $dadoAcademico->getCoCnes() : null;
@@ -79,6 +81,8 @@ class AtualizarParticipanteCommand extends CadastrarParticipanteCommand
         $this->nuAnoIngresso = $dadoAcademico ? $dadoAcademico->getNuAnoIngresso() : null;
         $this->nuMatriculaIES = $dadoAcademico ? $dadoAcademico->getNuMatricula() : null;
         $this->nuSemestreAtual = $dadoAcademico ? $dadoAcademico->getNuSemestre() : null;
+        $this->stAlunoRegular = $dadoAcademico ? $dadoAcademico->getStAlunoRegular() : null;
+        $this->stDeclaracaoCursoPenultimo = $dadoAcademico ? $dadoAcademico->getStDeclaracaoCursoPenultimo() : null;
 
         $projetosPessoaGrupoAtuacao = $projetoPessoa->getProjetoPessoaGrupoAtuacaoAtivo();
 

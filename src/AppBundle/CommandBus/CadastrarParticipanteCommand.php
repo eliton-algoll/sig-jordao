@@ -31,7 +31,22 @@ class CadastrarParticipanteCommand
      * @Assert\NotBlank()
      */
     protected $stVoluntarioProjeto;
-    
+
+    /**
+     * @var string
+     */
+    protected $stAlunoRegular;
+
+    /**
+     * @var string
+     */
+    protected $coEixoAtuacao;
+
+    /**
+     * @var string
+     */
+    protected $stDeclaracaoCursoPenultimo;
+
     /**
      * @var string 
      * @Assert\NotBlank()
@@ -239,7 +254,37 @@ class CadastrarParticipanteCommand
         $this->stVoluntarioProjeto = $stVoluntarioProjeto;
         return $this;
     }
-    
+
+    /**
+     * @param string $stAlunoRegular
+     * @return CadastrarParticipanteCommand
+     */
+    public function setStAlunoRegular($stAlunoRegular)
+    {
+        $this->stAlunoRegular = $stAlunoRegular;
+        return $this;
+    }
+
+    /**
+     * @param string $coEixoAtuacao
+     * @return CadastrarParticipanteCommand
+     */
+    public function setCoEixoAtuacao($coEixoAtuacao)
+    {
+        $this->coEixoAtuacao = $coEixoAtuacao;
+        return $this;
+    }
+
+    /**
+     * @param string $stDeclaracaoCursoPenultimo
+     * @return CadastrarParticipanteCommand
+     */
+    public function setStDeclaracaoCursoPenultimo($stDeclaracaoCursoPenultimo)
+    {
+        $this->stDeclaracaoCursoPenultimo = $stDeclaracaoCursoPenultimo;
+        return $this;
+    }
+
     /**
      * @param string $nuCpf
      * @return CadastrarParticipanteCommand
@@ -502,6 +547,30 @@ class CadastrarParticipanteCommand
     public function getStVoluntarioProjeto()
     {
         return $this->stVoluntarioProjeto;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStAlunoRegular()
+    {
+        return $this->stAlunoRegular;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCoEixoAtuacao()
+    {
+        return $this->coEixoAtuacao;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStDeclaracaoCursoPenultimo()
+    {
+        return $this->stDeclaracaoCursoPenultimo;
     }
 
     /**

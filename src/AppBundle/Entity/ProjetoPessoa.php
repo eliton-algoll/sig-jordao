@@ -56,6 +56,13 @@ class ProjetoPessoa extends AbstractEntity
      * @ORM\Column(name="DT_DESLIGAMENTO", type="datetime", nullable=true)
      */
     private $dtDesligamento;
+
+    /**
+     * @var string coEixoAtuacao
+     *
+     * @ORM\Column(name="CO_EIXO_ATUACAO", type="string", length=1, nullable=false)
+     */
+    private $coEixoAtuacao;
     
     /**
      * @var ProjetoPessoaGrupoAtuacao
@@ -80,7 +87,7 @@ class ProjetoPessoa extends AbstractEntity
      * @param PessoaPerfil $pessoaPerfil
      * @param string $stVoluntarioProjeto
      */
-    public function __construct(Projeto $projeto, PessoaPerfil $pessoaPerfil, $stVoluntarioProjeto = 'N')
+    public function __construct(Projeto $projeto, PessoaPerfil $pessoaPerfil, $stVoluntarioProjeto = 'N', $coEixoAtuacao = null)
     {
         $this->projetoPessoaGrupoAtuacao = new ArrayCollection();
         $this->projetoPessoaCursoGraduacao = new ArrayCollection();
@@ -88,6 +95,7 @@ class ProjetoPessoa extends AbstractEntity
         $this->projeto = $projeto;
         $this->pessoaPerfil = $pessoaPerfil;
         $this->stVoluntarioProjeto = $stVoluntarioProjeto;
+        $this->coEixoAtuacao = $coEixoAtuacao;
         $this->stRegistroAtivo = 'S';
         $this->dtInclusao = new \DateTime();
     }
@@ -137,6 +145,14 @@ class ProjetoPessoa extends AbstractEntity
     public function getDtDesligamento()
     {
         return $this->dtDesligamento;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCoEixoAtuacao()
+    {
+        return $this->coEixoAtuacao;
     }
         
     /**
@@ -212,6 +228,16 @@ class ProjetoPessoa extends AbstractEntity
     public function setStVoluntarioProjeto($stVoluntarioProjeto)
     {
         $this->stVoluntarioProjeto = $stVoluntarioProjeto;
+        return $this;
+    }
+
+    /**
+     * @param string $coEixoAtuacao
+     * @return ProjetoPessoa
+     */
+    public function setCoEixoAtuacao($coEixoAtuacao)
+    {
+        $this->coEixoAtuacao = $coEixoAtuacao;
         return $this;
     }
     
@@ -361,7 +387,9 @@ class ProjetoPessoa extends AbstractEntity
         $nuAnoIngresso = null,
         $nuMatricula = null,
         $nuSemestre = null,
-        $coCnes = null    
+        $coCnes = null,
+        $stAlunoRegular = null,
+        $stDeclaracaoCursoPenultimo = null
     ) {
         foreach($this->dadosAcademicos as $dadoAcademico) {
             if(
@@ -370,7 +398,9 @@ class ProjetoPessoa extends AbstractEntity
             $dadoAcademico->getNuAnoIngresso() == $nuAnoIngresso &&
             $dadoAcademico->getNuMatricula() == $nuMatricula &&
             $dadoAcademico->getNuSemestre() == $nuSemestre &&
-            $dadoAcademico->getCoCnes() == $coCnes
+            $dadoAcademico->getCoCnes() == $coCnes &&
+            $dadoAcademico->getStAlunoRegular() == $stAlunoRegular &&
+            $dadoAcademico->getStDeclaracaoCursoPenultimo() == $stDeclaracaoCursoPenultimo
             ) {
                 return $dadoAcademico;
             }
@@ -386,6 +416,8 @@ class ProjetoPessoa extends AbstractEntity
      * @param string $nuMatricula
      * @param string $nuSemestre
      * @param string $coCnes
+     * @param string $stAlunoRegular
+     * @param string $stDeclaracaoCursoPenultimo
      * @return ProjetoPessoa
      */
     public function addDadosAcademicos(
@@ -394,7 +426,9 @@ class ProjetoPessoa extends AbstractEntity
         $nuAnoIngresso = null,
         $nuMatricula = null,
         $nuSemestre = null,
-        $coCnes = null
+        $coCnes = null,
+        $stAlunoRegular = null,
+        $stDeclaracaoCursoPenultimo = null
     ) {
         $this->inativarAllDadosAcademicos();
         if($dadoAcademicoVinculado = $this->isDadoAcademicoVinculado(
@@ -403,7 +437,9 @@ class ProjetoPessoa extends AbstractEntity
             $nuAnoIngresso,
             $nuMatricula,
             $nuSemestre,
-            $coCnes
+            $coCnes,
+            $stAlunoRegular,
+            $stDeclaracaoCursoPenultimo
         )) {
             $dadoAcademicoVinculado->ativar(); 
         } else {
@@ -414,9 +450,11 @@ class ProjetoPessoa extends AbstractEntity
                 $nuAnoIngresso,
                 $nuMatricula, 
                 $nuSemestre, 
-                $coCnes
+                $coCnes,
+                $stAlunoRegular,
+                $stDeclaracaoCursoPenultimo
             );
-        $this->dadosAcademicos->add($dadoAcademicoVinculado);
+            $this->dadosAcademicos->add($dadoAcademicoVinculado);
         }
        
         return $this;
@@ -531,7 +569,7 @@ class ProjetoPessoa extends AbstractEntity
     
     public function hasDadoAcademico()
     {
-        return $this->dadosAcademicos ? $this->dadosAcademicos: false;
+        return $this->dadosAcademicos ? $this->dadosAcademicos : false;
     }
     
     /**

@@ -35,32 +35,23 @@ class ParticipanteController extends ControllerAbstract
         $queryParams = $request->query->get('pesquisar_participante', array());
         $queryParams['page'] = $request->query->get('page', 1);
         $queryParams['projeto'] = $this->getProjetoAutenticado();
-        //$queryParams['pessoaPerfil'] = $this->getPessoaPerfilAutenticado();
+        // $queryParams['pessoaPerfil'] = $this->getPessoaPerfilAutenticado();
         
         $pagination = $this
             ->get('app.participante_query')
-            ->search(
-                new ParameterBag($queryParams)
-            );
+            ->search(new ParameterBag($queryParams));
 
-        $form = $this->createForm(
-            PesquisarParticipanteType::class,
-            null,
-            [
-                'perfil' => $this->getPessoaPerfilAutenticado()->getPerfil(),
-                'projeto' => $this->getProjetoAutenticado(),
-            ]
-        );
+        $form = $this->createForm(PesquisarParticipanteType::class, null, [
+            'perfil' => $this->getPessoaPerfilAutenticado()->getPerfil(),
+            'projeto' => $this->getProjetoAutenticado(),
+        ]);
         
-        return $this->render(
-            'participante/all.html.twig', 
-            array(
-                'pagination' => $pagination,
-                'queryParams' => $queryParams,
-                'projeto' => $projeto,
-                'form' => $form->createView()
-            )
-        );
+        return $this->render('participante/all.html.twig', array(
+            'pagination' => $pagination,
+            'queryParams' => $queryParams,
+            'projeto' => $projeto,
+            'form' => $form->createView()
+        ));
     }
     
     /**
@@ -69,17 +60,18 @@ class ParticipanteController extends ControllerAbstract
      */
     public function cadastrarAction(Request $request)
     {
+        /*
         if ($this->isGranted(array('HAS_FOLHA_PAGAMENTO_ABERTA', 'HAS_FOLHA_PAGAMENTO_FECHADA')) && 
             !$this->isGranted('HAS_AUTORIZACAO_CADASTRO_PARTICIPANTE')
         ) {
             $this->addFlash('danger', 'Não é possível cadastrar participantes enquanto a folha de pagamento do programa estiver aberta ou até que seja cadastrado um período excepcional de abertura de cadastro pelo administrador do sistema.');
             return $this->redirectToRoute('participante');
         }
+        */
 
         $projeto = $this->getProjetoAutenticado();
         $command = new CadastrarParticipanteCommand();
         $command->setProjeto($projeto);
-
 
         $form = $this->createForm(CadastrarParticipanteType::class, $command, array(
             'projeto' => $projeto,
