@@ -80,23 +80,22 @@
         </div>
         <footer>
             <div id="rodape-datasus"></div>
-            <div style="text-align: right">v2.5</div>
+            <div style="text-align: right">v2.6</div>
         </footer>
         <script type="text/javascript" >
             var assetPath = '{{ asset('/') }}';
         </script>
-        {% javascripts 
-                    'vendor/jquery/jquery-2.2.0.min.js' 
-                    'vendor/bootstrap/js/bootstrap.min.js'
-                    'vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js'
-                    'vendor/bootstrap-datepicker/locales/bootstrap-datepicker.pt-BR.min.js'
-                    'vendor/bootbox/bootbox.min.js'
-                    'vendor/jquery-mask/jquery.mask.min.js'
-                    'bundles/fosjsrouting/js/router.js'
-                    'js/sigpet.js'
-                    'js/helper.js'
-                    'js/filters.js'
-        %}
+        {% javascripts
+            'vendor/jquery/jquery-2.2.0.min.js'
+            'vendor/bootstrap/js/bootstrap.min.js'
+            'vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js'
+            'vendor/bootstrap-datepicker/locales/bootstrap-datepicker.pt-BR.min.js'
+            'vendor/bootbox/bootbox.min.js'
+            'vendor/jquery-mask/jquery.mask.min.js'
+            'bundles/fosjsrouting/js/router.js'
+            'js/sigpet.js'
+            'js/helper.js'
+            'js/filters.js' %}
         <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
         <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
