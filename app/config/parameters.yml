@@ -1,3 +1,4 @@
+# This file is auto-generated during the composer install
 parameters:
     database_driver: oci8
     database_host: srvoradf20-scan.saude.gov
@@ -13,12 +14,3 @@ parameters:
     mailer_user: null
     mailer_password: null
     secret: 78179a965aee5941e88a4f37898e9bec1730ce81a
-    version: V-1.0.1
-
-#    database_driver_fundo: oci8
-#    database_host_fundo: srvoradf20-scan.saude.gov
-#    database_port_fundo: 1521
-#    database_user_fundo: PETWEB
-#    database_password_fundo: FNSH0M0L0G4C40
-#    database_service_name_fundo: DFHO2.SAUDE.GOV
-#    database_service_use_fundo: true
