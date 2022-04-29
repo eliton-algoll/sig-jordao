@@ -3,25 +3,65 @@
 {% block subtitle %}Confimar Grupo Tutorial{% endblock %}
 
 {% block body %}
-    <div>
-        <label>Grupo Tutorial</label>
-        <select
-            id="grupos"
-            class="form-control">
-            <option value=""></option>
-            {% for grupo in projeto.getGruposAtuacaoAtivos() %}
-                <option value="{{ grupo.getCoSeqGrupoAtuacao() }}">{{ grupo.getNoGrupoAtuacao() }}</option>
-            {% endfor %}
-        </select>
-    </div>
 
-    <div
-        id="grid-grupo-tutorial"
-        class="margin-top-20"></div>
+    {% if projeto.getGruposAtuacaoAtivosENaoConfirmados()|length() <= 0 %}
+        Nenhum grupo precisa ser confirmado.
+    {% endif %}
+
+    {% if projeto.getGruposAtuacaoAtivosENaoConfirmados()|length() == 1 %}
+        <div>
+            <label>Grupo Tutorial</label>
+            <select id="grupos" class="form-control seletor-grupo" data-grid="grid-grupo-tutorial">
+                <option value=""></option>
+                {% for grupo in projeto.getGruposAtuacaoAtivos() %}
+                    <option value="{{ grupo.getCoSeqGrupoAtuacao() }}">{{ grupo.getNoGrupoAtuacao() }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div id="grid-grupo-tutorial" class="margin-top-20"></div>
+        <br/>
+    {% endif %}
+
+    {% if projeto.getGruposAtuacaoAtivosENaoConfirmados()|length() > 1 %}
+        <div>
+            <label>Grupo Tutorial - Eixo Gestão em Saúde</label>
+            <select id="grupos-eixo-gestao-em-saude" class="form-control seletor-grupo"
+                    data-grid="grid-grupo-tutorial-eixo-gestao-em-saude">
+                <option value=""></option>
+                {% for grupo in projeto.getGruposAtuacaoEixoGestaoEmSaudeAtivosENaoConfirmados() %}
+                    <option value="{{ grupo.getCoSeqGrupoAtuacao() }}">{{ grupo.getNoGrupoAtuacao() }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div id="grid-grupo-tutorial-eixo-gestao-em-saude" class="margin-top-20"></div>
+        <br/>
+
+        <div>
+            <label>Grupo Tutorial - Eixo Assistência à Saúde</label>
+            <select id="grupos-eixo-assistencia-a-saude" class="form-control seletor-grupo"
+                    data-grid="grid-grupo-tutorial-eixo-assistencia-a-saude">
+                <option value=""></option>
+                {% for grupo in projeto.getGruposAtuacaoEixoAssistenciaASaudeAtivosENaoConfirmados() %}
+                    <option value="{{ grupo.getCoSeqGrupoAtuacao() }}">{{ grupo.getNoGrupoAtuacao() }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div id="grid-grupo-tutorial-eixo-assistencia-a-saude" class="margin-top-20"></div>
+        <br/>
+    {% endif %}
+
+    {% if projeto.getGruposAtuacaoAtivosENaoConfirmados()|length() > 1 %}
+        <button id="btn-confimar-grupo-tutorial" class="btn btn-primary">
+            Confirmar Grupo Tutorial
+        </button>
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}
     {% javascripts 'js/confirmar_grupo_atuacao/main.js' %}
-    <script src="{{ asset_url }}"></script>
+        <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}

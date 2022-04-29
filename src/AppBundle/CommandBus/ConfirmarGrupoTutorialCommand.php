@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 final class ConfirmarGrupoTutorialCommand
 {
+
     /**
      * @var GrupoAtuacao
      *
@@ -165,4 +166,5 @@ final class ConfirmarGrupoTutorialCommand
 
         return $categoriaCoordenador != $categoriaTutor;
     }
+
 }

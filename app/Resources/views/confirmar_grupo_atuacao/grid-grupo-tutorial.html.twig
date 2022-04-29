@@ -9,20 +9,37 @@
         </strong>
     </div>
 
+    <h5><label class="required">Temas abordados</label></h5>
+    <div id="grupo-tutorial-temas-abordados-{{ grupoAtuacao.getCoSeqGrupoAtuacao() }}" class="temas-abordados">
+        {% for temaAbordado in grupoAtuacao.getTemasAbordados() %}
+            <div class="checkbox"><label>
+                    <input type="checkbox"
+                           id="confirmar_grupo_tutorial_temasAbordados_{{ grupoAtuacao.getCoSeqGrupoAtuacao() }}_{{ temaAbordado.id }}"
+                           name="confirmar_grupo_tutorial[temasAbordados1][]"
+                           data-tp-tema-abordado="{{ temaAbordado.id }}" value="{{ temaAbordado.id }}" class="checkbox">
+                    {{ temaAbordado.valor }}
+                </label>
+            </div>
+        {% endfor %}
+    </div>
+
+    <br/>
+
+    <h5><label>Participantes</label></h5>
     <table class="table table-condensed table-striped">
         <thead>
-            <tr>
-                <th>Nome</th>
-                <th>CPF</th>
-                <th>Tipo Participante</th>
-                <th>Área de Atuação</th>
-                <th class="text-center">Voluntário</th>
-                <th class="text-center">Ativo</th>
-                <th class="text-center">Ações</th>
-            </tr>
+        <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Tipo Participante</th>
+            <th>Área de Atuação</th>
+            <th class="text-center">Voluntário</th>
+            <th class="text-center">Ativo</th>
+            <th class="text-center">Ações</th>
+        </tr>
         </thead>
         <tbody>
-            {% for ppga in projetosPessaGrupoAtuacao %}
+        {% for ppga in projetosPessaGrupoAtuacao %}
             <tr>
                 <td>{{ ppga.getProjetoPessoa().getPessoaPerfil().getPessoaFisica().getPessoa().getNoPessoa() }}</td>
                 <td>{{ ppga.getProjetoPessoa().getPessoaPerfil().getPessoaFisica().getNuCpf()|cpf }}</td>
@@ -31,21 +48,21 @@
                 <td class="text-center">{{ ppga.getProjetoPessoa().getStVoluntarioProjeto()|strst }}</td>
                 <td class="text-center">{{ ppga.getProjetoPessoa().getStRegistroAtivo()|strst }}</td>
                 <td class="text-center">
-                    <a  href="{{ path('participante_atualizar', { 'projetoPessoa' : ppga.getProjetoPessoa().getCoSeqProjetoPessoa()}) }}"
-                        class="glyphicon glyphicon-pencil"
-                        title="Editar cadastro de participante"
-                        target="_blank"></a>
+                    <a href="{{ path('participante_atualizar', { 'projetoPessoa' : ppga.getProjetoPessoa().getCoSeqProjetoPessoa()}) }}"
+                       class="glyphicon glyphicon-pencil"
+                       title="Editar cadastro de participante"
+                       target="_blank"></a>
                 </td>
             </tr>
-            {% endfor %}
+        {% endfor %}
         </tbody>
     </table>
 
+    <!--
     {% if not grupoAtuacao.isConfirmado() %}
-    <button
-        id="btn-confimar-grupo-tutorial"
-        class="btn btn-primary">
-        Confirmar Grupo Tutorial
-    </button>
+        <button id="btn-confimar-grupo-tutorial" class="btn btn-primary">
+            Confirmar Grupo Tutorial
+        </button>
     {% endif %}
+    -->
 {% endif %}
