@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 final class ConfirmarGrupoTutorialController extends ControllerAbstract
 {
+
     /**
      * @Route("confirmar-grupo-tutorial", name="confirmar_grupo_tutorial")
      */
@@ -22,10 +23,7 @@ final class ConfirmarGrupoTutorialController extends ControllerAbstract
     {
         $projeto = $this->getProjetoAutenticado();
 
-        return $this->render(
-            'confirmar_grupo_atuacao/index.html.twig',
-            compact('projeto')
-        );
+        return $this->render('confirmar_grupo_atuacao/index.html.twig', compact('projeto'));
     }
 
     /**
@@ -44,8 +42,7 @@ final class ConfirmarGrupoTutorialController extends ControllerAbstract
         $projetosPessaGrupoAtuacao = $this->get('app.projeto_pessoa_grupo_atuacao_repository')
             ->findByGrupoAtuacao($grupoAtuacao);
 
-        return $this->render(
-            'confirmar_grupo_atuacao/grid-grupo-tutorial.html.twig',
+        return $this->render('confirmar_grupo_atuacao/grid-grupo-tutorial.html.twig',
             compact('projetosPessaGrupoAtuacao', 'grupoAtuacao')
         );
     }
@@ -96,11 +93,17 @@ final class ConfirmarGrupoTutorialController extends ControllerAbstract
         $command = ConfirmarGrupoTutorialCommand::create($grupoAtuacao);
 
         try {
+            $continuar = true;
+
+            // TODO: Precisa receber 1 ou mais grupos
+
+            // TODO: Validar o RGN169
+
+            // TODO: Salvar
+
             $this->getBus()->handle($command);
-            $this->addFlash(
-                'success',
-                sprintf('O grupo %s foi confirmado com sucesso.', $grupoAtuacao->getNoGrupoAtuacao())
-            );
+            $this->addFlash('success',
+                sprintf('O grupo %s foi confirmado com sucesso.', $grupoAtuacao->getNoGrupoAtuacao()));
         } catch (InvalidCommandException $e) {
             $erros = [];
             if (method_exists($e, 'getViolations')) {
@@ -114,4 +117,5 @@ final class ConfirmarGrupoTutorialController extends ControllerAbstract
 
         return $this->redirectToRoute('confirmar_grupo_tutorial');
     }
+
 }

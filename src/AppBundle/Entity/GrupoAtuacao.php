@@ -395,4 +395,134 @@ class GrupoAtuacao extends AbstractEntity
         return 'S' === $this->stConfirmacao ? 'Confirmado' : 'A confirmar';
     }
 
+    /**
+     * @return array
+     */
+    public function getTemasAbordados() {
+        $temas = array();
+
+        if (!is_null($this->coEixoAtuacao)) {
+            switch ($this->coEixoAtuacao) {
+                case 'G': // Gestão em Saúde
+                    $temas[] = array(
+                        'id' => 1,
+                        'valor' => 'Gestão do Trabalho em Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 2,
+                        'valor' => 'Gestão de Sistemas e Serviços de Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 3,
+                        'valor' => 'Modelos de Atenção à Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 4,
+                        'valor' => 'Redes de Atenção à Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 5,
+                        'valor' => 'Ensino na Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 6,
+                        'valor' => 'Gestão das Práticas de Educação em Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 7,
+                        'valor' => 'Economia da Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 8,
+                        'valor' => 'Avaliação Econômica em Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 9,
+                        'valor' => 'Gestão de Custos em Instituições de Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 10,
+                        'valor' => 'Judicialização da Saúde sob o Enfoque da Evidência Científica'
+                    );
+                    $temas[] = array(
+                        'id' => 11,
+                        'valor' => 'Avaliação e Monitoramento em Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 12,
+                        'valor' => 'Organização de Serviços de Saúde e Mudanças no Modelo de Atenção à Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 13,
+                        'valor' => 'Organização de Serviços de Saúde e Mudanças no Modelo de Atenção à Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 14,
+                        'valor' => 'Novas Tecnologias de Informação e Comunicação em Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 15,
+                        'valor' => 'Disponibilidade e Oferta de Serviços (equipamentos/insumos/medicamentos)'
+                    );
+                    $temas[] = array(
+                        'id' => 16,
+                        'valor' => 'Infraestrutura (estrutura física/recursos humanos/integração ensino-saúde)'
+                    );
+                    $temas[] = array(
+                        'id' => 17,
+                        'valor' => 'Epidemiologia'
+                    );
+                    $temas[] = array(
+                        'id' => 18,
+                        'valor' => 'Iniciativas de Atenção à Saúde, de Gestão em Saúde e de Educação em Saúde Voltadas para a Pandemia de Covid-19, nos três níveis de Atenção à Saúde'
+                    );
+                    break;
+                case 'A': // Assistência à Saúde
+                    $temas[] = array(
+                        'id' => 19,
+                        'valor' => 'Vigilância em Saúde e Promoção da Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 20,
+                        'valor' => 'Procedimentos na Atenção Primária à Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 21,
+                        'valor' => 'Atenção Domiciliar do SUS'
+                    );
+                    $temas[] = array(
+                        'id' => 22,
+                        'valor' => 'Atenção Ambulatorial Especializada e Hospitalar do SUS'
+                    );
+                    $temas[] = array(
+                        'id' => 23,
+                        'valor' => 'Segurança do Paciente'
+                    );
+                    $temas[] = array(
+                        'id' => 24,
+                        'valor' => 'Urgência e Emergência do SUS'
+                    );
+                    $temas[] = array(
+                        'id' => 25,
+                        'valor' => 'Os Cuidados com a Saúde Mental'
+                    );
+                    $temas[] = array(
+                        'id' => 26,
+                        'valor' => 'As Doenças Crônicas'
+                    );
+                    $temas[] = array(
+                        'id' => 27,
+                        'valor' => 'Atenção às Demandas e aos Processos Eletivos'
+                    );
+                    $temas[] = array(
+                        'id' => 28,
+                        'valor' => 'Iniciativas de Atenção à Saúde, de Gestão em Saúde e de Educação em Saúde Voltadas para a Pandemia de Covid-19, nos três níveis de Atenção à Saúde'
+                    );
+                    break;
+            }
+        }
+
+        return $temas;
+    }
+
 }

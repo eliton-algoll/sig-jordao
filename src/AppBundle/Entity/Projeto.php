@@ -269,6 +269,38 @@ class Projeto extends AbstractEntity
             return $grupoAtuacao->isAtivo();
         });
     }
+
+    /**
+     * @return ArrayCollection<GrupoAtuacao>
+     */
+    public function getGruposAtuacaoAtivosENaoConfirmados()
+    {
+        return $this->gruposAtuacao->filter(function (GrupoAtuacao $grupoAtuacao) {
+            return ($grupoAtuacao->isAtivo()) && (!$grupoAtuacao->isConfirmado());
+        });
+    }
+
+    /**
+     * @return ArrayCollection<GrupoAtuacao>
+     */
+    public function getGruposAtuacaoEixoGestaoEmSaudeAtivosENaoConfirmados()
+    {
+        return $this->gruposAtuacao->filter(function (GrupoAtuacao $grupoAtuacao) {
+            return ($grupoAtuacao->isAtivo()) && (!$grupoAtuacao->isConfirmado()) &&
+                ($grupoAtuacao->getCoEixoAtuacao() == 'G');
+        });
+    }
+
+    /**
+     * @return ArrayCollection<GrupoAtuacao>
+     */
+    public function getGruposAtuacaoEixoAssistenciaASaudeAtivosENaoConfirmados()
+    {
+        return $this->gruposAtuacao->filter(function (GrupoAtuacao $grupoAtuacao) {
+            return ($grupoAtuacao->isAtivo()) && (!$grupoAtuacao->isConfirmado()) &&
+                ($grupoAtuacao->getCoEixoAtuacao() == 'A');
+        });
+    }
     
     /**
      * Inativa todos os campus ligadas ao projeto
