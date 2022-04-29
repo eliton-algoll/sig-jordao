@@ -28,6 +28,7 @@ use AppBundle\Entity\Projeto;
 
 class ParticipanteTypeAbstract extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $projeto = $options['projeto'];
@@ -227,6 +228,7 @@ class ParticipanteTypeAbstract extends AbstractType
             ->add('grupoTutorial', EntityType::class, [
                 'label' => 'Grupo Tutorial',
                 'class' => GrupoAtuacao::class,
+                'placeholder' => 'Selecione um Grupo Tutorial',
                 'query_builder' => function (GrupoAtuacaoRepository $repository) use ($projeto) {
                     return $repository->createQueryBuilder('ga')
                         ->where('ga.projeto = :projeto')
@@ -254,7 +256,7 @@ class ParticipanteTypeAbstract extends AbstractType
                 },
             ))
             ->add('stDeclaracaoCursoPenultimo', CheckboxType::class, array(
-                'label'    => 'Declaro que o Estudante está cursando os 2 últimos anos da Graduação.',
+                'label' => 'Declaro que o Estudante está cursando os 2 últimos anos da Graduação.',
                 'required' => false,
             ))
             ->add('areaTematica', EntityType::class, [
@@ -350,9 +352,10 @@ class ParticipanteTypeAbstract extends AbstractType
         $builder->get('nuSei')->addEventListener(
             FormEvents::POST_SUBMIT,
             function (FormEvent $event) use ($formMofifierProjeto, $projeto) {
-                //$projeto = $event->getForm()->getData();
+                // $projeto = $event->getForm()->getData();
                 $formMofifierProjeto($event->getForm()->getParent(), $projeto);
             }
         );
     }
+
 }

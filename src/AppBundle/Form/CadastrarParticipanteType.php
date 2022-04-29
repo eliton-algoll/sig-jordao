@@ -12,11 +12,12 @@ use AppBundle\Repository\PerfilRepository;
 
 class CadastrarParticipanteType extends ParticipanteTypeAbstract
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $projeto = $options['projeto'];
         $pessoaPerfil = $options['pessoaPerfil'];
-        
+
         $builder
             ->add('nuSei', TextType::class, [
                 'label' => 'N° SEI',
@@ -29,16 +30,16 @@ class CadastrarParticipanteType extends ParticipanteTypeAbstract
             ->add('perfil', EntityType::class, array(
                 'label' => 'Perfil do Participante',
                 'class' => 'AppBundle:Perfil',
-                'query_builder' => function(PerfilRepository $repo) use ($pessoaPerfil) {
+                'query_builder' => function (PerfilRepository $repo) use ($pessoaPerfil) {
                     return $repo->getDisponiveisParaCadastroDeParticipante($pessoaPerfil->getPerfil()->getNoRole());
                 },
-                'choice_label' => function($perfil) {
+                'choice_label' => function ($perfil) {
                     return $perfil->getDsPerfil();
                 },
                 'placeholder' => ''
-            ))                
+            ))
             ->add('noPessoa', TextType::class, array(
-                'label'  => 'Nome',
+                'label' => 'Nome',
                 'mapped' => false,
                 'attr' => array('readonly' => true)
             ))
@@ -49,31 +50,30 @@ class CadastrarParticipanteType extends ParticipanteTypeAbstract
             ->add('sexo', EntityType::class, array(
                 'label' => 'Sexo',
                 'class' => 'AppBundle:Sexo',
-                'query_builder' => function(SexoRepository $repo) {
+                'query_builder' => function (SexoRepository $repo) {
                     return $repo->createQueryBuilder('s')
-                                ->where('s.stRegistroAtivo = \'S\'')
-                                ->orderBy('s.dsSexo', 'ASC');
+                        ->where('s.stRegistroAtivo = \'S\'')
+                        ->orderBy('s.dsSexo', 'ASC');
                 },
-                'choice_label' => function($sexo) {
+                'choice_label' => function ($sexo) {
                     return $sexo->getDsSexo();
                 },
                 'required' => true,
                 'placeholder' => '',
-                'mapped'   => false,
-                'choice_attr' => function($val, $key, $index) {
+                'mapped' => false,
+                'choice_attr' => function ($val, $key, $index) {
                     return ['disabled' => true];
                 }
             ))
             ->add('noMae', TextType::class, array(
-                'label'  => 'Nome da Mãe',
+                'label' => 'Nome da Mãe',
                 'attr' => array('readonly' => true),
                 'mapped' => false
-            ))
-        ;
-                
+            ));
+
         parent::buildForm($builder, $options);
     }
-    
+
     /**
      * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
      */

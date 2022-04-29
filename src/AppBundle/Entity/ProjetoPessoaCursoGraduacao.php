@@ -92,7 +92,7 @@ class ProjetoPessoaCursoGraduacao extends AbstractEntity
     /**
      * Get projetoPessoa
      *
-     * @return int
+     * @return ProjetoPessoa
      */
     public function getProjetoPessoa()
     {
@@ -116,7 +116,7 @@ class ProjetoPessoaCursoGraduacao extends AbstractEntity
     /**
      * Get cursoGraduacao
      *
-     * @return int
+     * @return CursoGraduacao
      */
     public function getCursoGraduacao()
     {

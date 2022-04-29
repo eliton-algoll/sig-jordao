@@ -77,4 +77,21 @@ class GrupoAtuacaoRepository  extends RepositoryAbstract
             'stConfirmacao' => 'S',
         ]);
     }
+
+    /**
+     * @param integer $coProjeto
+     * @param integer $coGrupoAtuacao
+     * @return GrupoAtuacao[]
+     */
+    public function findByProjetoAndId($coProjeto, $coGrupoAtuacao)
+    {
+        $qb = $this->createQueryBuilder('ga');
+        $qb
+            ->where('ga.projeto = :projeto')
+            ->andWhere("ga.stRegistroAtivo = 'S'")
+            ->setParameter('projeto', $coProjeto);
+
+        return $qb->getQuery()->getResult();
+    }
+
 }

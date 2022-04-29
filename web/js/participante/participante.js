@@ -6,6 +6,8 @@
         construct: function () {
             this.events();
 
+            sessionStorage.setItem('participante_pessoa', '');
+
             participante.handleChangePerfil($('[id$="participante_perfil"]'));
             $('[name$="cursosLecionados][]"]').trigger('change');
             participante.disabledAreaTematicaNaoSelecionado($('[id$="participante_perfil"]'));
@@ -42,6 +44,10 @@
             });
 
             $('[name$="participante[stVoluntarioProjeto]"]').on('click', this.handleParticipanteBolsista);
+
+            $('[id$="participante_grupoTutorial"]').on('change', function () {
+                participante.handleChangeGrupoTutorial($(this));
+            });
 
             $('[name$="participante[coEixoAtuacao]"]').on('click', this.handleEixoAtuacao);
 
@@ -204,6 +210,8 @@
         },
 
         handleKeyUpCpf: function (input) {
+            sessionStorage.setItem('participante_pessoa', '');
+
             if (input.val().length != 14) return;
 
             var cpf = input.val().replace(/[^0-9]/g, '');
@@ -216,6 +224,9 @@
                     if ($.isEmptyObject(response)) {
                         bootbox.alert('CPF inválido!');
                     } else {
+                        // console.log(response.pessoa);
+                        sessionStorage.setItem('participante_pessoa', JSON.stringify(response.pessoa));
+
                         $('[id$="participante_sexo"] option').removeAttr('selected');
                         $('[id$="participante_sexo"] option').attr('disabled', 'disabled');
                         $('[id$="participante_noPessoa"]').val(response.pessoa.noPessoa);
@@ -247,7 +258,9 @@
 
                 helper.makeOptions(
                     $('[id$="participante_coMunicipioIbge"]'),
-                    Routing.generate('municipio_get_by_uf', {uf: input.val()}),
+                    Routing.generate('municipio_get_by_uf', {
+                        uf: input.val()
+                    }),
                     {},
                     'coMunicipioIbge',
                     'noMunicipio',
@@ -337,10 +350,13 @@
 
             return hasAdd;
         },
+
         alertQuantidadeDeCoordenadores: function () {
             var coProjeto = $('[id$="participante_projeto"] option:selected').val();
             $.post(
-                Routing.generate("projeto_qtd_perfil_grupo_atuacao", {coProjeto: coProjeto}),
+                Routing.generate("projeto_qtd_perfil_grupo_atuacao", {
+                    coProjeto: coProjeto
+                }),
                 {},
                 function (result) {
                     var message = '<table class="table">';
@@ -370,6 +386,7 @@
                     });
                 });
         },
+
         handleChangeCursosLecionados: function () {
             $('[name$="areaTematica][]"] option').removeAttr('disabled');
 
@@ -390,6 +407,7 @@
                 });
             }
         },
+
         handleChangeCursoGraduacao: function (curso) {
             $('[name$="areaTematica][]"] option').removeAttr('disabled');
 
@@ -414,7 +432,9 @@
 
         loadTelefones: function (cpf) {
             $.ajax({
-                url: Routing.generate('pessoa_get_telefones', {pessoa: cpf}),
+                url: Routing.generate('pessoa_get_telefones', {
+                    pessoa: cpf
+                }),
                 success: function (response) {
                     if (!$.isEmptyObject(response)) {
                         $.each(response, function (key, value) {
@@ -430,7 +450,9 @@
 
         loadEmail: function (cpf) {
             $.ajax({
-                url: Routing.generate('pessoa_get_email', {pessoa: cpf}),
+                url: Routing.generate('pessoa_get_email', {
+                    pessoa: cpf
+                }),
                 success: function (response) {
                     if (!$.isEmptyObject(response)) {
                         $("#cadastrar_participante_dsEnderecoWeb").val(response.dsEnderecoWeb);
@@ -463,8 +485,118 @@
             $('[id$="participante_cursoGraduacao"]').parent('div.form-group').find('label').removeClass('required');
         },
 
+        handleChangeGrupoTutorial: function (input) {
+            try {
+                // console.log({
+                //     grupoTutorial: value,
+                //     nuSipar: projetoSei,
+                //     // coProjeto: coProjeto,
+                //     cpf: pessoa.nuCpfCnpjPessoa,
+                // });
+                // console.log(value > 0);
+
+                var value = input.val();
+                var projetoSei = $('[id$="participante_nuSei"]').val();
+                // var coProjeto = $('[id$="participante_projeto"] option:selected').val();
+                var pessoa = sessionStorage.getItem('participante_pessoa');
+                var perfil = $('[id$="participante_perfil"]').val();
+
+                if ((!pessoa) || (pessoa == '')) {
+                    bootbox.alert('O CPF precisa ser fornecido.');
+                    $('[id$="participante_grupoTutorial"]').val('');
+                    return;
+                }
+
+                pessoa = JSON.parse(pessoa);
+
+                // console.log('participante.handleChangeGrupoTutorial.grupoTutorial: ' + value);
+                // console.log('participante.handleChangeGrupoTutorial.projetoSei: ' + projetoSei);
+                // // console.log('participante.handleChangeGrupoTutorial.coProjeto: ' + coProjeto);
+                // console.log('participante.handleChangeGrupoTutorial.pessoa:', pessoa);
+
+                $('[id$="participante_coEixoAtuacao"] input').removeAttr('disabled');
+                $('[name$="participante[coEixoAtuacao]"]').removeAttr('checked');
+                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
+
+                if ((!perfil) || (perfil < 1)) {
+                    bootbox.alert('O Perfil do Participante precisa ser selecionado.');
+                    $('[id$="participante_grupoTutorial"]').val('');
+                    return;
+                }
+
+                if ((!pessoa) || (!pessoa.nuCpfCnpjPessoa)) {
+                    bootbox.alert('O CPF precisa ser fornecido.');
+                    $('[id$="participante_grupoTutorial"]').val('');
+                    return;
+                }
+
+                if (perfil == 6) { // Estudante
+                    $('#btn-salvar').hide();
+                }
+
+                if (value > 0) {
+                    $.ajax({
+                        url: Routing.generate('projeto_get_grupo_tutorial_details', {
+                            grupoTutorial: value,
+                            nuSipar: projetoSei,
+                            // coProjeto: coProjeto,
+                            cpf: pessoa.nuCpfCnpjPessoa,
+                        }),
+                        method: 'GET',
+                        dataType: 'json',
+                        success: function (response) {
+                            // console.log(response);
+
+                            if ($.isEmptyObject(response)) {
+                                bootbox.alert('Não foi possível obter os detalhes do Grupo Tutorial.');
+                            } else {
+                                // console.log(response.details.eixoAtuacao);
+
+                                if (response.details.eixoAtuacao) {
+                                    switch (response.details.eixoAtuacao) {
+                                        case 'G': { // Gestão em Saúde
+                                            // console.log('G - Gestão em Saúde');
+                                            $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                            $('[id$="participante_coEixoAtuacao_0"]').attr('checked', true);
+                                            $('[name$="participante[coEixoAtuacao]"][value="G"]').prop('checked', true);
+                                            $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
+                                            break;
+                                        }
+                                        case 'A': { // Assistência à Saúde
+                                            // console.log('A - Assistência à Saúde');
+                                            $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                            $('[name$="participante[coEixoAtuacao]"][value="A"]').prop('checked', true);
+                                            $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                if (perfil == 6) { // Estudante
+                                    if (response.details.temDoisPreceptores) {
+                                        $('#btn-salvar').show();
+                                    } else {
+                                        $('#btn-salvar').hide();
+                                        bootbox.alert('É necessário ter no mínimo 2 (dois) Preceptores bolsistas cadastrados. Salvar não é permitido.');
+                                    }
+
+                                    // console.log(response.details.categoriasProfissionais);
+                                    // console.log(response.details.cursosGraduacao);
+                                } else {
+                                    $('#btn-salvar').show();
+                                }
+                            }
+                        }
+                    });
+                }
+            } catch (e) {
+                // Do nothing.
+            }
+        },
+
         handleEixoAtuacao: function () {
-            $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent('div.form-group').hide();
+            // $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent('div.form-group').hide();
+            $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
 
             switch ($(this).val()) {
                 case 'G': { // Gestão em Saúde
@@ -472,7 +604,8 @@
                     break;
                 }
                 case 'A': { // Assistência à Saúde
-                    $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent('div.form-group').show();
+                    // $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent('div.form-group').show();
+                    $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
                     break;
                 }
             }
@@ -487,6 +620,8 @@
                     nuSipar: input.val()
                 },
                 success: function (response) {
+                    // console.log(response);
+
                     if (response.status === false) {
                         input.val('');
                         bootbox.alert(response.error);

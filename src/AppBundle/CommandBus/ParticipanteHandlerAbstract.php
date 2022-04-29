@@ -424,7 +424,7 @@ class ParticipanteHandlerAbstract
             $projetoPessoa->getProjeto()->getPublicacao()->getPrograma()->isGrupoTutorial() &&
             !$projetoPessoa->getPessoaPerfil()->getPerfil()->isCoordenadorProjeto()
         ) {
-            $projetoPessoa->addGrupoTutorial($command->getGrupoTutorial());
+            $projetoPessoa->addGrupoTutorial($command->getGrupoTutorial(), $command->getCoEixoAtuacao());
 
             $projetoPessoa->getProjetoPessoaGrupoAtuacaoByGrupoAtuacao($command->getGrupoTutorial())
                 ->inativarAllProjetoPessoaGrupoAtuacaoAreaTematica();
