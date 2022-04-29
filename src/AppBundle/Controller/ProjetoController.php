@@ -299,77 +299,79 @@ class ProjetoController extends ControllerAbstract
             $projeto = $em->getRepository(Projeto::class)->getBySipar($request->query->get('nuSipar'),
                 null, false);
 
-            // Obtem o Grupo de Atuacao
-            $gruposAtuacao = $em->getRepository(GrupoAtuacao::class)
-                ->findByProjetoAndId($projeto->getCoSeqProjeto(), $request->query->get('grupoTutorial'));
+            if ((!is_null($projeto)) && ($projeto->getPublicacao()->getPrograma()->isGrupoTutorial())) {
+                // Obtem o Grupo de Atuacao
+                $gruposAtuacao = $em->getRepository(GrupoAtuacao::class)
+                    ->findByProjetoAndId($projeto->getCoSeqProjeto(), $request->query->get('grupoTutorial'));
 
-            $grupoAtuacaoEncontrado = null;
+                $grupoAtuacaoEncontrado = null;
 
-            foreach ($gruposAtuacao as $grupoAtuacao) {
-                if ($grupoAtuacao->getCoSeqGrupoAtuacao() == $request->query->get('grupoTutorial')) {
-                    $grupoAtuacaoEncontrado = $grupoAtuacao;
-                    break;
-                }
-            }
-
-            $eixoAtuacao = null;
-
-            if (!is_null($grupoAtuacaoEncontrado)) {
-                $eixoAtuacao = $grupoAtuacaoEncontrado->getCoEixoAtuacao();
-            }
-
-            // Obtém os preceptores obrigatórios
-            $preceptores = $em->getRepository(ProjetoPessoa::class)->search(new ParameterBag(array(
-                'projeto' => $projeto,
-                'grupoTutorial' => $grupoAtuacaoEncontrado,
-                'coPerfil' => 4, // Preceptor
-                'stRegistroAtivo' => 'S'
-            )))->getQuery()->getResult();
-
-            $categoriasProfissionais = [];
-            $cursosGraduacao = [];
-
-            // Obtém o eixo de atuação
-            // Obtém as categorias
-            // Obtém os cursos de graduação
-            foreach ($preceptores as $preceptor) {
-                // var_dump($preceptor);
-
-                if ((is_null($eixoAtuacao)) && (!is_null($preceptor['coEixoAtuacao']))) {
-                    $eixoAtuacao = $preceptor['coEixoAtuacao'];
+                foreach ($gruposAtuacao as $grupoAtuacao) {
+                    if ($grupoAtuacao->getCoSeqGrupoAtuacao() == $request->query->get('grupoTutorial')) {
+                        $grupoAtuacaoEncontrado = $grupoAtuacao;
+                        break;
+                    }
                 }
 
-                $dadoAcademico = $em->getRepository(DadoAcademico::class)->findOneBy(array(
-                    'projetoPessoa' => $preceptor['coSeqProjetoPessoa'],
+                $eixoAtuacao = null;
+
+                if (!is_null($grupoAtuacaoEncontrado)) {
+                    $eixoAtuacao = $grupoAtuacaoEncontrado->getCoEixoAtuacao();
+                }
+
+                // Obtém os preceptores obrigatórios
+                $preceptores = $em->getRepository(ProjetoPessoa::class)->search(new ParameterBag(array(
+                    'projeto' => $projeto,
+                    'grupoTutorial' => $grupoAtuacaoEncontrado,
+                    'coPerfil' => 4, // Preceptor
                     'stRegistroAtivo' => 'S'
-                ));
+                )))->getQuery()->getResult();
 
-                if (!is_null($dadoAcademico)) {
-                    // var_dump($dadoAcademico->getCategoriaProfissional()->getCoSeqCategoriaProfissional());
-                    array_push($categoriasProfissionais,
-                        $dadoAcademico->getCategoriaProfissional()->getCoSeqCategoriaProfissional());
+                $categoriasProfissionais = [];
+                $cursosGraduacao = [];
+
+                // Obtém o eixo de atuação
+                // Obtém as categorias
+                // Obtém os cursos de graduação
+                foreach ($preceptores as $preceptor) {
+                    if ((is_null($eixoAtuacao)) && (!is_null($preceptor['coEixoAtuacao']))) {
+                        $eixoAtuacao = $preceptor['coEixoAtuacao'];
+                    }
+
+                    $dadoAcademico = $em->getRepository(DadoAcademico::class)->findOneBy(array(
+                        'projetoPessoa' => $preceptor['coSeqProjetoPessoa'],
+                        'stRegistroAtivo' => 'S'
+                    ));
+
+                    if (!is_null($dadoAcademico)) {
+                        array_push($categoriasProfissionais,
+                            $dadoAcademico->getCategoriaProfissional()->getCoSeqCategoriaProfissional());
+                    }
+
+                    $cursoGraduacao = $em->getRepository(ProjetoPessoaCursoGraduacao::class)->findOneBy(array(
+                        'projetoPessoa' => $preceptor['coSeqProjetoPessoa'],
+                        'stRegistroAtivo' => 'S'
+                    ));
+
+                    if (!is_null($cursoGraduacao)) {
+                        array_push($cursosGraduacao, $cursoGraduacao->getCursoGraduacao()->getCoSeqCursoGraduacao());
+                    }
                 }
 
-                $cursoGraduacao = $em->getRepository(ProjetoPessoaCursoGraduacao::class)->findOneBy(array(
-                    'projetoPessoa' => 7538, //$preceptor['coSeqProjetoPessoa'],
-                    'stRegistroAtivo' => 'S'
-                ));
-//                var_dump($cursoGraduacao);
-//                exit();
-
-                if (!is_null($cursoGraduacao)) {
-                    array_push($cursosGraduacao, $cursoGraduacao->getCursoGraduacao()->getCoSeqCursoGraduacao());
-                }
+                $response->details = [
+                    'eixoAtuacao' => $eixoAtuacao,
+                    'temDoisPreceptores' => (count($preceptores) >= 2),
+                    'categoriasProfissionais' => $categoriasProfissionais,
+                    'cursosGraduacao' => $cursosGraduacao,
+                ];
+            } else {
+                $response->details = [
+                    'eixoAtuacao' => null,
+                    'temDoisPreceptores' => true,
+                    'categoriasProfissionais' => [],
+                    'cursosGraduacao' => [],
+                ];
             }
-
-            // exit();
-
-            $response->details = [
-                'eixoAtuacao' => $eixoAtuacao,
-                'temDoisPreceptores' => (count($preceptores) >= 2),
-                'categoriasProfissionais' => $categoriasProfissionais,
-                'cursosGraduacao' => $cursosGraduacao,
-            ];
         } catch (SiparInvalidoException $e) {
             $response->status = false;
             $response->error = $e->getMessage();
