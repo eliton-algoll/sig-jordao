@@ -551,7 +551,7 @@
                                             $('[name$="participante[coEixoAtuacao]"][value="A"]').prop('checked', true);
                                             $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
 
-                                            if (perfil == 6) { // Estudante
+                                            if ((perfil == 5) || (perfil == 6)) { // Tutor | Estudante
                                                 $('[id$="participante_cursoGraduacao"] option').hide();
                                                 var options = $('[id$="participante_cursoGraduacao"] option');
 
@@ -568,7 +568,7 @@
                                     }
                                 }
 
-                                if (perfil == 6) { // Estudante
+                                if ((perfil == 5) || (perfil == 6)) { // Tutor | Estudante
                                     if (response.details.temDoisPreceptores) {
                                         $('#btn-salvar').show();
                                     } else {
