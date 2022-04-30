@@ -606,6 +606,21 @@
                                 } else {
                                     $('#btn-salvar').show();
                                 }
+
+                                // Verifica se a quantidade de cursos ocultos é igual a quantidade de cursos
+                                var cursos = $('[id$="participante_cursoGraduacao"] option');
+                                var totalCursos = cursos.length;
+                                var totalCursosOcultos = 0;
+
+                                for (var i = 0; i < totalCursos; i++) {
+                                    if (cursos[i].style.display == 'none') {
+                                        totalCursosOcultos++;
+                                    }
+                                }
+
+                                if (totalCursos == totalCursosOcultos) {
+                                    bootbox.alert('Este grupo já atingiu o limite de 4 alunos neste Curso de Graduação, favor adicionar o participante em outro Curso de Graduação disponível ou outro Grupo Tutorial.');
+                                }
                             }
                         }
                     });
