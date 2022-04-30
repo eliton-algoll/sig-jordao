@@ -100,6 +100,8 @@
         },
 
         handleChangePerfil: function (input) {
+            $('[id$="participante_grupoTutorial"]').val('');
+
             if (input.val() != '2') {
                 $('.nav-tabs').find('li').eq(2).show();
                 $('#btn-salvar').appendTo('#dados-complementares');
@@ -212,6 +214,7 @@
 
         handleKeyUpCpf: function (input) {
             sessionStorage.setItem('participante_pessoa', '');
+            $('[id$="participante_grupoTutorial"]').val('');
 
             if (input.val().length != 14) return;
 
@@ -354,38 +357,41 @@
 
         alertQuantidadeDeCoordenadores: function () {
             var coProjeto = $('[id$="participante_projeto"] option:selected').val();
-            $.post(
-                Routing.generate("projeto_qtd_perfil_grupo_atuacao", {
-                    coProjeto: coProjeto
-                }),
-                {},
-                function (result) {
-                    var message = '<table class="table">';
-                    message += '<thead>';
-                    message += '<tr>';
-                    message += '<th>Grupo de atuação</th>';
-                    message += '<th>Coordenador de grupo</th>';
-                    message += '<th>Voluntário</th>';
-                    message += '</tr>';
-                    message += '</thead>';
-                    message += '<tbody>';
 
-                    $(result).each(function (index, obj) {
+            if (coProjeto) {
+                $.post(
+                    Routing.generate("projeto_qtd_perfil_grupo_atuacao", {
+                        coProjeto: coProjeto
+                    }),
+                    {},
+                    function (result) {
+                        var message = '<table class="table">';
+                        message += '<thead>';
                         message += '<tr>';
-                        message += '<td>' + obj.coSeqGrupoAtuacao + ' - ' + obj.noGrupoAtuacao + '</td>';
-                        message += '<td>' + obj.coordGrupo + '</td>';
-                        message += '<td>' + obj.stVoluntarioProjeto + '</td>';
+                        message += '<th>Grupo de atuação</th>';
+                        message += '<th>Coordenador de grupo</th>';
+                        message += '<th>Voluntário</th>';
                         message += '</tr>';
-                    });
-                    message += '</tbody>';
-                    message += '</table>';
+                        message += '</thead>';
+                        message += '<tbody>';
 
-                    bootbox.dialog({
-                        message: message,
-                        title: 'Contador',
-                        size: 'large'
+                        $(result).each(function (index, obj) {
+                            message += '<tr>';
+                            message += '<td>' + obj.coSeqGrupoAtuacao + ' - ' + obj.noGrupoAtuacao + '</td>';
+                            message += '<td>' + obj.coordGrupo + '</td>';
+                            message += '<td>' + obj.stVoluntarioProjeto + '</td>';
+                            message += '</tr>';
+                        });
+                        message += '</tbody>';
+                        message += '</table>';
+
+                        bootbox.dialog({
+                            message: message,
+                            title: 'Contador',
+                            size: 'large'
+                        });
                     });
-                });
+            }
         },
 
         handleChangeCursosLecionados: function () {
@@ -551,7 +557,12 @@
                                             $('[name$="participante[coEixoAtuacao]"][value="A"]').prop('checked', true);
                                             $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
 
-                                            if ((perfil == 5) || (perfil == 6)) { // Tutor | Estudante
+                                            // if ((perfil == 5) || (perfil == 6)) { // Tutor | Estudante
+                                            if (perfil == 6) { // Estudante
+
+                                                // Se Estudante, exibe somente os Cursos de Graduação que são dos
+                                                // Preceptores
+
                                                 $('[id$="participante_cursoGraduacao"] option').hide();
                                                 var options = $('[id$="participante_cursoGraduacao"] option');
 
@@ -568,7 +579,24 @@
                                     }
                                 }
 
-                                if ((perfil == 5) || (perfil == 6)) { // Tutor | Estudante
+                                if (perfil == 4) { // Preceptor
+
+                                    // Se Preceptor, não deve exibir os Cursos de Graduação que já esteja vinculado
+                                    // aos Preceptores
+
+                                    var options = $('[id$="participante_cursoGraduacao"] option');
+
+                                    for (var i = 0; i < response.details.cursosGraduacao.length; i++) {
+                                        for (var j = 0; j < options.length; j++) {
+                                            if ($(options[j]).val() == response.details.cursosGraduacao[i]) {
+                                                $(options[j]).hide();
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // if ((perfil == 5) || (perfil == 6)) { // Tutor | Estudante
+                                if (perfil == 6) { // Estudante
                                     if (response.details.temDoisPreceptores) {
                                         $('#btn-salvar').show();
                                     } else {
