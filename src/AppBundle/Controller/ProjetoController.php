@@ -330,6 +330,14 @@ class ProjetoController extends ControllerAbstract
                 $categoriasProfissionais = [];
                 $cursosGraduacao = [];
 
+                $estudantes = $em->getRepository(ProjetoPessoa::class)->search(new ParameterBag(array(
+                    'projeto' => $projeto,
+                    'grupoTutorial' => $grupoAtuacaoEncontrado,
+                    'coPerfil' => 6, // Estudante
+                    'stRegistroAtivo' => 'S'
+                )))->getQuery()->getResult();
+                $estudantesEncontradosGrupo = count($estudantes);
+
                 // Obtém o eixo de atuação
                 // Obtém as categorias
                 // Obtém os cursos de graduação
@@ -354,7 +362,30 @@ class ProjetoController extends ControllerAbstract
                     ));
 
                     if (!is_null($cursoGraduacao)) {
-                        array_push($cursosGraduacao, $cursoGraduacao->getCursoGraduacao()->getCoSeqCursoGraduacao());
+                        $coSeqCursoGraduacao = $cursoGraduacao->getCursoGraduacao()->getCoSeqCursoGraduacao();
+
+                        if ($eixoAtuacao == 'A') { // Assistência à Saúde
+                            $estudantesEncontrados = 0;
+
+                            foreach ($estudantes as $estudante) {
+                                $cursoGraduacaoEstudante = $em->getRepository(ProjetoPessoaCursoGraduacao::class)->findOneBy(array(
+                                    'projetoPessoa' => $estudante['coSeqProjetoPessoa'],
+                                    'stRegistroAtivo' => 'S'
+                                ));
+
+                                if (!is_null($cursoGraduacaoEstudante)) {
+                                    if ($cursoGraduacao->getCursoGraduacao()->getCoSeqCursoGraduacao() == $coSeqCursoGraduacao) {
+                                        $estudantesEncontrados++;
+                                    }
+                                }
+                            }
+
+                            if ($estudantesEncontrados < 4) {
+                                array_push($cursosGraduacao, $coSeqCursoGraduacao);
+                            }
+                        } else {
+                            array_push($cursosGraduacao, $coSeqCursoGraduacao);
+                        }
                     }
                 }
 
@@ -363,6 +394,7 @@ class ProjetoController extends ControllerAbstract
                     'temDoisPreceptores' => (count($preceptores) >= 2),
                     'categoriasProfissionais' => $categoriasProfissionais,
                     'cursosGraduacao' => $cursosGraduacao,
+                    'estudantesEncontrados' => $estudantesEncontradosGrupo
                 ];
             } else {
                 $response->details = [
