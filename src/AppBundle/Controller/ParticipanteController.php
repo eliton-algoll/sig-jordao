@@ -83,11 +83,13 @@ class ParticipanteController extends ControllerAbstract
         if ($form->isSubmitted()) {
             $data = new ParameterBag($request->request->get('cadastrar_participante'));
            
-            # bind manual devido a complexidade do formulário
+            # Bind manual devido a complexidade do formulário
             $command
                 ->setPerfil($data->get('perfil'))
                 ->setNuCpf($data->getDigits('nuCpf'))
+                ->setCoBanco($data->get('coBanco'))
                 ->setCoAgenciaBancaria($data->get('coAgenciaBancaria'))
+                ->setCoConta($data->get('coConta'))
                 ->setNoLogradouro($data->get('noLogradouro'))
                 ->setNuLogradouro($data->get('nuLogradouro'))
                 ->setDsComplemento($data->get('dsComplemento'))
@@ -101,19 +103,20 @@ class ParticipanteController extends ControllerAbstract
                 ->setNuSemestreAtual($data->get('nuSemestreAtual'))
                 ->setCoCep($data->get('coCep'))
                 ->setTelefones($data->get('telefones'))
-                ->setAreaTematica($data->get('areaTematica'));
+                ->setAreaTematica($data->get('areaTematica'))
+                ->setStAlunoRegular($data->get('stAlunoRegular'))
+                ->setStDeclaracaoCursoPenultimo($data->get('stDeclaracaoCursoPenultimo'))
+                ->setCoEixoAtuacao($data->get('coEixoAtuacao'));
 
             $cadastrarUsuarioCommand = new CadastrarUsuarioCommand();
             $cadastrarUsuarioCommand->setNuCpf($command->getNuCpf());
 
             try {
-                
                 $projetoPessoa = $this->getBus()->handle($command);
-
                 $cadastrarUsuarioCommand->setProjetoPessoa($projetoPessoa);
                 
                 $this->getBus()->handle($cadastrarUsuarioCommand);
-                
+
                 $link = $this->generateUrl('participante_termo', array('projetoPessoa' => $projetoPessoa->getCoSeqProjetoPessoa()));
                 
                 $message  = 'Participante cadastrado com sucesso. ';
@@ -172,37 +175,34 @@ class ParticipanteController extends ControllerAbstract
      */
     public function atualizarAction(Request $request, ProjetoPessoa $projetoPessoa)
     {
+        /*
         if ($this->isGranted(array('HAS_FOLHA_PAGAMENTO_ABERTA', 'HAS_FOLHA_PAGAMENTO_FECHADA')) && 
             !$this->isGranted('HAS_AUTORIZACAO_CADASTRO_PARTICIPANTE')
         ) {
             $this->addFlash('danger', 'Não é possível alterar as informações dos participantes enquanto a folha de pagamento do programa estiver aberta ou até que seja cadastrado um período excepcional de abertura de cadastro pelo administrador do sistema.');
             return $this->redirectToRoute('participante');
         }
+        */
         
         $command = new AtualizarParticipanteCommand($projetoPessoa);
-        
-        $form = $this->get('form.factory')->createNamed(
-            'atualizar_participante', 
-            AtualizarParticipanteType::class, 
-            $command, 
-            array(
-                'projeto' => $this->getProjetoAutenticado(),
-                'pessoaPerfil' => $this->getPessoaPerfilAutenticado(),
-                'projetoPessoaParticipante' => $projetoPessoa
-            )
-        );
-        
+        $form = $this->get('form.factory')->createNamed('atualizar_participante', AtualizarParticipanteType::class, $command, array(
+            'projeto' => $this->getProjetoAutenticado(),
+            'pessoaPerfil' => $this->getPessoaPerfilAutenticado(),
+            'projetoPessoaParticipante' => $projetoPessoa
+        ));
+
         $form->handleRequest($request);
         
         if ($form->isSubmitted()) {
-            
             $data = new ParameterBag($request->request->get('atualizar_participante'));
             
-            # bind manual devido a complexidade do formulário
+            # Bind manual devido a complexidade do formulário
             $command
                 ->setPerfil($data->get('perfil'))
                 ->setNuCpf($data->getDigits('nuCpf'))
+                ->setCoBanco($data->get('coBanco'))
                 ->setCoAgenciaBancaria($data->get('coAgenciaBancaria'))
+                ->setCoConta($data->get('coConta'))
                 ->setNoLogradouro($data->get('noLogradouro'))
                 ->setNuLogradouro($data->get('nuLogradouro'))
                 ->setDsComplemento($data->get('dsComplemento'))
@@ -217,7 +217,10 @@ class ParticipanteController extends ControllerAbstract
                 ->setNuSemestreAtual($data->get('nuSemestreAtual'))
                 ->setCoCep($data->get('coCep'))
                 ->setTelefones($data->get('telefones'))
-                ->setAreaTematica($data->get('areaTematica'));
+                ->setAreaTematica($data->get('areaTematica'))
+                ->setStAlunoRegular($data->get('stAlunoRegular'))
+                ->setStDeclaracaoCursoPenultimo($data->get('stDeclaracaoCursoPenultimo'))
+                ->setCoEixoAtuacao($data->get('coEixoAtuacao'));
             
             try {
                 $this->getBus()->handle($command);

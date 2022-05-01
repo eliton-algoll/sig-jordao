@@ -496,7 +496,19 @@
             try {
                 var value = input.val();
                 var projetoSei = $('[id$="participante_nuSei"]').val();
+                var cpfPessoa = $('[id$="participante_nuCpf"]').val();
                 var pessoa = sessionStorage.getItem('participante_pessoa');
+
+                if ((!pessoa) || (pessoa == '')) {
+                    pessoa = cpfPessoa;
+                } else {
+                    try {
+                        pessoa = JSON.parse(pessoa);
+                    } catch(e) {
+                        pessoa = pessoa;
+                    }
+                }
+
                 var perfil = $('[id$="participante_perfil"]').val();
 
                 if ((!pessoa) || (pessoa == '')) {
@@ -505,8 +517,6 @@
                     return;
                 }
 
-                pessoa = JSON.parse(pessoa);
-
                 $('[id$="participante_coEixoAtuacao"] input').removeAttr('disabled');
                 $('[name$="participante[coEixoAtuacao]"]').removeAttr('checked');
                 $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
@@ -514,12 +524,6 @@
 
                 if ((!perfil) || (perfil < 1)) {
                     bootbox.alert('O Perfil do Participante precisa ser selecionado.');
-                    $('[id$="participante_grupoTutorial"]').val('');
-                    return;
-                }
-
-                if ((!pessoa) || (!pessoa.nuCpfCnpjPessoa)) {
-                    bootbox.alert('O CPF precisa ser fornecido.');
                     $('[id$="participante_grupoTutorial"]').val('');
                     return;
                 }

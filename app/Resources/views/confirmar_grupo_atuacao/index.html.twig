@@ -4,6 +4,9 @@
 
 {% block body %}
 
+    <!-- quantidade de grupos ativos e confirmados -->
+    <input type="hidden" id="grupos-ativos-e-confirmados" value="{{ projeto.getGruposAtuacaoAtivosEConfirmados()|length() }}" />
+
     {% if projeto.getGruposAtuacaoAtivosENaoConfirmados()|length() <= 0 %}
         Nenhum grupo precisa ser confirmado.
     {% endif %}
@@ -53,7 +56,7 @@
         <br/>
     {% endif %}
 
-    {% if projeto.getGruposAtuacaoAtivosENaoConfirmados()|length() > 1 %}
+    {% if projeto.getGruposAtuacaoAtivosENaoConfirmados()|length() >= 1 %}
         <button id="btn-confimar-grupo-tutorial" class="btn btn-primary">
             Confirmar Grupo Tutorial
         </button>

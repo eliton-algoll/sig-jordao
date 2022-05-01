@@ -217,8 +217,8 @@ class ParticipanteTypeAbstract extends AbstractType
             ->add('stAlunoRegular', ChoiceType::class, array(
                 'label' => 'Aluno Regular',
                 'choices' => array(
-                    'Não' => 'S',
-                    'Sim' => 'N'
+                    'Não' => 'N',
+                    'Sim' => 'S'
                 ),
                 'expanded' => true,
                 'choice_value' => function ($currentChoiceKey) {

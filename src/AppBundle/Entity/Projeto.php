@@ -273,6 +273,16 @@ class Projeto extends AbstractEntity
     /**
      * @return ArrayCollection<GrupoAtuacao>
      */
+    public function getGruposAtuacaoAtivosEConfirmados()
+    {
+        return $this->gruposAtuacao->filter(function (GrupoAtuacao $grupoAtuacao) {
+            return ($grupoAtuacao->isAtivo()) && ($grupoAtuacao->isConfirmado());
+        });
+    }
+
+    /**
+     * @return ArrayCollection<GrupoAtuacao>
+     */
     public function getGruposAtuacaoAtivosENaoConfirmados()
     {
         return $this->gruposAtuacao->filter(function (GrupoAtuacao $grupoAtuacao) {
