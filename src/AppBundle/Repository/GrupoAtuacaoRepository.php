@@ -13,13 +13,13 @@ use AppBundle\Entity\Projeto;
  */
 class GrupoAtuacaoRepository  extends RepositoryAbstract
 {
+
     /**
      * @param integer $coProjeto
      * @return GrupoAtuacao[]
      */
     public function findByProjeto($coProjeto)
     {
-
         $qb = $this->createQueryBuilder('ga');
         $qb
             ->join('ga.areasTematicasGruposAtuacao', 'atga')
@@ -90,6 +90,21 @@ class GrupoAtuacaoRepository  extends RepositoryAbstract
             ->where('ga.projeto = :projeto')
             ->andWhere("ga.stRegistroAtivo = 'S'")
             ->setParameter('projeto', $coProjeto);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param integer $coGrupoAtuacao
+     * @return GrupoAtuacao[]
+     */
+    public function findById($coGrupoAtuacao)
+    {
+        $qb = $this->createQueryBuilder('ga');
+        $qb
+            ->where('ga.coSeqGrupoAtuacao = :grupoAtuacao')
+            ->andWhere("ga.stRegistroAtivo = 'S'")
+            ->setParameter('grupoAtuacao', $coGrupoAtuacao);
 
         return $qb->getQuery()->getResult();
     }
