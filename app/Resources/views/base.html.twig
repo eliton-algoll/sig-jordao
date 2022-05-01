@@ -80,7 +80,7 @@
         </div>
         <footer>
             <div id="rodape-datasus"></div>
-            <div style="text-align: right">v2.7</div>
+            <div style="text-align: right">v2.8</div>
         </footer>
         <script type="text/javascript" >
             var assetPath = '{{ asset('/') }}';
@@ -102,6 +102,7 @@
         {% block javascripts %}{% endblock %}
         <script type="text/javascript" src="https://estatico.saude.gov.br/rodape-datasus.js"></script>
         <script type="text/javascript">insereRodape()</script>
-        <script defer="defer" src="//barra.brasil.gov.br/barra.js" type="text/javascript"></script>
+        <!-- Estava travando o carregamento da página -->
+        <!-- <script defer="defer" src="//barra.brasil.gov.br/barra.js" type="text/javascript"></script> -->
     </body>
 </html>
