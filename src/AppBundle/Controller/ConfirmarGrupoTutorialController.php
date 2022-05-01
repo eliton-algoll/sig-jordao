@@ -151,7 +151,7 @@ final class ConfirmarGrupoTutorialController extends ControllerAbstract
             // Extrai os objetos do banco de dados
             $gruposAtuacao = [];
 
-            // Salva os temas abrodados enviados
+            // Salva os temas abordados enviados
             foreach ($payload as $grupoTutorialPayload) {
                 $items = $em->getRepository(GrupoAtuacao::class)->findById($grupoTutorialPayload['id']);
 
@@ -389,7 +389,7 @@ SQL;
                 // echo "Preceptores Encontrados: " . $preceptoresEncontrados . "\n";
 
                 if (($preceptoresEncontrados < 2) || ($preceptoresEncontrados > 4)) {
-                    $errors[] = $grupoAtuacao->getNoGrupoAtuacao() . ' - Cada Grupo Tutrial deverá ser composto por no mínimo 2 (dois) e no máximo 4 (quatro) preceptores bolsistas. Encontrados: ' . $preceptoresEncontrados;
+                    $errors[] = $grupoAtuacao->getNoGrupoAtuacao() . ' - Cada Grupo Tutorial deverá ser composto por no mínimo 2 (dois) e no máximo 4 (quatro) preceptores bolsistas. Encontrados: ' . $preceptoresEncontrados;
                 }
             }
 
