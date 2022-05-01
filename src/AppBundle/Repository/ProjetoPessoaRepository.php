@@ -32,7 +32,7 @@ class ProjetoPessoaRepository extends RepositoryAbstract
             'prp.dtDesligamento',
             'prp.stVoluntarioProjeto',
             'ga.noGrupoAtuacao',
-            'prp.coEixoAtuacao'
+            'ga.coEixoAtuacao'
         ];
 
         $qb->select(implode(', ', $select))

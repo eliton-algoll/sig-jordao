@@ -509,7 +509,7 @@
 
                 $('[id$="participante_coEixoAtuacao"] input').removeAttr('disabled');
                 $('[name$="participante[coEixoAtuacao]"]').removeAttr('checked');
-                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
+                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
                 $('[id$="participante_cursoGraduacao"] option').show();
 
                 if ((!perfil) || (perfil < 1)) {
@@ -631,15 +631,16 @@
         },
 
         handleEixoAtuacao: function () {
-            $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
+            $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
 
             switch ($(this).val()) {
                 case 'G': { // Gestão em Saúde
                     // Do nothing.
+                    $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
                     break;
                 }
                 case 'A': { // Assistência à Saúde
-                    $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
+                    $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
                     break;
                 }
             }
