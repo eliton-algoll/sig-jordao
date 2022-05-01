@@ -374,7 +374,7 @@ class ProjetoController extends ControllerAbstract
                                 ));
 
                                 if (!is_null($cursoGraduacaoEstudante)) {
-                                    if ($cursoGraduacao->getCursoGraduacao()->getCoSeqCursoGraduacao() == $coSeqCursoGraduacao) {
+                                    if ($cursoGraduacaoEstudante->getCursoGraduacao()->getCoSeqCursoGraduacao() == $coSeqCursoGraduacao) {
                                         $estudantesEncontrados++;
                                     }
                                 }

@@ -42,7 +42,7 @@
                 break;
             } else {
                 payload.push({
-                    grupoTutorial: parseInt(value, 10),
+                    id: parseInt(value, 10),
                     temasAbordados: []
                 });
             }
@@ -58,7 +58,7 @@
             var grid = $('#' + $(seletores[j]).data('grid'));
 
             var selected = [];
-            $('.temas-abordados input[type="checkbox"]:checked', grid).each(function() {
+            $('.temas-abordados input[type="checkbox"]:checked', grid).each(function () {
                 selected.push(parseInt($(this).val(), 10));
             });
 
@@ -75,32 +75,29 @@
             return;
         }
 
-        // TODO: Enviar
+        $.post(Routing.generate('confirmar_grupo_tutorial_confirmar', {}), {
+            payload: payload
+        }, function (data) {
+            console.log(data);
 
-        // if (seletores.length === 1) {
-        //     var idGrupo = $('#grupos option:selected').val();
-        //
-        //     $.ajax({
-        //         url: Routing.generate('confirmar_grupo_tutorial_validade', {
-        //             grupoAtuacao: idGrupo
-        //         }),
-        //         success: function (response) {
-        //             if (response.status) {
-        //                 $('.loader').removeClass('hidden');
-        //                 location.href = Routing.generate('confirmar_grupo_tutorial_confirmar', {
-        //                     grupoAtuacao: idGrupo
-        //                 });
-        //             } else {
-        //                 bootbox.alert({
-        //                     title: 'Não foi possível confirmar grupo tutorial',
-        //                     message: response.errors.join('</br>')
-        //                 });
-        //             }
-        //         }
-        //     })
-        // } else if (seletores.length == 2) {
-        //
-        // }
+            if (data.status) {
+                bootbox.alert(data.message, function () {
+                    if (data.status) {
+                        location.reload(true);
+                    }
+                });
+            } else if (data.errors) {
+                var message = '<ul>';
+
+                for (var i = 0; i < data.errors.length; i++) {
+                    message += '<li>' + data.errors[i] + '</li>';
+                }
+
+                message += '</ul>';
+
+                bootbox.alert(message);
+            }
+        }, 'json');
     }
 
     $(document).ready(init);
