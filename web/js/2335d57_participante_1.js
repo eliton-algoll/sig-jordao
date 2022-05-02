@@ -100,7 +100,7 @@
         },
 
         handleChangePerfil: function (input) {
-            $('[id$="participante_grupoTutorial"]').val('');
+            // $('[id$="participante_grupoTutorial"]').val('');
 
             if (input.val() != '2') {
                 $('.nav-tabs').find('li').eq(2).show();
@@ -214,7 +214,7 @@
 
         handleKeyUpCpf: function (input) {
             sessionStorage.setItem('participante_pessoa', '');
-            $('[id$="participante_grupoTutorial"]').val('');
+            // $('[id$="participante_grupoTutorial"]').val('');
 
             if (input.val().length != 14) return;
 
@@ -513,7 +513,7 @@
 
                 if ((!pessoa) || (pessoa == '')) {
                     bootbox.alert('O CPF precisa ser fornecido.');
-                    $('[id$="participante_grupoTutorial"]').val('');
+                    // $('[id$="participante_grupoTutorial"]').val('');
                     return;
                 }
 
@@ -524,7 +524,7 @@
 
                 if ((!perfil) || (perfil < 1)) {
                     bootbox.alert('O Perfil do Participante precisa ser selecionado.');
-                    $('[id$="participante_grupoTutorial"]').val('');
+                    // $('[id$="participante_grupoTutorial"]').val('');
                     return;
                 }
 
