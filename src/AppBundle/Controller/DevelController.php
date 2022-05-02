@@ -89,6 +89,21 @@ class DevelController extends ControllerAbstract
         
         return $response;
     }
+
+    /**
+     * @Route("devel/errors-log", name="devel_errors_log")
+     * @return \AppBundle\Controller\Response
+     */
+    public function errorsLogAction()
+    {
+        echo "<pre>";
+        $out = file_get_contents(__DIR__ . '/../../../var/logs/errors.log');
+        echo $out;
+        echo "</pre>";
+        exit();
+
+        return new Response('Fim');
+    }
     
     /**
      * @Route("devel/last-logs", name="devel_last_logs")
