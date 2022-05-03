@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\GrupoAtuacao;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
@@ -183,6 +184,20 @@ class ParticipanteController extends ControllerAbstract
             return $this->redirectToRoute('participante');
         }
         */
+
+        // Obtém o projeto da pessoa do grupo, caso não haja
+        try {
+            if (is_null($projetoPessoa->getCoEixoAtuacao())) {
+                $gruposAtuacao = $projetoPessoa->getProjetoPessoaGrupoAtuacaoAtivo();
+
+                foreach($gruposAtuacao as $grupoAtuacao) {
+                    $projetoPessoa->setCoEixoAtuacao($grupoAtuacao->getGrupoAtuacao()->getCoEixoAtuacao());
+                    break;
+                }
+            }
+        } catch (\Exception $e) {
+            // Do nothing.
+        }
         
         $command = new AtualizarParticipanteCommand($projetoPessoa);
         $form = $this->get('form.factory')->createNamed('atualizar_participante', AtualizarParticipanteType::class, $command, array(

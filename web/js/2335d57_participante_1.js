@@ -12,8 +12,19 @@
             $('[name$="cursosLecionados][]"]').trigger('change');
             participante.disabledAreaTematicaNaoSelecionado($('[id$="participante_perfil"]'));
             $('input[name$="participante[stVoluntarioProjeto]"]:checked').trigger('click');
+
             setTimeout(function () {
                 $('[id$="participante_cursoGraduacao"]').trigger('change');
+
+                // Bloqueia a edição do eixo de atuação quando alterando cadastro
+                if ($('.nuCpf:first').attr('readonly') == 'readonly') {
+                    $('[id$="participante_coEixoAtuacao"] input')
+                        .attr('readonly', 'readonly')
+                        .attr('disabled', 'disabled');
+                }
+
+                // Aplicar regrar de exibir ou ocultar curso de graduaçõa
+                participante.handleChangeGrupoTutorialAoIniciarEditar($('[id$="participante_grupoTutorial"]'))
             }, 500);
 
             $('[id$="participante_sexo"] option:selected').removeAttr('disabled');
@@ -495,139 +506,293 @@
         handleChangeGrupoTutorial: function (input) {
             try {
                 var value = input.val();
-                var projetoSei = $('[id$="participante_nuSei"]').val();
-                var cpfPessoa = $('[id$="participante_nuCpf"]').val();
-                var pessoa = sessionStorage.getItem('participante_pessoa');
 
-                if ((!pessoa) || (pessoa == '')) {
-                    pessoa = cpfPessoa;
-                } else {
-                    try {
-                        pessoa = JSON.parse(pessoa);
-                    } catch(e) {
-                        pessoa = pessoa;
+                if (value) {
+                    var projetoSei = $('[id$="participante_nuSei"]').val();
+                    var cpfPessoa = $('.nuCpf:first').val(); // $('[id$="participante_nuCpf"]').val();
+                    var pessoa = sessionStorage.getItem('participante_pessoa');
+
+                    if ((!pessoa) || (pessoa == '')) {
+                        pessoa = cpfPessoa;
+                    } else {
+                        try {
+                            pessoa = JSON.parse(pessoa);
+                        } catch (e) {
+                            pessoa = pessoa;
+                        }
                     }
-                }
 
-                var perfil = $('[id$="participante_perfil"]').val();
+                    var perfil = $('[id$="participante_perfil"]').val();
 
-                if ((!pessoa) || (pessoa == '')) {
-                    bootbox.alert('O CPF precisa ser fornecido.');
-                    // $('[id$="participante_grupoTutorial"]').val('');
-                    return;
-                }
+                    if ((!pessoa) || (pessoa == '')) {
+                        bootbox.alert('O CPF precisa ser fornecido.');
+                        // $('[id$="participante_grupoTutorial"]').val('');
+                        return;
+                    }
 
-                $('[id$="participante_coEixoAtuacao"] input').removeAttr('disabled');
-                $('[name$="participante[coEixoAtuacao]"]').removeAttr('checked');
-                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
-                $('[id$="participante_cursoGraduacao"] option').show();
+                    $('[id$="participante_coEixoAtuacao"] input').removeAttr('disabled');
+                    $('[name$="participante[coEixoAtuacao]"]').removeAttr('checked');
+                    $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+                    $('[id$="participante_cursoGraduacao"] option').show();
 
-                if ((!perfil) || (perfil < 1)) {
-                    bootbox.alert('O Perfil do Participante precisa ser selecionado.');
-                    // $('[id$="participante_grupoTutorial"]').val('');
-                    return;
-                }
+                    if ((!perfil) || (perfil < 1)) {
+                        bootbox.alert('O Perfil do Participante precisa ser selecionado.');
+                        // $('[id$="participante_grupoTutorial"]').val('');
+                        return;
+                    }
 
-                if (perfil == 6) { // Estudante
-                    $('#btn-salvar').hide();
-                }
+                    if (perfil == 6) { // Estudante
+                        $('#btn-salvar').hide();
+                    }
 
-                if (value > 0) {
-                    $.ajax({
-                        url: Routing.generate('projeto_get_grupo_tutorial_details', {
-                            grupoTutorial: value,
-                            nuSipar: projetoSei,
-                            cpf: pessoa.nuCpfCnpjPessoa,
-                        }),
-                        method: 'GET',
-                        dataType: 'json',
-                        success: function (response) {
-                            // console.log(response);
+                    if (value > 0) {
+                        $.ajax({
+                            url: Routing.generate('projeto_get_grupo_tutorial_details', {
+                                grupoTutorial: value,
+                                nuSipar: projetoSei,
+                                cpf: pessoa,
+                            }),
+                            method: 'GET',
+                            dataType: 'json',
+                            success: function (response) {
+                                // console.log(response);
 
-                            if ($.isEmptyObject(response)) {
-                                bootbox.alert('Não foi possível obter os detalhes do Grupo Tutorial.');
-                            } else {
-                                if (response.details.eixoAtuacao) {
-                                    switch (response.details.eixoAtuacao) {
-                                        case 'G': { // Gestão em Saúde
-                                            $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
-                                            $('[id$="participante_coEixoAtuacao_0"]').attr('checked', true);
-                                            $('[name$="participante[coEixoAtuacao]"][value="G"]').prop('checked', true);
-                                            $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
-                                            break;
-                                        }
-                                        case 'A': { // Assistência à Saúde
-                                            $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
-                                            $('[name$="participante[coEixoAtuacao]"][value="A"]').prop('checked', true);
-                                            $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+                                if ($.isEmptyObject(response)) {
+                                    bootbox.alert('Não foi possível obter os detalhes do Grupo Tutorial.');
+                                    return false;
+                                } else {
+                                    if (response.details.eixoAtuacao) {
+                                        switch (response.details.eixoAtuacao) {
+                                            case 'G': { // Gestão em Saúde
+                                                $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                $('[id$="participante_coEixoAtuacao_0"]').attr('checked', true);
+                                                $('[name$="participante[coEixoAtuacao]"][value="G"]').prop('checked', true);
+                                                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
+                                                break;
+                                            }
+                                            case 'A': { // Assistência à Saúde
+                                                $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                $('[name$="participante[coEixoAtuacao]"][value="A"]').prop('checked', true);
+                                                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
 
-                                            // if ((perfil == 5) || (perfil == 6)) { // Tutor | Estudante
-                                            if (perfil == 6) { // Estudante
+                                                // if ((perfil == 5) || (perfil == 6)) { // Tutor | Estudante
+                                                if (perfil == 6) { // Estudante
 
-                                                // Se Estudante, exibe somente os Cursos de Graduação que são dos
-                                                // Preceptores
+                                                    // Se Estudante, exibe somente os Cursos de Graduação que são dos
+                                                    // Preceptores
 
-                                                $('[id$="participante_cursoGraduacao"] option').hide();
-                                                var options = $('[id$="participante_cursoGraduacao"] option');
+                                                    $('[id$="participante_cursoGraduacao"] option').hide();
+                                                    var options = $('[id$="participante_cursoGraduacao"] option');
 
-                                                for (var i = 0; i < response.details.cursosGraduacao.length; i++) {
-                                                    for (var j = 0; j < options.length; j++) {
-                                                        if ($(options[j]).val() == response.details.cursosGraduacao[i]) {
-                                                            $(options[j]).show();
+                                                    for (var i = 0; i < response.details.cursosGraduacao.length; i++) {
+                                                        for (var j = 0; j < options.length; j++) {
+                                                            if ($(options[j]).val() == response.details.cursosGraduacao[i]) {
+                                                                $(options[j]).show();
+                                                            }
                                                         }
                                                     }
                                                 }
-                                            }
-                                            break;
-                                        }
-                                    }
-                                }
-
-                                if (perfil == 4) { // Preceptor
-
-                                    // Se Preceptor, não deve exibir os Cursos de Graduação que já esteja vinculado
-                                    // aos Preceptores
-
-                                    var options = $('[id$="participante_cursoGraduacao"] option');
-
-                                    for (var i = 0; i < response.details.cursosGraduacao.length; i++) {
-                                        for (var j = 0; j < options.length; j++) {
-                                            if ($(options[j]).val() == response.details.cursosGraduacao[i]) {
-                                                $(options[j]).hide();
+                                                break;
                                             }
                                         }
                                     }
-                                }
 
-                                // if ((perfil == 5) || (perfil == 6)) { // Tutor | Estudante
-                                if (perfil == 6) { // Estudante
-                                    if (response.details.temDoisPreceptores) {
-                                        $('#btn-salvar').show();
+                                    if (perfil == 4) { // Preceptor
+
+                                        // Se Preceptor, não deve exibir os Cursos de Graduação que já esteja vinculado
+                                        // aos Preceptores
+
+                                        var options = $('[id$="participante_cursoGraduacao"] option');
+
+                                        for (var i = 0; i < response.details.cursosGraduacao.length; i++) {
+                                            for (var j = 0; j < options.length; j++) {
+                                                if ($(options[j]).val() == response.details.cursosGraduacao[i]) {
+                                                    $(options[j]).hide();
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    // if ((perfil == 5) || (perfil == 6)) { // Tutor | Estudante
+                                    if (perfil == 6) { // Estudante
+                                        if (response.details.temDoisPreceptores) {
+                                            $('#btn-salvar').show();
+                                        } else {
+                                            $('#btn-salvar').hide();
+                                            bootbox.alert('É necessário ter no mínimo 2 (dois) Preceptores bolsistas cadastrados. Salvar não é permitido.');
+                                            return;
+                                        }
                                     } else {
-                                        $('#btn-salvar').hide();
-                                        bootbox.alert('É necessário ter no mínimo 2 (dois) Preceptores bolsistas cadastrados. Salvar não é permitido.');
+                                        $('#btn-salvar').show();
                                     }
-                                } else {
-                                    $('#btn-salvar').show();
-                                }
 
-                                // Verifica se a quantidade de cursos ocultos é igual a quantidade de cursos
-                                var cursos = $('[id$="participante_cursoGraduacao"] option');
-                                var totalCursos = cursos.length;
-                                var totalCursosOcultos = 0;
+                                    // Verifica se a quantidade de cursos ocultos é igual a quantidade de cursos
+                                    var cursos = $('[id$="participante_cursoGraduacao"] option');
+                                    var totalCursos = cursos.length;
+                                    var totalCursosOcultos = 0;
 
-                                for (var i = 0; i < totalCursos; i++) {
-                                    if (cursos[i].style.display == 'none') {
-                                        totalCursosOcultos++;
+                                    for (var i = 0; i < totalCursos; i++) {
+                                        if (cursos[i].style.display == 'none') {
+                                            totalCursosOcultos++;
+                                        }
                                     }
-                                }
 
-                                if (totalCursos == totalCursosOcultos) {
-                                    bootbox.alert('Este grupo já atingiu o limite de 4 alunos neste Curso de Graduação, favor adicionar o participante em outro Curso de Graduação disponível ou outro Grupo Tutorial.');
+                                    if (totalCursos == totalCursosOcultos) {
+                                        bootbox.alert('Este grupo já atingiu o limite de 4 alunos neste Curso de Graduação, favor adicionar o participante em outro Curso de Graduação disponível ou outro Grupo Tutorial.');
+                                        return;
+                                    }
                                 }
                             }
+                        });
+                    }
+                }
+            } catch (e) {
+                // Do nothing.
+            }
+        },
+
+        handleChangeGrupoTutorialAoIniciarEditar: function (input) {
+            try {
+                var value = input.val();
+
+                if (value) {
+                    var projetoSei = $('[id$="participante_nuSei"]').val();
+                    var cpfPessoa = $('.nuCpf:first').val(); // $('[id$="participante_nuCpf"]').val();
+                    var pessoa = sessionStorage.getItem('participante_pessoa');
+
+                    if ((!pessoa) || (pessoa == '')) {
+                        pessoa = cpfPessoa;
+                    } else {
+                        try {
+                            pessoa = JSON.parse(pessoa);
+                        } catch (e) {
+                            pessoa = pessoa;
                         }
-                    });
+                    }
+
+                    var perfil = $('[id$="participante_perfil"]').val();
+
+                    if ((!pessoa) || (pessoa == '')) {
+                        // bootbox.alert('O CPF precisa ser fornecido.');
+                        // $('[id$="participante_grupoTutorial"]').val('');
+                        return;
+                    }
+
+                    $('[id$="participante_coEixoAtuacao"] input').removeAttr('disabled');
+                    $('[name$="participante[coEixoAtuacao]"]').removeAttr('checked');
+                    $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+                    $('[id$="participante_cursoGraduacao"] option').show();
+
+                    if ((!perfil) || (perfil < 1)) {
+                        // bootbox.alert('O Perfil do Participante precisa ser selecionado.');
+                        // $('[id$="participante_grupoTutorial"]').val('');
+                        return;
+                    }
+
+                    if (perfil == 6) { // Estudante
+                        $('#btn-salvar').hide();
+                    }
+
+                    if (value > 0) {
+                        $.ajax({
+                            url: Routing.generate('projeto_get_grupo_tutorial_details', {
+                                grupoTutorial: value,
+                                nuSipar: projetoSei,
+                                cpf: pessoa,
+                            }),
+                            method: 'GET',
+                            dataType: 'json',
+                            success: function (response) {
+                                // console.log(response);
+
+                                if ($.isEmptyObject(response)) {
+                                    // bootbox.alert('Não foi possível obter os detalhes do Grupo Tutorial.');
+                                    return false;
+                                } else {
+                                    if (response.details.eixoAtuacao) {
+                                        switch (response.details.eixoAtuacao) {
+                                            case 'G': { // Gestão em Saúde
+                                                $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                $('[id$="participante_coEixoAtuacao_0"]').attr('checked', true);
+                                                $('[name$="participante[coEixoAtuacao]"][value="G"]').prop('checked', true);
+                                                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
+                                                break;
+                                            }
+                                            case 'A': { // Assistência à Saúde
+                                                $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                $('[name$="participante[coEixoAtuacao]"][value="A"]').prop('checked', true);
+                                                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+
+                                                // if ((perfil == 5) || (perfil == 6)) { // Tutor | Estudante
+                                                if (perfil == 6) { // Estudante
+
+                                                    // Se Estudante, exibe somente os Cursos de Graduação que são dos
+                                                    // Preceptores
+
+                                                    $('[id$="participante_cursoGraduacao"] option').hide();
+                                                    var options = $('[id$="participante_cursoGraduacao"] option');
+
+                                                    for (var i = 0; i < response.details.cursosGraduacao.length; i++) {
+                                                        for (var j = 0; j < options.length; j++) {
+                                                            if ($(options[j]).val() == response.details.cursosGraduacao[i]) {
+                                                                $(options[j]).show();
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    if (perfil == 4) { // Preceptor
+
+                                        // Se Preceptor, não deve exibir os Cursos de Graduação que já esteja vinculado
+                                        // aos Preceptores
+
+                                        var options = $('[id$="participante_cursoGraduacao"] option');
+
+                                        for (var i = 0; i < response.details.cursosGraduacao.length; i++) {
+                                            for (var j = 0; j < options.length; j++) {
+                                                if ($(options[j]).val() == response.details.cursosGraduacao[i]) {
+                                                    $(options[j]).hide();
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    // if ((perfil == 5) || (perfil == 6)) { // Tutor | Estudante
+                                    if (perfil == 6) { // Estudante
+                                        if (response.details.temDoisPreceptores) {
+                                            $('#btn-salvar').show();
+                                        } else {
+                                            $('#btn-salvar').hide();
+                                            // bootbox.alert('É necessário ter no mínimo 2 (dois) Preceptores bolsistas cadastrados. Salvar não é permitido.');
+                                            return;
+                                        }
+                                    } else {
+                                        $('#btn-salvar').show();
+                                    }
+
+                                    // Verifica se a quantidade de cursos ocultos é igual a quantidade de cursos
+                                    var cursos = $('[id$="participante_cursoGraduacao"] option');
+                                    var totalCursos = cursos.length;
+                                    var totalCursosOcultos = 0;
+
+                                    for (var i = 0; i < totalCursos; i++) {
+                                        if (cursos[i].style.display == 'none') {
+                                            totalCursosOcultos++;
+                                        }
+                                    }
+
+                                    if (totalCursos == totalCursosOcultos) {
+                                        // bootbox.alert('Este grupo já atingiu o limite de 4 alunos neste Curso de Graduação, favor adicionar o participante em outro Curso de Graduação disponível ou outro Grupo Tutorial.');
+                                        return;
+                                    }
+                                }
+                            }
+                        });
+                    }
                 }
             } catch (e) {
                 // Do nothing.

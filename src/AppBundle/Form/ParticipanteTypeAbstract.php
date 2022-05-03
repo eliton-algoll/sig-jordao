@@ -246,6 +246,9 @@ class ParticipanteTypeAbstract extends AbstractType
             ])
             ->add('coEixoAtuacao', ChoiceType::class, array(
                 'label' => 'Eixo de Atuação',
+                'attr' => [
+                    'class' => 'coEixoAtuacao',
+                ],
                 'choices' => array(
                     'Gestão em Saúde' => 'G',
                     'Assistência à Saúde' => 'A'
