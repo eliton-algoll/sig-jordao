@@ -336,6 +336,18 @@ class ProjetoController extends ControllerAbstract
                     'coPerfil' => 6, // Estudante
                     'stRegistroAtivo' => 'S'
                 )))->getQuery()->getResult();
+
+                // Remove o estudante da listagem (pois já está cadastrado)
+                $cpfEnviado = $request->query->get('cpf');
+                $cpfEnviado = preg_replace('/\D/', '', $cpfEnviado);
+
+                // O estudante precisa se remover da lista
+                for ($i = count($estudantes) - 1; $i > -1; $i--) {
+                    if ($estudantes[$i]['nuCpfCnpjPessoa'] == $cpfEnviado) {
+                        array_splice($estudantes, $i, 1);
+                    }
+                }
+
                 $estudantesEncontradosGrupo = count($estudantes);
 
                 // Obtém o eixo de atuação
