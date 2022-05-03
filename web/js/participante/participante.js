@@ -12,8 +12,15 @@
             $('[name$="cursosLecionados][]"]').trigger('change');
             participante.disabledAreaTematicaNaoSelecionado($('[id$="participante_perfil"]'));
             $('input[name$="participante[stVoluntarioProjeto]"]:checked').trigger('click');
+
             setTimeout(function () {
                 $('[id$="participante_cursoGraduacao"]').trigger('change');
+
+                if ($('.nuCpf:first').attr('readonly') == 'readonly') {
+                    $('[id$="participante_coEixoAtuacao"] input')
+                        .attr('readonly', 'readonly')
+                        .attr('disabled', 'disabled');
+                }
             }, 500);
 
             $('[id$="participante_sexo"] option:selected').removeAttr('disabled');
