@@ -21,6 +21,14 @@
                     $('[id$="participante_coEixoAtuacao"] input')
                         .attr('readonly', 'readonly')
                         .attr('disabled', 'disabled');
+
+                    var perfil = parseInt($('[id$="participante_perfil"]').val(), 10);
+
+                    if (perfil === 4) { // Preceptor
+                        $('[id$="participante_cursoGraduacao"]')
+                            .attr('readonly', 'readonly')
+                            .attr('disabled', 'disabled');
+                    }
                 }
 
                 // Aplicar regrar de exibir ou ocultar curso de graduaçõa

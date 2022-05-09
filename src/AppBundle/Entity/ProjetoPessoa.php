@@ -494,10 +494,12 @@ class ProjetoPessoa extends AbstractEntity
     /**
      * @return CursoGraduacao
      */
-    public function getCursoGraduacaoEstudante()
+    public function getCursoGraduacaoEstudanteOuPreceptor()
     {
         $projetoPessoaCursoGraduacao = $this->projetoPessoaCursoGraduacao->filter(function ($projetoPessoaCursoGraduacao) {
-            if ($projetoPessoaCursoGraduacao->getProjetoPessoa()->getPessoaPerfil()->getPerfil()->getNoRole() == Perfil::ROLE_ESTUDANTE) {
+            $noRole = $projetoPessoaCursoGraduacao->getProjetoPessoa()->getPessoaPerfil()->getPerfil()->getNoRole();
+
+            if (($noRole == Perfil::ROLE_ESTUDANTE) || ($noRole == Perfil::ROLE_PRECEPTOR)) {
                 return $projetoPessoaCursoGraduacao->isAtivo();
             }
         })->first();
