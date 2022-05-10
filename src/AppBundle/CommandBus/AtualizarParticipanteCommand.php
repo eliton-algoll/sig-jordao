@@ -77,7 +77,7 @@ class AtualizarParticipanteCommand extends CadastrarParticipanteCommand
         $this->categoriaProfissional = $dadoAcademico ? $dadoAcademico->getCategoriaProfissional() : null;
         $this->coCnes = $dadoAcademico ? $dadoAcademico->getCoCnes() : null;
         $this->titulacao = $dadoAcademico ? $dadoAcademico->getTitulacao() : null;
-        $this->cursoGraduacao = $projetoPessoa->getCursoGraduacaoEstudante();
+        $this->cursoGraduacao = $projetoPessoa->getCursoGraduacaoEstudanteOuPreceptor();
         $this->nuAnoIngresso = $dadoAcademico ? $dadoAcademico->getNuAnoIngresso() : null;
         $this->nuMatriculaIES = $dadoAcademico ? $dadoAcademico->getNuMatricula() : null;
         $this->nuSemestreAtual = $dadoAcademico ? $dadoAcademico->getNuSemestre() : null;
