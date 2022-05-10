@@ -5,6 +5,7 @@ namespace AppBundle\Form;
 use AppBundle\Entity\AreaTematica;
 use AppBundle\Entity\GrupoAtuacao;
 use AppBundle\Repository\AreaTematicaRepository;
+use AppBundle\Repository\CategoriaProfissionalRepository;
 use AppBundle\Repository\GrupoAtuacaoRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -120,9 +121,15 @@ class ParticipanteTypeAbstract extends AbstractType
             ->add('categoriaProfissional', EntityType::class, array(
                 'label' => 'Categoria Profissional',
                 'class' => 'AppBundle:CategoriaProfissional',
-                'choice_label' => function ($categoria) {
-                    return $categoria->getDsCategoriaProfissional();
+//                'choice_label' => function ($categoria) {
+//                    return $categoria->getDsCategoriaProfissional();
+//                },
+                'query_builder' => function (CategoriaProfissionalRepository $repo) {
+                    return $repo->createQueryBuilder('cp')
+                        ->where('cp.stRegistroAtivo = \'S\' AND NOT UPPER(cp.dsCategoriaProfissional) = UPPER(\'Outro\')')
+                        ->addOrderBy('cp.dsCategoriaProfissional');
                 },
+                'choice_label' => 'dsCategoriaProfissional',
                 'required' => false
             ))
             ->add('coCnes', TextType::class, array(
@@ -148,8 +155,9 @@ class ParticipanteTypeAbstract extends AbstractType
                 'class' => 'AppBundle:CursoGraduacao',
                 'query_builder' => function (CursoGraduacaoRepository $repo) {
                     return $repo->createQueryBuilder('cg')
-                        ->where('cg.stRegistroAtivo = \'S\'')
-                        ->orderBy('cg.dtInclusao') // Apenas para a opção outro ficar em último
+                        // ->where('cg.stRegistroAtivo = \'S\'')
+                        // ->orderBy('cg.dtInclusao') // Apenas para a opção outro ficar em último
+                        ->where('cg.stRegistroAtivo = \'S\' AND NOT UPPER(cg.dsCursoGraduacao) = UPPER(\'Outro\')')
                         ->addOrderBy('cg.dsCursoGraduacao');
                 },
                 'choice_label' => 'dsCursoGraduacao',
