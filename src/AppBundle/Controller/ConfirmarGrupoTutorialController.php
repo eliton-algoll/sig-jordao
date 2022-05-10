@@ -348,8 +348,8 @@ SQL;
 
                 // echo "Tutores Encontrados: " . $tutoresEncontrados . "\n";
 
-                if ($tutoresEncontrados != 2) {
-                    $errors[] = $grupoAtuacao->getNoGrupoAtuacao() . ' - Cada Grupo Tutorial deverá ser composto por 2 (dois) tutores bolsistas. Encontrados: ' . $tutoresEncontrados;
+                if ($tutoresEncontrados != 1) {
+                    $errors[] = $grupoAtuacao->getNoGrupoAtuacao() . ' - Cada Grupo Tutorial deverá ser composto por 1 (um) tutor bolsista. Encontrados: ' . $tutoresEncontrados;
                 }
 
                 // Cada Grupo Tutorial deverá ser composto por 1 (um) coordenador de grupo bolsista
