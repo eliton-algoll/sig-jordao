@@ -132,15 +132,19 @@ class ParticipanteController extends ControllerAbstract
                 return $this->redirectToRoute('participante');
             } catch (InvalidCommandException $e) {
                 $erros = array();
+
                 if (method_exists($e, 'getViolations')) {
                     foreach ($e->getViolations() as $violation) {
                         $message = $violation->getMessage();
+
                         foreach($form->all() as $formElement) {
                             $config = $formElement->getConfig();
+
                             if($violation->getPropertyPath() == $config->getName()) {
                                 $message .= ' Verificar: ' . $config->getOption("label") . '.';
                             }
                         }
+
                         $erros[] = $message;
                     }
                 }
