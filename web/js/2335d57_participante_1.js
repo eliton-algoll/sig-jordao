@@ -93,6 +93,7 @@
 
                     if ((isNaN(cursoId)) || (cursoId <= 0)) {
                         bootbox.alert('É obrigatório o preenchimento do Curso de Graduação.');
+                        return false;
                     }
                 }
             } catch (e) {
