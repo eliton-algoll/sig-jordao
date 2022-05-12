@@ -85,6 +85,20 @@
                 return false;
             }
 
+            try {
+                var perfil = parseInt($('[id$="participante_perfil"]').val(), 10);
+
+                if ((perfil === 4) || (perfil === 6)) { // Preceptor ou Estudante
+                    var cursoId = parseInt($('[id$="participante_cursoGraduacao"]').val(), 10);
+
+                    if ((isNaN(cursoId)) || (cursoId <= 0)) {
+                        bootbox.alert('É obrigatório o preenchimento do Curso de Graduação.');
+                    }
+                }
+            } catch (e) {
+                return false;
+            }
+
             return true;
         },
 
@@ -106,7 +120,7 @@
             if (
                 (perfil.val() != preceptor && participante.isAreaAtuacao()) ||
                 (perfil.val() == estudante && !participante.isAreaAtuacao()) ||
-                perfil.val() == ''
+                (perfil.val() == '')
             ) {
                 $('[name$="areaTematica][]"] option').attr('disabled', true);
 
@@ -311,11 +325,9 @@
             ).append(
                 $('<td>').append($('#telefone_tpTelefone > option:selected').html())
             ).append(
-                $('<td>').append(
-                    $('<a>').attr('href', 'javascript:;').addClass('btn-excluir-telefone').append(
-                        $('<span>').addClass('glyphicon glyphicon-remove').attr('title', 'Remover')
-                    )
-                )
+                $('<td>').append($('<a>').attr('href', 'javascript:;').addClass('btn-excluir-telefone').append(
+                    $('<span>').addClass('glyphicon glyphicon-remove').attr('title', 'Remover')
+                ))
             );
 
             $('#table-telefones > tbody').append(tr);
@@ -418,6 +430,7 @@
 
             if ($('[id$="participante_perfil"] option:selected').val() == 5 || $('[id$="participante_perfil"] option:selected').val() == 3) { // 3-Coordenador de Grupo 5-Tutor
                 $('[id$="participante_cursoGraduacao"]').val('');
+
                 // desabilito todos os grupos de atuação
                 $('[name$="areaTematica][]"] option').attr('disabled', true);
 
