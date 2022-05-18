@@ -454,68 +454,64 @@ class GrupoAtuacao extends AbstractEntity
                     );
                     $temas[] = array(
                         'id' => 13,
-                        'valor' => 'Organização de Serviços de Saúde e Mudanças no Modelo de Atenção à Saúde'
-                    );
-                    $temas[] = array(
-                        'id' => 14,
                         'valor' => 'Novas Tecnologias de Informação e Comunicação em Saúde'
                     );
                     $temas[] = array(
-                        'id' => 15,
+                        'id' => 14,
                         'valor' => 'Disponibilidade e Oferta de Serviços (equipamentos/insumos/medicamentos)'
                     );
                     $temas[] = array(
-                        'id' => 16,
+                        'id' => 15,
                         'valor' => 'Infraestrutura (estrutura física/recursos humanos/integração ensino-saúde)'
                     );
                     $temas[] = array(
-                        'id' => 17,
+                        'id' => 16,
                         'valor' => 'Epidemiologia'
                     );
                     $temas[] = array(
-                        'id' => 18,
+                        'id' => 17,
                         'valor' => 'Iniciativas de Atenção à Saúde, de Gestão em Saúde e de Educação em Saúde Voltadas para a Pandemia de Covid-19, nos três níveis de Atenção à Saúde'
                     );
                     break;
                 case 'A': // Assistência à Saúde
                     $temas[] = array(
-                        'id' => 19,
+                        'id' => 18,
                         'valor' => 'Vigilância em Saúde e Promoção da Saúde'
                     );
                     $temas[] = array(
-                        'id' => 20,
+                        'id' => 19,
                         'valor' => 'Procedimentos na Atenção Primária à Saúde'
                     );
                     $temas[] = array(
-                        'id' => 21,
+                        'id' => 20,
                         'valor' => 'Atenção Domiciliar do SUS'
                     );
                     $temas[] = array(
-                        'id' => 22,
+                        'id' => 21,
                         'valor' => 'Atenção Ambulatorial Especializada e Hospitalar do SUS'
                     );
                     $temas[] = array(
-                        'id' => 23,
+                        'id' => 22,
                         'valor' => 'Segurança do Paciente'
                     );
                     $temas[] = array(
-                        'id' => 24,
+                        'id' => 23,
                         'valor' => 'Urgência e Emergência do SUS'
                     );
                     $temas[] = array(
-                        'id' => 25,
+                        'id' => 24,
                         'valor' => 'Os Cuidados com a Saúde Mental'
                     );
                     $temas[] = array(
-                        'id' => 26,
+                        'id' => 25,
                         'valor' => 'As Doenças Crônicas'
                     );
                     $temas[] = array(
-                        'id' => 27,
+                        'id' => 26,
                         'valor' => 'Atenção às Demandas e aos Processos Eletivos'
                     );
                     $temas[] = array(
-                        'id' => 28,
+                        'id' => 27,
                         'valor' => 'Iniciativas de Atenção à Saúde, de Gestão em Saúde e de Educação em Saúde Voltadas para a Pandemia de Covid-19, nos três níveis de Atenção à Saúde'
                     );
                     break;
