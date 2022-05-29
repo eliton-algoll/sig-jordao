@@ -350,10 +350,14 @@ class ProjetoController extends ControllerAbstract
 
                 $estudantesEncontradosGrupo = count($estudantes);
 
+                $preceptoresIds = [];
+
                 // Obtém o eixo de atuação
                 // Obtém as categorias
                 // Obtém os cursos de graduação
                 foreach ($preceptores as $preceptor) {
+                    $preceptoresIds[] = $preceptor['coSeqProjetoPessoa'];
+
                     if ((is_null($eixoAtuacao)) && (!is_null($preceptor['coEixoAtuacao']))) {
                         $eixoAtuacao = $preceptor['coEixoAtuacao'];
                     }
@@ -406,7 +410,8 @@ class ProjetoController extends ControllerAbstract
                     'temDoisPreceptores' => (count($preceptores) >= 2),
                     'categoriasProfissionais' => $categoriasProfissionais,
                     'cursosGraduacao' => $cursosGraduacao,
-                    'estudantesEncontrados' => $estudantesEncontradosGrupo
+                    'estudantesEncontrados' => $estudantesEncontradosGrupo,
+                    'preceptores' => $preceptoresIds
                 ];
             } else {
                 $response->details = [
@@ -414,6 +419,7 @@ class ProjetoController extends ControllerAbstract
                     'temDoisPreceptores' => true,
                     'categoriasProfissionais' => [],
                     'cursosGraduacao' => [],
+                    'preceptores' => [],
                 ];
             }
         } catch (SiparInvalidoException $e) {
