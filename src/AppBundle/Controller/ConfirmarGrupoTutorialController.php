@@ -249,10 +249,29 @@ WHERE
     AND ((t10_.st_aluno_regular <> 'S') OR (t10_.st_declaracao_curso_penultimo <> 'S'))
 SQL;
 
-
             // Realiza as validações
             foreach ($gruposAtuacao as $grupoAtuacao) { // aka Grupo Tutorial
                 // echo $grupoAtuacao->getNoGrupoAtuacao() . "\n";
+
+                // No fluxo de Confirmar Grupo Tutorial, o sistema deverá verificar a composição do Grupo, permitindo a
+                // conclusão apenas quando o grupo possuir 12 Participantes, sendo eles 2 Preceptores, 1 Tutor, 1
+                // Coordenador de grupo e 8 Estudantes. Hoje já temos exceção para quantidade mínima, mas não temos para
+                // o limite máximo de participantes. Caso o grupo exceda o limite máximo de algum dos Perfis, deverá ser
+                // apresentada a seguinte mensagem: "O Grupo [Número do grupo] excedeu o limite máximo de Participantes
+                // com o Perfil [Nome do Perfil]. Encontrados: [X número de Participantes encontrados com o Perfil].
+                // Limite: [Quantidade limite de participantes daquele referido Perfil]."
+                $limites = [
+                    'preceptor' => 2,
+                    'tutor' => 1,
+                    'coordenadorGrupo' => 1,
+                    'estudante' => 8,
+                ];
+                $totais = [
+                    'preceptor' => 0,
+                    'tutor' => 0,
+                    'coordenadorGrupo' => 0,
+                    'estudante' => 0,
+                ];
 
                 // Cada grupo tutorial deverá ser composto por 8 (oito) estudantes bolsistas
                 $records = $conn->fetchAll($sqlTotalParticipante, array(
@@ -267,6 +286,8 @@ SQL;
                 } catch (\Exception $ex) {
                     // Do nothing.
                 }
+
+                $totais['estudante'] = $estudantesEncontrados;
 
                 // echo "Estudantes Encontrados: " . $estudantesEncontrados . "\n";
 
@@ -332,7 +353,7 @@ SQL;
 
                 }
 
-                // Cada Grupo Tutorial deverá ser composto por 2 (dois) tutores bolsistas
+                // Cada Grupo Tutorial deverá ser composto por 1 (um) tutor bolsista
                 $records = $conn->fetchAll($sqlTotalParticipante, array(
                     'coPerfil' => 5, // Tutor
                     'coGrupoAtuacao' => $grupoAtuacao->getCoSeqGrupoAtuacao(),
@@ -345,6 +366,8 @@ SQL;
                 } catch (\Exception $ex) {
                     // Do nothing.
                 }
+
+                $totais['tutor'] = $tutoresEncontrados;
 
                 // echo "Tutores Encontrados: " . $tutoresEncontrados . "\n";
 
@@ -366,6 +389,8 @@ SQL;
                     // Do nothing.
                 }
 
+                $totais['coordenadorGrupo'] = $coordenadoresEncontrados;
+
                 // echo "Coordenadores Encontrados: " . $coordenadoresEncontrados . "\n";
 
                 if ($coordenadoresEncontrados != 1) {
@@ -386,10 +411,34 @@ SQL;
                     // Do nothing.
                 }
 
+                $totais['preceptor'] = $preceptoresEncontrados;
+
                 // echo "Preceptores Encontrados: " . $preceptoresEncontrados . "\n";
 
                 if (($preceptoresEncontrados < 2) || ($preceptoresEncontrados > 4)) {
                     $errors[] = $grupoAtuacao->getNoGrupoAtuacao() . ' - Cada Grupo Tutorial deverá ser composto por no mínimo 2 (dois) e no máximo 4 (quatro) preceptores bolsistas. Encontrados: ' . $preceptoresEncontrados;
+                }
+
+                // Não houve erro aparente
+                if (count($errors) == 0) {
+
+                    // Precisa validar os limites
+
+                    if ($totais['preceptor'] > $limites['preceptor']) {
+                        $errors[] = 'O Grupo ' . $grupoAtuacao->getNoGrupoAtuacao() . ' excedeu o limite máximo de Participantes com o Perfil Preceptor. Encontrados: ' . $totais['preceptor'] . ' Limite: ' . $limites['preceptor'];
+                    }
+
+                    if ($totais['tutor'] > $limites['tutor']) {
+                        $errors[] = 'O Grupo ' . $grupoAtuacao->getNoGrupoAtuacao() . ' excedeu o limite máximo de Participantes com o Perfil Tutor. Encontrados: ' . $totais['tutor'] . ' Limite: ' . $limites['tutor'];
+                    }
+
+                    if ($totais['coordenadorGrupo'] > $limites['coordenadorGrupo']) {
+                        $errors[] = 'O Grupo ' . $grupoAtuacao->getNoGrupoAtuacao() . ' excedeu o limite máximo de Participantes com o Perfil Coordenador de Grupo. Encontrados: ' . $totais['coordenadorGrupo'] . ' Limite: ' . $limites['coordenadorGrupo'];
+                    }
+
+                    if ($totais['estudante'] > $limites['estudante']) {
+                        $errors[] = 'O Grupo ' . $grupoAtuacao->getNoGrupoAtuacao() . ' excedeu o limite máximo de Participantes com o Perfil Estudante. Encontrados: ' . $totais['estudante'] . ' Limite: ' . $limites['estudante'];
+                    }
                 }
             }
 
