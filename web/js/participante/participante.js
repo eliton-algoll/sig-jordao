@@ -572,7 +572,7 @@
                             url: Routing.generate('projeto_get_grupo_tutorial_details', {
                                 grupoTutorial: value,
                                 nuSipar: projetoSei,
-                                cpf: pessoa,
+                                cpf: cpfPessoa,
                             }),
                             method: 'GET',
                             dataType: 'json',
@@ -633,6 +633,36 @@
                                                 }
                                             }
                                         }
+
+                                        // Verifica se já existem dois preceptores para esse curso e não pode cadastrar
+                                        // um novo
+                                        var preceptores = [];
+                                        var preceptorAtual = -1;
+                                        var parts = window.location.href.split('/');
+
+                                        if (parts.length === 6) {
+                                            try {
+                                                preceptorAtual = parseInt(parts[5], 10);
+                                            } catch (e) {
+                                                // Do nothing.
+                                            }
+                                        }
+
+                                        for (var _pi = 0; _pi < response.details.preceptores.length; _pi++) {
+                                            if (preceptorAtual <= 0) {
+                                                preceptores.push(response.details.preceptores[_pi]);
+                                            } else {
+                                                if (response.details.preceptores[_pi] !== preceptorAtual) {
+                                                    preceptores.push(response.details.preceptores[_pi]);
+                                                }
+                                            }
+                                        }
+
+                                        if (preceptores.length >= 2) {
+                                            $('#btn-salvar').hide();
+                                            bootbox.alert('Este Grupo já possui seus dois preceptores cadastrados, selecione outro grupo para realizar o cadastro.');
+                                            return;
+                                        }
                                     }
 
                                     // if ((perfil == 5) || (perfil == 6)) { // Tutor | Estudante
@@ -687,6 +717,7 @@
                     } else {
                         try {
                             pessoa = JSON.parse(pessoa);
+                            pessoa = pessoa.nuCpfCnpjPessoa;
                         } catch (e) {
                             pessoa = pessoa;
                         }
@@ -781,6 +812,36 @@
                                                 }
                                             }
                                         }
+
+                                        // // Verifica se já existem dois preceptores para esse curso e não pode cadastrar
+                                        // // um novo
+                                        // var preceptores = [];
+                                        // var preceptorAtual = -1;
+                                        // var parts = window.location.href.split('/');
+                                        //
+                                        // if (parts.length === 6) {
+                                        //     try {
+                                        //         preceptorAtual = parseInt(parts[5], 10);
+                                        //     } catch (e) {
+                                        //         // Do nothing.
+                                        //     }
+                                        // }
+                                        //
+                                        // for (var _pi = 0; _pi < response.details.preceptores.length; _pi++) {
+                                        //     if (preceptorAtual <= 0) {
+                                        //         preceptores.push(response.details.preceptores[_pi]);
+                                        //     } else {
+                                        //         if (response.details.preceptores[_pi] !== preceptorAtual) {
+                                        //             preceptores.push(response.details.preceptores[_pi]);
+                                        //         }
+                                        //     }
+                                        // }
+                                        //
+                                        // if (preceptores.length >= 2) {
+                                        //     $('#btn-salvar').hide();
+                                        //     bootbox.alert('Este Grupo já possui seus dois preceptores cadastrados, selecione outro grupo para realizar o cadastro.');
+                                        //     return;
+                                        // }
                                     }
 
                                     // if ((perfil == 5) || (perfil == 6)) { // Tutor | Estudante
