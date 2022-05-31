@@ -141,32 +141,32 @@ class PessoaFisica extends AbstractEntity
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\PessoaPerfil", mappedBy="pessoaFisica", cascade={"persist"})
      */
     private $pessoasPerfis;
-    
+
     /**
      * @var Pessoa
-     * 
+     *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Pessoa")
      * @ORM\JoinColumn(name="NU_CPF", referencedColumnName="NU_CPF_CNPJ_PESSOA")
      */
     private $pessoa;
-    
+
     /**
      * @var DadoPessoal
-     * 
+     *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\DadoPessoal", mappedBy="pessoaFisica", cascade={"persist"})
      */
     private $dadoPessoal;
-    
+
     /**
      * @var Usuario
-     * 
+     *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Usuario", mappedBy="pessoaFisica")
      */
     private $usuario;
 
     public function __construct()
     {
-        $this->pessoasPerfis = new ArrayCollection();        
+        $this->pessoasPerfis = new ArrayCollection();
     }
 
     /**
@@ -185,7 +185,7 @@ class PessoaFisica extends AbstractEntity
     /**
      * Get coNaturezaOcupacao
      *
-     * @return string 
+     * @return string
      */
     public function getCoNaturezaOcupacao()
     {
@@ -208,7 +208,7 @@ class PessoaFisica extends AbstractEntity
     /**
      * Get coOcupacaoPrincipal
      *
-     * @return string 
+     * @return string
      */
     public function getCoOcupacaoPrincipal()
     {
@@ -231,7 +231,7 @@ class PessoaFisica extends AbstractEntity
     /**
      * Get coPaisExterior
      *
-     * @return string 
+     * @return string
      */
     public function getCoPaisExterior()
     {
@@ -254,7 +254,7 @@ class PessoaFisica extends AbstractEntity
     /**
      * Get coUnidadeAdministrativa
      *
-     * @return string 
+     * @return string
      */
     public function getCoUnidadeAdministrativa()
     {
@@ -277,7 +277,7 @@ class PessoaFisica extends AbstractEntity
     /**
      * Get dtNascimento
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDtNascimento()
     {
@@ -300,7 +300,7 @@ class PessoaFisica extends AbstractEntity
     /**
      * Get noMae
      *
-     * @return string 
+     * @return string
      */
     public function getNoMae()
     {
@@ -323,7 +323,7 @@ class PessoaFisica extends AbstractEntity
     /**
      * Get noPaisExterior
      *
-     * @return string 
+     * @return string
      */
     public function getNoPaisExterior()
     {
@@ -346,7 +346,7 @@ class PessoaFisica extends AbstractEntity
     /**
      * Get nuAnoExercicioNatocup
      *
-     * @return string 
+     * @return string
      */
     public function getNuAnoExercicioNatocup()
     {
@@ -369,7 +369,7 @@ class PessoaFisica extends AbstractEntity
     /**
      * Get nuAnoObito
      *
-     * @return string 
+     * @return string
      */
     public function getNuAnoObito()
     {
@@ -392,7 +392,7 @@ class PessoaFisica extends AbstractEntity
     /**
      * Get nuCartaoSus
      *
-     * @return string 
+     * @return string
      */
     public function getNuCartaoSus()
     {
@@ -415,7 +415,7 @@ class PessoaFisica extends AbstractEntity
     /**
      * Get nuTituloEleitor
      *
-     * @return string 
+     * @return string
      */
     public function getNuTituloEleitor()
     {
@@ -438,7 +438,7 @@ class PessoaFisica extends AbstractEntity
     /**
      * Get sexo
      *
-     * @return string 
+     * @return string
      */
     public function getSexo()
     {
@@ -461,7 +461,7 @@ class PessoaFisica extends AbstractEntity
     /**
      * Get stEstrangeiro
      *
-     * @return string 
+     * @return string
      */
     public function getStEstrangeiro()
     {
@@ -484,7 +484,7 @@ class PessoaFisica extends AbstractEntity
     /**
      * Get stResidenteExterior
      *
-     * @return string 
+     * @return string
      */
     public function getStResidenteExterior()
     {
@@ -507,7 +507,7 @@ class PessoaFisica extends AbstractEntity
     /**
      * Get tpSexo
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getTpSexo()
     {
@@ -530,7 +530,7 @@ class PessoaFisica extends AbstractEntity
     /**
      * Get tpSituacaoCpf
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getTpSituacaoCpf()
     {
@@ -552,7 +552,7 @@ class PessoaFisica extends AbstractEntity
     {
         return $this->nuCpf;
     }
-    
+
     /**
      * @return ArrayCollection<PessoaPerfil>
      */
@@ -560,7 +560,7 @@ class PessoaFisica extends AbstractEntity
     {
         return $this->pessoasPerfis;
     }
-    
+
     /**
      * @return ArrayCollection<PessoaPerfil>
      */
@@ -570,7 +570,7 @@ class PessoaFisica extends AbstractEntity
             return $pessoaPerfil->isAtivo();
         });
     }
-    
+
     /**
      * @return ArrayCollection<PessoaPerfil>
      */
@@ -579,13 +579,14 @@ class PessoaFisica extends AbstractEntity
         $perfis = $this->pessoasPerfis->filter(function ($pessoaPerfil) {
             return $pessoaPerfil->isAtivo();
         })->count();
-        
-        if($perfis <= 1) {
+
+        if ($perfis <= 1) {
             return true;
         }
+
         return false;
     }
-    
+
     /**
      * @return Pessoa
      */
@@ -593,22 +594,22 @@ class PessoaFisica extends AbstractEntity
     {
         return $this->pessoa;
     }
-    
+
     /**
      * @return DadoPessoal
      */
     public function getDadoPessoal()
     {
         return $this->dadoPessoal;
-    }    
-    
+    }
+
     private function inativarAllPessoasPerfis()
     {
         foreach ($this->pessoasPerfis->toArray() as $pessoaPerfil) {
             $pessoaPerfil->inativar();
         }
     }
-    
+
     /**
      * @param Perfil $perfil
      * @return boolean
@@ -620,10 +621,10 @@ class PessoaFisica extends AbstractEntity
                 return $perfilVinculado;
             }
         }
-        
+
         return false;
     }
-    
+
     /**
      * @param Perfil $perfil
      * @return PessoaPerfil
@@ -636,24 +637,24 @@ class PessoaFisica extends AbstractEntity
             $perfilVinculado = new PessoaPerfil($perfil, $this);
             $this->pessoasPerfis->add($perfilVinculado);
         }
-        
+
         return $perfilVinculado;
     }
-    
+
     /**
      * @return array
      */
     public function getPerfis()
     {
         $perfis = [];
-        
+
         foreach ($this->getPessoasPerfis() as $perfil) {
-            $perfis[$perfil->getPerfil()->getDsPerfil()] = $perfil->getPerfil(); 
+            $perfis[$perfil->getPerfil()->getDsPerfil()] = $perfil->getPerfil();
         }
-        
+
         return $perfis;
     }
-    
+
     /**
      * @param Perfil $perfil
      * @return PessoaPerfil
@@ -665,10 +666,10 @@ class PessoaFisica extends AbstractEntity
                 return $pessoaPerfil;
             }
         });
-        
+
         return $pessoasPerfis->isEmpty() ? null : $pessoasPerfis->first();
     }
-    
+
     /**
      * @return Usuario
      */
@@ -676,7 +677,7 @@ class PessoaFisica extends AbstractEntity
     {
         return $this->usuario;
     }
-    
+
     /**
      * @param Projeto $projeto
      * @return boolean
@@ -690,22 +691,22 @@ class PessoaFisica extends AbstractEntity
                 }
             }
         }
-        
+
         return false;
-    }    
-    
+    }
+
     /**
-     * 
+     *
      * @return boolean
      */
     public function isCpfRegular()
     {
         return $this->getTpSituacaoCpf() === 0;
     }
-    
+
     /**
-     * 
-     //* @param \AppBundle\Entity\AgenciaBancaria $agencia
+     *
+     * //* @param \AppBundle\Entity\AgenciaBancaria $agencia
      * @param \AppBundle\Entity\Banco $banco
      * @param string $agencia
      * @param string $conta

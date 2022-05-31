@@ -307,14 +307,11 @@ class ParticipanteController extends ControllerAbstract
 
             try {
                 $this->getBus()->handle($command);
-
                 $return = array(
                     'status' => true,
                     'message' => 'Cadastro de participante removido com sucesso'
                 );
-
             } catch (\Exception $e) {
-
                 $return = array(
                     'status' => false,
                     'message' => $e->getMessage()
