@@ -247,6 +247,11 @@ class ProjetoPessoa extends AbstractEntity
         $this->dtDesligamento = new \DateTime();
     }
 
+    public function isAtivo()
+    {
+        return $this->stRegistroAtivo == 'S';
+    }
+
     /**
      * @param GrupoAtuacao $grupoAtuacao
      * @return boolean
@@ -507,6 +512,8 @@ class ProjetoPessoa extends AbstractEntity
         if ($projetoPessoaCursoGraduacao) {
             return $projetoPessoaCursoGraduacao->getCursoGraduacao();
         }
+
+        return null;
     }
 
     /**

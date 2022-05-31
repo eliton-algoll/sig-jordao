@@ -221,4 +221,5 @@ class ProjetoPessoaRepository extends RepositoryAbstract
                 'stAtivo' => 'S',
             ])->getQuery()->getResult();
     }
+
 }

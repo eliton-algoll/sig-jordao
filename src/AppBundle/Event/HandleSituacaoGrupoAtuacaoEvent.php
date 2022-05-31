@@ -7,6 +7,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 final class HandleSituacaoGrupoAtuacaoEvent extends Event
 {
+
     const NAME = 'handle_situacao.grupo_atuacao';
 
     /**
@@ -30,4 +31,5 @@ final class HandleSituacaoGrupoAtuacaoEvent extends Event
     {
         return $this->projetoPessoa;
     }
+
 }
