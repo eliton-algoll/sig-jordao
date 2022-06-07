@@ -32,6 +32,7 @@ class ProjetoPessoaRepository extends RepositoryAbstract
             'prp.dtDesligamento',
             'prp.stVoluntarioProjeto',
             'ga.noGrupoAtuacao',
+            'ga.coEixoAtuacao'
         ];
 
         $qb->select(implode(', ', $select))
@@ -56,29 +57,33 @@ class ProjetoPessoaRepository extends RepositoryAbstract
                 'ga.stRegistroAtivo = \'S\''
             )
             ->where("p.stRegistroAtivo = 'S'")
-            ->setParameter('tpPrograma', Programa::GRUPO_TUTORIAL)
-        ;
+            ->setParameter('tpPrograma', Programa::GRUPO_TUTORIAL);
         
         if($params->get('noPessoa')) {
             $qb->andWhere('upper(p.noPessoa) like upper(:noPessoa)')
                 ->setParameter('noPessoa', '%' . $params->get('noPessoa') . '%');
         }
+
         if($params->get('nuCpf')) {
             $qb->andWhere('pes.nuCpf like :nuCpf')
                 ->setParameter('nuCpf', '%' . $params->getAlnum('nuCpf') . '%');
         }
+
         if($params->get('coPerfil')) {
             $qb->andWhere('per.coSeqPerfil = :coPerfil')
                 ->setParameter('coPerfil', $params->getDigits('coPerfil'));
         }
+
         if($params->get('nuSipar')) {
             $qb->andWhere('pr.nuSipar like :nuSipar')
                 ->setParameter('nuSipar', '%' . $params->get('nuSipar') . '%');
         }
+
         if($params->get('coPrograma')) {
             $qb->andWhere('pro.coSeqPrograma = :coPrograma')
                 ->setParameter('coPrograma', $params->getInt('coPrograma'));
         }
+
         if($params->get('coDadoPessoal')) {
             $qb->andWhere('p.coSeqDadoPessoal = :coDadoPessoal')
                 ->setParameter('coDadoPessoal', $params->getInt('coDadoPessoal'));
@@ -89,23 +94,26 @@ class ProjetoPessoaRepository extends RepositoryAbstract
             $qb->andWhere('pr.coSeqProjeto = :coSeqProjeto')
                 ->setParameter('coSeqProjeto', $projeto->getCoSeqProjeto());
         }
+
         if($params->get('pessoaPerfil')) {
             $pessoaPerfil = $params->get('pessoaPerfil');
             if(!$pessoaPerfil->getPerfil()->isAdministrador()) {
                 $qb->andWhere("prp.stRegistroAtivo = 'S'");
             }
         }
+
         if($params->get('stRegistroAtivo')) {
             $qb->andWhere('prp.stRegistroAtivo = :stRegistroAtivo')
                 ->setParameter('stRegistroAtivo', $params->get('stRegistroAtivo'));
         }
+
         if ($params->get('grupoTutorial')) {
             $qb->andWhere('ga.coSeqGrupoAtuacao = :grupoAtuacao')
                 ->setParameter('grupoAtuacao', $params->get('grupoTutorial'));
         }
         
         $qb->orderBy('p.noPessoa', 'asc');
-        
+
         return $qb;
     }
     
@@ -213,4 +221,5 @@ class ProjetoPessoaRepository extends RepositoryAbstract
                 'stAtivo' => 'S',
             ])->getQuery()->getResult();
     }
+
 }

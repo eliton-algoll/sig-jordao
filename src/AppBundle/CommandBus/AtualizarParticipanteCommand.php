@@ -71,14 +71,24 @@ class AtualizarParticipanteCommand extends CadastrarParticipanteCommand
             $this->coCep = $endereco->getCep()->getNuCep();
         }
 
+        $this->coEixoAtuacao = $projetoPessoa->getCoEixoAtuacao();
+
         $dadoAcademico = $projetoPessoa->getDadoAcademicoAtivo();
         $this->categoriaProfissional = $dadoAcademico ? $dadoAcademico->getCategoriaProfissional() : null;
         $this->coCnes = $dadoAcademico ? $dadoAcademico->getCoCnes() : null;
         $this->titulacao = $dadoAcademico ? $dadoAcademico->getTitulacao() : null;
-        $this->cursoGraduacao = $projetoPessoa->getCursoGraduacaoEstudante();
+        $this->cursoGraduacao = $projetoPessoa->getCursoGraduacaoEstudanteOuPreceptor();
         $this->nuAnoIngresso = $dadoAcademico ? $dadoAcademico->getNuAnoIngresso() : null;
         $this->nuMatriculaIES = $dadoAcademico ? $dadoAcademico->getNuMatricula() : null;
         $this->nuSemestreAtual = $dadoAcademico ? $dadoAcademico->getNuSemestre() : null;
+        $this->stAlunoRegular = $dadoAcademico ? $dadoAcademico->getStAlunoRegular() : null;
+
+        $stDeclaracaoCursoPenultimo = null;
+        if (($dadoAcademico) && (!is_null($dadoAcademico->getStDeclaracaoCursoPenultimo()))) {
+            $stDeclaracaoCursoPenultimo = ($dadoAcademico->getStDeclaracaoCursoPenultimo() === 'S');
+        }
+
+        $this->stDeclaracaoCursoPenultimo = $stDeclaracaoCursoPenultimo;
 
         $projetosPessoaGrupoAtuacao = $projetoPessoa->getProjetoPessoaGrupoAtuacaoAtivo();
 

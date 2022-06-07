@@ -6,6 +6,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class InativarParticipanteCommand
 {
+
     /**
      * @var integer
      * @Assert\NotBlank
@@ -29,4 +30,5 @@ class InativarParticipanteCommand
         $this->projetoPessoa = $projetoPessoa;
         return $this;
     }
+
 }

@@ -14,8 +14,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 class ProjetoPessoa extends AbstractEntity
 {
     use \AppBundle\Traits\DeleteLogicoTrait;
-    use \AppBundle\Traits\DataInclusaoTrait;    
-    
+    use \AppBundle\Traits\DataInclusaoTrait;
+
     /**
      * @var int
      *
@@ -41,36 +41,43 @@ class ProjetoPessoa extends AbstractEntity
      * @ORM\JoinColumn(name="CO_PESSOA_PERFIL", referencedColumnName="CO_SEQ_PESSOA_PERFIL")
      */
     private $pessoaPerfil;
-    
+
     /**
      * @var string stVoluntarioProjeto
-     * 
+     *
      * @ORM\Column(name="ST_VOLUNTARIO_PROJETO", type="string", nullable=false)
      */
     private $stVoluntarioProjeto;
-    
+
     /**
      *
      * @var \DateTime
-     * 
+     *
      * @ORM\Column(name="DT_DESLIGAMENTO", type="datetime", nullable=true)
      */
     private $dtDesligamento;
-    
+
+    /**
+     * @var string coEixoAtuacao
+     *
+     * @ORM\Column(name="CO_EIXO_ATUACAO", type="string", length=1, nullable=true)
+     */
+    private $coEixoAtuacao;
+
     /**
      * @var ProjetoPessoaGrupoAtuacao
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjetoPessoaGrupoAtuacao", mappedBy="projetoPessoa", cascade={"persist"})
      */
     private $projetoPessoaGrupoAtuacao;
-    
+
     /**
      * @var DadoAcademico
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\DadoAcademico", mappedBy="projetoPessoa", cascade={"persist"})
      */
     private $dadosAcademicos;
-    
+
     /**
-     * @var ProjetoPessoaCursoGraduacao 
+     * @var ProjetoPessoaCursoGraduacao
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjetoPessoaCursoGraduacao", mappedBy="projetoPessoa", cascade={"persist"})
      */
     private $projetoPessoaCursoGraduacao;
@@ -80,7 +87,7 @@ class ProjetoPessoa extends AbstractEntity
      * @param PessoaPerfil $pessoaPerfil
      * @param string $stVoluntarioProjeto
      */
-    public function __construct(Projeto $projeto, PessoaPerfil $pessoaPerfil, $stVoluntarioProjeto = 'N')
+    public function __construct(Projeto $projeto, PessoaPerfil $pessoaPerfil, $stVoluntarioProjeto = 'N', $coEixoAtuacao = null)
     {
         $this->projetoPessoaGrupoAtuacao = new ArrayCollection();
         $this->projetoPessoaCursoGraduacao = new ArrayCollection();
@@ -88,10 +95,11 @@ class ProjetoPessoa extends AbstractEntity
         $this->projeto = $projeto;
         $this->pessoaPerfil = $pessoaPerfil;
         $this->stVoluntarioProjeto = $stVoluntarioProjeto;
+        $this->coEixoAtuacao = $coEixoAtuacao;
         $this->stRegistroAtivo = 'S';
         $this->dtInclusao = new \DateTime();
     }
-    
+
     /**
      * Get coSeqProjetoPessoa
      *
@@ -111,17 +119,17 @@ class ProjetoPessoa extends AbstractEntity
     {
         return $this->projeto;
     }
-   
+
     /**
      * Get pesssoaPerfil
-     * 
+     *
      * @return PessoaPerfil
      */
     public function getPessoaPerfil()
     {
         return $this->pessoaPerfil;
     }
-    
+
     /**
      * @return string
      */
@@ -129,82 +137,90 @@ class ProjetoPessoa extends AbstractEntity
     {
         return $this->stVoluntarioProjeto;
     }
-    
+
     /**
-     * 
+     *
      * @return \DateTime|null
      */
     public function getDtDesligamento()
     {
         return $this->dtDesligamento;
     }
-        
+
+    /**
+     * @return string
+     */
+    public function getCoEixoAtuacao()
+    {
+        return $this->coEixoAtuacao;
+    }
+
     /**
      * Get projetoPessoaGrupoAtuacao
-     * 
+     *
      * @return ProjetoPessoaGrupoAtuacao
      */
     public function getProjetoPessoaGrupoAtuacao()
     {
         return $this->projetoPessoaGrupoAtuacao;
     }
-    
+
     /**
      * Get dadoAcademico
-     * 
+     *
      * @return ArrayCollection<DadoAcademico>
      */
     public function getDadosAcademicos()
     {
         return $this->dadosAcademicos;
     }
-    
+
     /**
      * Get dadoAcademicoAtivo
-     * 
+     *
      * @return DadoAcademico
      */
     public function getDadoAcademicoAtivo()
     {
-        return $this->dadosAcademicos->filter(function($dadoAcademico){
+        return $this->dadosAcademicos->filter(function ($dadoAcademico) {
             return $dadoAcademico->isAtivo();
         })->first();
     }
-    
+
     /**
      * Get projetoPessoaGrupoAtuacao
-     * 
+     *
      * @return ArrayCollection<ProjetoPessoaGrupoAtuacao>
      */
     public function getProjetoPessoaGrupoAtuacaoAtivo()
     {
-       return $this->projetoPessoaGrupoAtuacao->filter(function ($projetoPessoaGrupoAtuacao) {
-           return $projetoPessoaGrupoAtuacao->isAtivo();
-       }); 
+        return $this->projetoPessoaGrupoAtuacao->filter(function ($projetoPessoaGrupoAtuacao) {
+            return $projetoPessoaGrupoAtuacao->isAtivo();
+        });
     }
-    
+
     /**
      * Get projetoPessoaCursoGraduacao
-     * 
+     *
      * @return ProjetoPessoaCursoGraduacao
      */
     public function getProjetoPessoaCursoGraduacao()
     {
         return $this->projetoPessoaCursoGraduacao;
     }
-    
+
     /**
      * Get projetoPessoaCursoGraduacao
-     * 
+     *
      * @return ProjetoPessoaCursoGraduacao
      */
     public function getProjetoPessoaCursoGraduacaoAtivo()
     {
-       return $this->projetoPessoaCursoGraduacao->filter(function ($projetoPessoaCursoGraduacao) {
-           return $projetoPessoaCursoGraduacao->isAtivo();
-       }); 
+        return $this->projetoPessoaCursoGraduacao->filter(function ($projetoPessoaCursoGraduacao) {
+            return $projetoPessoaCursoGraduacao->isAtivo();
+        });
     }
-    
+
     /**
      * @param string $stVoluntarioProjeto
      * @return ProjetoPessoa
@@ -214,13 +230,28 @@ class ProjetoPessoa extends AbstractEntity
         $this->stVoluntarioProjeto = $stVoluntarioProjeto;
         return $this;
     }
-    
+
+    /**
+     * @param string $coEixoAtuacao
+     * @return ProjetoPessoa
+     */
+    public function setCoEixoAtuacao($coEixoAtuacao)
+    {
+        $this->coEixoAtuacao = $coEixoAtuacao;
+        return $this;
+    }
+
     public function inativar()
     {
         $this->stRegistroAtivo = 'N';
         $this->dtDesligamento = new \DateTime();
     }
-            
+
+    public function isAtivo()
+    {
+        return $this->stRegistroAtivo == 'S';
+    }
+
     /**
      * @param GrupoAtuacao $grupoAtuacao
      * @return boolean
@@ -228,23 +259,23 @@ class ProjetoPessoa extends AbstractEntity
     public function hasGrupoAtuacao(GrupoAtuacao $grupoAtuacao)
     {
         foreach ($this->getProjetoPessoaGrupoAtuacaoAtivo() as $projetoPessoaGrupoAtuacao) {
-            if($projetoPessoaGrupoAtuacao->getGrupoAtuacao() == $grupoAtuacao){
+            if ($projetoPessoaGrupoAtuacao->getGrupoAtuacao() == $grupoAtuacao) {
                 return true;
             }
         }
         return false;
     }
-    
+
     public function isGrupoAtuacaoVinculado(GrupoAtuacao $grupoAtuacao)
     {
-        foreach($this->projetoPessoaGrupoAtuacao as $projetoPessoaGrupoAtuacao) {
-            if($projetoPessoaGrupoAtuacao->getGrupoAtuacao() == $grupoAtuacao) {
+        foreach ($this->projetoPessoaGrupoAtuacao as $projetoPessoaGrupoAtuacao) {
+            if ($projetoPessoaGrupoAtuacao->getGrupoAtuacao() == $grupoAtuacao) {
                 return $projetoPessoaGrupoAtuacao;
             }
         }
         return false;
     }
-    
+
     /**
      * @param GrupoAtuacao $grupoAtuacao
      * @return ProjetoPessoa
@@ -258,42 +289,42 @@ class ProjetoPessoa extends AbstractEntity
             $grupoAtuacaoVinculado = new ProjetoPessoaGrupoAtuacao($this, $grupoAtuacao);
             $this->projetoPessoaGrupoAtuacao->add($grupoAtuacaoVinculado);
         }
-        
+
         return $grupoAtuacaoVinculado;
     }
-    
+
     /**
-     * 
+     *
      * @param \AppBundle\Entity\CursoGraduacao $cursoGraduacao
      * @return boolean
      */
     public function hasCursoGraduacao(CursoGraduacao $cursoGraduacao)
     {
         foreach ($this->projetoPessoaCursoGraduacao as $projetoPessoaCursoGraduacao) {
-            if ($projetoPessoaCursoGraduacao->getCursoGraduacao() == $cursoGraduacao){
+            if ($projetoPessoaCursoGraduacao->getCursoGraduacao() == $cursoGraduacao) {
                 return true;
             }
         }
         return false;
     }
-    
+
     public function inativarAllProjetoPessoaCursoGraduacao()
     {
-        foreach($this->projetoPessoaCursoGraduacao as $projetoPessoaCursoGraduacao) {
+        foreach ($this->projetoPessoaCursoGraduacao as $projetoPessoaCursoGraduacao) {
             $projetoPessoaCursoGraduacao->inativar();
         }
     }
-    
+
     public function isCursoGraduacaoVinculado(CursoGraduacao $cursoGraduacao)
     {
-        foreach($this->projetoPessoaCursoGraduacao as $projetoPessoaCursoGraduacao) {
-            if($projetoPessoaCursoGraduacao->getCursoGraduacao() == $cursoGraduacao) {
+        foreach ($this->projetoPessoaCursoGraduacao as $projetoPessoaCursoGraduacao) {
+            if ($projetoPessoaCursoGraduacao->getCursoGraduacao() == $cursoGraduacao) {
                 return $projetoPessoaCursoGraduacao;
             }
         }
         return false;
     }
-    
+
     /**
      * @param CursoGraduacao $cursoGraduacao
      * @return ProjetoPessoa
@@ -307,7 +338,7 @@ class ProjetoPessoa extends AbstractEntity
             $cursoGraduacaoVinculado = new ProjetoPessoaCursoGraduacao($this, $cursoGraduacao);
             $this->projetoPessoaCursoGraduacao->add($cursoGraduacaoVinculado);
         }
-        
+
         return $cursoGraduacaoVinculado;
     }
 
@@ -316,8 +347,12 @@ class ProjetoPessoa extends AbstractEntity
      * @param AreaTematica $areaTematica
      * @throws \Exception
      */
-    public function addGrupoTutorial(GrupoAtuacao $grupoAtuacao)
+    public function addGrupoTutorial(GrupoAtuacao $grupoAtuacao, $coEixoAtuacao = null)
     {
+        if (is_null($grupoAtuacao->getCoEixoAtuacao())) {
+            $grupoAtuacao->setCoEixoAtuacao($coEixoAtuacao);
+        }
+
         if ($projetoPessoaGrupoAtuacao = $this->getProjetoPessoaGrupoAtuacaoByGrupoAtuacao($grupoAtuacao)) {
             $projetoPessoaGrupoAtuacao->ativar();
         } else {
@@ -330,7 +365,8 @@ class ProjetoPessoa extends AbstractEntity
      * @param AreaTematica $areaTematica
      * @return ProjetoPessoaGrupoAtuacao|null
      */
-    public function getProjetoPessoaGrupoAtuacaoByGrupoAtuacao(GrupoAtuacao $grupoAtuacao) {
+    public function getProjetoPessoaGrupoAtuacaoByGrupoAtuacao(GrupoAtuacao $grupoAtuacao)
+    {
         return $this->projetoPessoaGrupoAtuacao->filter(function (ProjetoPessoaGrupoAtuacao $projetoPessoaGrupoAtuacao) use ($grupoAtuacao) {
             return $projetoPessoaGrupoAtuacao->getGrupoAtuacao() == $grupoAtuacao;
         })->first();
@@ -342,43 +378,48 @@ class ProjetoPessoa extends AbstractEntity
     public function getProjetoPessoaGrupoAtuacaoAtivos()
     {
         return $this->projetoPessoaGrupoAtuacao->filter(
-            function(ProjetoPessoaGrupoAtuacao $projetoPessoaGrupoAtuacao) {
+            function (ProjetoPessoaGrupoAtuacao $projetoPessoaGrupoAtuacao) {
                 return $projetoPessoaGrupoAtuacao->isAtivo();
             }
         );
     }
-    
+
     public function inativarAllDadosAcademicos()
     {
-        foreach($this->dadosAcademicos as $dadoAcademico) {
+        foreach ($this->dadosAcademicos as $dadoAcademico) {
             $dadoAcademico->inativar();
         }
     }
-    
+
     public function isDadoAcademicoVinculado(
-        Titulacao $titulacao = null,
+        Titulacao             $titulacao = null,
         CategoriaProfissional $categoriaProfissional = null,
-        $nuAnoIngresso = null,
-        $nuMatricula = null,
-        $nuSemestre = null,
-        $coCnes = null    
-    ) {
-        foreach($this->dadosAcademicos as $dadoAcademico) {
-            if(
-            $dadoAcademico->getTitulacao() == $titulacao &&
-            $dadoAcademico->getCategoriaProfissional() == $categoriaProfissional &&
-            $dadoAcademico->getNuAnoIngresso() == $nuAnoIngresso &&
-            $dadoAcademico->getNuMatricula() == $nuMatricula &&
-            $dadoAcademico->getNuSemestre() == $nuSemestre &&
-            $dadoAcademico->getCoCnes() == $coCnes
+                              $nuAnoIngresso = null,
+                              $nuMatricula = null,
+                              $nuSemestre = null,
+                              $coCnes = null,
+                              $stAlunoRegular = null,
+                              $stDeclaracaoCursoPenultimo = null
+    )
+    {
+        foreach ($this->dadosAcademicos as $dadoAcademico) {
+            if (
+                $dadoAcademico->getTitulacao() == $titulacao &&
+                $dadoAcademico->getCategoriaProfissional() == $categoriaProfissional &&
+                $dadoAcademico->getNuAnoIngresso() == $nuAnoIngresso &&
+                $dadoAcademico->getNuMatricula() == $nuMatricula &&
+                $dadoAcademico->getNuSemestre() == $nuSemestre &&
+                $dadoAcademico->getCoCnes() == $coCnes &&
+                $dadoAcademico->getStAlunoRegular() == $stAlunoRegular &&
+                $dadoAcademico->getStDeclaracaoCursoPenultimo() == $stDeclaracaoCursoPenultimo
             ) {
                 return $dadoAcademico;
             }
         }
-        
+
         return false;
     }
-    
+
     /**
      * @param Titulacao $titulacao
      * @param CategoriaProfissional $categoriaProfissional
@@ -386,42 +427,51 @@ class ProjetoPessoa extends AbstractEntity
      * @param string $nuMatricula
      * @param string $nuSemestre
      * @param string $coCnes
+     * @param string $stAlunoRegular
+     * @param string $stDeclaracaoCursoPenultimo
      * @return ProjetoPessoa
      */
     public function addDadosAcademicos(
-        Titulacao $titulacao = null,
+        Titulacao             $titulacao = null,
         CategoriaProfissional $categoriaProfissional = null,
-        $nuAnoIngresso = null,
-        $nuMatricula = null,
-        $nuSemestre = null,
-        $coCnes = null
-    ) {
+                              $nuAnoIngresso = null,
+                              $nuMatricula = null,
+                              $nuSemestre = null,
+                              $coCnes = null,
+                              $stAlunoRegular = null,
+                              $stDeclaracaoCursoPenultimo = null
+    )
+    {
         $this->inativarAllDadosAcademicos();
-        if($dadoAcademicoVinculado = $this->isDadoAcademicoVinculado(
+        if ($dadoAcademicoVinculado = $this->isDadoAcademicoVinculado(
             $titulacao,
             $categoriaProfissional,
             $nuAnoIngresso,
             $nuMatricula,
             $nuSemestre,
-            $coCnes
+            $coCnes,
+            $stAlunoRegular,
+            $stDeclaracaoCursoPenultimo
         )) {
-            $dadoAcademicoVinculado->ativar(); 
+            $dadoAcademicoVinculado->ativar();
         } else {
             $dadoAcademicoVinculado = new DadoAcademico(
                 $this,
-                $titulacao, 
-                $categoriaProfissional, 
+                $titulacao,
+                $categoriaProfissional,
                 $nuAnoIngresso,
-                $nuMatricula, 
-                $nuSemestre, 
-                $coCnes
+                $nuMatricula,
+                $nuSemestre,
+                $coCnes,
+                $stAlunoRegular,
+                $stDeclaracaoCursoPenultimo
             );
-        $this->dadosAcademicos->add($dadoAcademicoVinculado);
+            $this->dadosAcademicos->add($dadoAcademicoVinculado);
         }
-       
+
         return $this;
     }
-    
+
     /**
      * Inativa todos as vinculos com grupos de atuação
      * @return ProjetoPessoa
@@ -433,7 +483,7 @@ class ProjetoPessoa extends AbstractEntity
         }
         return $this;
     }
-    
+
     /**
      * Inativa todos os cursosGraduacao ligados à Pessoa
      * @return ProjetoPessoa
@@ -445,33 +495,37 @@ class ProjetoPessoa extends AbstractEntity
         }
         return $this;
     }
-    
+
     /**
      * @return CursoGraduacao
      */
-    public function getCursoGraduacaoEstudante()
+    public function getCursoGraduacaoEstudanteOuPreceptor()
     {
-        $projetoPessoaCursoGraduacao = $this->projetoPessoaCursoGraduacao->filter(function($projetoPessoaCursoGraduacao){
-            if($projetoPessoaCursoGraduacao->getProjetoPessoa()->getPessoaPerfil()->getPerfil()->getNoRole() == Perfil::ROLE_ESTUDANTE) {
+        $projetoPessoaCursoGraduacao = $this->projetoPessoaCursoGraduacao->filter(function ($projetoPessoaCursoGraduacao) {
+            $noRole = $projetoPessoaCursoGraduacao->getProjetoPessoa()->getPessoaPerfil()->getPerfil()->getNoRole();
+
+            if (($noRole == Perfil::ROLE_ESTUDANTE) || ($noRole == Perfil::ROLE_PRECEPTOR)) {
                 return $projetoPessoaCursoGraduacao->isAtivo();
             }
         })->first();
-        
-        if($projetoPessoaCursoGraduacao) {
+
+        if ($projetoPessoaCursoGraduacao) {
             return $projetoPessoaCursoGraduacao->getCursoGraduacao();
         }
+
+        return null;
     }
-    
+
     /**
      * @return array
      */
     public function getCursosLecionados()
     {
-        $projetoPessoaCursosGraduacao = $this->projetoPessoaCursoGraduacao->filter(function($projetoPessoaCursoGraduacao) {
-            return $projetoPessoaCursoGraduacao->isAtivo();            
+        $projetoPessoaCursosGraduacao = $this->projetoPessoaCursoGraduacao->filter(function ($projetoPessoaCursoGraduacao) {
+            return $projetoPessoaCursoGraduacao->isAtivo();
         });
-        
-        if($projetoPessoaCursosGraduacao) {
+
+        if ($projetoPessoaCursosGraduacao) {
             $cursoGraduacao = [];
             foreach ($projetoPessoaCursosGraduacao as $projetoPessoaCursoGraduacao) {
                 $cursoGraduacao[] = $projetoPessoaCursoGraduacao->getCursoGraduacao();
@@ -480,7 +534,7 @@ class ProjetoPessoa extends AbstractEntity
             return $cursoGraduacao;
         }
     }
-    
+
     /**
      * @return string
      */
@@ -492,7 +546,7 @@ class ProjetoPessoa extends AbstractEntity
         }
         return implode(', ', $cursos);
     }
-    
+
     /**
      * @return boolean
      */
@@ -512,14 +566,14 @@ class ProjetoPessoa extends AbstractEntity
             }
         }
     }
-    
+
     /**
      * @return string
      */
     public function getDescricaoGruposAtuacao()
     {
         $grupos = array();
-        
+
         foreach ($this->getProjetoPessoaGrupoAtuacaoAtivo() as $item) {
             $grupos[] = $item->getGrupoAtuacao()->getDescricaoAreasTematicas();
         }
@@ -528,20 +582,21 @@ class ProjetoPessoa extends AbstractEntity
 
         return implode(', ', $grupos);
     }
-    
+
     public function hasDadoAcademico()
     {
-        return $this->dadosAcademicos ? $this->dadosAcademicos: false;
+        return $this->dadosAcademicos ? $this->dadosAcademicos : false;
     }
-    
+
     /**
-     * 
+     *
      * @return string
      */
     public function getDescricaoParticipante()
     {
-        return $this->getProjeto()->getCoSeqProjeto() . ' - ' 
+        return $this->getProjeto()->getCoSeqProjeto() . ' - '
             . $this->getPessoaPerfil()->getPessoaFisica()->getPessoa()->getNuCpfCnpjPessoa() . ' '
             . $this->getPessoaPerfil()->getPessoaFisica()->getPessoa()->getNoPessoa();
     }
+
 }

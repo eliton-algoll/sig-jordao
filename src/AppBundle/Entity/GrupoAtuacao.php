@@ -15,7 +15,7 @@ class GrupoAtuacao extends AbstractEntity
 {
     use \AppBundle\Traits\DeleteLogicoTrait;
     use \AppBundle\Traits\DataInclusaoTrait;
-    
+
     /**
      * @var int
      *
@@ -31,13 +31,13 @@ class GrupoAtuacao extends AbstractEntity
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\AreaTematicaGrupoAtuacao", mappedBy="grupoAtuacao", cascade={"persist"})
      */
     private $areasTematicasGruposAtuacao;
-    
+
     /**
      * @var ArrayCollection<ProjetoPessoaGrupoAtuacao>
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjetoPessoaGrupoAtuacao", mappedBy="grupoAtuacao")
      */
     private $projetoPessoaGrupoAtuacao;
-    
+
     /**
      * @var string
      *
@@ -59,7 +59,20 @@ class GrupoAtuacao extends AbstractEntity
      * @ORM\Column(name="ST_CONFIRMACAO", type="string", length=1, nullable=false)
      */
     private $stConfirmacao;
-    
+
+    /**
+     * @var string coEixoAtuacao
+     *
+     * @ORM\Column(name="CO_EIXO_ATUACAO", type="string", length=1, nullable=true)
+     */
+    private $coEixoAtuacao;
+
+    /**
+     * @var string
+     * @ORM\Column(name="DS_TEMA_ABORDADO", type="string", length=255, nullable=false)
+     */
+    private $dsTemaAbordado;
+
     /**
      * @inheritdoc
      */
@@ -72,7 +85,7 @@ class GrupoAtuacao extends AbstractEntity
 
         $this->desconfirmar();
     }
-    
+
     /**
      * Get coSeqGrupoAtuacao
      *
@@ -82,30 +95,30 @@ class GrupoAtuacao extends AbstractEntity
     {
         return $this->coSeqGrupoAtuacao;
     }
-    
+
     /**
      * Get areasTematicasGruposAtuacao
-     * 
+     *
      * @return ArrayCollection<AreaTematicaGrupoAtuacao>
      */
     public function getAreasTematicasGruposAtuacao()
     {
         return $this->areasTematicasGruposAtuacao;
     }
-    
+
     /**
      * Get projetoPessoaGrupoAtuacao
-     * 
+     *
      * @return ArrayCollection<ProjetoPessoaGrupoAtuacao>
      */
     public function getProjetoPessoaGrupoAtuacao()
     {
         return $this->projetoPessoaGrupoAtuacao;
     }
-    
+
     /**
      * Get projetoPessoaGrupoAtuacao
-     * 
+     *
      * @return ArrayCollection<ProjetoPessoaGrupoAtuacao>
      */
     public function getProjetoPessoaGrupoAtuacaoAtivas()
@@ -124,7 +137,7 @@ class GrupoAtuacao extends AbstractEntity
             return !$projetoPessoaGrupoAtuacao->getProjetoPessoa()->isVoluntario();
         });
     }
-    
+
     /**
      * Get noGrupoAtuacao
      * @return string
@@ -148,14 +161,50 @@ class GrupoAtuacao extends AbstractEntity
     private function setNoGrupoAtuacao()
     {
         $nomes = [];
-        
+
         foreach ($this->getAreasTematicasGruposAtuacaoAtivas() as $item) {
             $nomes[] = $item->getAreaTematica()->getTipoAreaTematica()->getDsTipoAreaTematica();
         }
-        
+
         $this->noGrupoAtuacao = implode(', ', $nomes);
     }
-    
+
+    /**
+     * @param string $coEixoAtuacao
+     * @return GrupoAtuacao
+     */
+    public function setCoEixoAtuacao($coEixoAtuacao)
+    {
+        $this->coEixoAtuacao = $coEixoAtuacao;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCoEixoAtuacao()
+    {
+        return $this->coEixoAtuacao;
+    }
+
+    /**
+     * @param string $dsTemaAbordado
+     * @return GrupoAtuacao
+     */
+    public function setDsTemaAbordado($dsTemaAbordado)
+    {
+        $this->dsTemaAbordado = $dsTemaAbordado;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDsTemaAbordado()
+    {
+        return $this->dsTemaAbordado;
+    }
+
     /**
      * @param AreaTematica $areaTematica
      * @return GrupoAtuacao
@@ -166,7 +215,7 @@ class GrupoAtuacao extends AbstractEntity
         $this->setNoGrupoAtuacao();
         return $this;
     }
-    
+
     /**
      * @return ArrayCollection<AreaTematicaGrupoAtuacao>
      */
@@ -176,18 +225,18 @@ class GrupoAtuacao extends AbstractEntity
             return $areaGrupo->isAtivo();
         });
     }
-    
+
     /**
      * @return string
      */
     public function getDescricaoAreasTematicas()
     {
         $tipos = array();
-        
+
         foreach ($this->getAreasTematicasGruposAtuacaoAtivas() as $areaGrupo) {
             $tipos[] = $areaGrupo->getAreaTematica()->getTipoAreaTematica()->getDsTipoAreaTematica();
         }
-        
+
         return implode(', ', $tipos);
     }
 
@@ -200,16 +249,16 @@ class GrupoAtuacao extends AbstractEntity
         $participantes = $this->projetoPessoaGrupoAtuacao->filter(function ($item) {
             return $item->isAtivo();
         });
-        
+
         if (!$participantes->isEmpty()) {
             throw new \DomainException('Não é possível inativar um grupo que possui participantes.');
         }
-        
+
         $this->stRegistroAtivo = 'N';
-        
+
         return $this;
     }
-    
+
     /**
      * @param ProjetoPessoa $projetoPessoa
      * @return boolean
@@ -223,52 +272,52 @@ class GrupoAtuacao extends AbstractEntity
         }
         return false;
     }
-    
+
     /**
      * @return integer
      */
     public function qtdEstudantesBolsistas()
     {
-        return $this->projetoPessoaGrupoAtuacao->filter(function($projetoPessoaGrupoAtuacao){
+        return $this->projetoPessoaGrupoAtuacao->filter(function ($projetoPessoaGrupoAtuacao) {
             return $projetoPessoaGrupoAtuacao->getProjetoPessoa()->getPessoaPerfil()->getPerfil()->isEstudante() &&
-                   !$projetoPessoaGrupoAtuacao->getProjetoPessoa()->isVoluntario() &&
-                   $projetoPessoaGrupoAtuacao->isAtivo();
+                !$projetoPessoaGrupoAtuacao->getProjetoPessoa()->isVoluntario() &&
+                $projetoPessoaGrupoAtuacao->isAtivo();
         })->count();
     }
-    
+
     /**
      * @return integer
      */
     public function qtdTutoresBolsistas()
     {
-        return $this->projetoPessoaGrupoAtuacao->filter(function($projetoPessoaGrupoAtuacao){
+        return $this->projetoPessoaGrupoAtuacao->filter(function ($projetoPessoaGrupoAtuacao) {
             return $projetoPessoaGrupoAtuacao->getProjetoPessoa()->getPessoaPerfil()->getPerfil()->isTutor() &&
-                   !$projetoPessoaGrupoAtuacao->getProjetoPessoa()->isVoluntario() &&
-                   $projetoPessoaGrupoAtuacao->isAtivo();
+                !$projetoPessoaGrupoAtuacao->getProjetoPessoa()->isVoluntario() &&
+                $projetoPessoaGrupoAtuacao->isAtivo();
         })->count();
     }
-    
+
     /**
      * @return integer
      */
     public function qtdPreceptoresBolsistas()
     {
-        return $this->projetoPessoaGrupoAtuacao->filter(function($projetoPessoaGrupoAtuacao){
+        return $this->projetoPessoaGrupoAtuacao->filter(function ($projetoPessoaGrupoAtuacao) {
             return $projetoPessoaGrupoAtuacao->getProjetoPessoa()->getPessoaPerfil()->getPerfil()->isPreceptor() &&
-                   !$projetoPessoaGrupoAtuacao->getProjetoPessoa()->isVoluntario() &&
-                   $projetoPessoaGrupoAtuacao->isAtivo();
+                !$projetoPessoaGrupoAtuacao->getProjetoPessoa()->isVoluntario() &&
+                $projetoPessoaGrupoAtuacao->isAtivo();
         })->count();
     }
-    
+
     /**
      * @return integer
      */
     public function qtdCoordenadoresGrupoBolsistas()
     {
-        return $this->projetoPessoaGrupoAtuacao->filter(function($projetoPessoaGrupoAtuacao){
+        return $this->projetoPessoaGrupoAtuacao->filter(function ($projetoPessoaGrupoAtuacao) {
             return $projetoPessoaGrupoAtuacao->getProjetoPessoa()->getPessoaPerfil()->getPerfil()->isCoordenadorGrupo() &&
-                   !$projetoPessoaGrupoAtuacao->getProjetoPessoa()->isVoluntario() &&
-                   $projetoPessoaGrupoAtuacao->isAtivo();
+                !$projetoPessoaGrupoAtuacao->getProjetoPessoa()->isVoluntario() &&
+                $projetoPessoaGrupoAtuacao->isAtivo();
         })->count();
     }
 
@@ -277,7 +326,7 @@ class GrupoAtuacao extends AbstractEntity
      */
     public function getEstudantesBolsistas()
     {
-        return $this->projetoPessoaGrupoAtuacao->filter(function($projetoPessoaGrupoAtuacao){
+        return $this->projetoPessoaGrupoAtuacao->filter(function ($projetoPessoaGrupoAtuacao) {
             return $projetoPessoaGrupoAtuacao->getProjetoPessoa()->getPessoaPerfil()->getPerfil()->isEstudante() &&
                 !$projetoPessoaGrupoAtuacao->getProjetoPessoa()->isVoluntario() &&
                 $projetoPessoaGrupoAtuacao->isAtivo();
@@ -289,7 +338,7 @@ class GrupoAtuacao extends AbstractEntity
      */
     public function getPreceptoresBolsistas()
     {
-        return $this->projetoPessoaGrupoAtuacao->filter(function($projetoPessoaGrupoAtuacao){
+        return $this->projetoPessoaGrupoAtuacao->filter(function ($projetoPessoaGrupoAtuacao) {
             return $projetoPessoaGrupoAtuacao->getProjetoPessoa()->getPessoaPerfil()->getPerfil()->isPreceptor() &&
                 !$projetoPessoaGrupoAtuacao->getProjetoPessoa()->isVoluntario() &&
                 $projetoPessoaGrupoAtuacao->isAtivo();
@@ -301,7 +350,7 @@ class GrupoAtuacao extends AbstractEntity
      */
     public function getTutoresBolsistas()
     {
-        return $this->projetoPessoaGrupoAtuacao->filter(function($projetoPessoaGrupoAtuacao){
+        return $this->projetoPessoaGrupoAtuacao->filter(function ($projetoPessoaGrupoAtuacao) {
             return $projetoPessoaGrupoAtuacao->getProjetoPessoa()->getPessoaPerfil()->getPerfil()->isTutor() &&
                 !$projetoPessoaGrupoAtuacao->getProjetoPessoa()->isVoluntario() &&
                 $projetoPessoaGrupoAtuacao->isAtivo();
@@ -313,7 +362,7 @@ class GrupoAtuacao extends AbstractEntity
      */
     public function getCoordenadoresGrupoBolsistas()
     {
-        return $this->projetoPessoaGrupoAtuacao->filter(function($projetoPessoaGrupoAtuacao){
+        return $this->projetoPessoaGrupoAtuacao->filter(function ($projetoPessoaGrupoAtuacao) {
             return $projetoPessoaGrupoAtuacao->getProjetoPessoa()->getPessoaPerfil()->getPerfil()->isCoordenadorGrupo() &&
                 !$projetoPessoaGrupoAtuacao->getProjetoPessoa()->isVoluntario() &&
                 $projetoPessoaGrupoAtuacao->isAtivo();
@@ -345,4 +394,131 @@ class GrupoAtuacao extends AbstractEntity
     {
         return 'S' === $this->stConfirmacao ? 'Confirmado' : 'A confirmar';
     }
+
+    /**
+     * @return array
+     */
+    public function getTemasAbordados() {
+        $temas = array();
+
+        if (!is_null($this->coEixoAtuacao)) {
+            switch ($this->coEixoAtuacao) {
+                case 'G': // Gestão em Saúde
+                    $temas[] = array(
+                        'id' => 1,
+                        'valor' => 'Gestão do Trabalho em Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 2,
+                        'valor' => 'Gestão de Sistemas e Serviços de Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 3,
+                        'valor' => 'Modelos de Atenção à Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 4,
+                        'valor' => 'Redes de Atenção à Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 5,
+                        'valor' => 'Ensino na Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 6,
+                        'valor' => 'Gestão das Práticas de Educação em Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 7,
+                        'valor' => 'Economia da Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 8,
+                        'valor' => 'Avaliação Econômica em Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 9,
+                        'valor' => 'Gestão de Custos em Instituições de Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 10,
+                        'valor' => 'Judicialização da Saúde sob o Enfoque da Evidência Científica'
+                    );
+                    $temas[] = array(
+                        'id' => 11,
+                        'valor' => 'Avaliação e Monitoramento em Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 12,
+                        'valor' => 'Organização de Serviços de Saúde e Mudanças no Modelo de Atenção à Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 13,
+                        'valor' => 'Novas Tecnologias de Informação e Comunicação em Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 14,
+                        'valor' => 'Disponibilidade e Oferta de Serviços (equipamentos/insumos/medicamentos)'
+                    );
+                    $temas[] = array(
+                        'id' => 15,
+                        'valor' => 'Infraestrutura (estrutura física/recursos humanos/integração ensino-saúde)'
+                    );
+                    $temas[] = array(
+                        'id' => 16,
+                        'valor' => 'Epidemiologia'
+                    );
+                    $temas[] = array(
+                        'id' => 17,
+                        'valor' => 'Iniciativas de Atenção à Saúde, de Gestão em Saúde e de Educação em Saúde Voltadas para a Pandemia de Covid-19, nos três níveis de Atenção à Saúde'
+                    );
+                    break;
+                case 'A': // Assistência à Saúde
+                    $temas[] = array(
+                        'id' => 18,
+                        'valor' => 'Vigilância em Saúde e Promoção da Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 19,
+                        'valor' => 'Procedimentos na Atenção Primária à Saúde'
+                    );
+                    $temas[] = array(
+                        'id' => 20,
+                        'valor' => 'Atenção Domiciliar do SUS'
+                    );
+                    $temas[] = array(
+                        'id' => 21,
+                        'valor' => 'Atenção Ambulatorial Especializada e Hospitalar do SUS'
+                    );
+                    $temas[] = array(
+                        'id' => 22,
+                        'valor' => 'Segurança do Paciente'
+                    );
+                    $temas[] = array(
+                        'id' => 23,
+                        'valor' => 'Urgência e Emergência do SUS'
+                    );
+                    $temas[] = array(
+                        'id' => 24,
+                        'valor' => 'Os Cuidados com a Saúde Mental'
+                    );
+                    $temas[] = array(
+                        'id' => 25,
+                        'valor' => 'As Doenças Crônicas'
+                    );
+                    $temas[] = array(
+                        'id' => 26,
+                        'valor' => 'Atenção às Demandas e aos Processos Eletivos'
+                    );
+                    $temas[] = array(
+                        'id' => 27,
+                        'valor' => 'Iniciativas de Atenção à Saúde, de Gestão em Saúde e de Educação em Saúde Voltadas para a Pandemia de Covid-19, nos três níveis de Atenção à Saúde'
+                    );
+                    break;
+            }
+        }
+
+        return $temas;
+    }
+
 }

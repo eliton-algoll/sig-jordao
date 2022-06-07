@@ -355,9 +355,11 @@ SQL;
         if (!$projeto) {
             throw new SiparInvalidoException();
         }
+
         if ($checkVigencia && !$projeto->getPublicacao()->isVigente()) {
             throw SiparInvalidoException::onSiparBelongsToExpiredPrograma();
         }
+
         if ($publicacao && $projeto->getPublicacao()->getCoSeqPublicacao() !== (int)$publicacao) {
             throw SiparInvalidoException::onSiparNotBelongsToPrograma();
         }

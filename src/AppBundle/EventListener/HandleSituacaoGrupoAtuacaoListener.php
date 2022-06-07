@@ -8,6 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class HandleSituacaoGrupoAtuacaoListener implements EventSubscriberInterface
 {
+
     /**
      * @var GrupoAtuacaoRepository
      */
@@ -52,4 +53,5 @@ final class HandleSituacaoGrupoAtuacaoListener implements EventSubscriberInterfa
             $this->grupoAtuacaoRepository->add($grupoAtuacao);
         }
     }
+
 }

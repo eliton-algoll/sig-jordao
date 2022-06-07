@@ -43,6 +43,7 @@
                         {% else %}
                             <th>#</th>
                         {% endif %}
+                        <th>{{ knp_pagination_sortable(pagination, 'Eixo de Atuação', 'ga.coEixoAtuacao') }}</th>
                         <th>{{ knp_pagination_sortable(pagination, 'Nome', 'p.noPessoa') }}</th>
                         <th>{{ knp_pagination_sortable(pagination, 'CPF', 'pes.nuCpf') }}</th>
                         <th>{{ knp_pagination_sortable(pagination, 'Nº SEI', 'pr.nuSipar') }}</th>
@@ -63,6 +64,13 @@
                             {% else %}
                                 <td>{{ participante.coSeqProjetoPessoa }}</td>
                             {% endif %}
+                            {% if participante.coEixoAtuacao == 'G' %}
+                                <td>Gestão em Saúde</td>
+                            {% elseif participante.coEixoAtuacao == 'A' %}
+                                <td>Assistência à Saúde</td>
+                            {% else %}
+                                <td>-</td>
+                            {% endif %}
                             <td>{{ participante.noPessoa }}</td>
                             <td>{{ participante.nuCpfCnpjPessoa|cpf }}</td>
                             <td>{{ participante.nuSipar }}</td>
@@ -82,7 +90,7 @@
                                     (globals_pper.perfil.isAdministrador or  
                                     globals_pper.perfil.isCoordenadorProjeto)
                                 %}
-                                    <a href="javascript:;" class="inativar-participante" data-participante="{{ participante.coSeqProjetoPessoa }}"><span class="glyphicon glyphicon-trash" title="Inativar cadastro de participante"></span></a>
+                                    <a href="javascript:;" class="inativar-participante" data-participante="{{ participante.coSeqProjetoPessoa }}" data-eixo="{{ participante.coEixoAtuacao }}" data-perfil="{{ participante.coSeqPerfil }}"><span class="glyphicon glyphicon-trash" title="Inativar cadastro de participante"></span></a>
                                 {% endif %}
                             </td>
                         </tr>

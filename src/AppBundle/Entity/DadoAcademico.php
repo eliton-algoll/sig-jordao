@@ -76,6 +76,20 @@ class DadoAcademico extends AbstractEntity
      * @ORM\Column(name="CO_CNES", type="string", length=7)
      */
     private $coCnes;
+
+    /**
+     * @var string stAlunoRegular
+     *
+     * @ORM\Column(name="ST_ALUNO_REGULAR", type="string", length=1, nullable=false)
+     */
+    private $stAlunoRegular;
+
+    /**
+     * @var string stDeclaracaoCursoPenultimo
+     *
+     * @ORM\Column(name="ST_DECLARACAO_CURSO_PENULTIMO", type="string", length=1, nullable=false)
+     */
+    private $stDeclaracaoCursoPenultimo;
     
     /**
      * @param ProjetoPessoa $projetoPessoa
@@ -93,7 +107,9 @@ class DadoAcademico extends AbstractEntity
         $nuAnoIngresso = null,
         $nuMatricula = null,
         $nuSemestre = null,
-        $coCnes = null
+        $coCnes = null,
+        $stAlunoRegular = null,
+        $stDeclaracaoCursoPenultimo = null
     ) {
         $this->projetoPessoa = $projetoPessoa;
         $this->titulacao = $titulacao;
@@ -102,6 +118,8 @@ class DadoAcademico extends AbstractEntity
         $this->nuMatricula = $nuMatricula;
         $this->nuSemestre = $nuSemestre;
         $this->coCnes = $coCnes;
+        $this->stAlunoRegular = $stAlunoRegular;
+        $this->stDeclaracaoCursoPenultimo = $stDeclaracaoCursoPenultimo ? 'S' : 'N';
         $this->stRegistroAtivo = 'S';
         $this->dtInclusao = new \DateTime();
     }
@@ -185,6 +203,26 @@ class DadoAcademico extends AbstractEntity
     {
         return $this->coCnes;
     }
+
+    /**
+     * Get stAlunoRegular
+     *
+     * @return string
+     */
+    public function getStAlunoRegular()
+    {
+        return $this->stAlunoRegular;
+    }
+
+    /**
+     * Get stDeclaracaoCursoPenultimo
+     *
+     * @return string
+     */
+    public function getStDeclaracaoCursoPenultimo()
+    {
+        return $this->stDeclaracaoCursoPenultimo;
+    }
     
     /**
      * @param Titulacao|null $titulacao
@@ -245,4 +283,25 @@ class DadoAcademico extends AbstractEntity
         $this->coCnes = $coCnes;
         return $this;
     }
+
+    /**
+     * @param string|null $stAlunoRegular
+     * @return DadoAcademico
+     */
+    public function setStAlunoRegular($stAlunoRegular = null)
+    {
+        $this->stAlunoRegular = $stAlunoRegular;
+        return $this;
+    }
+
+    /**
+     * @param string|null $stDeclaracaoCursoPenultimo
+     * @return DadoAcademico
+     */
+    public function setStDeclaracaoCursoPenultimo($stDeclaracaoCursoPenultimo = null)
+    {
+        $this->stDeclaracaoCursoPenultimo = $stDeclaracaoCursoPenultimo;
+        return $this;
+    }
+
 }

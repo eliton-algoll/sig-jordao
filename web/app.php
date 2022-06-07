@@ -2,6 +2,9 @@
 
 use Symfony\Component\HttpFoundation\Request;
 
+//define('ROOT_DIR', __DIR__ . '/..');
+//require_once __DIR__ . '/logerrors.inc.php';
+
 /**
  * @var Composer\Autoload\ClassLoader
  */

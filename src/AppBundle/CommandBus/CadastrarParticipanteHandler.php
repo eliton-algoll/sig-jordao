@@ -26,6 +26,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
 {
+
     /**
      * CadastrarParticipanteHandler constructor.
      * @param PerfilRepository $perfilRepository
@@ -48,25 +49,25 @@ class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
      * @param AreaTematicaRepository $areaTematicaRepository
      */
     public function __construct(
-        PerfilRepository $perfilRepository,
-        ProjetoPessoaRepository $projetoPessoaRepository,
-        ProjetoRepository $projetoRepository,
-        PessoaFisicaRepository $pessoaFisicaRepository,
-        GrupoAtuacaoRepository $grupoAtuacaoRepository,
-        EnderecoRepository $enderecoRepository,
-        CursoGraduacaoRepository $cursoGraduacaoRepository,
-        TitulacaoRepository $titulacaoRepository,
-        BancoRepository $bancoRepository,
-        AgenciaBancariaRepository $agenciaBancariaRepository,
-        MunicipioRepository $municipioRepository,
-        CategoriaProfissionalRepository $categoriaProfissionalRepository,
-        CepRepository $cepRepository,
-        DadoPessoalRepository $dadoPessoalRepository,
-        EnderecoWebRepository $enderecoWebRepository,
-        TelefoneRepository $telefoneRepository,
+        PerfilRepository                    $perfilRepository,
+        ProjetoPessoaRepository             $projetoPessoaRepository,
+        ProjetoRepository                   $projetoRepository,
+        PessoaFisicaRepository              $pessoaFisicaRepository,
+        GrupoAtuacaoRepository              $grupoAtuacaoRepository,
+        EnderecoRepository                  $enderecoRepository,
+        CursoGraduacaoRepository            $cursoGraduacaoRepository,
+        TitulacaoRepository                 $titulacaoRepository,
+        BancoRepository                     $bancoRepository,
+        AgenciaBancariaRepository           $agenciaBancariaRepository,
+        MunicipioRepository                 $municipioRepository,
+        CategoriaProfissionalRepository     $categoriaProfissionalRepository,
+        CepRepository                       $cepRepository,
+        DadoPessoalRepository               $dadoPessoalRepository,
+        EnderecoWebRepository               $enderecoWebRepository,
+        TelefoneRepository                  $telefoneRepository,
         ProjetoPessoaGrupoAtuacaoRepository $projetoPessoaGrupoAtuacaoRepository,
-        AreaTematicaRepository $areaTematicaRepository,
-        EventDispatcherInterface $eventDispatcher
+        AreaTematicaRepository              $areaTematicaRepository,
+        EventDispatcherInterface            $eventDispatcher
     )
     {
 //        $this->wsCnes = $wsCnes;
@@ -101,7 +102,7 @@ class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
         $pessoaFisica = $this->getPessoaFisicaIfCPFExists($command->getNuCpf());
         $cep = $this->getCEPIfExists($command->getCoCep());
         $banco = $this->getBancoIfExists($command->getCoBanco());
-        //$agenciaBancaria = $this->getAgenciaBancariaIfExists($command);
+        // $agenciaBancaria = $this->getAgenciaBancariaIfExists($command);
         $agenciaBancaria = $command->getCoAgenciaBancaria();
         $conta = $command->getCoConta();
         $projeto = $this->getProjetoIfNotExistsProjetoVinculado($pessoaFisica, $command);
@@ -111,7 +112,8 @@ class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
 
         $pessoaPerfil = $pessoaFisica->addPerfil($perfil);
 
-        $projetoPessoa = $pessoaPerfil->addProjetoPessoa($projeto, $command->getStVoluntarioProjeto());
+        $projetoPessoa = $pessoaPerfil->addProjetoPessoa($projeto, $command->getStVoluntarioProjeto(),
+            $command->getCoEixoAtuacao());
 
         $this->addDadosAcademicos($projetoPessoa, $command);
 
