@@ -38,7 +38,7 @@ parameters:
 
 # PRODUCAO
     database_driver: oci8
-    database_host: srvoradf0.saude.gov
+    database_host: exaccdfprd-scan.saude.gov
     database_port: 1521
     database_user: PETWEB
     database_password: BEWTEP2016DROPAP
