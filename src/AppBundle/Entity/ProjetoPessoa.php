@@ -349,11 +349,12 @@ class ProjetoPessoa extends AbstractEntity
      */
     public function addGrupoTutorial(GrupoAtuacao $grupoAtuacao, $coEixoAtuacao = null)
     {
-        if (is_null($grupoAtuacao->getCoEixoAtuacao())) {
+        if (!is_null($coEixoAtuacao) && $grupoAtuacao->qtdPreceptoresBolsistas()==0) {
             $grupoAtuacao->setCoEixoAtuacao($coEixoAtuacao);
         }
-
+ 
         if ($projetoPessoaGrupoAtuacao = $this->getProjetoPessoaGrupoAtuacaoByGrupoAtuacao($grupoAtuacao)) {
+            $this->setCoEixoAtuacao($coEixoAtuacao);
             $projetoPessoaGrupoAtuacao->ativar();
         } else {
             $this->projetoPessoaGrupoAtuacao->add(ProjetoPessoaGrupoAtuacao::create($this, $grupoAtuacao));

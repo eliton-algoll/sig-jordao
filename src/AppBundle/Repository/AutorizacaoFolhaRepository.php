@@ -28,7 +28,7 @@ class AutorizacaoFolhaRepository extends RepositoryAbstract
     {
         $qb = $this
             ->createQueryBuilder('af')
-            ->select(['af', 'pfp', 'fp', 'proj', 'pp', 'pperf', 'perf', 'pf', 'pes'])
+            ->select(['af', 'pfp', 'fp', 'proj', 'pp', 'pperf', 'perf', 'pf', 'pes','da','b'])
             ->innerJoin('af.projetoFolhaPagamento', 'pfp')
             ->innerJoin('pfp.folhaPagamento', 'fp')
             ->innerJoin('pfp.projeto', 'proj')
@@ -37,6 +37,8 @@ class AutorizacaoFolhaRepository extends RepositoryAbstract
             ->innerJoin('pperf.perfil', 'perf')
             ->innerJoin('pperf.pessoaFisica', 'pf')
             ->innerJoin('pf.pessoa', 'pes')
+            ->leftJoin('pf.dadoPessoal', 'da')    
+            ->leftJoin('da.banco', 'b')    
             ->where('af.stRegistroAtivo = :stAtivo')
             ->andWhere('fp.stRegistroAtivo = :stAtivo')
             ->setParameter('stAtivo', 'S');
@@ -71,7 +73,6 @@ class AutorizacaoFolhaRepository extends RepositoryAbstract
         }
 
         $this->orderPagination($qb, $pb);
-
         return $qb->getQuery()->getResult($hydrationMode);
     }
 
