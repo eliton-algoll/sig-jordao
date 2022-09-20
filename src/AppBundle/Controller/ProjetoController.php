@@ -336,6 +336,12 @@ class ProjetoController extends ControllerAbstract
                     'coPerfil' => 6, // Estudante
                     'stRegistroAtivo' => 'S'
                 )))->getQuery()->getResult();
+                
+                $participanrtes = $em->getRepository(ProjetoPessoa::class)->search(new ParameterBag(array(
+                    'projeto' => $projeto,
+                    'grupoTutorial' => $grupoAtuacaoEncontrado,
+                    'stRegistroAtivo' => 'S'
+                )))->getQuery()->getResult();
 
                 // Remove o estudante da listagem (pois já está cadastrado)
                 $cpfEnviado = $request->query->get('cpf');
@@ -351,6 +357,9 @@ class ProjetoController extends ControllerAbstract
                 $estudantesEncontradosGrupo = count($estudantes);
 
                 $preceptoresIds = [];
+                if(count($participanrtes)==0){
+                    $eixoAtuacao = null;
+                }
 
                 // Obtém o eixo de atuação
                 // Obtém as categorias
