@@ -50,8 +50,12 @@ class InativarParticipanteHandler
         $projetoPessoa = $command->getProjetoPessoa();
 
         if ($projetoPessoa->getPessoaPerfil()->getPerfil()->isPreceptor()) { // 4 - Preceptor
-            $gruposAtuacao = $projetoPessoa->getProjetoPessoaGrupoAtuacaoAtivo();
-
+            $gruposAtuacoes = $projetoPessoa->getProjetoPessoaGrupoAtuacaoAtivo();
+            $gruposAtuacao = array();
+            //reordena o index do array para que o registro esteja sempre na posição 0
+            foreach ($gruposAtuacoes as $value) {
+                $gruposAtuacao[]=$value;
+             }
             if ((!is_null($gruposAtuacao)) && (count($gruposAtuacao) > 0)) {
                 $grupoAtuacao = $gruposAtuacao[0]->getGrupoAtuacao();
                 $eixoAtuacao = $grupoAtuacao->getCoEixoAtuacao();
