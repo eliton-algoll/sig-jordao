@@ -115,9 +115,11 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
         $this->addDadosAcademicos($projetoPessoa, $command);
         $this->addTelefones($pessoaFisica, $command);
         
-        $projetoPessoa->inativarAllCursosGraduacao();
+        if ($command->getCursoGraduacao() && $perfil!= '4') {
+            $projetoPessoa->inativarAllCursosGraduacao();
 
-        $this->addCursoGraduacao($projetoPessoa, $command);
+            $this->addCursoGraduacao($projetoPessoa, $command);
+        }
 
         $this->eventDispatcher->dispatch(
             HandleSituacaoGrupoAtuacaoEvent::NAME,
