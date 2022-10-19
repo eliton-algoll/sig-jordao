@@ -58,7 +58,7 @@ final class CadastarFolhaSuplementarType extends AbstractType
                     ->setParameter('stAtivo', 'S')
                     ->setParameter('publicacao', $publicacao)
                     ->setParameter('tpFolha', FolhaPagamento::MENSAL)
-                    ->setParameter('situacao', [ SituacaoFolha::ENVIADA_FUNDO, SituacaoFolha::ORDEM_BANCARIA_EMITIDA ]);
+                    ->setParameter('situacao', [ SituacaoFolha::ENVIADA_FUNDO, SituacaoFolha::ORDEM_BANCARIA_EMITIDA, SituacaoFolha::HOMOLOGADA ]);
             },
             'choice_label' => function ($folhaPagamento) {
                 return ucfirst($folhaPagamento->getReferenciaExtenso());
