@@ -218,7 +218,7 @@ final class FolhaPgtoSuplementarController extends ControllerAbstract
         $pb = new ParameterBag([
             'publicacao' => $publicacao,
             'tpFolha' => FolhaPagamento::MENSAL,
-            'situacao' => [SituacaoFolha::ENVIADA_FUNDO, SituacaoFolha::ORDEM_BANCARIA_EMITIDA],
+            'situacao' => [SituacaoFolha::ENVIADA_FUNDO, SituacaoFolha::ORDEM_BANCARIA_EMITIDA, SituacaoFolha::HOMOLOGADA],
             'order' => ['fp.nuAno' => 'DESC', 'fp.nuMes' => 'DESC'],
         ]);
 
