@@ -69,7 +69,7 @@ class DadoPessoal extends AbstractEntity
         $this->pessoaFisica     = $pessoaFisica;
         $this->banco            = $banco;
         $this->agencia          = $agencia;
-        $this->conta            = null;
+        $this->conta            = $conta;
         $this->stRegistroAtivo  = 'S';
         $this->dtInclusao       = new \DateTime();
     }
