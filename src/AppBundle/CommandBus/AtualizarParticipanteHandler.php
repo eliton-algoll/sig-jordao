@@ -88,16 +88,17 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
     {
         $projetoPessoa = $this->projetoPessoaRepository->find($command->getCoSeqProjetoPessoa());
         $projeto       = $this->projetoRepository->find($command->getProjeto());
-        
+
         $pessoaFisica    = $this->getPessoaFisicaIfCPFExists($command->getNuCpf());
-        $banco           = $this->getBancoIfExists($command->getCoBanco());//$command->getCoBanco();//$this->getBancoIfExists($command->getCoBanco()->getCoBanco());
+        $banco           = ($command->getStVoluntarioProjeto() == 'N' && !$command->getCoBanco()) ? $this->getBancoIfExists($command->getCoBanco()) : $command->getCoBanco();
+        $banco           = (!$banco) ? null : $banco;
         $cep             = $this->getCEPIfExists($command->getCoCep());
-        // $agenciaBancaria = $this->getAgenciaBancariaIfExists($command);
         $agenciaBancaria = $command->getCoAgenciaBancaria();
         $conta           = $command->getCoConta();
+        $conta           = (!$conta) ? ' ' : $conta;
         $perfil          = $this->getPerfilIfNonViolatedConstraints($command);
-        
 //        $this->constraintCNES($command);
+
 
         if ($pessoaFisica->getDadoPessoal()) {
             $pessoaFisica->getDadoPessoal()->setBanco($banco);
