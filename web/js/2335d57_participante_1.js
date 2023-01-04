@@ -80,7 +80,8 @@
         },
 
         validate: function () {
-            if( $('#salvar-participante').val() == undefined ) {
+            if( $('#salvar-participante').val() == 'edit' ) {
+
                 var voluntario = $('#dados-complementares').find('input[name="atualizar_participante[stVoluntarioProjeto]"]:checked').val();
 
                 if(voluntario == 'N'){
