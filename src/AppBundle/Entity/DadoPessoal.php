@@ -44,14 +44,14 @@ class DadoPessoal extends AbstractEntity
      * @var Banco
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Banco")
-     * @ORM\JoinColumn(name="CO_BANCO", referencedColumnName="CO_BANCO")
+     * @ORM\JoinColumn(name="CO_BANCO", referencedColumnName="CO_BANCO", nullable=true)
      */
     private $banco;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="CO_CONTA", type="string", nullable=false)
+     * @ORM\Column(name="CO_CONTA", type="string", nullable=true)
      */
     private $conta;
 
@@ -135,10 +135,10 @@ class DadoPessoal extends AbstractEntity
     }
 
     /**
-     * @param Banco $banco
+     * @param $banco
      * @return DadoPessoal
      */
-    public function setBanco(Banco $banco)
+    public function setBanco($banco)
     {
         $this->banco = $banco;
         return $this;
