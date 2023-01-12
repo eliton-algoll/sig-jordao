@@ -1,5 +1,22 @@
+### CONFIGURAÇÃO DE AMBIENTE LOCAL #####
+O sistema em produção está rodando com o PHP 5.6
 
-#########Deploy via ftp://10.1.2.99 , abrir chamado citsmart para replicação #########
+Projeto no repositório GIT. (https://gitlab.saude.gov.br/datasus-legados/sigpet)
+    * Crie uma branch a partir da develop.
+
+Para configurar o ambiente loca é necessário rodar as dependências do composer com o comando.
+    - php bin/composer.phar
+Iniciando o servidor symfony local 
+    - symfony server:start
+
+
+
+##### DEPLOYS ###########
+Para deploy em Homologação/Produção rodar os comandos abaixo para criação dos arquivos JS
+php bin/console assets:install
+php bin/console assetic:dump
+php bin/console assetic:dump --env=prod --no-debug (para prod) 
+
 
 #########script para cadastrar um novo usuário##############
 #########Senha: 12345678#########
