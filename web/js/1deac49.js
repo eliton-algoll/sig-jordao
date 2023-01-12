@@ -4,6 +4,12 @@
             this.events();
         },
         events: function () {
+            $("#btnExport").click(function () {
+                $("#tblExport").battatech_excelexport({
+                    containerid: "tblExport"
+                    , datatype: 'table'
+                });
+            });
             $('.inativar-participante').click(this.handleClickInativarParticipante);
         },
         handleClickInativarParticipante: function () {
