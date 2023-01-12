@@ -62,7 +62,7 @@ class DadoPessoal extends AbstractEntity
      */
     public function __construct(
         PessoaFisica $pessoaFisica, 
-        Banco $banco = null,
+        $banco = null,
         $agencia = null,
         $conta = null
     ) {
