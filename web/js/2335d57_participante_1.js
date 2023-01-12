@@ -80,8 +80,8 @@
         },
 
         validate: function () {
-            if( $('#salvar-participante').val() == undefined ) {
-                var voluntario = $('#dados-complementares').find('input[name="atualizar_participante[stVoluntarioProjeto]"]:checked').val();
+            if( $('#salvar-participante').val() == undefined || $('#salvar-participante').val() == 'edit' ) {
+                var voluntario = $('.tab-content').find('input[name="atualizar_participante[stVoluntarioProjeto]"]:checked').val();
 
                 if(voluntario == 'N'){
                     if( ($('#atualizar_participante_coBanco').val().length < 2) ||
@@ -94,7 +94,7 @@
             }
 
             if( $('#salvar-participante').val() == 'add' ) {
-                var voluntario = $('#dados-complementares').find('input[name="cadastrar_participante[stVoluntarioProjeto]"]:checked').val();
+                var voluntario = $('.tab-content').find('input[name="cadastrar_participante[stVoluntarioProjeto]"]:checked').val();
 
                 if(voluntario == 'N'){
                     if( ($('#cadastrar_participante_coBanco').val().length < 2) ||
