@@ -70,8 +70,6 @@ class DefaultController extends ControllerAbstract
 //            $coPrograma = $this->getProjetoAutenticado()->getPublicacao()->getPrograma()->getCoSeqPrograma();
 
             $programa = $this->getProjetoAutenticado()->getPublicacao()->getPrograma();
-        }else{
-            var_dump($this->getPessoaPerfilAutenticado());
         }
 
         return $this->render(
