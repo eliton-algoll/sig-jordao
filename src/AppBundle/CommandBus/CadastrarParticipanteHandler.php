@@ -102,11 +102,11 @@ class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
         $pessoaFisica = $this->getPessoaFisicaIfCPFExists($command->getNuCpf());
         $cep = $this->getCEPIfExists($command->getCoCep());
         $banco = ($command->getStVoluntarioProjeto() == 'N') ? $this->getBancoIfExists($command->getCoBanco()) : $command->getCoBanco();
-        $banco = (!$banco) ? null : $banco;
+        $banco = !($banco) ? null : $banco;
         // $agenciaBancaria = $this->getAgenciaBancariaIfExists($command);
         $agenciaBancaria = $command->getCoAgenciaBancaria();
         $conta           = $command->getCoConta();
-        $conta           = ( $conta ) ? $conta : ' ';
+        $conta           = !($conta) ? ' ' : $conta;
         $projeto = $this->getProjetoIfNotExistsProjetoVinculado($pessoaFisica, $command);
         $perfil = $this->getPerfilIfNonViolatedConstraints($command);
 
