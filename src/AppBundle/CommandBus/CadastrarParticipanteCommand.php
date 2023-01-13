@@ -293,7 +293,7 @@ class CadastrarParticipanteCommand
     }
 
     /**
-     * @param string $coBanco
+     * @param $coBanco
      * @return CadastrarParticipanteCommand
      */
     public function setCoBanco($coBanco)
@@ -303,7 +303,7 @@ class CadastrarParticipanteCommand
     }
 
     /**
-     * @param string $coAgenciaBancaria
+     * @param $coAgenciaBancaria
      * @return CadastrarParticipanteCommand
      */
     public function setCoAgenciaBancaria($coAgenciaBancaria)
@@ -313,7 +313,7 @@ class CadastrarParticipanteCommand
     }
 
     /**
-     * @param string $coConta
+     * @param $coConta
      * @return CadastrarParticipanteCommand
      */
     public function setCoConta($coConta)
