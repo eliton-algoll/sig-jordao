@@ -100,8 +100,8 @@ class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
     public function handle(CadastrarParticipanteCommand $command)
     {
         $pessoaFisica = $this->getPessoaFisicaIfCPFExists($command->getNuCpf());
-        $cep = $this->getCEPIfExists($command->getCoCep());
-        $banco = ($command->getStVoluntarioProjeto() == 'N') ? $this->getBancoIfExists($command->getCoBanco()) : $command->getCoBanco();
+        $cep   = $this->getCEPIfExists($command->getCoCep());
+        $banco = $command->getCoBanco() ? $this->getBancoIfExists($command->getCoBanco()) : $command->getCoBanco();
         $banco = !($banco) ? null : $banco;
         // $agenciaBancaria = $this->getAgenciaBancariaIfExists($command);
         $agenciaBancaria = $command->getCoAgenciaBancaria();

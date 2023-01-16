@@ -90,8 +90,8 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
         $projeto       = $this->projetoRepository->find($command->getProjeto());
 
         $pessoaFisica    = $this->getPessoaFisicaIfCPFExists($command->getNuCpf());
-        $banco           = ($command->getStVoluntarioProjeto() == 'N' && !$command->getCoBanco()) ? $this->getBancoIfExists($command->getCoBanco()) : $command->getCoBanco();
-        $banco           = (!$banco) ? null : $banco;
+        $banco           = $command->getCoBanco() ? $this->getBancoIfExists($command->getCoBanco()) : $command->getCoBanco();
+        $banco           = !($banco) ? null : $banco;
         $cep             = $this->getCEPIfExists($command->getCoCep());
         $agenciaBancaria = $command->getCoAgenciaBancaria();
         $conta           = $command->getCoConta();
