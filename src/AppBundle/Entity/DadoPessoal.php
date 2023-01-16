@@ -140,8 +140,6 @@ class DadoPessoal extends AbstractEntity
      */
     public function setBanco($banco)
     {
-        var_dump($banco);
-        var_dump('<BR>------------');
         $this->banco = $banco;
         return $this;
     }
