@@ -35,7 +35,7 @@
     <hr>
     <div class="row">
         <div class="col-md-12">
-            <table class="table table-striped" id="tblExport">
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         {% if projeto.getPublicacao().getPrograma().isGrupoTutorial() %}
@@ -112,6 +112,58 @@
                 <button id="btnExport" class="btn btn-default">Exportar</button>
             </div>
         </div>
+        <table class="table table-striped" id="tblExport" style="display: none">
+            <thead>
+                <tr>
+                    {% if projeto.getPublicacao().getPrograma().isGrupoTutorial() %}
+                        <th>Grupo</th>
+                    {% else %}
+                        <th>#</th>
+                    {% endif %}
+                    <th>Eixo de Atuação</th>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Nº SEI</th>
+                    <th>Tipo Participante</th>
+                    <th>Data de Desligamento</th>
+                    {% if form.stRegistroAtivo %}
+                        <th>Ativo</th>
+                    {% endif %}
+                    <th>Voluntário</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for dados in export %}
+                <tr>
+                    {% if projeto.getPublicacao().getPrograma().isGrupoTutorial() %}
+                        <td>{{ dados.noGrupoAtuacao }}</td>
+                    {% else %}
+                        <td>{{ dados.coSeqProjetoPessoa }}</td>
+                    {% endif %}
+                    {% if dados.coEixoAtuacao == 'G' %}
+                        <td>Gestão em Saúde</td>
+                    {% elseif dados.coEixoAtuacao == 'A' %}
+                        <td>Assistência à Saúde</td>
+                    {% else %}
+                        <td>-</td>
+                    {% endif %}
+                    <td>{{ dados.noPessoa }}</td>
+                    <td>{{ dados.nuCpfCnpjPessoa|cpf }}</td>
+                    <td>{{ dados.nuSipar }}</td>
+                    <td>{{ dados.dsPerfil }}</td>
+                    <td>{{ (dados.dtDesligamento) ? dados.dtDesligamento|date('d/m/Y') : '-' }}</td>
+                    {% if form.stRegistroAtivo %}
+                        <td>{{ dados.stRegistroAtivo|strst }}</td>
+                    {% endif %}
+                    <td>{{ dados.stVoluntarioProjeto|strst }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2">Nenhum participante encontrado.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}
 
