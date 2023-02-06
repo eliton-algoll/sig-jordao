@@ -73,6 +73,21 @@ class ParticipanteQuery
             $params->getInt('limit', 10)
         );
     }
+
+    /**
+     * @param ParameterBag $params
+     * @return array
+     */
+    public function searchExport(ParameterBag $params){
+        $data    = $this->projetoPessoaRepository->search($params);
+        $paginator = $this->paginator->paginate(
+            $data,
+            $params->getInt('page', 1),
+            $params->getInt('limit', 10)
+        );
+        return array('export'    => $data->getQuery()->getResult(),
+                     'paginator' => $paginator);
+    }
     
 //    /**
 //     * @param DadoPessoal $dadoPessoal

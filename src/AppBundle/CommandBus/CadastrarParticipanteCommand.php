@@ -54,8 +54,7 @@ class CadastrarParticipanteCommand
     protected $nuCpf;
     
     /**
-     * @var string 
-     * @Assert\NotBlank()
+     * @var string
      * #@ A s s e r t \ T y p e (
      * #    t y p e = " n u m e r i c "
      * #)
@@ -63,15 +62,13 @@ class CadastrarParticipanteCommand
     protected $coBanco;
     
     /**
-     * @var string 
-     * @Assert\NotBlank()
+     * @var string
      * @Assert\Length(max = 6)
      */
     protected $coAgenciaBancaria;
 
     /**
      * @var string
-     * @Assert\NotBlank()
      * @Assert\Length(max = 10)
      */
     protected $coConta;
@@ -296,7 +293,7 @@ class CadastrarParticipanteCommand
     }
 
     /**
-     * @param string $coBanco
+     * @param $coBanco
      * @return CadastrarParticipanteCommand
      */
     public function setCoBanco($coBanco)
@@ -306,7 +303,7 @@ class CadastrarParticipanteCommand
     }
 
     /**
-     * @param string $coAgenciaBancaria
+     * @param $coAgenciaBancaria
      * @return CadastrarParticipanteCommand
      */
     public function setCoAgenciaBancaria($coAgenciaBancaria)
@@ -316,7 +313,7 @@ class CadastrarParticipanteCommand
     }
 
     /**
-     * @param string $coConta
+     * @param $coConta
      * @return CadastrarParticipanteCommand
      */
     public function setCoConta($coConta)

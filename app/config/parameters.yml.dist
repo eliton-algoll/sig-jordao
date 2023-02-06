@@ -6,7 +6,7 @@ parameters:
 
 # DESENVOLVIMENTO
 #    database_driver: oci8
-#    database_host: srvoradf20-scan.saude.gov
+#    database_host: exaccdfdev-scan.saude.gov
 #    database_port: 1521
 #    database_user: PETWEB
 #    database_password: XD2G4R3001W5
@@ -22,7 +22,7 @@ parameters:
 
 # HOMOLOGACAO
 #    database_driver: oci8
-#    database_host: srvoradf20-scan.saude.gov
+#    database_host: exaccdfdev-scan.saude.gov
 #    database_port: 1521
 #    database_user: PETWEB
 #    database_password: BEWTEP2016HOMAP

@@ -196,6 +196,7 @@ WHERE
     AND t3_.co_seq_perfil = :coPerfil
     AND t0_.st_registro_ativo = 'S'
     AND t4_.co_seq_grupo_atuacao = :coGrupoAtuacao
+    AND t0_.st_voluntario_projeto = 'N'
 SQL;
 
             $sqlTotalCursoParticipante = <<<SQL
@@ -251,6 +252,7 @@ SQL;
 
             // Realiza as validações
             foreach ($gruposAtuacao as $grupoAtuacao) { // aka Grupo Tutorial
+
                 // echo $grupoAtuacao->getNoGrupoAtuacao() . "\n";
 
                 // No fluxo de Confirmar Grupo Tutorial, o sistema deverá verificar a composição do Grupo, permitindo a
