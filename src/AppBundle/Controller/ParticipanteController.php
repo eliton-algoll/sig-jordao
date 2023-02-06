@@ -38,9 +38,16 @@ class ParticipanteController extends ControllerAbstract
         $queryParams['projeto'] = $this->getProjetoAutenticado();
         // $queryParams['pessoaPerfil'] = $this->getPessoaPerfilAutenticado();
         
-        $pagination = $this
+//        $pagination = $this
+//            ->get('app.participante_query')
+//            ->search(new ParameterBag($queryParams));
+
+        $data = $this
             ->get('app.participante_query')
-            ->search(new ParameterBag($queryParams));
+            ->searchExport(new ParameterBag($queryParams));
+
+        $pagination = $data['paginator'];
+        $export     = $data['export'];
 
         $form = $this->createForm(PesquisarParticipanteType::class, null, [
             'perfil' => $this->getPessoaPerfilAutenticado()->getPerfil(),
@@ -49,6 +56,7 @@ class ParticipanteController extends ControllerAbstract
         
         return $this->render('participante/all.html.twig', array(
             'pagination' => $pagination,
+            'export' => $export,
             'queryParams' => $queryParams,
             'projeto' => $projeto,
             'form' => $form->createView()

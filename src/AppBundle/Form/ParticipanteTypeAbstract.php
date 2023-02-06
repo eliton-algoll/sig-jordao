@@ -69,15 +69,17 @@ class ParticipanteTypeAbstract extends AbstractType
                 'choice_label' => function ($banco) {
                     return $banco->getCoBanco() . ' - ' . $banco->getNoBanco();
                 },
-                'required' => true,
+                'required' => false,
             ))
             ->add('coAgenciaBancaria', TextType::class, array(
                 'label' => 'Agência Bancária',
-                'attr' => array('maxlength' => 6)
+                'attr' => array('maxlength' => 6),
+                'required' => false,
             ))
             ->add('coConta', TextType::class, array(
                 'label' => 'Conta',
-                'attr' => array('maxlength' => 10)
+                'attr' => array('maxlength' => 10),
+                'required' => false,
             ))
             ##############################################
             ->add('dsEnderecoWeb', EmailType::class, array(

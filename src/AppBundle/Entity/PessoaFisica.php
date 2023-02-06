@@ -706,13 +706,11 @@ class PessoaFisica extends AbstractEntity
 
     /**
      *
-     * //* @param \AppBundle\Entity\AgenciaBancaria $agencia
-     * @param \AppBundle\Entity\Banco $banco
-     * @param string $agencia
-     * @param string $conta
+     * @param $banco
+     * @param $agencia
+     * @param $conta
      */
-    //public function setDadoPessoal(AgenciaBancaria $agencia, Banco $banco)
-    public function setDadoPessoal(Banco $banco, $agencia, $conta)
+    public function setDadoPessoal($banco, $agencia, $conta)
     {
         $this->dadoPessoal = new DadoPessoal($this, $banco, $agencia, $conta);
     }

@@ -63,14 +63,15 @@ class DefaultController extends ControllerAbstract
         $coPrograma = null;
 
         $programa = null;
- 
-        if(!$this->getPessoaPerfilAutenticado()->getPerfil()->isAdministrador()) {
+        if( ($this->getPessoaPerfilAutenticado()) &&
+            !is_null($this->getPessoaPerfilAutenticado()->getPerfil()) &&
+            !$this->getPessoaPerfilAutenticado()->getPerfil()->isAdministrador()) {
 //            $dsPrograma = $this->getProjetoAutenticado()->getPublicacao()->getPrograma()->getDsPrograma();
 //            $coPrograma = $this->getProjetoAutenticado()->getPublicacao()->getPrograma()->getCoSeqPrograma();
 
             $programa = $this->getProjetoAutenticado()->getPublicacao()->getPrograma();
         }
-        
+
         return $this->render(
             'default/index.html.twig',
             array(

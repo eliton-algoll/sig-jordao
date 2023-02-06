@@ -336,7 +336,13 @@ class ProjetoController extends ControllerAbstract
                     'coPerfil' => 6, // Estudante
                     'stRegistroAtivo' => 'S'
                 )))->getQuery()->getResult();
-                
+
+                for ($r = count($estudantes) - 1; $r > -1; $r--) {
+                    if ($estudantes[$r]['stVoluntarioProjeto'] == 'S') {
+                        array_splice($estudantes, $r, 1);
+                    }
+                }
+
                 $participanrtes = $em->getRepository(ProjetoPessoa::class)->search(new ParameterBag(array(
                     'projeto' => $projeto,
                     'grupoTutorial' => $grupoAtuacaoEncontrado,
