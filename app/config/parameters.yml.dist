@@ -21,33 +21,33 @@ parameters:
 #    secret: ThisTokenIsNotSoSecretChangeIt
 
 # HOMOLOGACAO
-    database_driver: oci8
-    database_host: exaccdfdev-scan.saude.gov
-    database_port: 1521
-    database_user: PETWEB
-    database_password: BEWTEP2016HOMAP
-    database_service_name: DFHO1.SAUDE.GOV
-    database_service_use: true
-    database_role_name: RO_PET_T
-    database_role_pass: TEP2016ELOR
-    mailer_transport: smtp
-    mailer_host: smtpaplicacao.saude.gov
-    mailer_user: null
-    mailer_password: null
-    secret: 78179a965aee5941e88a4f37898e9bec1730ce81a
-
-# PRODUCAO
 #    database_driver: oci8
-#    database_host: srvoradf0.saude.gov
+#    database_host: exaccdfdev-scan.saude.gov
 #    database_port: 1521
 #    database_user: PETWEB
-#    database_password: BEWTEP2016DROPAP
-#    database_service_name: DFPO1.SAUDE.GOV
+#    database_password: BEWTEP2016HOMAP
+#    database_service_name: DFHO1.SAUDE.GOV
 #    database_service_use: true
 #    database_role_name: RO_PET_T
-#    database_role_pass: FqgpWnemOn4AzON7
+#    database_role_pass: TEP2016ELOR
 #    mailer_transport: smtp
 #    mailer_host: smtpaplicacao.saude.gov
 #    mailer_user: null
 #    mailer_password: null
-#    secret: 136g9a935aee07d1e77j4d318f8d9mcc11s0dr8t
+#    secret: 78179a965aee5941e88a4f37898e9bec1730ce81a
+
+# PRODUCAO
+    database_driver: oci8
+    database_host: exaccdfprd-scan.saude.gov
+    database_port: 1521
+    database_user: PETWEB
+    database_password: BEWTEP2016DROPAP
+    database_service_name: DFPO1.SAUDE.GOV
+    database_service_use: true
+    database_role_name: RO_PET_T
+    database_role_pass: FqgpWnemOn4AzON7
+    mailer_transport: smtp
+    mailer_host: smtpaplicacao.saude.gov
+    mailer_user: null
+    mailer_password: null
+    secret: 136g9a935aee07d1e77j4d318f8d9mcc11s0dr8t
