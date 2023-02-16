@@ -371,7 +371,9 @@ class ProjetoController extends ControllerAbstract
                 // Obtém as categorias
                 // Obtém os cursos de graduação
                 foreach ($preceptores as $preceptor) {
-                    $preceptoresIds[] = $preceptor['coSeqProjetoPessoa'];
+                    if($preceptor['stVoluntarioProjeto'] == 'N'){
+                        $preceptoresIds[] = $preceptor['coSeqProjetoPessoa'];
+                    }
 
                     if ((is_null($eixoAtuacao)) && (!is_null($preceptor['coEixoAtuacao']))) {
                         $eixoAtuacao = $preceptor['coEixoAtuacao'];
@@ -420,10 +422,20 @@ class ProjetoController extends ControllerAbstract
                     }
                 }
 
+                for ($i = count($preceptores) - 1; $i > -1; $i--) {
+                    if ($preceptores[$i]['nuCpfCnpjPessoa'] == $cpfEnviado) {
+                        array_splice($preceptores, $i, 1);
+                    }
+                }
+
                 for ($r = count($preceptores) - 1; $r > -1; $r--) {
                     if ($preceptores[$r]['stVoluntarioProjeto'] == 'S') {
                         array_splice($preceptores, $r, 1);
                     }
+                }
+
+                if($request->query->get('voluntario') == 'S'){
+                    $preceptoresIds = [];
                 }
 
                 $response->details = [
