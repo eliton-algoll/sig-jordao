@@ -420,6 +420,12 @@ class ProjetoController extends ControllerAbstract
                     }
                 }
 
+                for ($r = count($preceptores) - 1; $r > -1; $r--) {
+                    if ($preceptores[$r]['stVoluntarioProjeto'] == 'S') {
+                        array_splice($preceptores, $r, 1);
+                    }
+                }
+
                 $response->details = [
                     'eixoAtuacao' => $eixoAtuacao,
                     'temDoisPreceptores' => (count($preceptores) >= 2),
