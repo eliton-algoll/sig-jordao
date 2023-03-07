@@ -498,7 +498,7 @@ SQL;
             'publicacao' => $folhaPagamento->getPublicacao(),
             'nuAno' => $folhaPagamento->getNuAno(),
             'nuMes' => $folhaPagamento->getNuMes(),
-            'tpFolhaPagamento' => FolhaPagamento::MENSAL,
+            'tpFolhaPagamento' => ($folhaPagamento->isMensal()) ? FolhaPagamento::MENSAL : FolhaPagamento::SUPLEMENTAR,
             'stRegistroAtivo' => 'S',
         ]);
     }
