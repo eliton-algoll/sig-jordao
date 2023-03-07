@@ -593,12 +593,21 @@
                         $('#btn-salvar').hide();
                     }
 
+                    if( $('#salvar-participante').val() == 'add' ) {
+                        var voluntary = $('.tab-content').find('input[name="cadastrar_participante[stVoluntarioProjeto]"]:checked').val();
+                    }
+
+                    if( $('#salvar-participante').val() == undefined || $('#salvar-participante').val() == 'edit' ) {
+                        var voluntary = $('.tab-content').find('input[name="atualizar_participante[stVoluntarioProjeto]"]:checked').val();
+                    }
+
                     if (value > 0) {
                         $.ajax({
                             url: Routing.generate('projeto_get_grupo_tutorial_details', {
                                 grupoTutorial: value,
                                 nuSipar: projetoSei,
                                 cpf: cpfPessoa,
+                                voluntario: voluntary
                             }),
                             method: 'GET',
                             dataType: 'json',
@@ -772,12 +781,21 @@
                         $('#btn-salvar').hide();
                     }
 
+                    if( $('#salvar-participante').val() == undefined || $('#salvar-participante').val() == 'edit' ) {
+                        var voluntary = $('.tab-content').find('input[name="atualizar_participante[stVoluntarioProjeto]"]:checked').val();
+                    }
+
+                    if( $('#salvar-participante').val() == 'add' ) {
+                        var voluntary = $('.tab-content').find('input[name="cadastrar_participante[stVoluntarioProjeto]"]:checked').val();
+                    }
+
                     if (value > 0) {
                         $.ajax({
                             url: Routing.generate('projeto_get_grupo_tutorial_details', {
                                 grupoTutorial: value,
                                 nuSipar: projetoSei,
                                 cpf: pessoa,
+                                voluntario: voluntary
                             }),
                             method: 'GET',
                             dataType: 'json',
