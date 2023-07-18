@@ -22,14 +22,17 @@ class Perfil extends AbstractEntity implements RoleInterface
     const ROLE_PRECEPTOR = 'PRECEPTOR';
     const ROLE_TUTOR = 'TUTOR';
     const ROLE_ESTUDANTE = 'ESTUDANTE';
-    
+
+    const ROLE_ORIENTADOR = 'ORIENTADOR';
+
     const PERFIL_ADMINISTRADOR = 1;
     const PERFIL_COORDENADOR_PROJETO = 2;
     const PERFIL_COORDENADOR_GRUPO = 3;
     const PERFIL_PRECEPTOR = 4;
     const PERFIL_TUTOR = 5;
-    const PERFIL_ESTUDANTE = 6;    
-    
+    const PERFIL_ESTUDANTE = 6;
+    const PERFIL_ORIENTADOR = 7;
+
     /**
      * @var int
      *
@@ -145,5 +148,13 @@ class Perfil extends AbstractEntity implements RoleInterface
     public function isCoordenadorProjeto()
     {
         return $this->getNoRole() === self::ROLE_COORDENADOR_PROJETO;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isOrientadorProjeto()
+    {
+        return $this->getNoRole() === self::ROLE_ORIENTADOR;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Repository\IdentidadeGeneroRepository;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -47,6 +48,27 @@ class CadastrarParticipanteType extends ParticipanteTypeAbstract
                 'label' => 'CPF',
                 'attr' => array('class' => 'nuCpf')
             ))
+            ->add('dtNascimento', TextType::class, array(
+                'label' => 'Data de Nascimento',
+                'mapped' => false,
+                'attr' => array('readonly' => true)
+            ))
+            ->add('genero', EntityType::class, array(
+                'label' => 'Gênero',
+                'class' => 'AppBundle:IdentidadeGenero',
+                'query_builder' => function (IdentidadeGeneroRepository $repo) {
+                    return $repo->createQueryBuilder('s')
+                        ->where('s.stRegistroAtivo = \'S\'')
+                        ->orderBy('s.dsIdentidadeGenero', 'ASC');
+                },
+                'choice_label' => function ($genero) {
+                    return $genero->getDsIdentidadeGenero();
+                },
+                'required' => true,
+                'placeholder' => '',
+                'mapped' => false,
+            ))
+            /*
             ->add('sexo', EntityType::class, array(
                 'label' => 'Sexo',
                 'class' => 'AppBundle:Sexo',
@@ -65,6 +87,7 @@ class CadastrarParticipanteType extends ParticipanteTypeAbstract
                     return ['disabled' => true];
                 }
             ))
+            */
             ->add('noMae', TextType::class, array(
                 'label' => 'Nome da Mãe',
                 'attr' => array('readonly' => true),

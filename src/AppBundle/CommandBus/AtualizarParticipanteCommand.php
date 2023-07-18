@@ -50,8 +50,10 @@ class AtualizarParticipanteCommand extends CadastrarParticipanteCommand
         $this->perfil = $projetoPessoa->getPessoaPerfil()->getPerfil();
         $this->stVoluntarioProjeto = $projetoPessoa->getStVoluntarioProjeto();
         $this->nuCpf = $pessoaFisica->getNuCpf();
+        $this->genero = $projetoPessoa->getIdentidadeGenero()->getCoIdentidadeGenero();
         $this->noPessoa = $pessoaFisica->getPessoa()->getNoPessoa();
-        $this->sexo = $pessoaFisica->getSexo();
+        $this->dtNascimento = $pessoaFisica->getDtNascimento();
+        //$this->sexo = $pessoaFisica->getSexo();
 
         $dadoPessoal = $pessoaFisica->getDadoPessoal();
         $this->noMae = $dadoPessoal->getPessoaFisica()->getNoMae();

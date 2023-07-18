@@ -709,6 +709,7 @@ class PessoaFisica extends AbstractEntity
      * @param $banco
      * @param $agencia
      * @param $conta
+     * @param $dtNascimento
      */
     public function setDadoPessoal($banco, $agencia, $conta)
     {

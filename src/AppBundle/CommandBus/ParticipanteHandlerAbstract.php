@@ -4,6 +4,7 @@ namespace AppBundle\CommandBus;
 
 use AppBundle\Entity\GrupoAtuacao;
 use AppBundle\Entity\Perfil;
+use AppBundle\Entity\IdentidadeGenero;
 use AppBundle\Entity\ProjetoPessoa;
 use AppBundle\Entity\Cep;
 use AppBundle\Entity\Projeto;
@@ -20,6 +21,7 @@ use AppBundle\Repository\EnderecoWebRepository;
 use AppBundle\Repository\GrupoAtuacaoRepository;
 use AppBundle\Repository\MunicipioRepository;
 use AppBundle\Repository\PerfilRepository;
+use AppBundle\Repository\IdentidadeGeneroRepository;
 use AppBundle\Repository\PessoaFisicaRepository;
 use AppBundle\Repository\ProjetoPessoaGrupoAtuacaoRepository;
 use AppBundle\Repository\ProjetoPessoaRepository;
@@ -39,6 +41,11 @@ class ParticipanteHandlerAbstract
      * @var PerfilRepository
      */
     protected $perfilRepository;
+
+    /**
+     * @var IdentidadeGeneroRepository
+     */
+    protected $identidadeGeneroRepository;
     
     /**
      * @var ProjetoPessoaRepository
@@ -266,7 +273,21 @@ class ParticipanteHandlerAbstract
         
         return $projeto;
     }
-    
+
+    /**
+     * @param $genero
+     * @return IdentidadeGenero $generoObj
+     * @throws \UnexpectedValueException
+     */
+    protected function getGeneroValid($genero)
+    {
+        $generoObj = $this->identidadeGeneroRepository->find($genero);
+        if (!$generoObj) {
+            throw new \UnexpectedValueException('Favor informar, o campo genêro!');
+        }
+        return $generoObj;
+    }
+
     /**
      * @param CadastrarParticipanteCommand $command
      * @return Perfil $perfil
