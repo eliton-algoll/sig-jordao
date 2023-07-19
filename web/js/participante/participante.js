@@ -35,7 +35,7 @@
                 participante.handleChangeGrupoTutorialAoIniciarEditar($('[id$="participante_grupoTutorial"]'))
             }, 500);
 
-            $('[id$="participante_sexo"] option:selected').removeAttr('disabled');
+           // $('[id$="participante_sexo"] option:selected').removeAttr('disabled');
         },
 
         events: function () {
@@ -234,6 +234,9 @@
             $('[id$="participante_cursosLecionados"]').parent('div.form-group').hide();
             $('[id$="participante_stAlunoRegular"]').parent('div.form-group').hide();
 
+            $('[id$="participante_coCnes"]').parent('div.form-group').find('label').addClass('required');
+            $('[id$="participante_coCnes"]').parent('div.form-group').attr('required');
+
             if (!participante.isAreaAtuacao()) {
                 $('[id$="participante_categoriaProfissional"]').parent('div.form-group').find('label').addClass('required');
             }
@@ -291,11 +294,17 @@
                         // console.log(response.pessoa);
                         sessionStorage.setItem('participante_pessoa', JSON.stringify(response.pessoa));
 
+                        let dataNas = new Date(response.dtNascimento.date);
+                        dataNas = dataNas.toLocaleDateString('pt-BR', {
+                            timeZone: 'UTC',
+                        });
+
                         $('[id$="participante_sexo"] option').removeAttr('selected');
                         $('[id$="participante_sexo"] option').attr('disabled', 'disabled');
                         $('[id$="participante_noPessoa"]').val(response.pessoa.noPessoa);
-                        $('[id$="participante_sexo"] option[value="' + response.sexo.coSexo + '"]').attr('selected', 'selected');
-                        $('[id$="participante_sexo"] option[value="' + response.sexo.coSexo + '"]').removeAttr('disabled');
+                        $('[id$="participante_dtNascimento"]').val(dataNas);
+                       // $('[id$="participante_sexo"] option[value="' + response.sexo.coSexo + '"]').attr('selected', 'selected');
+                       // $('[id$="participante_sexo"] option[value="' + response.sexo.coSexo + '"]').removeAttr('disabled');
                         $('[id$="participante_noMae"]').val(response.noMae);
                         $('[id$="participante_coCep"]').val(response.pessoa.nuCep);
                         $('[id$="participante_noLogradouro"]').val(response.pessoa.noLogradouro);

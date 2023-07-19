@@ -3,6 +3,7 @@
 namespace AppBundle\CommandBus;
 
 use AppBundle\Entity\ProjetoPessoa;
+use AppBundle\Entity\Perfil;
 use AppBundle\Event\HandleSituacaoGrupoAtuacaoEvent;
 use AppBundle\Repository\AgenciaBancariaRepository;
 use AppBundle\Repository\AreaTematicaRepository;
@@ -14,6 +15,7 @@ use AppBundle\Repository\DadoPessoalRepository;
 use AppBundle\Repository\EnderecoRepository;
 use AppBundle\Repository\EnderecoWebRepository;
 use AppBundle\Repository\GrupoAtuacaoRepository;
+use AppBundle\Repository\IdentidadeGeneroRepository;
 use AppBundle\Repository\MunicipioRepository;
 use AppBundle\Repository\PerfilRepository;
 use AppBundle\Repository\PessoaFisicaRepository;
@@ -30,6 +32,7 @@ class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
     /**
      * CadastrarParticipanteHandler constructor.
      * @param PerfilRepository $perfilRepository
+     * @param IdentidadeGeneroRepository $identidadeGeneroRepository
      * @param ProjetoPessoaRepository $projetoPessoaRepository
      * @param ProjetoRepository $projetoRepository
      * @param PessoaFisicaRepository $pessoaFisicaRepository
@@ -50,6 +53,7 @@ class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
      */
     public function __construct(
         PerfilRepository                    $perfilRepository,
+        IdentidadeGeneroRepository          $identidadeGeneroRepository,
         ProjetoPessoaRepository             $projetoPessoaRepository,
         ProjetoRepository                   $projetoRepository,
         PessoaFisicaRepository              $pessoaFisicaRepository,
@@ -72,6 +76,7 @@ class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
     {
 //        $this->wsCnes = $wsCnes;
         $this->perfilRepository = $perfilRepository;
+        $this->identidadeGeneroRepository = $identidadeGeneroRepository;
         $this->projetoPessoaRepository = $projetoPessoaRepository;
         $this->projetoRepository = $projetoRepository;
         $this->pessoaFisicaRepository = $pessoaFisicaRepository;
@@ -107,15 +112,18 @@ class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
         $agenciaBancaria = $command->getCoAgenciaBancaria();
         $conta           = $command->getCoConta();
         $conta           = !($conta) ? ' ' : $conta;
+        $genero          = $this->getGeneroValid($command->getGenero());
         $projeto = $this->getProjetoIfNotExistsProjetoVinculado($pessoaFisica, $command);
         $perfil = $this->getPerfilIfNonViolatedConstraints($command);
 
-//        $this->constraintCNES($command);
+        if ($perfil->getCoSeqPerfil() == Perfil::PERFIL_PRECEPTOR) {
+            $this->constraintCNES($command);
+        }
 
         $pessoaPerfil = $pessoaFisica->addPerfil($perfil);
 
         $projetoPessoa = $pessoaPerfil->addProjetoPessoa($projeto, $command->getStVoluntarioProjeto(),
-            $command->getCoEixoAtuacao());
+            $command->getCoEixoAtuacao(), $genero);
 
         $this->addDadosAcademicos($projetoPessoa, $command);
 

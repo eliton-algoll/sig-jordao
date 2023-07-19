@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use AppBundle\Form\ParticipanteTypeAbstract;
 use AppBundle\Repository\ProjetoRepository;
-use AppBundle\Repository\SexoRepository;
+use AppBundle\Repository\IdentidadeGeneroRepository;
 use AppBundle\Repository\PerfilRepository;
 
 class AtualizarParticipanteType extends ParticipanteTypeAbstract
@@ -78,21 +78,31 @@ class AtualizarParticipanteType extends ParticipanteTypeAbstract
                     'value' => $pessoaFisica->getNuCpf()
                 )
             ))
-            ->add('sexo', EntityType::class, array(
-                'label' => 'Sexo',
-                'class' => 'AppBundle:Sexo',
-                'query_builder' => function (SexoRepository $repo) use ($pessoaFisica) {
+            ->add('dtNascimento', TextType::class, array(
+                'label' => 'Data de Nascimento',
+                'mapped' => false,
+                'attr' => array(
+                    'readonly' => true,
+                    'value' =>  $pessoaFisica->getDtNascimento()->format('d/m/Y') )
+            ))
+
+            ->add('genero', EntityType::class, array(
+                'label' => 'Gênero',
+                'class' => 'AppBundle:IdentidadeGenero',
+                'query_builder' => function (IdentidadeGeneroRepository $repo) {
                     return $repo->createQueryBuilder('s')
-                                ->where('s.stRegistroAtivo = \'S\'')
-                                ->where('s.coSexo = :sexo')
-                                ->setParameter('sexo', $pessoaFisica->getSexo()->getCoSexo())
-                                ->orderBy('s.dsSexo', 'ASC');
+                        ->where('s.stRegistroAtivo = \'S\'')
+                        ->orderBy('s.dsIdentidadeGenero', 'ASC');
                 },
-                'choice_label' => function ($sexo) {
-                    return $sexo->getDsSexo();
+                'choice_label' => function ($genero) {
+                    return $genero->getDsIdentidadeGenero();
                 },
-                'disabled' => true,
-                'mapped' => false
+                'choice_attr' => function ($genero) use ($projetoPessoa) {
+                    return $genero->getCoIdentidadeGenero() == $projetoPessoa->getIdentidadeGenero()->getCoIdentidadeGenero() ?
+                            array('selected' => 'selected') : array();
+                },
+                'required' => true,
+                'mapped' => false,
             ))->add('noMae', TextType::class, array(
                 'label'  => 'Nome da Mãe',
                 'mapped' => false,

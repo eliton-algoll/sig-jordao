@@ -234,6 +234,9 @@
             $('[id$="participante_cursosLecionados"]').parent('div.form-group').hide();
             $('[id$="participante_stAlunoRegular"]').parent('div.form-group').hide();
 
+            $('[id$="participante_coCnes"]').parent('div.form-group').find('label').addClass('required');
+            $('[id$="participante_coCnes"]').parent('div.form-group').attr('required');
+
             if (!participante.isAreaAtuacao()) {
                 $('[id$="participante_categoriaProfissional"]').parent('div.form-group').find('label').addClass('required');
             }

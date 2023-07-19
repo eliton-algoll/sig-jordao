@@ -52,6 +52,15 @@ class CadastrarParticipanteCommand
      * @Assert\NotBlank()
      */
     protected $nuCpf;
+
+    /**
+     * @var string
+     * @Assert\Length(max = 50)
+     * @Assert\Type(
+     *     type="string"
+     * )
+     */
+    protected $genero;
     
     /**
      * @var string
@@ -291,6 +300,17 @@ class CadastrarParticipanteCommand
         $this->nuCpf = $nuCpf;
         return $this;
     }
+
+    /**
+     * @param $genero
+     * @return CadastrarParticipanteCommand
+     */
+    public function setGenero($genero)
+    {
+        $this->genero = $genero;
+        return $this;
+    }
+
 
     /**
      * @param $coBanco
@@ -576,6 +596,14 @@ class CadastrarParticipanteCommand
     public function getNuCpf()
     {
         return preg_replace("/[^0-9]/", '', $this->nuCpf);
+    }
+
+    /**
+     * @return string
+     */
+    public function getGenero()
+    {
+        return $this->genero;
     }
 
     /**

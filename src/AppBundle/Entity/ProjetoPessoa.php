@@ -43,6 +43,14 @@ class ProjetoPessoa extends AbstractEntity
     private $pessoaPerfil;
 
     /**
+     * @var IdentidadeGenero
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\IdentidadeGenero", cascade={"persist"})
+     * @ORM\JoinColumn(name="CO_IDENTIDADE_GENERO", referencedColumnName="CO_IDENTIDADE_GENERO")
+     */
+    private $identidadeGenero;
+
+    /**
      * @var string stVoluntarioProjeto
      *
      * @ORM\Column(name="ST_VOLUNTARIO_PROJETO", type="string", nullable=false)
@@ -87,13 +95,14 @@ class ProjetoPessoa extends AbstractEntity
      * @param PessoaPerfil $pessoaPerfil
      * @param string $stVoluntarioProjeto
      */
-    public function __construct(Projeto $projeto, PessoaPerfil $pessoaPerfil, $stVoluntarioProjeto = 'N', $coEixoAtuacao = null)
+    public function __construct(Projeto $projeto, PessoaPerfil $pessoaPerfil, $stVoluntarioProjeto = 'N', $coEixoAtuacao = null, $genero = null)
     {
         $this->projetoPessoaGrupoAtuacao = new ArrayCollection();
         $this->projetoPessoaCursoGraduacao = new ArrayCollection();
         $this->dadosAcademicos = new ArrayCollection();
         $this->projeto = $projeto;
         $this->pessoaPerfil = $pessoaPerfil;
+        $this->identidadeGenero = $genero;
         $this->stVoluntarioProjeto = $stVoluntarioProjeto;
         $this->coEixoAtuacao = $coEixoAtuacao;
         $this->stRegistroAtivo = 'S';
@@ -128,6 +137,14 @@ class ProjetoPessoa extends AbstractEntity
     public function getPessoaPerfil()
     {
         return $this->pessoaPerfil;
+    }
+
+    /**
+     * @return IdentidadeGenero|mixed|null
+     */
+    public function getIdentidadeGenero()
+    {
+        return $this->identidadeGenero;
     }
 
     /**
@@ -219,6 +236,14 @@ class ProjetoPessoa extends AbstractEntity
         return $this->projetoPessoaCursoGraduacao->filter(function ($projetoPessoaCursoGraduacao) {
             return $projetoPessoaCursoGraduacao->isAtivo();
         });
+    }
+
+    /**
+     * @param IdentidadeGenero|mixed|null $identidadeGenero
+     */
+    public function setIdentidadeGenero($identidadeGenero)
+    {
+        $this->identidadeGenero = $identidadeGenero;
     }
 
     /**

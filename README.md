@@ -6,7 +6,7 @@ O sistema em produção está rodando com o PHP 5.6
 
 #### Para configurar o ambiente loca é necessário rodar as dependências do composer com o comando
 ```
-php bin/composer.phar
+php bin/composer.phar install
 ```
 Iniciando o servidor symfony local
 ```
@@ -19,7 +19,11 @@ symfony server:start
 Para deploy em Homologação/Produção rodar os comandos abaixo para criação dos arquivos JS.
 ```
 php bin/console assets:install
+```
+```
 php bin/console assetic:dump
+```
+```
 php bin/console assetic:dump --env=prod --no-debug (para prod)
 ``` 
 
