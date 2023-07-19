@@ -102,7 +102,10 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
         $conta           = (!$conta) ? ' ' : $conta;
         $genero          = $this->getGeneroValid($command->getGenero());
         $perfil          = $this->getPerfilIfNonViolatedConstraints($command);
-//        $this->constraintCNES($command);
+
+        if ($perfil->getCoSeqPerfil() == Perfil::PERFIL_PRECEPTOR) {
+            $this->constraintCNES($command);
+        }
 
 
         if ($pessoaFisica->getDadoPessoal()) {

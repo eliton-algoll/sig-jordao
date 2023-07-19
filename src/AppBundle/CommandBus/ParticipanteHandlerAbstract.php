@@ -143,6 +143,10 @@ class ParticipanteHandlerAbstract
      */
     protected function constraintCNES(CadastrarParticipanteCommand $command)
     {
+        if (!$command->getCoCnes()) {
+            throw new \InvalidArgumentException('Número do CNES é obrigatório para o perfil Preceptor.');
+        }
+
         if ($command->getCoCnes() && !$this->isCnesValido($command->getCoCnes())) {
             throw new \InvalidArgumentException('Número do CNES inválido ou inexistente.');
         }

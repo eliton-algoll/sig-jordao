@@ -3,6 +3,7 @@
 namespace AppBundle\CommandBus;
 
 use AppBundle\Entity\ProjetoPessoa;
+use AppBundle\Entity\Perfil;
 use AppBundle\Event\HandleSituacaoGrupoAtuacaoEvent;
 use AppBundle\Repository\AgenciaBancariaRepository;
 use AppBundle\Repository\AreaTematicaRepository;
@@ -115,7 +116,9 @@ class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
         $projeto = $this->getProjetoIfNotExistsProjetoVinculado($pessoaFisica, $command);
         $perfil = $this->getPerfilIfNonViolatedConstraints($command);
 
-//        $this->constraintCNES($command);
+        if ($perfil->getCoSeqPerfil() == Perfil::PERFIL_PRECEPTOR) {
+            $this->constraintCNES($command);
+        }
 
         $pessoaPerfil = $pessoaFisica->addPerfil($perfil);
 

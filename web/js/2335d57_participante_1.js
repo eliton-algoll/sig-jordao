@@ -25,6 +25,7 @@
                     var perfil = parseInt($('[id$="participante_perfil"]').val(), 10);
 
                     if (perfil === 4) { // Preceptor
+
                         $('[id$="participante_cursoGraduacao"]')
                             .attr('readonly', 'readonly')
                             .attr('disabled', 'disabled');
@@ -35,7 +36,7 @@
                 participante.handleChangeGrupoTutorialAoIniciarEditar($('[id$="participante_grupoTutorial"]'))
             }, 500);
 
-            $('[id$="participante_sexo"] option:selected').removeAttr('disabled');
+           // $('[id$="participante_sexo"] option:selected').removeAttr('disabled');
         },
 
         events: function () {
@@ -233,6 +234,9 @@
             $('[id$="participante_nuSemestreAtual"]').parent('div.form-group').hide();
             $('[id$="participante_cursosLecionados"]').parent('div.form-group').hide();
             $('[id$="participante_stAlunoRegular"]').parent('div.form-group').hide();
+
+            $('[id$="participante_coCnes"]').parent('div.form-group').find('label').addClass('required');
+            $('[id$="participante_coCnes"]').parent('div.form-group').attr('required');
 
             if (!participante.isAreaAtuacao()) {
                 $('[id$="participante_categoriaProfissional"]').parent('div.form-group').find('label').addClass('required');
