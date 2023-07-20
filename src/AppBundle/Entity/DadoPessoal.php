@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Validator\Constraints\DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -92,6 +93,10 @@ class DadoPessoal extends AbstractEntity
     public function getPessoaFisica()
     {
         return $this->pessoaFisica;
+    }
+
+    public function getDtNascimento() {
+        $this->getPessoaFisica()->getDtNascimento();
     }
 
     /**

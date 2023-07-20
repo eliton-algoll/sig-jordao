@@ -69,14 +69,6 @@ class ParticipanteController extends ControllerAbstract
      */
     public function cadastrarAction(Request $request)
     {
-        /*
-        if ($this->isGranted(array('HAS_FOLHA_PAGAMENTO_ABERTA', 'HAS_FOLHA_PAGAMENTO_FECHADA')) && 
-            !$this->isGranted('HAS_AUTORIZACAO_CADASTRO_PARTICIPANTE')
-        ) {
-            $this->addFlash('danger', 'Não é possível cadastrar participantes enquanto a folha de pagamento do programa estiver aberta ou até que seja cadastrado um período excepcional de abertura de cadastro pelo administrador do sistema.');
-            return $this->redirectToRoute('participante');
-        }
-        */
 
         $projeto = $this->getProjetoAutenticado();
         $command = new CadastrarParticipanteCommand();
@@ -91,11 +83,12 @@ class ParticipanteController extends ControllerAbstract
 
         if ($form->isSubmitted()) {
             $data = new ParameterBag($request->request->get('cadastrar_participante'));
-           
+
             # Bind manual devido a complexidade do formulário
             $command
                 ->setPerfil($data->get('perfil'))
                 ->setNuCpf($data->getDigits('nuCpf'))
+                ->setGenero($data->get('genero'))
                 ->setCoBanco($data->get('coBanco'))
                 ->setCoAgenciaBancaria($data->get('coAgenciaBancaria'))
                 ->setCoConta($data->get('coConta'))
@@ -123,7 +116,7 @@ class ParticipanteController extends ControllerAbstract
             try {
                 $projetoPessoa = $this->getBus()->handle($command);
                 $cadastrarUsuarioCommand->setProjetoPessoa($projetoPessoa);
-                
+
                 $this->getBus()->handle($cadastrarUsuarioCommand);
 
                 $link = $this->generateUrl('participante_termo', array('projetoPessoa' => $projetoPessoa->getCoSeqProjetoPessoa()));
@@ -227,6 +220,7 @@ class ParticipanteController extends ControllerAbstract
             $command
                 ->setPerfil($data->get('perfil'))
                 ->setNuCpf($data->getDigits('nuCpf'))
+                ->setGenero($data->get('genero'))
                 ->setCoBanco($data->get('coBanco'))
                 ->setCoAgenciaBancaria($data->get('coAgenciaBancaria'))
                 ->setCoConta($data->get('coConta'))

@@ -3,7 +3,9 @@
 namespace AppBundle\CommandBus;
 
 use AppBundle\Entity\GrupoAtuacao;
+use AppBundle\WebServices\Cnes;
 use AppBundle\Entity\Perfil;
+use AppBundle\Entity\IdentidadeGenero;
 use AppBundle\Entity\ProjetoPessoa;
 use AppBundle\Entity\Cep;
 use AppBundle\Entity\Projeto;
@@ -20,6 +22,7 @@ use AppBundle\Repository\EnderecoWebRepository;
 use AppBundle\Repository\GrupoAtuacaoRepository;
 use AppBundle\Repository\MunicipioRepository;
 use AppBundle\Repository\PerfilRepository;
+use AppBundle\Repository\IdentidadeGeneroRepository;
 use AppBundle\Repository\PessoaFisicaRepository;
 use AppBundle\Repository\ProjetoPessoaGrupoAtuacaoRepository;
 use AppBundle\Repository\ProjetoPessoaRepository;
@@ -39,6 +42,11 @@ class ParticipanteHandlerAbstract
      * @var PerfilRepository
      */
     protected $perfilRepository;
+
+    /**
+     * @var IdentidadeGeneroRepository
+     */
+    protected $identidadeGeneroRepository;
     
     /**
      * @var ProjetoPessoaRepository
@@ -136,8 +144,21 @@ class ParticipanteHandlerAbstract
      */
     protected function constraintCNES(CadastrarParticipanteCommand $command)
     {
-        if ($command->getCoCnes() && !$this->isCnesValido($command->getCoCnes())) {
-            throw new \InvalidArgumentException('Número do CNES inválido ou inexistente.');
+        if (!$command->getCoCnes()) {
+            throw new \InvalidArgumentException('Número CNES é obrigatório para o perfil Preceptor.');
+        }
+
+        /**
+         * Debito tecnico pois o integracao com o webservice do CNES
+         * so funciona em producao. Temporariamente buscando pela url para validar o ambiente
+         */
+        $flag = false;
+        $host = $_SERVER['HTTP_HOST'];
+        if(preg_match('#sigpet\.saude\.gov\.br#i', $host, $match)){
+            $flag = true;
+        }
+        if ($command->getCoCnes() && !$this->isCnesValido($command->getCoCnes()) && $flag) {
+            throw new \InvalidArgumentException('Número CNES inválido ou inexistente.');
         }
     }
       
@@ -148,7 +169,8 @@ class ParticipanteHandlerAbstract
     protected function isCnesValido($coCnes)
     {
         try {
-            return (bool) $this->wsCnes->consultarEstabelecimentoSaude($coCnes);
+            $cnesObj = new \AppBundle\WebServices\Cnes();
+            return (bool) $cnesObj->consultarEstabelecimentoSaude($coCnes);
         } catch (\SoapFault $e) {
             return false;
         }
@@ -266,7 +288,21 @@ class ParticipanteHandlerAbstract
         
         return $projeto;
     }
-    
+
+    /**
+     * @param $genero
+     * @return IdentidadeGenero $generoObj
+     * @throws \UnexpectedValueException
+     */
+    protected function getGeneroValid($genero)
+    {
+        $generoObj = $this->identidadeGeneroRepository->find($genero);
+        if (!$generoObj) {
+            throw new \UnexpectedValueException('Favor informar, o campo genêro!');
+        }
+        return $generoObj;
+    }
+
     /**
      * @param CadastrarParticipanteCommand $command
      * @return Perfil $perfil

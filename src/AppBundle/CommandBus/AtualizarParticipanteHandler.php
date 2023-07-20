@@ -4,6 +4,7 @@ namespace AppBundle\CommandBus;
 
 use AppBundle\Event\HandleSituacaoGrupoAtuacaoEvent;
 use AppBundle\Repository\AreaTematicaRepository;
+use AppBundle\Repository\IdentidadeGeneroRepository;
 use AppBundle\WebServices\Cnes;
 use AppBundle\CommandBus\AtualizarParticipanteCommand;
 use AppBundle\CommandBus\CadastrarParticipanteCommand;
@@ -31,6 +32,7 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
     /**
      * AtualizarParticipanteHandler constructor.
      * @param PerfilRepository $perfilRepository
+     * @param IdentidadeGeneroRepository $identidadeRepository
      * @param ProjetoPessoaRepository $projetoPessoaRepository
      * @param ProjetoRepository $projetoRepository
      * @param PessoaFisicaRepository $pessoaFisicaRepository
@@ -47,6 +49,7 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
      */
     public function __construct(
         PerfilRepository $perfilRepository,
+        IdentidadeGeneroRepository $identidadeRepository,
         ProjetoPessoaRepository $projetoPessoaRepository,
         ProjetoRepository $projetoRepository,
         PessoaFisicaRepository $pessoaFisicaRepository,
@@ -64,6 +67,7 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
     ) {
 //        $this->wsCnes = $wsCnes;
         $this->perfilRepository = $perfilRepository;
+        $this->identidadeGeneroRepository = $identidadeRepository;
         $this->projetoPessoaRepository = $projetoPessoaRepository;
         $this->projetoRepository = $projetoRepository;
         $this->pessoaFisicaRepository = $pessoaFisicaRepository;
@@ -96,8 +100,12 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
         $agenciaBancaria = $command->getCoAgenciaBancaria();
         $conta           = $command->getCoConta();
         $conta           = (!$conta) ? ' ' : $conta;
+        $genero          = $this->getGeneroValid($command->getGenero());
         $perfil          = $this->getPerfilIfNonViolatedConstraints($command);
-//        $this->constraintCNES($command);
+
+        if ($perfil->getCoSeqPerfil() == Perfil::PERFIL_PRECEPTOR) {
+            $this->constraintCNES($command);
+        }
 
 
         if ($pessoaFisica->getDadoPessoal()) {
@@ -111,7 +119,9 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
         $pessoaFisica->getPessoa()->addEnderecoWeb($command->getDsEnderecoWeb());
         
         $projetoPessoa->setStVoluntarioProjeto($command->getStVoluntarioProjeto());
-        
+
+        $projetoPessoa->setIdentidadeGenero($genero);
+
         $this->addEndereco($pessoaFisica, $cep, $command);
         $this->addDadosAcademicos($projetoPessoa, $command);
         $this->addTelefones($pessoaFisica, $command);

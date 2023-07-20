@@ -22,7 +22,8 @@
                     {% endif %}
                     {{ form_row(form.nuCpf) }}
                     {{ form_row(form.noPessoa) }}
-                    {{ form_row(form.sexo) }}
+                    {{ form_row(form.dtNascimento, {attr: {'class': 'datepicker dmY'}}) }}
+                    {{ form_row(form.genero) }}
                     {{ form_row(form.noMae) }}
                     {{ form_row(form.coBanco) }}
                     {{ form_row(form.coAgenciaBancaria) }}
