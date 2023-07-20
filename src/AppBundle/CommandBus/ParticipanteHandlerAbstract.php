@@ -3,6 +3,7 @@
 namespace AppBundle\CommandBus;
 
 use AppBundle\Entity\GrupoAtuacao;
+use AppBundle\WebServices\Cnes;
 use AppBundle\Entity\Perfil;
 use AppBundle\Entity\IdentidadeGenero;
 use AppBundle\Entity\ProjetoPessoa;
@@ -144,11 +145,20 @@ class ParticipanteHandlerAbstract
     protected function constraintCNES(CadastrarParticipanteCommand $command)
     {
         if (!$command->getCoCnes()) {
-            throw new \InvalidArgumentException('Número do CNES é obrigatório para o perfil Preceptor.');
+            throw new \InvalidArgumentException('Número CNES é obrigatório para o perfil Preceptor.');
         }
 
-        if ($command->getCoCnes() && !$this->isCnesValido($command->getCoCnes())) {
-            throw new \InvalidArgumentException('Número do CNES inválido ou inexistente.');
+        /**
+         * Debito tecnico pois o integracao com o webservice do CNES
+         * so funciona em producao. Temporariamente buscando pela url para validar o ambiente
+         */
+        $flag = false;
+        $host = $_SERVER['HTTP_HOST'];
+        if(preg_match('#sigpet\.saude\.gov\.br#i', $host, $match)){
+            $flag = true;
+        }
+        if ($command->getCoCnes() && !$this->isCnesValido($command->getCoCnes()) && $flag) {
+            throw new \InvalidArgumentException('Número CNES inválido ou inexistente.');
         }
     }
       
@@ -159,7 +169,8 @@ class ParticipanteHandlerAbstract
     protected function isCnesValido($coCnes)
     {
         try {
-            return (bool) $this->wsCnes->consultarEstabelecimentoSaude($coCnes);
+            $cnesObj = new \AppBundle\WebServices\Cnes();
+            return (bool) $cnesObj->consultarEstabelecimentoSaude($coCnes);
         } catch (\SoapFault $e) {
             return false;
         }

@@ -191,6 +191,10 @@
                     this.actionPerfilEstudante();
                 }
                     break;
+                case '7' : {
+                    this.actionPerfilOrientador();
+                }
+                    break;
             }
         },
 
@@ -274,6 +278,25 @@
             $('[id$="participante_titulacao"]').parent('div.form-group').hide();
             $('[id$="participante_nuMatriculaIES"]').parent('div.form-group').hide();
             $('[id$="participante_cursosLecionados"]').parent('div.form-group').hide();
+        },
+
+        actionPerfilOrientador: function () {
+            $('[id$="participante_categoriaProfissional"]').parent('div.form-group').show();
+            $('[id$="participante_cursosLecionados"]').parent('div.form-group').show();
+            $('[id$="participante_areaTematica"]').parent('div.form-group').show();
+
+            $('[id$="participante_coCnes"]').parent('div.form-group').hide();
+            $('[id$="participante_titulacao"]').parent('div.form-group').hide();
+            $('[id$="participante_cursoGraduacao"]').parent('div.form-group').hide();
+            $('[id$="participante_nuAnoIngresso"]').parent('div.form-group').hide();
+            $('[id$="participante_nuMatriculaIES"]').parent('div.form-group').hide();
+            $('[id$="participante_nuSemestreAtual"]').parent('div.form-group').hide();
+            $('[id$="participante_stAlunoRegular"]').parent('div.form-group').hide();
+
+            if (!participante.isAreaAtuacao()) {
+                $('[id$="participante_categoriaProfissional"]').parent('div.form-group').find('label').addClass('required');
+                $('[name$="areaTematica][]"] option').removeAttr('disabled');
+            }
         },
 
         handleKeyUpCpf: function (input) {
