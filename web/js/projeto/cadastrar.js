@@ -5,6 +5,8 @@
             this.listAreasTematicas();
         },
         events: function(){
+            $('#label-todos-temas').hide();
+            $('#todos-temas').click(this.checkListAreasTematicas);
             $('#cadastrar_projeto_publicacao').change(this.handleChangePublicacao);
             $('#btn-salvar').click(this.handleClickSalvar);
         },
@@ -24,6 +26,16 @@
             pane.find('input[data-tp-area-tematica="' + tpAreaTematica + '"]')
                 .parents('.checkbox')
                 .show();
+
+            if( pane.find('input[data-tp-area-tematica="' + tpAreaTematica + '"]').length > 0 ){
+                $('#label-todos-temas').show();
+            }
+        },
+        checkListAreasTematicas: function () {
+            var checkBoxs = document.querySelectorAll('input[type="checkbox"]:not([id=todos-temas])');
+            [].forEach.call(checkBoxs, function(checkbox) {
+                checkbox.checked = checkbox.checked ? false : true;
+            });
         },
         handleClickSalvar: function(){
             if ($('#table-secretarias').find('input[type="hidden"]').length < 1) {
