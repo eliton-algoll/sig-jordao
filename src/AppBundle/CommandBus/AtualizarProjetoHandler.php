@@ -92,6 +92,7 @@ class AtualizarProjetoHandler
         $projeto
             ->setNuSipar($command->getNuSipar())
             ->setDsObservacao($command->getDsObservacao())
+            ->setStOrientadorServico($command->getStOrientadorServico())
             ->setQtBolsa($command->getQtBolsa())
             ->setPublicacao($publicacao);
         

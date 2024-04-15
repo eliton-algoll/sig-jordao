@@ -73,15 +73,34 @@ class ProjetoController extends ControllerAbstract
 
             $data = new ParameterBag($request->request->get('cadastrar_projeto'));
 
+            $areasTematicasSaude = [];
+            if ( !is_null($data->get('areasTematicasSaude')) ) {
+                $areasTematicasSaude = $data->get('areasTematicasSaude');
+            }
+
+            $areasTematicasCienciasHumanas = [];
+            if ( !is_null($data->get('areasTematicasCienciasHumanas')) ) {
+                $areasTematicasCienciasHumanas = $data->get('areasTematicasCienciasHumanas');
+            }
+
+            $areasTematicasCienciasSociais = [];
+            if ( !is_null($data->get('areasTematicasCienciasSociais')) ) {
+                $areasTematicasCienciasSociais = $data->get('areasTematicasCienciasSociais');
+            }
+
+
+            $areasTematicas = array_merge($areasTematicasSaude, $areasTematicasCienciasHumanas);
+            $areasTematicas = array_merge($areasTematicas, $areasTematicasCienciasSociais);
+
             # bind manual devido a complexidade do formulário
             $command
                 ->setNuSipar($data->get('nuSipar'))
                 ->setDsObservacao($data->get('dsObservacao'))
+                ->setStOrientadorServico($data->get('stOrientadorServico'))
                 ->setPublicacao($data->get('publicacao'))
-                ->setAreasTematicas($data->get('areasTematicas'))
+                ->setAreasTematicas($areasTematicas)
                 ->setCampus($data->get('campus'))
                 ->setSecretarias($data->get('secretarias'));
-
             try {
                 $this->getBus()->handle($command);
                 $this->addFlash('success', 'Projeto cadastrado com sucesso');
@@ -107,6 +126,7 @@ class ProjetoController extends ControllerAbstract
      */
     public function atualizarAction(Request $request, Projeto $projeto)
     {
+
         $command = new AtualizarProjetoCommand($projeto);
 
         $form = $this->get('form.factory')->createNamed('cadastrar_projeto', AtualizarProjetoType::class, $command);
@@ -116,19 +136,38 @@ class ProjetoController extends ControllerAbstract
 
             $data = new ParameterBag($request->request->get('cadastrar_projeto'));
 
+            $areasTematicasSaude = [];
+            if ( !is_null($data->get('areasTematicasSaude')) ) {
+                $areasTematicasSaude = $data->get('areasTematicasSaude');
+            }
+
+            $areasTematicasCienciasHumanas = [];
+            if ( !is_null($data->get('areasTematicasCienciasHumanas')) ) {
+                $areasTematicasCienciasHumanas = $data->get('areasTematicasCienciasHumanas');
+            }
+
+            $areasTematicasCienciasSociais = [];
+            if ( !is_null($data->get('areasTematicasCienciasSociais')) ) {
+                $areasTematicasCienciasSociais = $data->get('areasTematicasCienciasSociais');
+            }
+
+
+            $areasTematicas = array_merge($areasTematicasSaude, $areasTematicasCienciasHumanas);
+            $areasTematicas = array_merge($areasTematicas, $areasTematicasCienciasSociais);
+
             # bind manual devido a complexidade do formulário
             $command
                 ->setCoSeqProjeto($data->get('coSeqProjeto'))
                 ->setNuSipar($data->get('nuSipar'))
                 ->setDsObservacao($data->get('dsObservacao'))
                 ->setPublicacao($data->get('publicacao'))
-                ->setAreasTematicas($data->get('areasTematicas'))
+                ->setAreasTematicas($areasTematicas)
                 ->setCampus($data->get('campus'))
                 ->setSecretarias($data->get('secretarias'));
 
             try {
                 $this->getBus()->handle($command);
-                $this->addFlash('success', 'Projeto atualizado com sucesso');
+                $this->addFlash('success', 'Projeto atualizado com sucesso.');
                 return $this->redirectToRoute('projeto');
 
             } catch (InvalidCommandException $e) {

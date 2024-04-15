@@ -34,6 +34,13 @@ class AtualizarProjetoCommand
     private $dsObservacao;
 
     /**
+     * @var string
+     * @Assert\NotBlank()
+     * @Assert\Length(min= 1, max = 1)
+     */
+    private $stOrientadorServico;
+
+    /**
      * @var integer
      * @Assert\NotBlank()
      */
@@ -74,6 +81,38 @@ class AtualizarProjetoCommand
      * )
      */
     private $areasTematicas;
+
+    /**
+     * @var array
+     * @Assert\NotBlank()
+     * @Assert\Count(
+     *  min="1",
+     *  minMessage="Pelo menos uma área temática da saúde deve ser selecionada"
+     * )
+     */
+    private $areasTematicasSaude;
+
+
+    /**
+     * @var array
+     * @Assert\NotBlank()
+     * @Assert\Count(
+     *  min="1",
+     *  minMessage="Pelo menos uma área temática de Ciências Humanas deve ser selecionada"
+     * )
+     */
+    private $areasTematicasCienciasHumanas;
+
+
+    /**
+     * @var array
+     * @Assert\NotBlank()
+     * @Assert\Count(
+     *  min="1",
+     *  minMessage="Pelo menos uma área temática de Ciências Sociais Aplicadas deve ser selecionada"
+     * )
+     */
+    private $areasTematicasCienciasSociais;
     
     /**
      * @var array
@@ -148,6 +187,24 @@ class AtualizarProjetoCommand
     }
 
     /**
+     * @return string
+     */
+    public function getStOrientadorServico()
+    {
+        return $this->stOrientadorServico;
+
+    }
+
+    /**
+     * @param string stOrientadorServico
+     */
+    public function setStOrientadorServico($stOrientadorServico)
+    {
+        $this->stOrientadorServico = $stOrientadorServico;
+        return $this;
+    }
+
+    /**
      * @param string $nuSipar
      * @return CadastrarProjetoCommand
      */
@@ -200,6 +257,61 @@ class AtualizarProjetoCommand
     public function setAreasTematicas($areasTematicas)
     {
         $this->areasTematicas = $areasTematicas;
+        return $this;
+    }
+
+
+    /**
+     * @return integer
+     */
+    public function getAreasTematicasSaude()
+    {
+        return $this->areasTematicasSaude;
+    }
+
+    /**
+     * @param integer $areasTematicasSaude
+     * @return CadastrarProjetoCommand
+     */
+    public function setAreasTematicasSaude($areasTematicasSaude)
+    {
+        $this->areasTematicasSaude = $areasTematicasSaude;
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getAreasTematicasCienciasHumanas()
+    {
+        return $this->areasTematicasCienciasHumanas;
+    }
+
+    /**
+     * @param integer $areasTematicasCienciasHumanas
+     * @return CadastrarProjetoCommand
+     */
+    public function setAreasTematicasCienciasHumanas($areasTematicasCienciasHumanas)
+    {
+        $this->areasTematicasCienciasHumanas = $areasTematicasCienciasHumanas;
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getAreasTematicasCienciasSociais()
+    {
+        return $this->areasTematicasCienciasSociais;
+    }
+
+    /**
+     * @param integer $areasTematicasCienciasSociais
+     * @return CadastrarProjetoCommand
+     */
+    public function setAreasTematicasCienciasSociais($areasTematicasCienciasSociais)
+    {
+        $this->areasTematicasCienciasSociais = $areasTematicasCienciasSociais;
         return $this;
     }
     
@@ -282,15 +394,31 @@ class AtualizarProjetoCommand
     {
         $this->coSeqProjeto = $projeto->getCoSeqProjeto();
         $this->dsObservacao = $projeto->getDsObservacao();
+        $this->stOrientadorServico = $projeto->getStOrientadorServico();
         $this->nuSipar = $projeto->getNuSipar();
         $this->publicacao = $projeto->getPublicacao();
         $this->qtBolsa = $projeto->getQtBolsa();
         
         $this->areasTematicas = array();
+        $this->areasTematicasSaude = array();
+        $this->areasTematicasCienciasHumanas = array();
+        $this->areasTematicasCienciasSociais = array();
         foreach ($projeto->getAreasTematicasAtivas() as $areaTematica) {
+            if( $areaTematica->getTipoAreaTematica()->getTpAreaFormacao() == '1' ) {
+                $this->areasTematicasSaude[] = $areaTematica->getTipoAreaTematica();
+            }
+
+            if( $areaTematica->getTipoAreaTematica()->getTpAreaFormacao() == '2' ) {
+                $this->areasTematicasCienciasHumanas[] = $areaTematica->getTipoAreaTematica();
+            }
+
+            if( $areaTematica->getTipoAreaTematica()->getTpAreaFormacao() == '3' ) {
+                $this->areasTematicasCienciasSociais[] = $areaTematica->getTipoAreaTematica();
+            }
+
             $this->areasTematicas[] = $areaTematica->getTipoAreaTematica();
         }
-        
+
         $this->campus = array();
         foreach ($projeto->getCampusAtivos() as $campus) {
             $this->campus[] = $campus;

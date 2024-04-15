@@ -48,6 +48,13 @@ class Projeto extends AbstractEntity
      * @ORM\Column(name="DS_OBSERVACAO", type="string", length=4000, nullable=true)
      */
     private $dsObservacao;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ST_ORIENTADOR_SERVICO", type="string", length=1, nullable=false)
+     */
+    private $stOrientadorServico;
     
     /**
      * @var integer
@@ -115,6 +122,7 @@ class Projeto extends AbstractEntity
         Publicacao $publicacao,
         $nuSipar,
         $dsObservacao = null,
+        $stOrientadorServico = 'N',
         $qtBolsa = null,
         $noDocumentoProjeto = null
     ) {
@@ -123,6 +131,7 @@ class Projeto extends AbstractEntity
         $this->dsObservacao = $dsObservacao;
         $this->qtBolsa = $qtBolsa;
         $this->noDocumentoProjeto = $noDocumentoProjeto;
+        $this->stOrientadorServico = $stOrientadorServico;
         $this->stRegistroAtivo = 'S';
         $this->dtInclusao = new \DateTime();
         $this->projetosPessoas = new ArrayCollection();
@@ -171,6 +180,14 @@ class Projeto extends AbstractEntity
     public function getDsObservacao()
     {
         return $this->dsObservacao;
+    }
+
+    /**
+     * @return mixed|string|null
+     */
+    public function getStOrientadorServico()
+    {
+        return $this->stOrientadorServico;
     }
     
     /**
@@ -375,6 +392,15 @@ class Projeto extends AbstractEntity
     public function setDsObservacao($dsObservacao)
     {
         $this->dsObservacao = $dsObservacao;
+        return $this;
+    }
+
+    /**
+     * @param mixed|string|null $stOrientadorServico
+     */
+    public function setStOrientadorServico($stOrientadorServico)
+    {
+        $this->stOrientadorServico = $stOrientadorServico;
         return $this;
     }
     
