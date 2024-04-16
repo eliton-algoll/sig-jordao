@@ -254,8 +254,9 @@ class ParticipanteTypeAbstract extends AbstractType
                     'class' => 'coEixoAtuacao',
                 ],
                 'choices' => array(
-                    'Gestão em Saúde' => 'G',
-                    'Assistência à Saúde' => 'A'
+                    'Valorização das trabalhadoras e futuras trabalhadoras no âmbito do SUS, Gênero, Identidade de Gênero, Sexualidade, Raça, Etnia, Deficiências e as interseccionalidades no trabalho na saúde.' => 'A',
+                    'Valorização das trabalhadoras e futuras trabalhadoras no âmbito do SUS, saúde mental e as violências relacionadas ao trabalho na saúde.' => 'B',
+                    'Acolhimento e valorização às trabalhadoras e futuras trabalhadoras da saúde no processo de maternagem e acolhimento e valorização de homens trans e outras pessoas que gestam.' => 'C',
                 ),
                 'expanded' => true,
                 'choice_value' => function ($currentChoiceKey) {

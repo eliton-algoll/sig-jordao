@@ -80,32 +80,6 @@
         },
 
         validate: function () {
-            if( $('#salvar-participante').val() == undefined || $('#salvar-participante').val() == 'edit' ) {
-                var voluntario = $('.tab-content').find('input[name="atualizar_participante[stVoluntarioProjeto]"]:checked').val();
-
-                if(voluntario == 'N'){
-                    if( ($('#atualizar_participante_coBanco').val().length < 2) ||
-                        ($('#atualizar_participante_coAgenciaBancaria').val().length < 2) ||
-                        ($('#atualizar_participante_coConta').val().length < 2)) {
-                        bootbox.alert('Participante bolsista é obrigatório informar os dados bancários na aba "Dados Pessoais".');
-                        return false;
-                    }
-                }
-            }
-
-            if( $('#salvar-participante').val() == 'add' ) {
-                var voluntario = $('.tab-content').find('input[name="cadastrar_participante[stVoluntarioProjeto]"]:checked').val();
-
-                if(voluntario == 'N'){
-                    if( ($('#cadastrar_participante_coBanco').val().length < 2) ||
-                        ($('#cadastrar_participante_coAgenciaBancaria').val().length < 2) ||
-                        ($('#cadastrar_participante_coConta').val().length < 2)) {
-                        bootbox.alert('Participante bolsista é obrigatório informar os dados bancários na aba "Dados Pessoais".');
-                        return false;
-                    }
-                }
-            }
-
             if ($('#table-telefones').find('input[type="hidden"]').length < 1) {
                 bootbox.alert('É obrigatório o preenchimento de pelo menos um Telefone.');
                 return false;
