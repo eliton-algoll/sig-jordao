@@ -3,6 +3,8 @@
 namespace AppBundle\CommandBus;
 
 use AppBundle\Event\HandleSituacaoGrupoAtuacaoEvent;
+use AppBundle\Facade\FileNameGeneratorFacade;
+use AppBundle\Facade\FileUploaderFacade;
 use AppBundle\Repository\AreaTematicaRepository;
 use AppBundle\Repository\IdentidadeGeneroRepository;
 use AppBundle\WebServices\Cnes;
@@ -46,6 +48,8 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
      * @param CepRepository $cepRepository
      * @param ProjetoPessoaGrupoAtuacaoRepository $projetoPessoaGrupoAtuacaoRepository
      * @param AreaTematicaRepository $areaTematicaRepository
+     * @param FileUploaderFacade $fileUploader
+     * @param FileNameGeneratorFacade $filenameGenerator
      */
     public function __construct(
         PerfilRepository $perfilRepository,
@@ -63,7 +67,9 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
         CepRepository $cepRepository,
         ProjetoPessoaGrupoAtuacaoRepository $projetoPessoaGrupoAtuacaoRepository,
         AreaTematicaRepository $areaTematicaRepository,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        FileUploaderFacade $fileUploader,
+        FileNameGeneratorFacade $filenameGenerator
     ) {
 //        $this->wsCnes = $wsCnes;
         $this->perfilRepository = $perfilRepository;
@@ -82,6 +88,8 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
         $this->projetoPessoaGrupoAtuacaoRepository = $projetoPessoaGrupoAtuacaoRepository;
         $this->areaTematicaRepository = $areaTematicaRepository;
         $this->eventDispatcher = $eventDispatcher;
+        $this->fileUploader = $fileUploader;
+        $this->filenameGenerator = $filenameGenerator;
     }
     
     /**
@@ -107,6 +115,9 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
             $this->constraintCNES($command);
         }
 
+        if ($command->getNoDocumentoBancario()) {
+            $filename = $this->filenameGenerator->generate($command->getNoDocumentoBancario());
+        }
 
         if ($pessoaFisica->getDadoPessoal()) {
             $pessoaFisica->getDadoPessoal()->setBanco($banco);
@@ -114,6 +125,10 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
             $pessoaFisica->getDadoPessoal()->setConta($conta);
         } else {
             $pessoaFisica->setDadoPessoal($banco, $agenciaBancaria, $conta);
+        }
+
+        if (isset($filename)) {
+            $this->fileUploader->upload($command->getNoDocumentoBancario(), $filename);
         }
         
         $pessoaFisica->getPessoa()->addEnderecoWeb($command->getDsEnderecoWeb());

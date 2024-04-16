@@ -8,6 +8,7 @@ use AppBundle\Repository\AreaTematicaRepository;
 use AppBundle\Repository\CategoriaProfissionalRepository;
 use AppBundle\Repository\GrupoAtuacaoRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -50,13 +51,6 @@ class ParticipanteTypeAbstract extends AbstractType
         }
 
         $builder
-//            ->add('coBanco', ChoiceType::class, array(
-//                'label' => 'Banco',
-//                'choices' => array(
-//                    '001 - Banco do Brasil S.A' => '001'
-//                ),
-//                'required' => true,
-//            ))
             ->add('coBanco', EntityType::class, array(
                 'label' => 'Banco',
                 'class' => 'AppBundle:Banco',
@@ -69,17 +63,17 @@ class ParticipanteTypeAbstract extends AbstractType
                 'choice_label' => function ($banco) {
                     return $banco->getCoBanco() . ' - ' . $banco->getNoBanco();
                 },
-                'required' => false,
+                'required' => true,
             ))
             ->add('coAgenciaBancaria', TextType::class, array(
                 'label' => 'Agência Bancária',
                 'attr' => array('maxlength' => 6),
-                'required' => false,
+                'required' => true,
             ))
             ->add('coConta', TextType::class, array(
                 'label' => 'Conta',
                 'attr' => array('maxlength' => 10),
-                'required' => false,
+                'required' => true,
             ))
             ##############################################
             ->add('dsEnderecoWeb', EmailType::class, array(

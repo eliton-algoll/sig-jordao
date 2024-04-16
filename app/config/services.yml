@@ -123,13 +123,13 @@ services:
             
     app.cadastrar_participante_handler:
         class: AppBundle\CommandBus\CadastrarParticipanteHandler
-        arguments: ["@app.perfil_repository" ,"@app.identidade_genero_repository", "@app.projeto_pessoa_repository" ,"@app.projeto_repository", "@app.pessoa_fisica_repository", "@app.grupo_atuacao_repository", "@app.endereco_repository", "@app.curso_graduacao_repository", "@app.titulacao_repository", "@app.banco_repository", "@app.agencia_bancaria_repository", "@app.municipio_repository", "@app.categoria_profissional_repository", "@app.cep_repository", "@app.dado_pessoal_repository", "@app.endereco_web_repository", "@app.telefone_repository", "@app.projeto_pessoa_grupo_atuacao_repository", "@app.area_tematica_repository", "@event_dispatcher"]
+        arguments: ["@app.perfil_repository" ,"@app.identidade_genero_repository", "@app.projeto_pessoa_repository" ,"@app.projeto_repository", "@app.pessoa_fisica_repository", "@app.grupo_atuacao_repository", "@app.endereco_repository", "@app.curso_graduacao_repository", "@app.titulacao_repository", "@app.banco_repository", "@app.agencia_bancaria_repository", "@app.municipio_repository", "@app.categoria_profissional_repository", "@app.cep_repository", "@app.dado_pessoal_repository", "@app.endereco_web_repository", "@app.telefone_repository", "@app.projeto_pessoa_grupo_atuacao_repository", "@app.area_tematica_repository", "@event_dispatcher","@app.file_uploader_facade", "@app.filename_generator_facade"]
         tags:
             - { name: tactician.handler, command: AppBundle\CommandBus\CadastrarParticipanteCommand }
 
     app.atualizar_participante_handler:
         class: AppBundle\CommandBus\AtualizarParticipanteHandler
-        arguments: ["@app.perfil_repository","@app.identidade_genero_repository", "@app.projeto_pessoa_repository" ,"@app.projeto_repository", "@app.pessoa_fisica_repository", "@app.grupo_atuacao_repository", "@app.curso_graduacao_repository", "@app.titulacao_repository", "@app.banco_repository", "@app.agencia_bancaria_repository", "@app.municipio_repository", "@app.categoria_profissional_repository", "@app.cep_repository", "@app.projeto_pessoa_grupo_atuacao_repository", "@app.area_tematica_repository", "@event_dispatcher"]
+        arguments: ["@app.perfil_repository","@app.identidade_genero_repository", "@app.projeto_pessoa_repository" ,"@app.projeto_repository", "@app.pessoa_fisica_repository", "@app.grupo_atuacao_repository", "@app.curso_graduacao_repository", "@app.titulacao_repository", "@app.banco_repository", "@app.agencia_bancaria_repository", "@app.municipio_repository", "@app.categoria_profissional_repository", "@app.cep_repository", "@app.projeto_pessoa_grupo_atuacao_repository", "@app.area_tematica_repository", "@event_dispatcher", "@app.file_uploader_facade", "@app.filename_generator_facade"]
         tags:
             - { name: tactician.handler, command: AppBundle\CommandBus\AtualizarParticipanteCommand }
             

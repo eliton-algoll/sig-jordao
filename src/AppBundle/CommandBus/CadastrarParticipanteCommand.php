@@ -6,6 +6,7 @@ use AppBundle\Entity\GrupoAtuacao;
 use AppBundle\Entity\Perfil;
 use AppBundle\Entity\Projeto;
 use AppBundle\Validator\Constraints as AppAssert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -81,6 +82,19 @@ class CadastrarParticipanteCommand
      * @Assert\Length(max = 10)
      */
     protected $coConta;
+
+    /**
+     *
+     * @var UploadedFile
+     *
+     * @Assert\File(
+     *      maxSize = "2M",
+     *      maxSizeMessage = "Arquivo selecionado tem o formato ou o tamanho inválido. Serão aceitos arquivos com os formatos: PDF e de até 02 (dois) Megabytes. Selecione novo arquivo e refaça a operação.",
+     *      mimeTypes = {"application/pdf", "application/x-pdf"},
+     *      mimeTypesMessage = "Arquivo selecionado tem o formato ou o tamanho inválido. Serão aceitos arquivos com os formatos: PDF e de até 02 (dois) Megabytes. Selecione novo arquivo e refaça a operação. "
+     * )
+     */
+    private $noDocumentoBancario;
     
     /**
      * @var string 
@@ -769,6 +783,24 @@ class CadastrarParticipanteCommand
     public function getAreaTematica()
     {
         return $this->areaTematica;
+    }
+
+    /**
+     *
+     * @return UploadedFile
+     */
+    public function getNoDocumentoBancario()
+    {
+        return $this->noDocumentoBancario;
+    }
+
+    /**
+     *
+     * @param UploadedFile $noDocumentoBancario
+     */
+    public function setNoDocumentoBancario(UploadedFile $noDocumentoBancario = null)
+    {
+        $this->noDocumentoBancario = $noDocumentoBancario;
     }
 
     /**

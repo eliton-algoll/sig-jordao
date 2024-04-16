@@ -28,6 +28,15 @@
                     {{ form_row(form.coBanco) }}
                     {{ form_row(form.coAgenciaBancaria) }}
                     {{ form_row(form.coConta) }}
+                    {{ form_row(form.noDocumentoBancario) }}
+                    {% if projetoPessoa.noDocumentoBancario() %}
+                        <div>
+                            <label>Documento Anexado</label>
+                            <div style="margin-bottom: 10px;">
+                                {{ projetoPessoa.noDocumentoBancario() }} <a href="{{ asset('uploads/' ~ projetoPessoa.noDocumentoBancario()) }}" target="_blank" class="glyphicon glyphicon-download-alt" download=""></a>
+                            </div>
+                        </div>
+                    {% endif %}
                     <br/>
                     <a href="{{ path('participante') }}" class="btn btn-default">Voltar</a>
                     <a class="btn btn-primary" href="javascript:;" id="btn-salvar-pessoais">Salvar</a>

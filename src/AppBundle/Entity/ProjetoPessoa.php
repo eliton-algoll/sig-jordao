@@ -73,6 +73,14 @@ class ProjetoPessoa extends AbstractEntity
     private $coEixoAtuacao;
 
     /**
+     *
+     * @var string
+     *
+     * @ORM\Column(name="NO_DOCUMENTO_BANCARIO", type="string", length=200)
+     */
+    private $noDocumentoBancario;
+
+    /**
      * @var ProjetoPessoaGrupoAtuacao
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjetoPessoaGrupoAtuacao", mappedBy="projetoPessoa", cascade={"persist"})
      */
@@ -95,7 +103,7 @@ class ProjetoPessoa extends AbstractEntity
      * @param PessoaPerfil $pessoaPerfil
      * @param string $stVoluntarioProjeto
      */
-    public function __construct(Projeto $projeto, PessoaPerfil $pessoaPerfil, $stVoluntarioProjeto = 'N', $coEixoAtuacao = null, $genero = null)
+    public function __construct(Projeto $projeto, PessoaPerfil $pessoaPerfil, $stVoluntarioProjeto = 'N', $coEixoAtuacao = null, $genero = null, $filename = null)
     {
         $this->projetoPessoaGrupoAtuacao = new ArrayCollection();
         $this->projetoPessoaCursoGraduacao = new ArrayCollection();
@@ -105,6 +113,7 @@ class ProjetoPessoa extends AbstractEntity
         $this->identidadeGenero = $genero;
         $this->stVoluntarioProjeto = $stVoluntarioProjeto;
         $this->coEixoAtuacao = $coEixoAtuacao;
+        $this->noDocumentoBancario = $filename;
         $this->stRegistroAtivo = 'S';
         $this->dtInclusao = new \DateTime();
     }
@@ -137,6 +146,15 @@ class ProjetoPessoa extends AbstractEntity
     public function getPessoaPerfil()
     {
         return $this->pessoaPerfil;
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getNoDocumentoBancario()
+    {
+        return $this->noDocumentoBancario;
     }
 
     /**
@@ -244,6 +262,15 @@ class ProjetoPessoa extends AbstractEntity
     public function setIdentidadeGenero($identidadeGenero)
     {
         $this->identidadeGenero = $identidadeGenero;
+    }
+
+    /**
+     *
+     * @param string $noDocumentoBancario
+     */
+    public function setNoDocumentoBancario($noDocumentoBancario)
+    {
+        $this->noDocumentoBancario = $noDocumentoBancario;
     }
 
     /**

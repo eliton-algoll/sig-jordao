@@ -138,14 +138,14 @@ class PessoaPerfil extends AbstractEntity
      * @param string $stVoluntarioProjeto
      * @return ProjetoPessoa
      */
-    public function addProjetoPessoa(Projeto $projeto, $stVoluntarioProjeto = 'N', $coEixoAtuacao = null, $genero = null)
+    public function addProjetoPessoa(Projeto $projeto, $stVoluntarioProjeto = 'N', $coEixoAtuacao = null, $genero = null, $filename = null)
     {
         $this->inativarAllProjetosPessoas();
 
         if ($projetoVinculado = $this->isProjetoVinculado($projeto)) {
             $projetoVinculado->ativar();
         } else {
-            $projetoVinculado = new ProjetoPessoa($projeto, $this, $stVoluntarioProjeto, $coEixoAtuacao, $genero);
+            $projetoVinculado = new ProjetoPessoa($projeto, $this, $stVoluntarioProjeto, $coEixoAtuacao, $genero, $filename);
             $this->projetosPessoas->add($projetoVinculado);
         }
         
