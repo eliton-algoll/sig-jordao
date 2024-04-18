@@ -115,7 +115,7 @@ class ParticipanteTypeAbstract extends AbstractType
             ))
             ##############################################
             ->add('categoriaProfissional', EntityType::class, array(
-                'label' => 'Categoria Profissional',
+                'label' => 'Área de Formação',
                 'class' => 'AppBundle:CategoriaProfissional',
 //                'choice_label' => function ($categoria) {
 //                    return $categoria->getDsCategoriaProfissional();
@@ -126,6 +126,11 @@ class ParticipanteTypeAbstract extends AbstractType
                         ->addOrderBy('cp.dsCategoriaProfissional');
                 },
                 'choice_label' => 'dsCategoriaProfissional',
+                'choice_attr' => function ($repo) {
+                    return array(
+                        'data-tp-area-formacao' => $repo->getTpAreaFormacao()
+                    );
+                },
                 'required' => false
             ))
             ->add('coCnes', TextType::class, array(
@@ -287,7 +292,7 @@ class ParticipanteTypeAbstract extends AbstractType
                         $areaTematica->getTipoAreaTematica()->getDsTipoAreaTematica(),
                     ]);
                 },
-                'required' => true,
+                'required' => false,
                 'multiple' => true,
             ]);
     }

@@ -64,10 +64,12 @@
                             {% else %}
                                 <td>{{ participante.coSeqProjetoPessoa }}</td>
                             {% endif %}
-                            {% if participante.coEixoAtuacao == 'G' %}
-                                <td>Gestão em Saúde</td>
-                            {% elseif participante.coEixoAtuacao == 'A' %}
-                                <td>Assistência à Saúde</td>
+                            {% if participante.coEixoAtuacao == 'A' %}
+                                <td>A</td>
+                            {% elseif participante.coEixoAtuacao == 'B' %}
+                                <td>B</td>
+                            {% elseif participante.coEixoAtuacao == 'C' %}
+                                <td>C</td>
                             {% else %}
                                 <td>-</td>
                             {% endif %}

@@ -128,6 +128,15 @@
                     {{ form_row(form.coCnes) }}
                     {{ form_row(form.titulacao) }}
                     {{ form_row(form.cursoGraduacao) }}
+                    {{ form_row(form.noDocumentoMatricula) }}
+                    {% if projetoPessoa.noDocumentoMatricula() %}
+                        <div>
+                            <label>Documento Anexado</label>
+                            <div style="margin-bottom: 10px;">
+                                {{ projetoPessoa.noDocumentoMatricula() }} <a href="{{ asset('uploads/' ~ projetoPessoa.noDocumentoMatricula()) }}" target="_blank" class="glyphicon glyphicon-download-alt" download=""></a>
+                            </div>
+                        </div>
+                    {% endif %}
                     {{ form_row(form.nuAnoIngresso) }}
                     {{ form_row(form.nuMatriculaIES) }}
                     {{ form_row(form.nuSemestreAtual) }}
@@ -135,15 +144,18 @@
                         {{ form_row(form.cursosLecionados) }}
                     {% endif %}
                     <br/>
-                    {{ form_label(form.areaTematica) }}
-                    <div>
-                        <small>Para selecionar mais de uma área pressionar a tecla Ctrl e marcar as áreas desejadas</small>
+                    <div id="hideAreaTematica">
+
+                        {{ form_label(form.areaTematica) }}
+                        <div>
+                            <small>Para selecionar mais de uma área pressionar a tecla Ctrl e marcar as áreas desejadas</small>
+                        </div>
+                        <div class="form-error">
+                            {{ form_errors(form.areaTematica) }}
+                        </div>
+                        {{ form_widget(form.areaTematica) }}
+                        <br/>
                     </div>
-                    <div class="form-error">
-                        {{ form_errors(form.areaTematica) }}
-                    </div>
-                    {{ form_widget(form.areaTematica) }}
-                <br/>
                     <input type="hidden" name="salvar-participante" id="salvar-participante" value="edit">
                 <a class="btn btn-primary" href="javascript:;" id="btn-salvar-complementares">Salvar</a>
                 </div>

@@ -58,6 +58,24 @@ class ProjetoQuery
     {
         return $this->projetoRepository->find($coProjeto);
     }
+
+    /**
+     * @param integer $coProjeto
+     * @return \AppBundle\Entity\Projeto | null
+     */
+    public function findParticipanteOrientadorByProjeto($coProjeto, $coPerfil)
+    {
+        return $this->projetoRepository->findParticipanteOrientadorByProjeto($coProjeto, $coPerfil);
+    }
+
+    /**
+     * @param integer $coProjeto
+     * @return \AppBundle\Entity\Projeto | null
+     */
+    public function countParticipanteCadastradoByProjetoAndGrupo($coProjeto, $coPerfil, $coGrupo, $cpf)
+    {
+        return $this->projetoRepository->findParticipantesByProjetoAndPefilAndGroup($coProjeto, $coPerfil, $coGrupo, $cpf);
+    }
     
     /**
      * @param PessoaPerfil $pessoaPerfil

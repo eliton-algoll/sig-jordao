@@ -81,6 +81,14 @@ class ProjetoPessoa extends AbstractEntity
     private $noDocumentoBancario;
 
     /**
+     *
+     * @var string
+     *
+     * @ORM\Column(name="NO_DOCUMENTO_MATRICULA", type="string", length=200, nullable=true)
+     */
+    private $noDocumentoMatricula;
+
+    /**
      * @var ProjetoPessoaGrupoAtuacao
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjetoPessoaGrupoAtuacao", mappedBy="projetoPessoa", cascade={"persist"})
      */
@@ -103,7 +111,7 @@ class ProjetoPessoa extends AbstractEntity
      * @param PessoaPerfil $pessoaPerfil
      * @param string $stVoluntarioProjeto
      */
-    public function __construct(Projeto $projeto, PessoaPerfil $pessoaPerfil, $stVoluntarioProjeto = 'N', $coEixoAtuacao = null, $genero = null, $filename = null)
+    public function __construct(Projeto $projeto, PessoaPerfil $pessoaPerfil, $stVoluntarioProjeto = 'N', $coEixoAtuacao = null, $genero = null, $filenameBank = null, $filenameMatricula = null)
     {
         $this->projetoPessoaGrupoAtuacao = new ArrayCollection();
         $this->projetoPessoaCursoGraduacao = new ArrayCollection();
@@ -113,7 +121,8 @@ class ProjetoPessoa extends AbstractEntity
         $this->identidadeGenero = $genero;
         $this->stVoluntarioProjeto = $stVoluntarioProjeto;
         $this->coEixoAtuacao = $coEixoAtuacao;
-        $this->noDocumentoBancario = $filename;
+        $this->noDocumentoBancario = $filenameBank;
+        $this->noDocumentoMatricula = $filenameMatricula;
         $this->stRegistroAtivo = 'S';
         $this->dtInclusao = new \DateTime();
     }
@@ -155,6 +164,14 @@ class ProjetoPessoa extends AbstractEntity
     public function getNoDocumentoBancario()
     {
         return $this->noDocumentoBancario;
+    }
+    /**
+     *
+     * @return string
+     */
+    public function getNoDocumentoMatricula()
+    {
+        return $this->noDocumentoMatricula;
     }
 
     /**
@@ -271,6 +288,14 @@ class ProjetoPessoa extends AbstractEntity
     public function setNoDocumentoBancario($noDocumentoBancario)
     {
         $this->noDocumentoBancario = $noDocumentoBancario;
+    }
+    /**
+     *
+     * @param string $noDocumentoMatricula
+     */
+    public function setNoDocumentoMatricula($noDocumentoMatricula)
+    {
+        $this->noDocumentoMatricula = $noDocumentoMatricula;
     }
 
     /**
@@ -650,6 +675,15 @@ class ProjetoPessoa extends AbstractEntity
         return $this->getProjeto()->getCoSeqProjeto() . ' - '
             . $this->getPessoaPerfil()->getPessoaFisica()->getPessoa()->getNuCpfCnpjPessoa() . ' '
             . $this->getPessoaPerfil()->getPessoaFisica()->getPessoa()->getNoPessoa();
+    }
+
+    /**
+     *
+     * @return int
+     */
+    public function getPerfilParticipante()
+    {
+        return $this->getPessoaPerfil()->getPerfil()->getCoSeqPerfil();
     }
 
 }

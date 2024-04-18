@@ -101,12 +101,14 @@
                     {{ form_row(form.coCnes) }}
                     {{ form_row(form.titulacao) }}
                     {{ form_row(form.cursoGraduacao) }}
+                    {{ form_row(form.noDocumentoMatricula) }}
                     {{ form_row(form.nuAnoIngresso) }}
                     {{ form_row(form.nuMatriculaIES) }}
                     {{ form_row(form.nuSemestreAtual) }}
                     {% if projeto and projeto.getPublicacao().getPrograma().isAreaAtuacao() %}
                         {{ form_row(form.cursosLecionados) }}
                     {% endif %}
+                    <div id="hideAreaTematica">
                     {% if not is_granted('ADMINISTRADOR') %}
                         {{ form_label(form.areaTematica) }}
                         <div>
@@ -118,6 +120,7 @@
                         {{ form_widget(form.areaTematica) }}
                     {% endif %}
                     <br/>
+                    </div>
                     <input type="hidden" name="salvar-participante" id="salvar-participante" value="add">
                     <a class="btn btn-primary" href="javascript:;" id="btn-salvar">Salvar</a>
                 </div>

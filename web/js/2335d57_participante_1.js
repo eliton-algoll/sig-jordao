@@ -8,7 +8,16 @@
 
             sessionStorage.setItem('participante_pessoa', '');
 
-            participante.handleChangePerfil($('[id$="participante_perfil"]'));
+            var optionsCategoriaProf = $('[id$="cadastrar_participante_categoriaProfissional"] option');
+            var _option = '';
+            optionsCategoriaProf.each(function() {
+                var area = $(this).attr('data-tp-area-formacao');
+                _option += '<option value="'+ $(this).val() +'" data-tp-area-formacao="'+area+'">'+ $(this).text() +'</option>';
+            });
+
+            sessionStorage.setItem('optionsCategoriaProf', _option);
+            participante.handleChangePerfil($('[id$="participante_perfil"]'), false);
+
             $('[name$="cursosLecionados][]"]').trigger('change');
             participante.disabledAreaTematicaNaoSelecionado($('[id$="participante_perfil"]'));
             $('input[name$="participante[stVoluntarioProjeto]"]:checked').trigger('click');
@@ -18,9 +27,9 @@
 
                 // Bloqueia a edição do eixo de atuação quando alterando cadastro
                 if ($('.nuCpf:first').attr('readonly') == 'readonly') {
-                    $('[id$="participante_coEixoAtuacao"] input')
-                        .attr('readonly', 'readonly')
-                        .attr('disabled', 'disabled');
+                    // $('[id$="participante_coEixoAtuacao"] input')
+                    //     .attr('readonly', 'readonly')
+                    //     .attr('disabled', 'disabled');
 
                     var perfil = parseInt($('[id$="participante_perfil"]').val(), 10);
 
@@ -34,6 +43,9 @@
 
                 // Aplicar regrar de exibir ou ocultar curso de graduaçõa
                 participante.handleChangeGrupoTutorialAoIniciarEditar($('[id$="participante_grupoTutorial"]'))
+
+                $('[id$="hideAreaTematica"]').hide();
+
             }, 500);
 
            // $('[id$="participante_sexo"] option:selected').removeAttr('disabled');
@@ -43,8 +55,11 @@
             $('input[name$="[nuSei]"]').on('change', this.onBlurSei);
 
             $('[id$="participante_perfil"]').on('change', function () {
+                if( $(this).val() == 7 ){
+                    participante.handleKeyUpHasOrientadorServico();
+                }
                 participante.eraseAreaTematica();
-                participante.handleChangePerfil($(this));
+                participante.handleChangePerfil($(this), true);
             });
 
             $('[id$="participante_nuCpf"]').on('change', function () {
@@ -134,8 +149,12 @@
             }
         },
 
-        handleChangePerfil: function (input) {
-            // $('[id$="participante_grupoTutorial"]').val('');
+        handleChangePerfil: function (input, onchange = true) {
+            var _optionsCategoriaProf = sessionStorage.getItem('optionsCategoriaProf');
+            $('[id$="cadastrar_participante_categoriaProfissional"]').html(_optionsCategoriaProf);
+
+           // $('[id$="participante_grupoTutorial"]').val('');
+           $('[id$="participante_noDocumentoMatricula"]').parent('div.form-group').hide();
 
             if (input.val() != '2') {
                 $('.nav-tabs').find('li').eq(2).show();
@@ -185,10 +204,15 @@
             $('[id$="participante_coCnes"]').parent('div.form-group').hide();
             $('[id$="participante_titulacao"]').parent('div.form-group').hide();
             $('[id$="participante_cursoGraduacao"]').parent('div.form-group').hide();
+            $('[id$="participante_noDocumentoMatricula"]').parent('div.form-group').hide();
             $('[id$="participante_nuAnoIngresso"]').parent('div.form-group').hide();
             $('[id$="participante_nuMatriculaIES"]').parent('div.form-group').hide();
             $('[id$="participante_nuSemestreAtual"]').parent('div.form-group').hide();
             $('[id$="participante_stAlunoRegular"]').parent('div.form-group').hide();
+
+
+            $('[id$="cadastrar_participante_categoriaProfissional"] option[data-tp-area-formacao="2"]').remove();
+            $('[id$="cadastrar_participante_categoriaProfissional"] option[data-tp-area-formacao="3"]').remove();
 
             if (!participante.isAreaAtuacao()) {
                 $('[id$="participante_categoriaProfissional"]').parent('div.form-group').find('label').addClass('required');
@@ -207,6 +231,7 @@
 
             $('[id$="participante_titulacao"]').parent('div.form-group').hide();
             // $('[id$="participante_cursoGraduacao"]').parent('div.form-group').hide();
+            $('[id$="participante_noDocumentoMatricula"]').parent('div.form-group').hide();
             $('[id$="participante_nuAnoIngresso"]').parent('div.form-group').hide();
             $('[id$="participante_nuMatriculaIES"]').parent('div.form-group').hide();
             $('[id$="participante_nuSemestreAtual"]').parent('div.form-group').hide();
@@ -215,6 +240,9 @@
 
             $('[id$="participante_coCnes"]').parent('div.form-group').find('label').addClass('required');
             $('[id$="participante_coCnes"]').parent('div.form-group').attr('required');
+
+            $('[id$="cadastrar_participante_categoriaProfissional"] option[data-tp-area-formacao="2"]').remove();
+            $('[id$="cadastrar_participante_categoriaProfissional"] option[data-tp-area-formacao="3"]').remove();
 
             if (!participante.isAreaAtuacao()) {
                 $('[id$="participante_categoriaProfissional"]').parent('div.form-group').find('label').addClass('required');
@@ -229,6 +257,7 @@
             $('[id$="participante_coCnes"]').parent('div.form-group').hide();
             $('[id$="participante_titulacao"]').parent('div.form-group').hide();
             $('[id$="participante_cursoGraduacao"]').parent('div.form-group').hide();
+            $('[id$="participante_noDocumentoMatricula"]').parent('div.form-group').hide();
             $('[id$="participante_nuAnoIngresso"]').parent('div.form-group').hide();
             $('[id$="participante_nuMatriculaIES"]').parent('div.form-group').hide();
             $('[id$="participante_nuSemestreAtual"]').parent('div.form-group').hide();
@@ -242,6 +271,7 @@
 
         actionPerfilEstudante: function () {
             $('[id$="participante_cursoGraduacao"]').parent('div.form-group').show();
+            $('[id$="participante_noDocumentoMatricula"]').parent('div.form-group').show();
             $('[id$="participante_nuAnoIngresso"]').parent('div.form-group').show();
             $('[id$="participante_nuSemestreAtual"]').parent('div.form-group').show();
             $('[id$="participante_areaTematica"]').parent('div.form-group').show();
@@ -262,6 +292,7 @@
             $('[id$="participante_coCnes"]').parent('div.form-group').hide();
             $('[id$="participante_titulacao"]').parent('div.form-group').hide();
             $('[id$="participante_cursoGraduacao"]').parent('div.form-group').hide();
+            $('[id$="participante_noDocumentoMatricula"]').parent('div.form-group').hide();
             $('[id$="participante_nuAnoIngresso"]').parent('div.form-group').hide();
             $('[id$="participante_nuMatriculaIES"]').parent('div.form-group').hide();
             $('[id$="participante_nuSemestreAtual"]').parent('div.form-group').hide();
@@ -273,6 +304,78 @@
             }
         },
 
+        handleKeyUpHasQtdPerfil: function (coPerfil, qtdPermitido) {
+
+            $('#btn-salvar').hide();
+            var msg = '';
+            switch (coPerfil) {
+                case '3': {
+                    msg = 'Já existe um Coordenador de Grupo cadastrado no projeto';
+                }
+                    break;
+                case '4': {
+                    msg = 'Já existem dois Preceptores cadastrado no projeto';
+                }
+                    break;
+                case '5': {
+                    msg = 'Já existe um Tutor cadastrado no projeto';
+                }
+                    break;
+                case '6' : {
+                    msg = 'Já existem 8 Tutor cadastrado no projeto';
+                }
+                    break;
+                case '7' : {
+                    msg = 'Já existe um Orientador de Serviço cadastrado no projeto';
+                }
+                    break;
+            }
+
+            $.ajax({
+                url: Routing.generate('get_perfil_limit_qtd_grupo', {perfil: coPerfil}),
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if ($.isEmptyObject(response)) {
+                        $('#btn-salvar').show();
+                        return;
+                    } else {
+                        if ( response[0]['NR_ORIENTADOR'] != '0' ) {
+                            $('#btn-salvar').hide();
+                            bootbox.alert(msg);
+                            return;
+                        }
+                        $('#btn-salvar').show();
+                        return;
+                    }
+                }
+            });
+        },
+
+        handleKeyUpHasOrientadorServico: function () {
+
+            $('#btn-salvar').hide();
+            var perfil = 7;
+            $.ajax({
+                url: Routing.generate('get_orientador_servico_projeto', {perfil: perfil}),
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if ($.isEmptyObject(response)) {
+                        $('#btn-salvar').show();
+                        return;
+                    } else {
+                        if ( response[0]['NR_ORIENTADOR'] != '0' ) {
+                            $('#btn-salvar').hide();
+                            bootbox.alert('Já existe um Orientador de Serviço cadastrado no projeto');
+                            return;
+                        }
+                        $('#btn-salvar').show();
+                        return;
+                    }
+                }
+            });
+        },
         handleKeyUpCpf: function (input) {
             sessionStorage.setItem('participante_pessoa', '');
             // $('[id$="participante_grupoTutorial"]').val('');
@@ -600,6 +703,44 @@
                         $('#btn-salvar').hide();
                     }
 
+                    if ((value > 0) && (perfil == 3 || perfil == 5)) { //Não permitir cadastrar mais de um Coordenador de grupo ou tutor
+
+                        $.ajax({
+                            url: Routing.generate('get_perfil_limit_qtd_grupo', {
+                                coGrupo: value,
+                                perfil: perfil,
+                                cpf: cpfPessoa.replace(/([^\d])+/gim, '')
+                            }),
+                            method: 'GET',
+                            dataType: 'json',
+                            success: function (response) {
+                                if ($.isEmptyObject(response)) {
+                                    $('#btn-salvar').show();
+                                    return;
+                                } else {
+                                    if ( response[0]['NR_CADASTRADO'] != '0' ) {
+                                        var txtPerfil = '';
+                                        if( perfil == 3  ) {
+                                            txtPerfil = 'Coordenador de grupo';
+                                        }
+
+                                        if( perfil == 5  ) {
+                                            txtPerfil = 'Tutor';
+                                        }
+
+                                        bootbox.alert('Já existe um '+txtPerfil+' cadastrado ao '+ $(input).find('option:selected').text() +'.');
+                                        input.val('');
+                                        $('#btn-salvar').hide();
+                                        return;
+                                    }
+                                    $('#btn-salvar').show();
+                                    return;
+                                }
+                            }
+                        });
+
+                    }
+
                     if( $('#salvar-participante').val() == 'add' ) {
                         var voluntary = $('.tab-content').find('input[name="cadastrar_participante[stVoluntarioProjeto]"]:checked').val();
                     }
@@ -619,7 +760,7 @@
                             method: 'GET',
                             dataType: 'json',
                             success: function (response) {
-                                // console.log(response);
+                                console.log('response', response);
 
                                 if ($.isEmptyObject(response)) {
                                     bootbox.alert('Não foi possível obter os detalhes do Grupo Tutorial.');
@@ -627,35 +768,25 @@
                                 } else {
                                     if (response.details.eixoAtuacao) {
                                         switch (response.details.eixoAtuacao) {
-                                            case 'G': { // Gestão em Saúde
-                                                $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
-                                                $('[id$="participante_coEixoAtuacao_0"]').attr('checked', true);
-                                                $('[name$="participante[coEixoAtuacao]"][value="G"]').prop('checked', true);
-                                                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
+                                            case 'A': { // Gestão em Saúde
+                                                // $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                // $('[id$="participante_coEixoAtuacao_0"]').attr('checked', true);
+                                                // $('[name$="participante[coEixoAtuacao]"][value="A"]').prop('checked', true);
+                                                // $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
                                                 break;
                                             }
-                                            case 'A': { // Assistência à Saúde
-                                                $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
-                                                $('[name$="participante[coEixoAtuacao]"][value="A"]').prop('checked', true);
-                                                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
-
-                                                // if ((perfil == 5) || (perfil == 6)) { // Tutor | Estudante
-                                                if (perfil == 6) { // Estudante
-
-                                                    // Se Estudante, exibe somente os Cursos de Graduação que são dos
-                                                    // Preceptores
-
-                                                    $('[id$="participante_cursoGraduacao"] option').hide();
-                                                    var options = $('[id$="participante_cursoGraduacao"] option');
-
-                                                    for (var i = 0; i < response.details.cursosGraduacao.length; i++) {
-                                                        for (var j = 0; j < options.length; j++) {
-                                                            if ($(options[j]).val() == response.details.cursosGraduacao[i]) {
-                                                                $(options[j]).show();
-                                                            }
-                                                        }
-                                                    }
-                                                }
+                                            case 'B': { // Assistência à Saúde
+                                                // $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                // $('[id$="participante_coEixoAtuacao_1"]').attr('checked', true);
+                                                // $('[name$="participante[coEixoAtuacao]"][value="B"]').prop('checked', true);
+                                                // $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+                                                break;
+                                            }
+                                            case 'C': { // Assistência à Saúde
+                                                // $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                // $('[id$="participante_coEixoAtuacao_2"]').attr('checked', true);
+                                                // $('[name$="participante[coEixoAtuacao]"][value="C"]').prop('checked', true);
+                                                // $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
                                                 break;
                                             }
                                         }
@@ -703,6 +834,7 @@
                                         if (preceptores.length >= 2) {
                                             $('#btn-salvar').hide();
                                             bootbox.alert('Este Grupo já possui seus dois preceptores cadastrados, selecione outro grupo para realizar o cadastro.');
+                                            input.val('');
                                             return;
                                         }
                                     }
@@ -714,6 +846,7 @@
                                         } else {
                                             $('#btn-salvar').hide();
                                             bootbox.alert('É necessário ter no mínimo 2 (dois) Preceptores bolsistas cadastrados. Salvar não é permitido.');
+                                            input.val('');
                                             return;
                                         }
                                     } else {
@@ -773,8 +906,8 @@
                         return;
                     }
 
-                    $('[id$="participante_coEixoAtuacao"] input').removeAttr('disabled');
-                    $('[name$="participante[coEixoAtuacao]"]').removeAttr('checked');
+                    // $('[id$="participante_coEixoAtuacao"] input').removeAttr('disabled');
+                    // $('[name$="participante[coEixoAtuacao]"]').removeAttr('checked');
                     $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
                     $('[id$="participante_cursoGraduacao"] option').show();
 
@@ -815,36 +948,43 @@
                                 } else {
                                     if (response.details.eixoAtuacao) {
                                         switch (response.details.eixoAtuacao) {
-                                            case 'G': { // Gestão em Saúde
-                                                $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                            case 'A': {
+                                                // $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
                                                 $('[id$="participante_coEixoAtuacao_0"]').attr('checked', true);
-                                                $('[name$="participante[coEixoAtuacao]"][value="G"]').prop('checked', true);
-                                                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
+                                                $('[name$="participante[coEixoAtuacao]"][value="A"]').prop('checked', true);
+                                                // $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
                                                 break;
                                             }
-                                            case 'A': { // Assistência à Saúde
-                                                $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
-                                                $('[name$="participante[coEixoAtuacao]"][value="A"]').prop('checked', true);
-                                                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+                                            case 'B': {
+                                                // $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                $('[id$="participante_coEixoAtuacao_1"]').attr('checked', true);
+                                                $('[name$="participante[coEixoAtuacao]"][value="B"]').prop('checked', true);
+                                                // $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+                                                break;
+                                            }
+                                            case 'C': { // Assistência à Saúde
+                                                // $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                $('[id$="participante_coEixoAtuacao_2"]').attr('checked', true);
+                                                $('[name$="participante[coEixoAtuacao]"][value="C"]').prop('checked', true);
+                                                // $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+                                                break;
+                                            }
 
-                                                // if ((perfil == 5) || (perfil == 6)) { // Tutor | Estudante
-                                                if (perfil == 6) { // Estudante
+                                            if (perfil == 6) { // Estudante
 
-                                                    // Se Estudante, exibe somente os Cursos de Graduação que são dos
-                                                    // Preceptores
+                                                // Se Estudante, exibe somente os Cursos de Graduação que são dos
+                                                // Preceptores
 
-                                                    $('[id$="participante_cursoGraduacao"] option').hide();
-                                                    var options = $('[id$="participante_cursoGraduacao"] option');
+                                                $('[id$="participante_cursoGraduacao"] option').hide();
+                                                var options = $('[id$="participante_cursoGraduacao"] option');
 
-                                                    for (var i = 0; i < response.details.cursosGraduacao.length; i++) {
-                                                        for (var j = 0; j < options.length; j++) {
-                                                            if ($(options[j]).val() == response.details.cursosGraduacao[i]) {
-                                                                $(options[j]).show();
-                                                            }
+                                                for (var i = 0; i < response.details.cursosGraduacao.length; i++) {
+                                                    for (var j = 0; j < options.length; j++) {
+                                                        if ($(options[j]).val() == response.details.cursosGraduacao[i]) {
+                                                            $(options[j]).show();
                                                         }
                                                     }
                                                 }
-                                                break;
                                             }
                                         }
                                     }
@@ -863,36 +1003,6 @@
                                                 }
                                             }
                                         }
-
-                                        // // Verifica se já existem dois preceptores para esse curso e não pode cadastrar
-                                        // // um novo
-                                        // var preceptores = [];
-                                        // var preceptorAtual = -1;
-                                        // var parts = window.location.href.split('/');
-                                        //
-                                        // if (parts.length === 6) {
-                                        //     try {
-                                        //         preceptorAtual = parseInt(parts[5], 10);
-                                        //     } catch (e) {
-                                        //         // Do nothing.
-                                        //     }
-                                        // }
-                                        //
-                                        // for (var _pi = 0; _pi < response.details.preceptores.length; _pi++) {
-                                        //     if (preceptorAtual <= 0) {
-                                        //         preceptores.push(response.details.preceptores[_pi]);
-                                        //     } else {
-                                        //         if (response.details.preceptores[_pi] !== preceptorAtual) {
-                                        //             preceptores.push(response.details.preceptores[_pi]);
-                                        //         }
-                                        //     }
-                                        // }
-                                        //
-                                        // if (preceptores.length >= 2) {
-                                        //     $('#btn-salvar').hide();
-                                        //     bootbox.alert('Este Grupo já possui seus dois preceptores cadastrados, selecione outro grupo para realizar o cadastro.');
-                                        //     return;
-                                        // }
                                     }
 
                                     // if ((perfil == 5) || (perfil == 6)) { // Tutor | Estudante

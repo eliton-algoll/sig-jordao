@@ -376,13 +376,13 @@ class ProjetoController extends ControllerAbstract
                     'stRegistroAtivo' => 'S'
                 )))->getQuery()->getResult();
 
-                for ($r = count($estudantes) - 1; $r > -1; $r--) {
-                    if ($estudantes[$r]['stVoluntarioProjeto'] == 'S') {
-                        array_splice($estudantes, $r, 1);
-                    }
-                }
+//                for ($r = count($estudantes) - 1; $r > -1; $r--) {
+//                    if ($estudantes[$r]['stVoluntarioProjeto'] == 'S') {
+//                        array_splice($estudantes, $r, 1);
+//                    }
+//                }
 
-                $participanrtes = $em->getRepository(ProjetoPessoa::class)->search(new ParameterBag(array(
+                $participantes = $em->getRepository(ProjetoPessoa::class)->search(new ParameterBag(array(
                     'projeto' => $projeto,
                     'grupoTutorial' => $grupoAtuacaoEncontrado,
                     'stRegistroAtivo' => 'S'
@@ -402,7 +402,7 @@ class ProjetoController extends ControllerAbstract
                 $estudantesEncontradosGrupo = count($estudantes);
 
                 $preceptoresIds = [];
-                if(count($participanrtes)==0){
+                if(count($participantes)==0){
                     $eixoAtuacao = null;
                 }
 
@@ -410,9 +410,7 @@ class ProjetoController extends ControllerAbstract
                 // Obtém as categorias
                 // Obtém os cursos de graduação
                 foreach ($preceptores as $preceptor) {
-                    if($preceptor['stVoluntarioProjeto'] == 'N'){
-                        $preceptoresIds[] = $preceptor['coSeqProjetoPessoa'];
-                    }
+                    $preceptoresIds[] = $preceptor['coSeqProjetoPessoa'];
 
                     if ((is_null($eixoAtuacao)) && (!is_null($preceptor['coEixoAtuacao']))) {
                         $eixoAtuacao = $preceptor['coEixoAtuacao'];
@@ -435,27 +433,22 @@ class ProjetoController extends ControllerAbstract
 
                     if (!is_null($cursoGraduacao)) {
                         $coSeqCursoGraduacao = $cursoGraduacao->getCursoGraduacao()->getCoSeqCursoGraduacao();
+                        $estudantesEncontrados = 0;
 
-                        if ($eixoAtuacao == 'A') { // Assistência à Saúde
-                            $estudantesEncontrados = 0;
+                        foreach ($estudantes as $estudante) {
+                            $cursoGraduacaoEstudante = $em->getRepository(ProjetoPessoaCursoGraduacao::class)->findOneBy(array(
+                                'projetoPessoa' => $estudante['coSeqProjetoPessoa'],
+                                'stRegistroAtivo' => 'S'
+                            ));
 
-                            foreach ($estudantes as $estudante) {
-                                $cursoGraduacaoEstudante = $em->getRepository(ProjetoPessoaCursoGraduacao::class)->findOneBy(array(
-                                    'projetoPessoa' => $estudante['coSeqProjetoPessoa'],
-                                    'stRegistroAtivo' => 'S'
-                                ));
-
-                                if (!is_null($cursoGraduacaoEstudante)) {
-                                    if ($cursoGraduacaoEstudante->getCursoGraduacao()->getCoSeqCursoGraduacao() == $coSeqCursoGraduacao) {
-                                        $estudantesEncontrados++;
-                                    }
+                            if (!is_null($cursoGraduacaoEstudante)) {
+                                if ($cursoGraduacaoEstudante->getCursoGraduacao()->getCoSeqCursoGraduacao() == $coSeqCursoGraduacao) {
+                                    $estudantesEncontrados++;
                                 }
                             }
+                        }
 
-                            if ($estudantesEncontrados < 4) {
-                                array_push($cursosGraduacao, $coSeqCursoGraduacao);
-                            }
-                        } else {
+                        if ($estudantesEncontrados < 4) {
                             array_push($cursosGraduacao, $coSeqCursoGraduacao);
                         }
                     }
@@ -467,15 +460,9 @@ class ProjetoController extends ControllerAbstract
                     }
                 }
 
-                for ($r = count($preceptores) - 1; $r > -1; $r--) {
-                    if ($preceptores[$r]['stVoluntarioProjeto'] == 'S') {
-                        array_splice($preceptores, $r, 1);
-                    }
-                }
-
-                if($request->query->get('voluntario') == 'S'){
-                    $preceptoresIds = [];
-                }
+//                if($request->query->get('voluntario') == 'S'){
+//                    $preceptoresIds = [];
+//                }
 
                 $response->details = [
                     'eixoAtuacao' => $eixoAtuacao,

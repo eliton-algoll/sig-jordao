@@ -114,6 +114,11 @@ class AtualizarParticipanteType extends ParticipanteTypeAbstract
             ))
             ->add('noDocumentoBancario', FileType::class, array(
                 'label' => 'Anexar comprovante bancário',
+            ))
+            ->add('noDocumentoMatricula', FileType::class, array(
+                'label' => 'Anexar comprovante de matrícula do estudante',
+                'attr' => array('class' => 'documento_matricula'),
+                'required' => false,
             ));
                 
         parent::buildForm($builder, $options);

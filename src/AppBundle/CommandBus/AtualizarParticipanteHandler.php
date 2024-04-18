@@ -115,8 +115,18 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
             $this->constraintCNES($command);
         }
 
+        if ($perfil->getCoSeqPerfil() == Perfil::PERFIL_ESTUDANTE && is_null($command->getNoDocumentoMatricula())) {
+            throw new \InvalidArgumentException('É obrigatório anexar o comprovante de matrícula para estudantes.');
+        }
+
         if ($command->getNoDocumentoBancario()) {
             $filename = $this->filenameGenerator->generate($command->getNoDocumentoBancario());
+            $projetoPessoa->setNoDocumentoBancario($filename);
+        }
+
+        if ($command->getNoDocumentoMatricula()) {
+            $filenameMatricula = $this->filenameGenerator->generate($command->getNoDocumentoMatricula());
+            $projetoPessoa->setNoDocumentoMatricula($filenameMatricula);
         }
 
         if ($pessoaFisica->getDadoPessoal()) {
@@ -129,6 +139,10 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
 
         if (isset($filename)) {
             $this->fileUploader->upload($command->getNoDocumentoBancario(), $filename);
+        }
+
+        if (isset($filenameMatricula)) {
+            $this->fileUploader->upload($command->getNoDocumentoBancario(), $filenameMatricula);
         }
         
         $pessoaFisica->getPessoa()->addEnderecoWeb($command->getDsEnderecoWeb());

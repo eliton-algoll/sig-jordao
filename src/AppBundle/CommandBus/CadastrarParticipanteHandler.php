@@ -148,14 +148,27 @@ class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
             $filename = $this->filenameGenerator->generate($command->getNoDocumentoBancario());
         }
 
+        if ($perfil->getCoSeqPerfil() == Perfil::PERFIL_ESTUDANTE && is_null($command->getNoDocumentoMatricula())) {
+            throw new \InvalidArgumentException('É obrigatório anexar o comprovante de matrícula para estudantes.');
+        }
+
+        if ($command->getNoDocumentoMatricula()) {
+            $filenameMatricula = $this->filenameGenerator->generate($command->getNoDocumentoMatricula());
+        }
+
         $projetoPessoa = $pessoaPerfil->addProjetoPessoa($projeto,
                                                          $command->getStVoluntarioProjeto(),
                                                          $command->getCoEixoAtuacao(),
                                                          $genero,
-                                                         (isset($filename)) ? $filename : null);
+                                                         (isset($filename)) ? $filename : null,
+                                                         (isset($filenameMatricula)) ? $filenameMatricula : null );
 
         if (isset($filename)) {
             $this->fileUploader->upload($command->getNoDocumentoBancario(), $filename);
+        }
+
+        if (isset($filenameMatricula)) {
+            $this->fileUploader->upload($command->getNoDocumentoMatricula(), $filenameMatricula);
         }
 
         $this->addDadosAcademicos($projetoPessoa, $command);

@@ -95,6 +95,20 @@ class CadastrarParticipanteCommand
      * )
      */
     private $noDocumentoBancario;
+
+
+    /**
+     *
+     * @var UploadedFile
+     *
+     * @Assert\File(
+     *      maxSize = "2M",
+     *      maxSizeMessage = "Arquivo selecionado tem o formato ou o tamanho inválido. Serão aceitos arquivos com os formatos: PDF e de até 02 (dois) Megabytes. Selecione novo arquivo e refaça a operação.",
+     *      mimeTypes = {"application/pdf", "application/x-pdf"},
+     *      mimeTypesMessage = "Arquivo selecionado tem o formato ou o tamanho inválido. Serão aceitos arquivos com os formatos: PDF e de até 02 (dois) Megabytes. Selecione novo arquivo e refaça a operação. "
+     * )
+     */
+    private $noDocumentoMatricula;
     
     /**
      * @var string 
@@ -801,6 +815,23 @@ class CadastrarParticipanteCommand
     public function setNoDocumentoBancario(UploadedFile $noDocumentoBancario = null)
     {
         $this->noDocumentoBancario = $noDocumentoBancario;
+    }
+    /**
+     *
+     * @return UploadedFile
+     */
+    public function getNoDocumentoMatricula()
+    {
+        return $this->noDocumentoMatricula;
+    }
+
+    /**
+     *
+     * @param UploadedFile $noDocumentoMatricula
+     */
+    public function setNoDocumentoMatricula(UploadedFile $noDocumentoMatricula = null)
+    {
+        $this->noDocumentoMatricula = $noDocumentoMatricula;
     }
 
     /**

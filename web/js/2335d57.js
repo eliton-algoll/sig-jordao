@@ -8,6 +8,14 @@
 
             sessionStorage.setItem('participante_pessoa', '');
 
+            var optionsCategoriaProf = $('[id$="cadastrar_participante_categoriaProfissional"] option');
+            var _option = '';
+            optionsCategoriaProf.each(function() {
+                var area = $(this).attr('data-tp-area-formacao');
+                _option += '<option value="'+ $(this).val() +'" data-tp-area-formacao="'+area+'">'+ $(this).text() +'</option>';
+            });
+            sessionStorage.setItem('optionsCategoriaProf', _option);
+
             participante.handleChangePerfil($('[id$="participante_perfil"]'));
             $('[name$="cursosLecionados][]"]').trigger('change');
             participante.disabledAreaTematicaNaoSelecionado($('[id$="participante_perfil"]'));
@@ -42,6 +50,7 @@
             $('input[name$="[nuSei]"]').on('change', this.onBlurSei);
 
             $('[id$="participante_perfil"]').on('change', function () {
+                participante.handleKeyUpHasOrientadorServico();
                 participante.eraseAreaTematica();
                 participante.handleChangePerfil($(this));
             });
@@ -134,7 +143,11 @@
         },
 
         handleChangePerfil: function (input) {
+            var _optionsCategoriaProf = sessionStorage.getItem('optionsCategoriaProf');
+            $('[id$="cadastrar_participante_categoriaProfissional"]').html(_optionsCategoriaProf);
+
             // $('[id$="participante_grupoTutorial"]').val('');
+            $('[id$="participante_noDocumentoMatricula"]').parent('div.form-group').hide();
 
             if (input.val() != '2') {
                 $('.nav-tabs').find('li').eq(2).show();
@@ -184,10 +197,14 @@
             $('[id$="participante_coCnes"]').parent('div.form-group').hide();
             $('[id$="participante_titulacao"]').parent('div.form-group').hide();
             $('[id$="participante_cursoGraduacao"]').parent('div.form-group').hide();
+            $('[id$="participante_noDocumentoMatricula"]').parent('div.form-group').hide();
             $('[id$="participante_nuAnoIngresso"]').parent('div.form-group').hide();
             $('[id$="participante_nuMatriculaIES"]').parent('div.form-group').hide();
             $('[id$="participante_nuSemestreAtual"]').parent('div.form-group').hide();
             $('[id$="participante_stAlunoRegular"]').parent('div.form-group').hide();
+
+            $('[id$="cadastrar_participante_categoriaProfissional"] option[data-tp-area-formacao="2"]').remove();
+            $('[id$="cadastrar_participante_categoriaProfissional"] option[data-tp-area-formacao="3"]').remove();
 
             if (!participante.isAreaAtuacao()) {
                 $('[id$="participante_categoriaProfissional"]').parent('div.form-group').find('label').addClass('required');
@@ -206,6 +223,7 @@
 
             $('[id$="participante_titulacao"]').parent('div.form-group').hide();
             // $('[id$="participante_cursoGraduacao"]').parent('div.form-group').hide();
+            $('[id$="participante_noDocumentoMatricula"]').parent('div.form-group').hide();
             $('[id$="participante_nuAnoIngresso"]').parent('div.form-group').hide();
             $('[id$="participante_nuMatriculaIES"]').parent('div.form-group').hide();
             $('[id$="participante_nuSemestreAtual"]').parent('div.form-group').hide();
@@ -214,6 +232,9 @@
 
             $('[id$="participante_coCnes"]').parent('div.form-group').find('label').addClass('required');
             $('[id$="participante_coCnes"]').parent('div.form-group').attr('required');
+
+            $('[id$="cadastrar_participante_categoriaProfissional"] option[data-tp-area-formacao="2"]').remove();
+            $('[id$="cadastrar_participante_categoriaProfissional"] option[data-tp-area-formacao="3"]').remove();
 
             if (!participante.isAreaAtuacao()) {
                 $('[id$="participante_categoriaProfissional"]').parent('div.form-group').find('label').addClass('required');
@@ -228,6 +249,7 @@
             $('[id$="participante_coCnes"]').parent('div.form-group').hide();
             $('[id$="participante_titulacao"]').parent('div.form-group').hide();
             $('[id$="participante_cursoGraduacao"]').parent('div.form-group').hide();
+            $('[id$="participante_noDocumentoMatricula"]').parent('div.form-group').hide();
             $('[id$="participante_nuAnoIngresso"]').parent('div.form-group').hide();
             $('[id$="participante_nuMatriculaIES"]').parent('div.form-group').hide();
             $('[id$="participante_nuSemestreAtual"]').parent('div.form-group').hide();
@@ -241,6 +263,7 @@
 
         actionPerfilEstudante: function () {
             $('[id$="participante_cursoGraduacao"]').parent('div.form-group').show();
+            $('[id$="participante_noDocumentoMatricula"]').parent('div.form-group').show();
             $('[id$="participante_nuAnoIngresso"]').parent('div.form-group').show();
             $('[id$="participante_nuSemestreAtual"]').parent('div.form-group').show();
             $('[id$="participante_areaTematica"]').parent('div.form-group').show();
@@ -261,6 +284,7 @@
             $('[id$="participante_coCnes"]').parent('div.form-group').hide();
             $('[id$="participante_titulacao"]').parent('div.form-group').hide();
             $('[id$="participante_cursoGraduacao"]').parent('div.form-group').hide();
+            $('[id$="participante_noDocumentoMatricula"]').parent('div.form-group').hide();
             $('[id$="participante_nuAnoIngresso"]').parent('div.form-group').hide();
             $('[id$="participante_nuMatriculaIES"]').parent('div.form-group').hide();
             $('[id$="participante_nuSemestreAtual"]').parent('div.form-group').hide();
@@ -270,6 +294,31 @@
                 $('[id$="participante_categoriaProfissional"]').parent('div.form-group').find('label').addClass('required');
                 $('[name$="areaTematica][]"] option').removeAttr('disabled');
             }
+        },
+
+        handleKeyUpHasOrientadorServico: function () {
+
+            $('#btn-salvar').hide();
+            var perfil = 7;
+            $.ajax({
+                url: Routing.generate('get_orientador_servico_projeto', {perfil: perfil}),
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if ($.isEmptyObject(response)) {
+                        $('#btn-salvar').show();
+                        return;
+                    } else {
+                        if ( response[0]['NR_ORIENTADOR'] != '0' ) {
+                            $('#btn-salvar').hide();
+                            bootbox.alert('Já existe um Orientador de Serviço cadastrado no projeto');
+                            return;
+                        }
+                        $('#btn-salvar').show();
+                        return;
+                    }
+                }
+            });
         },
 
         handleKeyUpCpf: function (input) {
