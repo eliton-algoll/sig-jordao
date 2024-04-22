@@ -28,11 +28,11 @@
 
     {% if projeto.getGruposAtuacaoAtivosENaoConfirmados()|length() > 1 %}
         <div>
-            <label>Grupo Tutorial - Eixo Gestão em Saúde</label>
+            <label>Grupo Tutorial - Eixo Valorização das trabalhadoras e futuras trabalhadoras no âmbito do SUS, Gênero, Identidade de Gênero, Sexualidade, Raça, Etnia, Deficiências e as interseccionalidades no trabalho na saúde. (A)</label>
             <select id="grupos-eixo-gestao-em-saude" class="form-control seletor-grupo"
                     data-grid="grid-grupo-tutorial-eixo-gestao-em-saude">
                 <option value=""></option>
-                {% for grupo in projeto.getGruposAtuacaoEixoGestaoEmSaudeAtivosENaoConfirmados() %}
+                {% for grupo in projeto.getGruposAtuacaoEixoAAtivosENaoConfirmados() %}
                     <option value="{{ grupo.getCoSeqGrupoAtuacao() }}">{{ grupo.getNoGrupoAtuacao() }}</option>
                 {% endfor %}
             </select>
@@ -42,17 +42,29 @@
         <br/>
 
         <div>
-            <label>Grupo Tutorial - Eixo Assistência à Saúde</label>
+            <label>Grupo Tutorial - Valorização das trabalhadoras e futuras trabalhadoras no âmbito do SUS, saúde mental e as violências relacionadas ao trabalho na saúde. (B)</label>
             <select id="grupos-eixo-assistencia-a-saude" class="form-control seletor-grupo"
                     data-grid="grid-grupo-tutorial-eixo-assistencia-a-saude">
                 <option value=""></option>
-                {% for grupo in projeto.getGruposAtuacaoEixoAssistenciaASaudeAtivosENaoConfirmados() %}
+                {% for grupo in projeto.getGruposAtuacaoEixoBAtivosENaoConfirmados() %}
                     <option value="{{ grupo.getCoSeqGrupoAtuacao() }}">{{ grupo.getNoGrupoAtuacao() }}</option>
                 {% endfor %}
             </select>
         </div>
 
         <div id="grid-grupo-tutorial-eixo-assistencia-a-saude" class="margin-top-20"></div>
+        <br/>
+
+        <div>
+            <label>Grupo Tutorial - Acolhimento e valorização às trabalhadoras e futuras trabalhadoras da saúde no processo de maternagem e acolhimento e valorização de homens trans e outras pessoas que gestam. (C)</label>
+            <select id="grupos-eixo-assistencia-a-saude" class="form-control seletor-grupo"
+                    data-grid="grid-grupo-tutorial-eixo-assistencia-a-saude">
+                <option value=""></option>
+                {% for grupo in projeto.getGruposAtuacaoEixoCAtivosENaoConfirmados() %}
+                    <option value="{{ grupo.getCoSeqGrupoAtuacao() }}">{{ grupo.getNoGrupoAtuacao() }}</option>
+                {% endfor %}
+            </select>
+        </div>
         <br/>
     {% endif %}
 

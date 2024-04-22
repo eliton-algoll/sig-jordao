@@ -310,6 +310,39 @@ class Projeto extends AbstractEntity
     /**
      * @return ArrayCollection<GrupoAtuacao>
      */
+    public function getGruposAtuacaoEixoAAtivosENaoConfirmados()
+    {
+        return $this->gruposAtuacao->filter(function (GrupoAtuacao $grupoAtuacao) {
+            return ($grupoAtuacao->isAtivo()) && (!$grupoAtuacao->isConfirmado()) &&
+                ($grupoAtuacao->getCoEixoAtuacao() == 'A');
+        });
+    }
+
+    /**
+     * @return ArrayCollection<GrupoAtuacao>
+     */
+    public function getGruposAtuacaoEixoBAtivosENaoConfirmados()
+    {
+        return $this->gruposAtuacao->filter(function (GrupoAtuacao $grupoAtuacao) {
+            return ($grupoAtuacao->isAtivo()) && (!$grupoAtuacao->isConfirmado()) &&
+                ($grupoAtuacao->getCoEixoAtuacao() == 'B');
+        });
+    }
+
+    /**
+     * @return ArrayCollection<GrupoAtuacao>
+     */
+    public function getGruposAtuacaoEixoCAtivosENaoConfirmados()
+    {
+        return $this->gruposAtuacao->filter(function (GrupoAtuacao $grupoAtuacao) {
+            return ($grupoAtuacao->isAtivo()) && (!$grupoAtuacao->isConfirmado()) &&
+                ($grupoAtuacao->getCoEixoAtuacao() == 'C');
+        });
+    }
+
+    /**
+     * @return ArrayCollection<GrupoAtuacao>
+     */
     public function getGruposAtuacaoEixoGestaoEmSaudeAtivosENaoConfirmados()
     {
         return $this->gruposAtuacao->filter(function (GrupoAtuacao $grupoAtuacao) {

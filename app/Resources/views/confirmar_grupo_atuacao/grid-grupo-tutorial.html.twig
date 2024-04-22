@@ -9,21 +9,21 @@
         </strong>
     </div>
 
-    <h5><label class="required">Temas abordados</label></h5>
-    <div id="grupo-tutorial-temas-abordados-{{ grupoAtuacao.getCoSeqGrupoAtuacao() }}" class="temas-abordados">
-        {% for temaAbordado in grupoAtuacao.getTemasAbordados() %}
-            <div class="checkbox"><label>
-                    <input type="checkbox"
-                           id="confirmar_grupo_tutorial_temasAbordados_{{ grupoAtuacao.getCoSeqGrupoAtuacao() }}_{{ temaAbordado.id }}"
-                           name="confirmar_grupo_tutorial[temasAbordados1][]"
-                           data-tp-tema-abordado="{{ temaAbordado.id }}" value="{{ temaAbordado.id }}" class="checkbox">
-                    {{ temaAbordado.valor }}
-                </label>
-            </div>
-        {% endfor %}
-    </div>
+{#    <h5><label class="required">Temas abordados</label></h5>#}
+{#    <div id="grupo-tutorial-temas-abordados-{{ grupoAtuacao.getCoSeqGrupoAtuacao() }}" class="temas-abordados">#}
+{#        {% for temaAbordado in grupoAtuacao.getTemasAbordados() %}#}
+{#            <div class="checkbox"><label>#}
+{#                    <input type="checkbox"#}
+{#                           id="confirmar_grupo_tutorial_temasAbordados_{{ grupoAtuacao.getCoSeqGrupoAtuacao() }}_{{ temaAbordado.id }}"#}
+{#                           name="confirmar_grupo_tutorial[temasAbordados1][]"#}
+{#                           data-tp-tema-abordado="{{ temaAbordado.id }}" value="{{ temaAbordado.id }}" class="checkbox">#}
+{#                    {{ temaAbordado.valor }}#}
+{#                </label>#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#    </div>#}
 
-    <br/>
+{#    <br/>#}
 
     <h5><label>Participantes</label></h5>
     <table class="table table-condensed table-striped">
@@ -32,7 +32,7 @@
             <th>Nome</th>
             <th>CPF</th>
             <th>Tipo Participante</th>
-            <th>Área de Atuação</th>
+            <th>Área de formação</th>
             <th class="text-center">Voluntário</th>
             <th class="text-center">Ativo</th>
             <th class="text-center">Ações</th>
@@ -44,7 +44,8 @@
                 <td>{{ ppga.getProjetoPessoa().getPessoaPerfil().getPessoaFisica().getPessoa().getNoPessoa() }}</td>
                 <td>{{ ppga.getProjetoPessoa().getPessoaPerfil().getPessoaFisica().getNuCpf()|cpf }}</td>
                 <td>{{ ppga.getProjetoPessoa().getPessoaPerfil().getPerfil().getDsPerfil() }}</td>
-                <td>{{ ppga.getJoinedAreasTematicas()|resume(50)|default('-')|raw }}</td>
+{#                <td>{{ ppga.getJoinedAreasTematicas()|resume(50)|default('-')|raw }}</td>#}
+                <td>{{ ppga.getDescricaoCursoGraducao()}}</td>
                 <td class="text-center">{{ ppga.getProjetoPessoa().getStVoluntarioProjeto()|strst }}</td>
                 <td class="text-center">{{ ppga.getProjetoPessoa().getStRegistroAtivo()|strst }}</td>
                 <td class="text-center">

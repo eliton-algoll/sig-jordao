@@ -274,6 +274,16 @@ class ProjetoPessoa extends AbstractEntity
     }
 
     /**
+     * Get projetoPessoaCursoGraduacao
+     *
+     * @return ProjetoPessoaCursoGraduacao
+     */
+    public function getProjetoPessoaCursoGraduacaoFist()
+    {
+        return $this->projetoPessoaCursoGraduacao->first();
+    }
+
+    /**
      * @param IdentidadeGenero|mixed|null $identidadeGenero
      */
     public function setIdentidadeGenero($identidadeGenero)

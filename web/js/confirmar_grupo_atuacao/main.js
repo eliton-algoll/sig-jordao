@@ -43,10 +43,10 @@
                 };
 
                 // Obtém os temas abordados do grupo selecionado
-                var grid = $('#' + $(seletores[i]).data('grid'));
-                $('.temas-abordados input[type="checkbox"]:checked', grid).each(function () {
-                    grupo.temasAbordados.push(parseInt($(this).val(), 10));
-                });
+                // var grid = $('#' + $(seletores[i]).data('grid'));
+                // $('.temas-abordados input[type="checkbox"]:checked', grid).each(function () {
+                //     grupo.temasAbordados.push(parseInt($(this).val(), 10));
+                // });
 
                 payload.push(grupo);
             }
@@ -69,12 +69,12 @@
             return;
         }
 
-        for (var i = 0; i < payload.length; i++) {
-            if (payload[i].temasAbordados.length == 0) {
-                bootbox.alert('O Grupo Tutorial precisa ter ao menos um Tema abordado selecionado.');
-                return;
-            }
-        }
+        // for (var i = 0; i < payload.length; i++) {
+        //     if (payload[i].temasAbordados.length == 0) {
+        //         bootbox.alert('O Grupo Tutorial precisa ter ao menos um Tema abordado selecionado.');
+        //         return;
+        //     }
+        // }
 
         $.post(Routing.generate('confirmar_grupo_tutorial_confirmar', {}), {
             payload: payload

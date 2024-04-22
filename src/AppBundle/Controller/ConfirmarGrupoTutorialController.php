@@ -252,6 +252,7 @@ SQL;
 
             // Realiza as validações
             foreach ($gruposAtuacao as $grupoAtuacao) { // aka Grupo Tutorial
+                /*
 
                 // echo $grupoAtuacao->getNoGrupoAtuacao() . "\n";
 
@@ -442,6 +443,7 @@ SQL;
                         $errors[] = 'O Grupo ' . $grupoAtuacao->getNoGrupoAtuacao() . ' excedeu o limite máximo de Participantes com o Perfil Estudante. Encontrados: ' . $totais['estudante'] . ' Limite: ' . $limites['estudante'];
                     }
                 }
+                */
             }
 
             if (count($errors) > 0) {
