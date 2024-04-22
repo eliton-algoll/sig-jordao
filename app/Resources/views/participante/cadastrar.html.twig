@@ -28,6 +28,7 @@
                     {{ form_row(form.coBanco) }}
                     {{ form_row(form.coAgenciaBancaria) }}
                     {{ form_row(form.coConta) }}
+                    {{ form_row(form.noDocumentoBancario) }}
                     <br/>
                     <a href="{{ path('participante') }}" class="btn btn-default">Voltar</a>
                 </div>
@@ -92,20 +93,24 @@
                     {% if projeto and projeto.getPublicacao().getPrograma().isGrupoTutorial() %}
                         {{ form_row(form.stVoluntarioProjeto) }}
                         {{ form_row(form.stAlunoRegular) }}
-                        {{ form_row(form.grupoTutorial) }}
-                        {{ form_row(form.coEixoAtuacao) }}
                         {{ form_row(form.stDeclaracaoCursoPenultimo) }}
                     {% endif %}
                     {{ form_row(form.categoriaProfissional) }}
                     {{ form_row(form.coCnes) }}
                     {{ form_row(form.titulacao) }}
                     {{ form_row(form.cursoGraduacao) }}
+                    {% if projeto and projeto.getPublicacao().getPrograma().isGrupoTutorial() %}
+                        {{ form_row(form.grupoTutorial) }}
+                        {{ form_row(form.coEixoAtuacao) }}
+                    {% endif %}
                     {{ form_row(form.nuAnoIngresso) }}
                     {{ form_row(form.nuMatriculaIES) }}
                     {{ form_row(form.nuSemestreAtual) }}
+                    {{ form_row(form.noDocumentoMatricula) }}
                     {% if projeto and projeto.getPublicacao().getPrograma().isAreaAtuacao() %}
                         {{ form_row(form.cursosLecionados) }}
                     {% endif %}
+                    <div id="hideAreaTematica">
                     {% if not is_granted('ADMINISTRADOR') %}
                         {{ form_label(form.areaTematica) }}
                         <div>
@@ -117,6 +122,7 @@
                         {{ form_widget(form.areaTematica) }}
                     {% endif %}
                     <br/>
+                    </div>
                     <input type="hidden" name="salvar-participante" id="salvar-participante" value="add">
                     <a class="btn btn-primary" href="javascript:;" id="btn-salvar">Salvar</a>
                 </div>

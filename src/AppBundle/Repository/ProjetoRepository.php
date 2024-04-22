@@ -337,6 +337,70 @@ SQL;
         return $stmt->fetchAll();
     }
 
+    public function findParticipanteOrientadorByProjeto($coProjeto, $coPerfil)
+    {
+        $queryParams = $queryTypes = [];
+
+        $query = <<<SQL
+                   SELECT count(*) AS NR_ORIENTADOR FROM 
+                    DBPET.TB_PROJETO_PESSOA tp
+                   INNER JOIN DBPET.TB_PESSOA_PERFIL per ON per.CO_SEQ_PESSOA_PERFIL = tp.CO_PESSOA_PERFIL 
+                   WHERE tp.ST_REGISTRO_ATIVO = 'S'
+                   AND tp.CO_PROJETO = ? 
+                   AND per.CO_PERFIL = ? 
+SQL;
+
+        $queryParams[] = (int) $coProjeto;
+        $queryTypes[]  = \PDO::PARAM_INT;
+
+        $queryParams[] = (int) $coPerfil;
+        $queryTypes[]  = \PDO::PARAM_INT;
+
+        $stmt = $this->_em->getConnection()->executeQuery(
+                $query, $queryParams, $queryTypes
+        );
+
+        return $stmt->fetchAll();
+    }
+
+
+    public function findParticipantesByProjetoAndPefilAndGroup($coProjeto, $coPerfil, $coGrupo, $cpf)
+    {
+        $queryParams = $queryTypes = [];
+
+        $query = <<<SQL
+                  SELECT 
+                        COUNT(*) AS NR_CADASTRADO
+                    FROM 
+                        DBPET.TB_PROJETO_PESSOA tp
+                    INNER JOIN DBPET.TB_PESSOA_PERFIL per ON per.CO_SEQ_PESSOA_PERFIL = tp.CO_PESSOA_PERFIL 
+                    INNER JOIN DBPET.RL_PROJETOPESSOA_GRUPOATUACAO gru ON gru.CO_PROJETO_PESSOA = tp.CO_SEQ_PROJETO_PESSOA  
+                    WHERE tp.ST_REGISTRO_ATIVO = 'S'
+                    AND tp.CO_PROJETO = ? 
+                    AND per.CO_PERFIL = ? 
+                    AND gru.CO_GRUPO_ATUACAO = ? 
+                    AND per.NU_CPF <> ? 
+SQL;
+
+        $queryParams[] = (int) $coProjeto;
+        $queryTypes[]  = \PDO::PARAM_INT;
+
+        $queryParams[] = (int) $coPerfil;
+        $queryTypes[]  = \PDO::PARAM_INT;
+
+        $queryParams[] = (int) $coGrupo;
+        $queryTypes[]  = \PDO::PARAM_INT;
+
+        $queryParams[] = $cpf;
+        $queryTypes[]  = \PDO::PARAM_STR;
+
+        $stmt = $this->_em->getConnection()->executeQuery(
+            $query, $queryParams, $queryTypes
+        );
+
+        return $stmt->fetchAll();
+    }
+
     /**
      * @param $nuSipar
      * @param null $publicacao

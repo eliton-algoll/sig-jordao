@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\GrupoAtuacao;
+use AppBundle\Entity\Perfil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
@@ -84,6 +85,7 @@ class ParticipanteController extends ControllerAbstract
         if ($form->isSubmitted()) {
             $data = new ParameterBag($request->request->get('cadastrar_participante'));
 
+            //$areaTematica = [3252]; //so para validar pois é obrigatório passar um valor
             # Bind manual devido a complexidade do formulário
             $command
                 ->setPerfil($data->get('perfil'))
@@ -203,7 +205,7 @@ class ParticipanteController extends ControllerAbstract
         } catch (\Exception $e) {
             // Do nothing.
         }
-        
+
         $command = new AtualizarParticipanteCommand($projetoPessoa);
         $form = $this->get('form.factory')->createNamed('atualizar_participante', AtualizarParticipanteType::class, $command, array(
             'projeto' => $this->getProjetoAutenticado(),
@@ -348,5 +350,41 @@ class ParticipanteController extends ControllerAbstract
                 'dsPrograma' => $dsPrograma
             )
         );
+    }
+
+    /**
+     * @Route("/participante/orientadorservico/{perfil}", name="get_orientador_servico_projeto", options={"expose"=true}))
+     * @param Request $request
+     */
+    public function getOrientadorServicoAction(Request $request, Perfil $perfil) {
+
+        try {
+            $projetoPessoa = $this->getProjetoAutenticado();
+            $coProjeto = $projetoPessoa->getCoSeqProjeto();
+            $coPerfil  = $perfil->getCoSeqPerfil();
+            $data = $this->get('app.projeto_query')->findParticipanteOrientadorByProjeto($coProjeto, $coPerfil);
+        } catch(NoResultException $e) {
+            $data = null;
+        }
+        return new JsonResponse($data);
+
+    }
+
+    /**
+     * @Route("/participante/perfil-limit-qtd/{perfil}/{coGrupo}/{cpf}", name="get_perfil_limit_qtd_grupo", options={"expose"=true}))
+     * @param Request $request
+     */
+    public function getPerfilLimitQtdAction(Request $request, Perfil $perfil, $coGrupo, $cpf) {
+
+        try {
+            $projetoPessoa = $this->getProjetoAutenticado();
+            $coProjeto = $projetoPessoa->getCoSeqProjeto();
+            $coPerfil  = $perfil->getCoSeqPerfil();
+            $data = $this->get('app.projeto_query')->countParticipanteCadastradoByProjetoAndGrupo($coProjeto, $coPerfil, $coGrupo, $cpf);
+        } catch(NoResultException $e) {
+            $data = null;
+        }
+        return new JsonResponse($data);
+
     }
 }

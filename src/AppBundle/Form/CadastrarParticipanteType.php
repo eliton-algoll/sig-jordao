@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use AppBundle\Repository\IdentidadeGeneroRepository;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -68,31 +69,20 @@ class CadastrarParticipanteType extends ParticipanteTypeAbstract
                 'placeholder' => '',
                 'mapped' => false,
             ))
-            /*
-            ->add('sexo', EntityType::class, array(
-                'label' => 'Sexo',
-                'class' => 'AppBundle:Sexo',
-                'query_builder' => function (SexoRepository $repo) {
-                    return $repo->createQueryBuilder('s')
-                        ->where('s.stRegistroAtivo = \'S\'')
-                        ->orderBy('s.dsSexo', 'ASC');
-                },
-                'choice_label' => function ($sexo) {
-                    return $sexo->getDsSexo();
-                },
-                'required' => true,
-                'placeholder' => '',
-                'mapped' => false,
-                'choice_attr' => function ($val, $key, $index) {
-                    return ['disabled' => true];
-                }
-            ))
-            */
             ->add('noMae', TextType::class, array(
                 'label' => 'Nome da Mãe',
                 'attr' => array('readonly' => true),
                 'mapped' => false
+            ))
+            ->add('noDocumentoBancario', FileType::class, array(
+                'label' => 'Anexar comprovante bancário',
+            ))
+            ->add('noDocumentoMatricula', FileType::class, array(
+                'label' => 'Anexar comprovante de matrícula do estudante',
+                'attr' => array('class' => 'documento_matricula'),
+                'required' => false,
             ));
+
 
         parent::buildForm($builder, $options);
     }
