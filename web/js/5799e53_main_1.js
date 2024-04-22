@@ -10,6 +10,7 @@
     }
 
     function handleChangeGrupo() {
+        $('#btn-confimar-grupo-tutorial').attr('disabled', false);
         var id = $(this).val();
         var grid = $('#' + $(this).data('grid'));
         // console.log($(this), $('#' + $(this).data('grid')));
@@ -32,21 +33,16 @@
         var seletores = $('.seletor-grupo');
         var payload = [];
 
+        console.log('seletores', seletores);
         // Obtém os valores dos seletores selecionados
         for (var i = 0; i < seletores.length; i++) {
             var value = $('option:selected', seletores[i]).val();
 
             if (!((!value) || (value <= 0))) {
-                var grupo = {
-                    id: parseInt(value, 10),
-                    temasAbordados: []
-                };
 
-                // Obtém os temas abordados do grupo selecionado
-                // var grid = $('#' + $(seletores[i]).data('grid'));
-                // $('.temas-abordados input[type="checkbox"]:checked', grid).each(function () {
-                //     grupo.temasAbordados.push(parseInt($(this).val(), 10));
-                // });
+                var grupo = {
+                    id: parseInt(value, 10)
+                };
 
                 payload.push(grupo);
             }
@@ -59,21 +55,14 @@
 
         var gruposConfirmados = parseInt($('#grupos-ativos-e-confirmados').val(), 10);
 
-        if ((payload.length < 2) && (gruposConfirmados == 0)) {
-            bootbox.alert('Este Projeto possui nenhum grupo confirmado. Não é possível confirmar este grupo de maneira avulsa.');
-            return;
-        }
+        // if ((payload.length < 2) && (gruposConfirmados == 0)) {
+        //     bootbox.alert('Este Projeto possui nenhum grupo confirmado. Não é possível confirmar este grupo de maneira avulsa.');
+        //     return;
+        // }
 
-        if ((payload.length < 2) && (gruposConfirmados == 3)) {
-            bootbox.alert('Este Projeto possui 3 grupos confirmados. Não é possível confirmar este grupo de maneira avulsa.');
-            return;
-        }
-
-        // for (var i = 0; i < payload.length; i++) {
-        //     if (payload[i].temasAbordados.length == 0) {
-        //         bootbox.alert('O Grupo Tutorial precisa ter ao menos um Tema abordado selecionado.');
-        //         return;
-        //     }
+        // if ((payload.length < 2) && (gruposConfirmados == 3)) {
+        //     bootbox.alert('Este Projeto possui 3 grupos confirmados. Não é possível confirmar este grupo de maneira avulsa.');
+        //     return;
         // }
 
         $.post(Routing.generate('confirmar_grupo_tutorial_confirmar', {}), {

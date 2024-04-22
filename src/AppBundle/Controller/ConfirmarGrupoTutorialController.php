@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\CommandBus\ConfirmarGrupoTutorialCommand;
 use AppBundle\Entity\GrupoAtuacao;
+use AppBundle\Entity\Perfil;
 use AppBundle\Entity\ProjetoPessoa;
 use AppBundle\Entity\ProjetoPessoaCursoGraduacao;
 use League\Tactician\Bundle\Middleware\InvalidCommandException;
@@ -47,9 +48,47 @@ final class ConfirmarGrupoTutorialController extends ControllerAbstract
     {
         $projetosPessaGrupoAtuacao = $this->get('app.projeto_pessoa_grupo_atuacao_repository')
             ->findByGrupoAtuacao($grupoAtuacao);
+        $error = [];
+        if( count($projetosPessaGrupoAtuacao) < 12) {
+            $error[] = ['nrParticipante' => true, 'msg' => 'O Grupo deve ser composto por 12 (doze) participantes.'];
+        }
+        $coordenadorGrupo = 0;
+        $tutor = 0;
+        $preceptor = 0;
+        $estudante = 0;
+        foreach ($projetosPessaGrupoAtuacao as $pro) {
+            if( $pro->getProjetoPessoa()->getPessoaPerfil()->getPerfil()->getCoSeqPerfil() == Perfil::PERFIL_COORDENADOR_GRUPO ) {
+                $coordenadorGrupo++;
+            }
+            if( $pro->getProjetoPessoa()->getPessoaPerfil()->getPerfil()->getCoSeqPerfil() == Perfil::PERFIL_TUTOR ) {
+                $tutor++;
+            }
+            if( $pro->getProjetoPessoa()->getPessoaPerfil()->getPerfil()->getCoSeqPerfil() == Perfil::PERFIL_PRECEPTOR ) {
+                $preceptor++;
+            }
+            if( $pro->getProjetoPessoa()->getPessoaPerfil()->getPerfil()->getCoSeqPerfil() == Perfil::PERFIL_ESTUDANTE ) {
+                $estudante++;
+            }
+        }
+
+        if( $coordenadorGrupo != 1 ) {
+            $error[] = ['nrParticipante' => true, 'msg' => 'O Grupo deve possuir 1 (um) coordenador de grupo.'];
+        }
+
+        if( $tutor != 1 ) {
+            $error[] = ['nrParticipante' => true, 'msg' => 'O Grupo deve possuir 1 (um) tutor.'];
+        }
+
+        if( $preceptor != 2 ) {
+            $error[] = ['nrParticipante' => true, 'msg' => 'O Grupo deve possuir 2 (dois) preceptores.'];
+        }
+
+        if( $estudante != 8 ) {
+            $error[] = ['nrParticipante' => true, 'msg' => 'O Grupo deve possuir 8 (oito) estudantes.'];
+        }
 
         return $this->render('confirmar_grupo_atuacao/grid-grupo-tutorial.html.twig',
-            compact('projetosPessaGrupoAtuacao', 'grupoAtuacao')
+            compact('projetosPessaGrupoAtuacao', 'grupoAtuacao', 'error')
         );
     }
 
