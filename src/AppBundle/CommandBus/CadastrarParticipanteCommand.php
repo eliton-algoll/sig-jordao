@@ -6,6 +6,7 @@ use AppBundle\Entity\GrupoAtuacao;
 use AppBundle\Entity\Perfil;
 use AppBundle\Entity\Projeto;
 use AppBundle\Validator\Constraints as AppAssert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -81,6 +82,33 @@ class CadastrarParticipanteCommand
      * @Assert\Length(max = 10)
      */
     protected $coConta;
+
+    /**
+     *
+     * @var UploadedFile
+     *
+     * @Assert\File(
+     *      maxSize = "2M",
+     *      maxSizeMessage = "Arquivo selecionado tem o formato ou o tamanho inválido. Serão aceitos arquivos com os formatos: PDF e de até 02 (dois) Megabytes. Selecione novo arquivo e refaça a operação.",
+     *      mimeTypes = {"application/pdf", "application/x-pdf"},
+     *      mimeTypesMessage = "Arquivo selecionado tem o formato ou o tamanho inválido. Serão aceitos arquivos com os formatos: PDF e de até 02 (dois) Megabytes. Selecione novo arquivo e refaça a operação. "
+     * )
+     */
+    private $noDocumentoBancario;
+
+
+    /**
+     *
+     * @var UploadedFile
+     *
+     * @Assert\File(
+     *      maxSize = "2M",
+     *      maxSizeMessage = "Arquivo selecionado tem o formato ou o tamanho inválido. Serão aceitos arquivos com os formatos: PDF e de até 02 (dois) Megabytes. Selecione novo arquivo e refaça a operação.",
+     *      mimeTypes = {"application/pdf", "application/x-pdf"},
+     *      mimeTypesMessage = "Arquivo selecionado tem o formato ou o tamanho inválido. Serão aceitos arquivos com os formatos: PDF e de até 02 (dois) Megabytes. Selecione novo arquivo e refaça a operação. "
+     * )
+     */
+    private $noDocumentoMatricula;
     
     /**
      * @var string 
@@ -772,6 +800,41 @@ class CadastrarParticipanteCommand
     }
 
     /**
+     *
+     * @return UploadedFile
+     */
+    public function getNoDocumentoBancario()
+    {
+        return $this->noDocumentoBancario;
+    }
+
+    /**
+     *
+     * @param UploadedFile $noDocumentoBancario
+     */
+    public function setNoDocumentoBancario(UploadedFile $noDocumentoBancario = null)
+    {
+        $this->noDocumentoBancario = $noDocumentoBancario;
+    }
+    /**
+     *
+     * @return UploadedFile
+     */
+    public function getNoDocumentoMatricula()
+    {
+        return $this->noDocumentoMatricula;
+    }
+
+    /**
+     *
+     * @param UploadedFile $noDocumentoMatricula
+     */
+    public function setNoDocumentoMatricula(UploadedFile $noDocumentoMatricula = null)
+    {
+        $this->noDocumentoMatricula = $noDocumentoMatricula;
+    }
+
+    /**
      * @return int
      */
     public function getGrupoTutorial()
@@ -851,6 +914,7 @@ class CadastrarParticipanteCommand
             return !in_array($perfil, [Perfil::PERFIL_COORDENADOR_PROJETO]) && !$areaTematica;
         };
 
+        /*
         if (
             ($hasError($perfil, $this->areaTematica) && !$this->isProjetoGrupoTutorial()) ||
             ($hasError($perfil, $this->areaTematica) && $this->isProjetoGrupoTutorial() && !$this->isVoluntario())
@@ -859,6 +923,7 @@ class CadastrarParticipanteCommand
                 ->atPath('areaTematica')
                 ->addViolation();
         }
+        */
     }
 
     /**

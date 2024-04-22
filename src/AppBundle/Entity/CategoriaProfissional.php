@@ -33,13 +33,21 @@ class CategoriaProfissional extends AbstractEntity
     private $dsCategoriaProfissional;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="TP_AREA_FORMACAO", type="string", length=1)
+     */
+    private $tpAreaFormacao;
+
+    /**
      * @param string $dsCategoriaProfissional
      */
-    public function __construct($dsCategoriaProfissional)
+    public function __construct($dsCategoriaProfissional, $tpAreaFormacao = null)
     {
         $this->dsCategoriaProfissional = $dsCategoriaProfissional;
         $this->stRegistroAtivo = 'S';
         $this->dtInclusao = new \DateTime();
+        $this->tpAreaFormacao = $tpAreaFormacao;
     }
     
     /**
@@ -60,5 +68,13 @@ class CategoriaProfissional extends AbstractEntity
     public function getDsCategoriaProfissional()
     {
         return $this->dsCategoriaProfissional;
+    }
+
+    /**
+     * @return mixed|string|null
+     */
+    public function getTpAreaFormacao()
+    {
+        return $this->tpAreaFormacao;
     }
 }

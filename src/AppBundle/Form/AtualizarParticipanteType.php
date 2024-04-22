@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -111,8 +112,15 @@ class AtualizarParticipanteType extends ParticipanteTypeAbstract
                     'value' => $pessoaFisica->getNoMae()
                 )
             ))
-        ;
-                
+            ->add('noDocumentoBancario', FileType::class, array(
+                'label' => 'Anexar comprovante bancário',
+            ))
+            ->add('noDocumentoMatricula', FileType::class, array(
+                'label' => 'Anexar comprovante de matrícula do estudante',
+                'attr' => array('class' => 'documento_matricula'),
+                'required' => false,
+            ));
+
         parent::buildForm($builder, $options);
     }
     

@@ -6,7 +6,10 @@
         },
         events: function(){
             $('#label-todos-temas').hide();
-            $('#todos-temas').click(this.checkListAreasTematicas);
+            $('#todos-temas-saude').click(this.checkListTemaSaude);
+            $('#todos-temas-cienciasHumanas').click(this.checkListTemaCienciasHumanas);
+            $('#todos-temas-cienciasSociais').click(this.checkListTemaCienciasSociais);
+            // $('#todos-temas').click(this.checkListAreasTematicas);
             $('#cadastrar_projeto_publicacao').change(this.handleChangePublicacao);
             $('#btn-salvar').click(this.handleClickSalvar);
         },
@@ -30,6 +33,30 @@
             if( pane.find('input[data-tp-area-tematica="' + tpAreaTematica + '"]').length > 0 ){
                 $('#label-todos-temas').show();
             }
+        },
+        checkListTemaSaude: function () {
+            var checked = $('#todos-temas-saude');
+            var valueCheck = checked.is(':checked');
+            var checkBoxs = document.querySelectorAll('input[type="checkbox"][data-tp-area-sub="1"]');
+            [].forEach.call(checkBoxs, function(checkbox) {
+                checkbox.checked = valueCheck;
+            });
+        },
+        checkListTemaCienciasHumanas: function () {
+            var checked = $('#todos-temas-cienciasHumanas');
+            var valueCheck = checked.is(':checked');
+            var checkBoxs = document.querySelectorAll('input[type="checkbox"][data-tp-area-sub="2"]');
+            [].forEach.call(checkBoxs, function(checkbox) {
+                checkbox.checked = valueCheck;
+            });
+        },
+        checkListTemaCienciasSociais: function () {
+            var checked = $('#todos-temas-cienciasSociais');
+            var valueCheck = checked.is(':checked');
+            var checkBoxs = document.querySelectorAll('input[type="checkbox"][data-tp-area-sub="3"]');
+            [].forEach.call(checkBoxs, function(checkbox) {
+                checkbox.checked = valueCheck;
+            });
         },
         checkListAreasTematicas: function () {
             var checkBoxs = document.querySelectorAll('input[type="checkbox"]:not([id=todos-temas])');

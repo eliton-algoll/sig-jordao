@@ -28,6 +28,15 @@
                     {{ form_row(form.coBanco) }}
                     {{ form_row(form.coAgenciaBancaria) }}
                     {{ form_row(form.coConta) }}
+                    {{ form_row(form.noDocumentoBancario) }}
+                    {% if projetoPessoa.noDocumentoBancario() %}
+                        <div>
+                            <label>Documento Anexado</label>
+                            <div style="margin-bottom: 10px;">
+                                {{ projetoPessoa.noDocumentoBancario() }} <a href="{{ asset('uploads/' ~ projetoPessoa.noDocumentoBancario()) }}" target="_blank" class="glyphicon glyphicon-download-alt" download=""></a>
+                            </div>
+                        </div>
+                    {% endif %}
                     <br/>
                     <a href="{{ path('participante') }}" class="btn btn-default">Voltar</a>
                     <a class="btn btn-primary" href="javascript:;" id="btn-salvar-pessoais">Salvar</a>
@@ -111,29 +120,42 @@
                     {% if projetoPessoa.getProjeto() and projetoPessoa.getProjeto().getPublicacao().getPrograma().isGrupoTutorial() %}
                         {{ form_row(form.stVoluntarioProjeto) }}
                         {{ form_row(form.stAlunoRegular) }}
-                        {{ form_row(form.grupoTutorial) }}
-                        {{ form_row(form.coEixoAtuacao) }}
                         {{ form_row(form.stDeclaracaoCursoPenultimo) }}
                     {% endif %}
                     {{ form_row(form.categoriaProfissional) }}
                     {{ form_row(form.coCnes) }}
                     {{ form_row(form.titulacao) }}
                     {{ form_row(form.cursoGraduacao) }}
+                    {% if projetoPessoa.getProjeto() and projetoPessoa.getProjeto().getPublicacao().getPrograma().isGrupoTutorial() %}
+                        {{ form_row(form.grupoTutorial) }}
+                        {{ form_row(form.coEixoAtuacao) }}
+                    {% endif %}
                     {{ form_row(form.nuAnoIngresso) }}
                     {{ form_row(form.nuMatriculaIES) }}
                     {{ form_row(form.nuSemestreAtual) }}
-                    {% if projetoPessoa.getProjeto() and projetoPessoa.getProjeto().getPublicacao().getPrograma().isAreaAtuacao() %}
-                        {{ form_row(form.cursosLecionados) }}
+                    {{ form_row(form.noDocumentoMatricula) }}
+                    {% if projetoPessoa.noDocumentoMatricula() %}
+                        <div>
+                            <label>Documento Anexado</label>
+                            <div style="margin-bottom: 10px;">
+                                {{ projetoPessoa.noDocumentoMatricula() }} <a href="{{ asset('uploads/' ~ projetoPessoa.noDocumentoMatricula()) }}" target="_blank" class="glyphicon glyphicon-download-alt" download=""></a>
+                            </div>
+                        </div>
                     {% endif %}
-                    <br/>
-                    {{ form_label(form.areaTematica) }}
-                    <div>
-                        <small>Para selecionar mais de uma área pressionar a tecla Ctrl e marcar as áreas desejadas</small>
+                    <div id="hideAreaTematica">
+                        {% if projetoPessoa.getProjeto() and projetoPessoa.getProjeto().getPublicacao().getPrograma().isAreaAtuacao() %}
+                            {{ form_row(form.cursosLecionados) }}
+                        {% endif %}
+                        <br/>
+                        {{ form_label(form.areaTematica) }}
+                        <div>
+                            <small>Para selecionar mais de uma área pressionar a tecla Ctrl e marcar as áreas desejadas</small>
+                        </div>
+                        <div class="form-error">
+                            {{ form_errors(form.areaTematica) }}
+                        </div>
+                        {{ form_widget(form.areaTematica) }}
                     </div>
-                    <div class="form-error">
-                        {{ form_errors(form.areaTematica) }}
-                    </div>
-                    {{ form_widget(form.areaTematica) }}
                 <br/>
                     <input type="hidden" name="salvar-participante" id="salvar-participante" value="edit">
                 <a class="btn btn-primary" href="javascript:;" id="btn-salvar-complementares">Salvar</a>

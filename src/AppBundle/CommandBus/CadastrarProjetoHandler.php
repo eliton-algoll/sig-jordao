@@ -91,6 +91,7 @@ class CadastrarProjetoHandler
             $publicacao, 
             $command->getNuSipar(),
             $command->getDsObservacao(),
+            $command->getStOrientadorServico(),
             $command->getQtBolsa(),
             (isset($filename)) ? $filename : null
         );

@@ -8,6 +8,7 @@ use AppBundle\Repository\AreaTematicaRepository;
 use AppBundle\Repository\CategoriaProfissionalRepository;
 use AppBundle\Repository\GrupoAtuacaoRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -50,13 +51,6 @@ class ParticipanteTypeAbstract extends AbstractType
         }
 
         $builder
-//            ->add('coBanco', ChoiceType::class, array(
-//                'label' => 'Banco',
-//                'choices' => array(
-//                    '001 - Banco do Brasil S.A' => '001'
-//                ),
-//                'required' => true,
-//            ))
             ->add('coBanco', EntityType::class, array(
                 'label' => 'Banco',
                 'class' => 'AppBundle:Banco',
@@ -69,17 +63,17 @@ class ParticipanteTypeAbstract extends AbstractType
                 'choice_label' => function ($banco) {
                     return $banco->getCoBanco() . ' - ' . $banco->getNoBanco();
                 },
-                'required' => false,
+                'required' => true,
             ))
             ->add('coAgenciaBancaria', TextType::class, array(
                 'label' => 'Agência Bancária',
                 'attr' => array('maxlength' => 6),
-                'required' => false,
+                'required' => true,
             ))
             ->add('coConta', TextType::class, array(
                 'label' => 'Conta',
                 'attr' => array('maxlength' => 10),
-                'required' => false,
+                'required' => true,
             ))
             ##############################################
             ->add('dsEnderecoWeb', EmailType::class, array(
@@ -121,7 +115,7 @@ class ParticipanteTypeAbstract extends AbstractType
             ))
             ##############################################
             ->add('categoriaProfissional', EntityType::class, array(
-                'label' => 'Categoria Profissional',
+                'label' => 'Área de Formação',
                 'class' => 'AppBundle:CategoriaProfissional',
 //                'choice_label' => function ($categoria) {
 //                    return $categoria->getDsCategoriaProfissional();
@@ -132,6 +126,11 @@ class ParticipanteTypeAbstract extends AbstractType
                         ->addOrderBy('cp.dsCategoriaProfissional');
                 },
                 'choice_label' => 'dsCategoriaProfissional',
+                'choice_attr' => function ($repo) {
+                    return array(
+                        'data-tp-area-formacao' => $repo->getTpAreaFormacao()
+                    );
+                },
                 'required' => false
             ))
             ->add('coCnes', TextType::class, array(
@@ -252,6 +251,9 @@ class ParticipanteTypeAbstract extends AbstractType
                 'choice_label' => function (GrupoAtuacao $grupoAtuacao) {
                     return $grupoAtuacao->getNoGrupoAtuacao();
                 },
+                'choice_value' => function ($grupoAtuacao) {
+                    return $grupoAtuacao->getCoSeqGrupoAtuacao() ? $grupoAtuacao->getCoSeqGrupoAtuacao()  : null;
+                },
                 'required' => true
             ])
             ->add('coEixoAtuacao', ChoiceType::class, array(
@@ -260,8 +262,9 @@ class ParticipanteTypeAbstract extends AbstractType
                     'class' => 'coEixoAtuacao',
                 ],
                 'choices' => array(
-                    'Gestão em Saúde' => 'G',
-                    'Assistência à Saúde' => 'A'
+                    'Valorização das trabalhadoras e futuras trabalhadoras no âmbito do SUS, Gênero, Identidade de Gênero, Sexualidade, Raça, Etnia, Deficiências e as interseccionalidades no trabalho na saúde.' => 'A',
+                    'Valorização das trabalhadoras e futuras trabalhadoras no âmbito do SUS, saúde mental e as violências relacionadas ao trabalho na saúde.' => 'B',
+                    'Acolhimento e valorização às trabalhadoras e futuras trabalhadoras da saúde no processo de maternagem e acolhimento e valorização de homens trans e outras pessoas que gestam.' => 'C',
                 ),
                 'expanded' => true,
                 'choice_value' => function ($currentChoiceKey) {
@@ -292,7 +295,7 @@ class ParticipanteTypeAbstract extends AbstractType
                         $areaTematica->getTipoAreaTematica()->getDsTipoAreaTematica(),
                     ]);
                 },
-                'required' => true,
+                'required' => false,
                 'multiple' => true,
             ]);
     }
