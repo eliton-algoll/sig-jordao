@@ -23,7 +23,7 @@
             $('input[name$="participante[stVoluntarioProjeto]"]:checked').trigger('click');
 
             setTimeout(function () {
-                $('[id$="participante_cursoGraduacao"]').trigger('change');
+                // $('[id$="participante_cursoGraduacao"]').trigger('change');
 
                 // Bloqueia a edição do eixo de atuação quando alterando cadastro
                 if ($('.nuCpf:first').attr('readonly') == 'readonly') {
@@ -585,6 +585,10 @@
         },
 
         handleChangeCursoGraduacao: function (curso) {
+
+            // if( $('#salvar-participante').val() == 'add' ) {
+                $('[id$="participante_grupoTutorial"]').val('');
+            // }
             $('[name$="areaTematica][]"] option').removeAttr('disabled');
 
             if ($('[id$="participante_perfil"] option:selected').val() == 6 && $(curso).find('option:selected').text() != 'OUTRO') { // Estudante
@@ -668,6 +672,7 @@
                 if (value) {
                     var projetoSei = $('[id$="participante_nuSei"]').val();
                     var cpfPessoa = $('.nuCpf:first').val(); // $('[id$="participante_nuCpf"]').val();
+                    var cursoGraduacao = $('[id$="participante_cursoGraduacao"]').val();
                     var pessoa = sessionStorage.getItem('participante_pessoa');
 
                     if ((!pessoa) || (pessoa == '')) {
@@ -690,7 +695,7 @@
 
                     $('[id$="participante_coEixoAtuacao"] input').removeAttr('disabled');
                     $('[name$="participante[coEixoAtuacao]"]').removeAttr('checked');
-                    $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+                    // $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
                     $('[id$="participante_cursoGraduacao"] option').show();
 
                     if ((!perfil) || (perfil < 1)) {
@@ -700,6 +705,13 @@
                     }
 
                     if (perfil == 6) { // Estudante
+
+                        if ( !cursoGraduacao ) {
+                            bootbox.alert('O Curso de Graduação do Participante precisa ser selecionado.');
+                            $('[id$="participante_grupoTutorial"]').val('');
+                            return;
+                        }
+
                         $('#btn-salvar').hide();
                     }
 
@@ -755,12 +767,12 @@
                                 grupoTutorial: value,
                                 nuSipar: projetoSei,
                                 cpf: cpfPessoa,
-                                voluntario: voluntary
+                                voluntario: voluntary,
+                                cursoGraduacaoCandidato: cursoGraduacao,
                             }),
                             method: 'GET',
                             dataType: 'json',
                             success: function (response) {
-                                console.log('response', response);
 
                                 if ($.isEmptyObject(response)) {
                                     bootbox.alert('Não foi possível obter os detalhes do Grupo Tutorial.');
@@ -769,24 +781,24 @@
                                     if (response.details.eixoAtuacao) {
                                         switch (response.details.eixoAtuacao) {
                                             case 'A': { // Gestão em Saúde
-                                                // $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
-                                                // $('[id$="participante_coEixoAtuacao_0"]').attr('checked', true);
-                                                // $('[name$="participante[coEixoAtuacao]"][value="A"]').prop('checked', true);
-                                                // $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
+                                                $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                $('[id$="participante_coEixoAtuacao_0"]').attr('checked', true);
+                                                $('[name$="participante[coEixoAtuacao]"][value="A"]').prop('checked', true);
+                                                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
                                                 break;
                                             }
                                             case 'B': { // Assistência à Saúde
-                                                // $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
-                                                // $('[id$="participante_coEixoAtuacao_1"]').attr('checked', true);
-                                                // $('[name$="participante[coEixoAtuacao]"][value="B"]').prop('checked', true);
-                                                // $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+                                                $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                $('[id$="participante_coEixoAtuacao_1"]').attr('checked', true);
+                                                $('[name$="participante[coEixoAtuacao]"][value="B"]').prop('checked', true);
+                                                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
                                                 break;
                                             }
                                             case 'C': { // Assistência à Saúde
-                                                // $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
-                                                // $('[id$="participante_coEixoAtuacao_2"]').attr('checked', true);
-                                                // $('[name$="participante[coEixoAtuacao]"][value="C"]').prop('checked', true);
-                                                // $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+                                                $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                $('[id$="participante_coEixoAtuacao_2"]').attr('checked', true);
+                                                $('[name$="participante[coEixoAtuacao]"][value="C"]').prop('checked', true);
+                                                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
                                                 break;
                                             }
                                         }
@@ -839,9 +851,61 @@
                                         }
                                     }
 
-                                    // if ((perfil == 5) || (perfil == 6)) { // Tutor | Estudante
                                     if (perfil == 6) { // Estudante
                                         if (response.details.temDoisPreceptores) {
+
+                                            cursoGraduacao = parseInt(cursoGraduacao);
+
+                                            if( response.details.estudantesEncontrados > 7 ) {
+                                                $('#btn-salvar').hide();
+                                                bootbox.alert('Este grupo já atingiu o limite de 8 estudantes, favor adicionar o participante em outro Grupo Tutorial.');
+                                                input.val('');
+                                                return;
+                                            }
+
+                                            var estudantesNaoSaude = (response.details.estudantesCienciasHumanas + response.details.estudantesCienciasSociaisEncontrados);
+
+                                            if( (estudantesNaoSaude > 1) && (response.details.cursoCandidatoSaude == false )) {
+                                                $('#btn-salvar').hide();
+                                                bootbox.alert('Este grupo já atingiu o limite de 2 estudantes de ciências humanas e/ou ciências sociais aplicadas, favor adicionar o participante em outro Grupo Tutorial.');
+                                                input.val('');
+                                                return;
+                                            }
+
+                                            if( (response.details.estudantesSaude == 6) && (response.details.cursoCandidatoSaude == true )) {
+                                                $('#btn-salvar').hide();
+                                                bootbox.alert('Este grupo já atingiu o limite de 6 estudantes da área da saúde, favor adicionar o participante em outro Grupo Tutorial.');
+                                                input.val('');
+                                                return;
+                                            }
+
+                                            if( (response.details.estudantesSaude == 5) && (response.details.cursoCandidatoSaude == true )) {
+                                                var estudantesCursoSaude = response.details.estudantesCursoSaude;
+                                                console.log('estudantesCursoSaude', estudantesCursoSaude);
+                                                console.log('estudantesCursoSaude', estudantesCursoSaude);
+                                                if (estudantesCursoSaude.length < 3) {
+                                                    if ( estudantesCursoSaude.includes(cursoGraduacao) ) {
+                                                        $('#btn-salvar').hide();
+                                                        bootbox.alert('Os estudantes da área da saúde devem ser distribuídos em pelo menos três cursos distintos.');
+                                                        input.val('');
+                                                        return;
+                                                    }
+                                                }
+                                            }
+
+                                            if( (response.details.estudantesSaude == 4) && (response.details.cursoCandidatoSaude == true )) {
+                                                var estudantesCursoSaude = response.details.estudantesCursoSaude;
+                                                if (estudantesCursoSaude.length < 2) {
+                                                    if ( estudantesCursoSaude.includes(cursoGraduacao) ) {
+
+                                                        $('#btn-salvar').hide();
+                                                        bootbox.alert('Os estudantes da área da saúde devem ser distribuídos em pelo menos três cursos distintos.');
+                                                        input.val('');
+                                                        return;
+                                                    }
+                                                }
+                                            }
+
                                             $('#btn-salvar').show();
                                         } else {
                                             $('#btn-salvar').hide();
@@ -864,10 +928,10 @@
                                         }
                                     }
 
-                                    if (totalCursos == totalCursosOcultos) {
-                                        bootbox.alert('Este grupo já atingiu o limite de 4 alunos neste Curso de Graduação, favor adicionar o participante em outro Curso de Graduação disponível ou outro Grupo Tutorial.');
-                                        return;
-                                    }
+                                    // if (totalCursos == totalCursosOcultos) {
+                                    //     bootbox.alert('Este grupo já atingiu o limite de 4 alunos neste Curso de Graduação, favor adicionar o participante em outro Curso de Graduação disponível ou outro Grupo Tutorial.');
+                                    //     return;
+                                    // }
                                 }
                             }
                         });
@@ -884,6 +948,7 @@
 
                 if (value) {
                     var projetoSei = $('[id$="participante_nuSei"]').val();
+                    var cursoGraduacao = $('[id$="participante_cursoGraduacao"]').val();
                     var cpfPessoa = $('.nuCpf:first').val(); // $('[id$="participante_nuCpf"]').val();
                     var pessoa = sessionStorage.getItem('participante_pessoa');
 
@@ -935,7 +1000,8 @@
                                 grupoTutorial: value,
                                 nuSipar: projetoSei,
                                 cpf: pessoa,
-                                voluntario: voluntary
+                                voluntario: voluntary,
+                                cursoGraduacaoCandidato: cursoGraduacao,
                             }),
                             method: 'GET',
                             dataType: 'json',
@@ -948,43 +1014,26 @@
                                 } else {
                                     if (response.details.eixoAtuacao) {
                                         switch (response.details.eixoAtuacao) {
-                                            case 'A': {
-                                                // $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                            case 'A': { // Gestão em Saúde
+                                                $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
                                                 $('[id$="participante_coEixoAtuacao_0"]').attr('checked', true);
                                                 $('[name$="participante[coEixoAtuacao]"][value="A"]').prop('checked', true);
-                                                // $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
+                                                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
                                                 break;
                                             }
-                                            case 'B': {
-                                                // $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                            case 'B': { // Assistência à Saúde
+                                                $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
                                                 $('[id$="participante_coEixoAtuacao_1"]').attr('checked', true);
                                                 $('[name$="participante[coEixoAtuacao]"][value="B"]').prop('checked', true);
-                                                // $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+                                                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
                                                 break;
                                             }
                                             case 'C': { // Assistência à Saúde
-                                                // $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
                                                 $('[id$="participante_coEixoAtuacao_2"]').attr('checked', true);
                                                 $('[name$="participante[coEixoAtuacao]"][value="C"]').prop('checked', true);
-                                                // $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+                                                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
                                                 break;
-                                            }
-
-                                            if (perfil == 6) { // Estudante
-
-                                                // Se Estudante, exibe somente os Cursos de Graduação que são dos
-                                                // Preceptores
-
-                                                $('[id$="participante_cursoGraduacao"] option').hide();
-                                                var options = $('[id$="participante_cursoGraduacao"] option');
-
-                                                for (var i = 0; i < response.details.cursosGraduacao.length; i++) {
-                                                    for (var j = 0; j < options.length; j++) {
-                                                        if ($(options[j]).val() == response.details.cursosGraduacao[i]) {
-                                                            $(options[j]).show();
-                                                        }
-                                                    }
-                                                }
                                             }
                                         }
                                     }
@@ -1047,13 +1096,17 @@
             $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
 
             switch ($(this).val()) {
-                case 'G': { // Gestão em Saúde
+                case 'A': { // Gestão em Saúde
                     // Do nothing.
                     $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
                     break;
                 }
-                case 'A': { // Assistência à Saúde
-                    $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+                case 'B': { // Assistência à Saúde
+                    $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
+                    break;
+                }
+                case 'C': { // Assistência à Saúde
+                    $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
                     break;
                 }
             }

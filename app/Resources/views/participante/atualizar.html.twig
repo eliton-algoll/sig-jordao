@@ -120,14 +120,19 @@
                     {% if projetoPessoa.getProjeto() and projetoPessoa.getProjeto().getPublicacao().getPrograma().isGrupoTutorial() %}
                         {{ form_row(form.stVoluntarioProjeto) }}
                         {{ form_row(form.stAlunoRegular) }}
-                        {{ form_row(form.grupoTutorial) }}
-                        {{ form_row(form.coEixoAtuacao) }}
                         {{ form_row(form.stDeclaracaoCursoPenultimo) }}
                     {% endif %}
                     {{ form_row(form.categoriaProfissional) }}
                     {{ form_row(form.coCnes) }}
                     {{ form_row(form.titulacao) }}
                     {{ form_row(form.cursoGraduacao) }}
+                    {% if projetoPessoa.getProjeto() and projetoPessoa.getProjeto().getPublicacao().getPrograma().isGrupoTutorial() %}
+                        {{ form_row(form.grupoTutorial) }}
+                        {{ form_row(form.coEixoAtuacao) }}
+                    {% endif %}
+                    {{ form_row(form.nuAnoIngresso) }}
+                    {{ form_row(form.nuMatriculaIES) }}
+                    {{ form_row(form.nuSemestreAtual) }}
                     {{ form_row(form.noDocumentoMatricula) }}
                     {% if projetoPessoa.noDocumentoMatricula() %}
                         <div>
@@ -137,15 +142,11 @@
                             </div>
                         </div>
                     {% endif %}
-                    {{ form_row(form.nuAnoIngresso) }}
-                    {{ form_row(form.nuMatriculaIES) }}
-                    {{ form_row(form.nuSemestreAtual) }}
-                    {% if projetoPessoa.getProjeto() and projetoPessoa.getProjeto().getPublicacao().getPrograma().isAreaAtuacao() %}
-                        {{ form_row(form.cursosLecionados) }}
-                    {% endif %}
-                    <br/>
                     <div id="hideAreaTematica">
-
+                        {% if projetoPessoa.getProjeto() and projetoPessoa.getProjeto().getPublicacao().getPrograma().isAreaAtuacao() %}
+                            {{ form_row(form.cursosLecionados) }}
+                        {% endif %}
+                        <br/>
                         {{ form_label(form.areaTematica) }}
                         <div>
                             <small>Para selecionar mais de uma área pressionar a tecla Ctrl e marcar as áreas desejadas</small>
@@ -154,8 +155,8 @@
                             {{ form_errors(form.areaTematica) }}
                         </div>
                         {{ form_widget(form.areaTematica) }}
-                        <br/>
                     </div>
+                <br/>
                     <input type="hidden" name="salvar-participante" id="salvar-participante" value="edit">
                 <a class="btn btn-primary" href="javascript:;" id="btn-salvar-complementares">Salvar</a>
                 </div>

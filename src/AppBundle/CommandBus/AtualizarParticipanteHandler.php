@@ -115,10 +115,6 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
             $this->constraintCNES($command);
         }
 
-        if ($perfil->getCoSeqPerfil() == Perfil::PERFIL_ESTUDANTE && is_null($command->getNoDocumentoMatricula())) {
-            throw new \InvalidArgumentException('É obrigatório anexar o comprovante de matrícula para estudantes.');
-        }
-
         if ($command->getNoDocumentoBancario()) {
             $filename = $this->filenameGenerator->generate($command->getNoDocumentoBancario());
             $projetoPessoa->setNoDocumentoBancario($filename);

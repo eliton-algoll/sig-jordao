@@ -93,18 +93,20 @@
                     {% if projeto and projeto.getPublicacao().getPrograma().isGrupoTutorial() %}
                         {{ form_row(form.stVoluntarioProjeto) }}
                         {{ form_row(form.stAlunoRegular) }}
-                        {{ form_row(form.grupoTutorial) }}
-                        {{ form_row(form.coEixoAtuacao) }}
                         {{ form_row(form.stDeclaracaoCursoPenultimo) }}
                     {% endif %}
                     {{ form_row(form.categoriaProfissional) }}
                     {{ form_row(form.coCnes) }}
                     {{ form_row(form.titulacao) }}
                     {{ form_row(form.cursoGraduacao) }}
-                    {{ form_row(form.noDocumentoMatricula) }}
+                    {% if projeto and projeto.getPublicacao().getPrograma().isGrupoTutorial() %}
+                        {{ form_row(form.grupoTutorial) }}
+                        {{ form_row(form.coEixoAtuacao) }}
+                    {% endif %}
                     {{ form_row(form.nuAnoIngresso) }}
                     {{ form_row(form.nuMatriculaIES) }}
                     {{ form_row(form.nuSemestreAtual) }}
+                    {{ form_row(form.noDocumentoMatricula) }}
                     {% if projeto and projeto.getPublicacao().getPrograma().isAreaAtuacao() %}
                         {{ form_row(form.cursosLecionados) }}
                     {% endif %}

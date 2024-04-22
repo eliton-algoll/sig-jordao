@@ -914,6 +914,7 @@ class CadastrarParticipanteCommand
             return !in_array($perfil, [Perfil::PERFIL_COORDENADOR_PROJETO]) && !$areaTematica;
         };
 
+        /*
         if (
             ($hasError($perfil, $this->areaTematica) && !$this->isProjetoGrupoTutorial()) ||
             ($hasError($perfil, $this->areaTematica) && $this->isProjetoGrupoTutorial() && !$this->isVoluntario())
@@ -922,6 +923,7 @@ class CadastrarParticipanteCommand
                 ->atPath('areaTematica')
                 ->addViolation();
         }
+        */
     }
 
     /**

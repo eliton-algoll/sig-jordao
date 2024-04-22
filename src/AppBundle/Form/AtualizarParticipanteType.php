@@ -120,7 +120,7 @@ class AtualizarParticipanteType extends ParticipanteTypeAbstract
                 'attr' => array('class' => 'documento_matricula'),
                 'required' => false,
             ));
-                
+
         parent::buildForm($builder, $options);
     }
     

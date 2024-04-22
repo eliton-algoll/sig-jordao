@@ -251,6 +251,9 @@ class ParticipanteTypeAbstract extends AbstractType
                 'choice_label' => function (GrupoAtuacao $grupoAtuacao) {
                     return $grupoAtuacao->getNoGrupoAtuacao();
                 },
+                'choice_value' => function ($grupoAtuacao) {
+                    return $grupoAtuacao->getCoSeqGrupoAtuacao() ? $grupoAtuacao->getCoSeqGrupoAtuacao()  : null;
+                },
                 'required' => true
             ])
             ->add('coEixoAtuacao', ChoiceType::class, array(
