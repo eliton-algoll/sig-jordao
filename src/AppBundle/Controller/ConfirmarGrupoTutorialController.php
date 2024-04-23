@@ -171,7 +171,7 @@ final class ConfirmarGrupoTutorialController extends ControllerAbstract
             }
 
             // Validação das regras de negócio
-            $errors = [];
+            $errors = array();
 
 
             $nrGrupos = count($gruposAtuacao);
@@ -201,7 +201,10 @@ final class ConfirmarGrupoTutorialController extends ControllerAbstract
             foreach ($gruposAtuacao as $grupoAtuacao) {
                 $projetosPessaGrupoAtuacao = $this->get('app.projeto_pessoa_grupo_atuacao_repository')->findByGrupoAtuacao($grupoAtuacao);
                 $command = ConfirmarGrupoTutorialCommand::create($grupoAtuacao);
-                $errors[]  = $command->validateComposicaoGrupoTutorial($projetosPessaGrupoAtuacao, $categoriasProfissionais);
+                $errorsGroup  = $command->validateComposicaoGrupoTutorial($projetosPessaGrupoAtuacao, $categoriasProfissionais);
+                if( count($errorsGroup) ) {
+                    $errors[] = $errorsGroup;
+                }
             }
 
             if (count($errors) > 0) {

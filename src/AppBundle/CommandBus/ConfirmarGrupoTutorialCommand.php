@@ -76,7 +76,7 @@ final class ConfirmarGrupoTutorialCommand
      */
     public function validateComposicaoGrupoTutorial($projetosPessaGrupoAtuacao, $categoriasProfissionais)
     {
-        $error = [];
+        $error = array();
         $coordenadorGrupo = 0;
         $tutor = 0;
         $preceptor = 0;
