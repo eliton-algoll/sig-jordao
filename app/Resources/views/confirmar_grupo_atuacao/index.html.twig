@@ -69,6 +69,7 @@
     {% endif %}
 
     {% if projeto.getGruposAtuacaoAtivosENaoConfirmados()|length() >= 1 %}
+        <input type="hidden" name="projeto" id="coSeqProjeto" value="{{ projeto.getCoSeqProjeto() }}">
         <button id="btn-confimar-grupo-tutorial" class="btn btn-primary">
             Confirmar Grupo Tutorial
         </button>

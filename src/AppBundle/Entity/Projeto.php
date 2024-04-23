@@ -290,6 +290,27 @@ class Projeto extends AbstractEntity
     /**
      * @return ArrayCollection<GrupoAtuacao>
      */
+    public function getGruposAtuacaoAtivosComEixoAtuacao()
+    {
+        return $this->gruposAtuacao->filter(function (GrupoAtuacao $grupoAtuacao) {
+            $eixos = ['A','B','C'];
+            return $grupoAtuacao->isAtivo() && in_array($grupoAtuacao->getCoEixoAtuacao(), $eixos);
+        });
+    }
+
+    /**
+     * @return ArrayCollection<GrupoAtuacao>
+     */
+    public function getGruposAtuacaoAtivosPorEixoAtuacao($eixo)
+    {
+        return $this->gruposAtuacao->filter(function (GrupoAtuacao $grupoAtuacao) use ($eixo) {
+            return ($grupoAtuacao->isAtivo() && ($grupoAtuacao->getCoEixoAtuacao() == $eixo));
+        });
+    }
+
+    /**
+     * @return ArrayCollection<GrupoAtuacao>
+     */
     public function getGruposAtuacaoAtivosEConfirmados()
     {
         return $this->gruposAtuacao->filter(function (GrupoAtuacao $grupoAtuacao) {
