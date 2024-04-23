@@ -60,7 +60,7 @@ class InativarParticipanteHandler
                 $grupoAtuacao = $gruposAtuacao[0]->getGrupoAtuacao();
                 $eixoAtuacao = $grupoAtuacao->getCoEixoAtuacao();
 
-                if ($eixoAtuacao === 'A') { // Assistência a Saúde
+//                if ($eixoAtuacao === 'A') { // Assistência a Saúde
                     $cursoGraduacaoPreceptor = $projetoPessoa->getCursoGraduacaoEstudanteOuPreceptor();
 
                     if (!is_null($cursoGraduacaoPreceptor)) {
@@ -81,7 +81,7 @@ class InativarParticipanteHandler
                             }
                         }
                     }
-                }
+//                }
             }
         }
 

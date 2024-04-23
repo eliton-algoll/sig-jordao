@@ -85,7 +85,6 @@ class ParticipanteController extends ControllerAbstract
         if ($form->isSubmitted()) {
             $data = new ParameterBag($request->request->get('cadastrar_participante'));
 
-            //$areaTematica = [3252]; //so para validar pois é obrigatório passar um valor
             # Bind manual devido a complexidade do formulário
             $command
                 ->setPerfil($data->get('perfil'))
