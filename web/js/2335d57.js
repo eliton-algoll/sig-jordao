@@ -791,14 +791,14 @@
                                                 $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
                                                 $('[id$="participante_coEixoAtuacao_1"]').attr('checked', true);
                                                 $('[name$="participante[coEixoAtuacao]"][value="B"]').prop('checked', true);
-                                                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+                                                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
                                                 break;
                                             }
                                             case 'C': { // Assistência à Saúde
                                                 $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
                                                 $('[id$="participante_coEixoAtuacao_2"]').attr('checked', true);
                                                 $('[name$="participante[coEixoAtuacao]"][value="C"]').prop('checked', true);
-                                                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+                                                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
                                                 break;
                                             }
                                         }
@@ -973,7 +973,7 @@
 
                     // $('[id$="participante_coEixoAtuacao"] input').removeAttr('disabled');
                     // $('[name$="participante[coEixoAtuacao]"]').removeAttr('checked');
-                    $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+                    $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
                     $('[id$="participante_cursoGraduacao"] option').show();
 
                     if ((!perfil) || (perfil < 1)) {
@@ -1025,14 +1025,14 @@
                                                 $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
                                                 $('[id$="participante_coEixoAtuacao_1"]').attr('checked', true);
                                                 $('[name$="participante[coEixoAtuacao]"][value="B"]').prop('checked', true);
-                                                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+                                                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
                                                 break;
                                             }
                                             case 'C': { // Assistência à Saúde
                                                 $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
                                                 $('[id$="participante_coEixoAtuacao_2"]').attr('checked', true);
                                                 $('[name$="participante[coEixoAtuacao]"][value="C"]').prop('checked', true);
-                                                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+                                                $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
                                                 break;
                                             }
                                         }
@@ -1093,7 +1093,7 @@
         },
 
         handleEixoAtuacao: function () {
-            $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+            $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
 
             switch ($(this).val()) {
                 case 'A': { // Gestão em Saúde
