@@ -189,8 +189,20 @@ final class ConfirmarGrupoTutorialController extends ControllerAbstract
                     }
                 }
 
-                if( $nrGrupos > 3 ) {
-                    if( $nrGruposEixoA >= 1 || $nrGruposEixoB >= 1 || $nrGruposEixoC >= 1 ) {
+                if( $nrGrupos == 4 ) {
+                    if( $nrGruposEixoA == 0 || $nrGruposEixoB == 0 || $nrGruposEixoC == 0 ) {
+                        $errors[] = [['msg' => 'Projetos com 3 (três) ou mais grupos devem utilizar os eixos de forma proporcional']];
+                    }
+                }
+
+                if( $nrGrupos == 5 ) {
+                    if( $nrGruposEixoA == 1 && ($nrGruposEixoB == 0 || $nrGruposEixoC == 0) ) {
+                        $errors[] = [['msg' => 'Projetos com 3 (três) ou mais grupos devem utilizar os eixos de forma proporcional']];
+                    }
+                    if( $nrGruposEixoB == 1 && ($nrGruposEixoA == 0 || $nrGruposEixoC == 0) ) {
+                        $errors[] = [['msg' => 'Projetos com 3 (três) ou mais grupos devem utilizar os eixos de forma proporcional']];
+                    }
+                    if( $nrGruposEixoC == 1 && ($nrGruposEixoA == 0 || $nrGruposEixoB == 0) ) {
                         $errors[] = [['msg' => 'Projetos com 3 (três) ou mais grupos devem utilizar os eixos de forma proporcional']];
                     }
                 }
