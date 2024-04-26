@@ -47,6 +47,16 @@ class CadastrarProjetoCommand
      * )
      */
     private $qtBolsa;
+
+    /**
+     * @var string
+     * @Assert\NotBlank()
+     * @Assert\Range(
+     *     min = 2,
+     *     max = 5
+     * )
+     */
+    private $qtGrupos;
     
     /**
      *
@@ -316,6 +326,24 @@ class CadastrarProjetoCommand
     public function setQtBolsa($qtBolsa)
     {
         $this->qtBolsa = $qtBolsa;
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getQtGrupos()
+    {
+        return $this->qtGrupos;
+    }
+
+    /**
+     * @param integer $qtGrupos
+     * @return CadastrarProjetoCommand
+     */
+    public function setQtGrupos($qtGrupos)
+    {
+        $this->qtGrupos = $qtGrupos;
         return $this;
     }
     

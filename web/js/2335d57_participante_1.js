@@ -8,6 +8,9 @@
 
             sessionStorage.setItem('participante_pessoa', '');
 
+            $('#stDeclaracaoCursoPenultimo').hide();
+            $('[id$="participante_stDeclaracaoCursoPenultimo"]').hide();
+
             var optionsCategoriaProf = $('[id$="cadastrar_participante_categoriaProfissional"] option');
             var _option = '';
             optionsCategoriaProf.each(function() {
@@ -695,7 +698,7 @@
 
                     $('[id$="participante_coEixoAtuacao"] input').removeAttr('disabled');
                     $('[name$="participante[coEixoAtuacao]"]').removeAttr('checked');
-                    // $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+                    $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
                     $('[id$="participante_cursoGraduacao"] option').show();
 
                     if ((!perfil) || (perfil < 1)) {

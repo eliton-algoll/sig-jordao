@@ -93,7 +93,10 @@
                     {% if projeto and projeto.getPublicacao().getPrograma().isGrupoTutorial() %}
                         {{ form_row(form.stVoluntarioProjeto) }}
                         {{ form_row(form.stAlunoRegular) }}
+                       <span id="stDeclaracaoCursoPenultimo">
                         {{ form_row(form.stDeclaracaoCursoPenultimo) }}
+                       </span>
+
                     {% endif %}
                     {{ form_row(form.categoriaProfissional) }}
                     {{ form_row(form.coCnes) }}

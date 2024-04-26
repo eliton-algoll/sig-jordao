@@ -80,10 +80,11 @@ class AtualizarProjetoHandler
      */
     public function handle(AtualizarProjetoCommand $command)
     {
+
         $publicacao = $this->publicacaoRepository->find($command->getPublicacao());
         
         $projeto = $this->projetoRepository->find($command->getCoSeqProjeto());
-        
+
         if ($command->getNoDocumentoProjeto()) {            
             $filename = $this->filenameGenerator->generate($command->getNoDocumentoProjeto());
             $projeto->setNoDocumentoProjeto($filename);
@@ -120,7 +121,12 @@ class AtualizarProjetoHandler
         }
         
         $this->projetoRepository->add($projeto);
-        
+
+        if ( $command->getQtGrupos() != $command->getNrGruposInicio() ) {
+            $this->projetoRepository->deletarGrupos($projeto->getCoSeqProjeto());
+            $this->projetoRepository->setAddGrupos($projeto, $command->getQtGrupos());
+        }
+
         if (isset($filename)) {
             $this->fileUploader->upload($command->getNoDocumentoProjeto(), $filename);
         }
