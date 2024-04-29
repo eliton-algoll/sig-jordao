@@ -76,6 +76,15 @@ class ProjetoQuery
     {
         return $this->projetoRepository->findParticipantesByProjetoAndPefilAndGroup($coProjeto, $coPerfil, $coGrupo, $cpf);
     }
+
+    /**
+     * @param integer $coProjeto
+     * @return \AppBundle\Entity\Projeto | null
+     */
+    public function countNrGruposByProjeto($coProjeto)
+    {
+        return $this->projetoRepository->getNrGrupos($coProjeto);
+    }
     
     /**
      * @param PessoaPerfil $pessoaPerfil

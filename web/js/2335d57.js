@@ -8,6 +8,9 @@
 
             sessionStorage.setItem('participante_pessoa', '');
 
+            $('#stDeclaracaoCursoPenultimo').hide();
+            $('[id$="participante_stDeclaracaoCursoPenultimo"]').hide();
+
             var optionsCategoriaProf = $('[id$="cadastrar_participante_categoriaProfissional"] option');
             var _option = '';
             optionsCategoriaProf.each(function() {
@@ -27,9 +30,6 @@
 
                 // Bloqueia a edição do eixo de atuação quando alterando cadastro
                 if ($('.nuCpf:first').attr('readonly') == 'readonly') {
-                    // $('[id$="participante_coEixoAtuacao"] input')
-                    //     .attr('readonly', 'readonly')
-                    //     .attr('disabled', 'disabled');
 
                     var perfil = parseInt($('[id$="participante_perfil"]').val(), 10);
 
@@ -46,12 +46,26 @@
 
                 $('[id$="hideAreaTematica"]').hide();
 
+                var selectArea = document.getElementById("cadastrar_participante_coBanco");
+                if( selectArea == null ) {
+                    selectArea = document.getElementById("atualizar_participante_coBanco");
+                }
+                if( selectArea != null ) {
+                    let optionsAccept = ['','033', '036'];
+                    for (var i = 0; i < selectArea.options.length; i++) {
+                        if (!optionsAccept.includes(selectArea.options[i].value)) {
+                            selectArea.remove(i);
+                        }
+                    }
+                }
+
             }, 500);
 
             // $('[id$="participante_sexo"] option:selected').removeAttr('disabled');
         },
 
         events: function () {
+
             $('input[name$="[nuSei]"]').on('change', this.onBlurSei);
 
             $('[id$="participante_perfil"]').on('change', function () {
@@ -104,7 +118,7 @@
             try {
                 var perfil = parseInt($('[id$="participante_perfil"]').val(), 10);
 
-                if ((perfil === 4) || (perfil === 6)) { // Preceptor ou Estudante
+                if ((perfil === 6)) { // Preceptor ou Estudante
                     var cursoId = parseInt($('[id$="participante_cursoGraduacao"]').val(), 10);
 
                     if ((isNaN(cursoId)) || (cursoId <= 0)) {
@@ -153,8 +167,10 @@
             var _optionsCategoriaProf = sessionStorage.getItem('optionsCategoriaProf');
             $('[id$="cadastrar_participante_categoriaProfissional"]').html(_optionsCategoriaProf);
 
-            // $('[id$="participante_grupoTutorial"]').val('');
             $('[id$="participante_noDocumentoMatricula"]').parent('div.form-group').hide();
+
+            $('[id$="participante_grupoTutorial"]').parent('div.form-group').show();
+            $('[id$="participante_coEixoAtuacao"]').parent('div.form-group').show();
 
             if (input.val() != '2') {
                 $('.nav-tabs').find('li').eq(2).show();
@@ -230,7 +246,7 @@
             $('[name$="areaTematica][]"] option').removeAttr('disabled');
 
             $('[id$="participante_titulacao"]').parent('div.form-group').hide();
-            // $('[id$="participante_cursoGraduacao"]').parent('div.form-group').hide();
+            $('[id$="participante_cursoGraduacao"]').parent('div.form-group').hide();
             $('[id$="participante_noDocumentoMatricula"]').parent('div.form-group').hide();
             $('[id$="participante_nuAnoIngresso"]').parent('div.form-group').hide();
             $('[id$="participante_nuMatriculaIES"]').parent('div.form-group').hide();
@@ -297,6 +313,9 @@
             $('[id$="participante_nuMatriculaIES"]').parent('div.form-group').hide();
             $('[id$="participante_nuSemestreAtual"]').parent('div.form-group').hide();
             $('[id$="participante_stAlunoRegular"]').parent('div.form-group').hide();
+
+            $('[id$="participante_grupoTutorial"]').parent('div.form-group').hide();
+            $('[id$="participante_coEixoAtuacao"]').parent('div.form-group').hide();
 
             if (!participante.isAreaAtuacao()) {
                 $('[id$="participante_categoriaProfissional"]').parent('div.form-group').find('label').addClass('required');
@@ -695,7 +714,7 @@
 
                     $('[id$="participante_coEixoAtuacao"] input').removeAttr('disabled');
                     $('[name$="participante[coEixoAtuacao]"]').removeAttr('checked');
-                    // $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().show();
+                    $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
                     $('[id$="participante_cursoGraduacao"] option').show();
 
                     if ((!perfil) || (perfil < 1)) {
@@ -971,14 +990,10 @@
                         return;
                     }
 
-                    // $('[id$="participante_coEixoAtuacao"] input').removeAttr('disabled');
-                    // $('[name$="participante[coEixoAtuacao]"]').removeAttr('checked');
                     $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
                     $('[id$="participante_cursoGraduacao"] option').show();
 
                     if ((!perfil) || (perfil < 1)) {
-                        // bootbox.alert('O Perfil do Participante precisa ser selecionado.');
-                        // $('[id$="participante_grupoTutorial"]').val('');
                         return;
                     }
 

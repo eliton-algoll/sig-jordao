@@ -939,7 +939,7 @@ class CadastrarParticipanteCommand
             $this->projeto instanceof Projeto &&
             $this->projeto->getPublicacao()->getPrograma()->isGrupoTutorial() &&
             !$this->grupoTutorial &&
-            $perfil != Perfil::PERFIL_COORDENADOR_PROJETO
+            !in_array($perfil, [Perfil::PERFIL_COORDENADOR_PROJETO, Perfil::PERFIL_ORIENTADOR])
         ) {
             $context->buildViolation('Este valor não deve ser vazio.')
                 ->atPath('grupoTutorial')
