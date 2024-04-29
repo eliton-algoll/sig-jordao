@@ -8,6 +8,7 @@ use AppBundle\Entity\GrupoAtuacao;
 use AppBundle\Entity\ProjetoPessoa;
 use AppBundle\Entity\ProjetoPessoaCursoGraduacao;
 use AppBundle\Entity\Publicacao;
+use AppBundle\Repository\ProjetoRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -129,7 +130,9 @@ class ProjetoController extends ControllerAbstract
     public function atualizarAction(Request $request, Projeto $projeto)
     {
 
+        $nrGrupoProjeto = $this->get('app.projeto_query')->countNrGruposByProjeto($projeto->getCoSeqProjeto());
         $command = new AtualizarProjetoCommand($projeto);
+        $command->setQtGrupos($nrGrupoProjeto['NRGRUPOS']);
 
         $form = $this->get('form.factory')->createNamed('cadastrar_projeto', AtualizarProjetoType::class, $command);
         $form->handleRequest($request);
@@ -165,6 +168,8 @@ class ProjetoController extends ControllerAbstract
                 ->setPublicacao($data->get('publicacao'))
                 ->setAreasTematicas($areasTematicas)
                 ->setCampus($data->get('campus'))
+                ->setQtGrupos($data->get('qtGrupos'))
+                ->setNrGruposInicio($nrGrupoProjeto['NRGRUPOS'])
                 ->setSecretarias($data->get('secretarias'));
 
             try {

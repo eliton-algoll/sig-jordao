@@ -24,6 +24,11 @@ abstract class RepositoryAbstract extends EntityRepository
     {
         $this->getEntityManager()->remove($entity);
     }
+
+    public function flush($entity)
+    {
+        $this->getEntityManager()->flush($entity);
+    }
     
     /**
      * Método que pagina consultas em SQL

@@ -7,6 +7,15 @@
             $('#nova-publicacao').click(this.handleClickNovaPublicacao);
             $('#cancelar-publicacao').click(this.handleClickCancelarPublicacao);
             $('.inativar-publicacao').click(this.handleClickInativarPublicacao);
+            var selectArea = document.getElementById("atualizar_programa_tpAreaTematica");
+            if( selectArea != null ) {
+                for (var i = 0; i < selectArea.options.length; i++) {
+                    if (selectArea.options[i].value === '2') {
+                        selectArea.remove(i);
+                        break;
+                    }
+                }
+            }
         },
         handleClickNovaPublicacao: function(){
             $('#container-nova-publicacao').removeClass('hidden');

@@ -5,6 +5,7 @@ namespace AppBundle\CommandBus;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Entity\Projeto;
+use AppBundle\Repository\ProjetoRepository;
 
 class AtualizarProjetoCommand
 {
@@ -131,6 +132,18 @@ class AtualizarProjetoCommand
      * )
      */
     private $secretarias;
+
+    /**
+     * @var string
+     * @Assert\NotBlank()
+     * @Assert\Range(
+     *     min = 2,
+     *     max = 5
+     * )
+     */
+    private $qtGrupos;
+
+    private $nrGruposInicio;
     
     /**
      * @param Projeto | null $projeto
@@ -141,6 +154,23 @@ class AtualizarProjetoCommand
             $this->setValuesByEntity($projeto);
             $this->projeto = $projeto;
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNrGruposInicio()
+    {
+        return $this->nrGruposInicio;
+    }
+
+    /**
+     * @param mixed $nrGruposInicio
+     */
+    public function setNrGruposInicio($nrGruposInicio)
+    {
+        $this->nrGruposInicio = $nrGruposInicio;
+        return $this;
     }
     
     /**
@@ -368,6 +398,24 @@ class AtualizarProjetoCommand
         $this->qtBolsa = $qtBolsa;
         return $this;
     }
+
+    /**
+     * @return integer
+     */
+    public function getQtGrupos()
+    {
+        return $this->qtGrupos;
+    }
+
+    /**
+     * @param integer $qtGrupos
+     * @return CadastrarProjetoCommand
+     */
+    public function setQtGrupos($qtGrupos)
+    {
+        $this->qtGrupos = $qtGrupos;
+        return $this;
+    }
     
     /**
      * 
@@ -386,7 +434,13 @@ class AtualizarProjetoCommand
     {
         $this->noDocumentoProjeto = $noDoumentoProjeto;
     }
-    
+
+   public function getNrGrupos()
+   {
+       return $this->qtGrupos;
+
+   }
+
     /**
      * @param Projeto $projeto
      */

@@ -165,16 +165,24 @@ final class ConfirmarGrupoTutorialController extends ControllerAbstract
             $nrGruposEixoC = [];
 
             if( $projeto ) {
+                $gruposAtuacaoCadastrados = $projeto->getGruposAtuacaoAtivos();
                 $gruposAtuacao = $projeto->getGruposAtuacaoAtivosComEixoAtuacao();
                 $categoriasProfissionais = $em->getRepository(CategoriaProfissional::class)
                                                ->findBy(['stRegistroAtivo' => 'S']);
             }
+
 
             // Validação das regras de negócio
             $errors = array();
 
 
             $nrGrupos = count($gruposAtuacao);
+            $totalGruposAtuacao = count($gruposAtuacaoCadastrados);
+
+            if($totalGruposAtuacao != $nrGrupos) {
+                $errors[] = [['msg' => 'Todos os '.$totalGruposAtuacao.' grupos previstos para o projeto devem ser preenchidos corretamente para confirmação.']];
+            }
+
             $gruposEixoA = $projeto->getGruposAtuacaoAtivosPorEixoAtuacao('A');
             $nrGruposEixoA = ($gruposEixoA) ? count($gruposEixoA) : 0;
             $gruposEixoB = $projeto->getGruposAtuacaoAtivosPorEixoAtuacao('B');

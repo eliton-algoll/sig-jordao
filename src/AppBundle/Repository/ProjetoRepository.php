@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Projeto;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\ResultSetMapping;
@@ -16,7 +17,7 @@ use AppBundle\Exception\SiparInvalidoException;
 class ProjetoRepository extends RepositoryAbstract
 {
     use \AppBundle\Traits\MaskTrait;
-    
+
     /**
      * @param ParameterBag $params
      * @return \AppBundle\Entity\Projeto[]
@@ -399,6 +400,62 @@ SQL;
         );
 
         return $stmt->fetchAll();
+    }
+
+    public function setAddGrupos(Projeto $projeto, $nrGrupos)
+    {
+        for ($i = 1; $i <= $nrGrupos; $i++) {
+            $nomeGrupo = 'Grupo '.$i;
+            $query = "INSERT INTO DBPET.TB_GRUPO_ATUACAO (CO_SEQ_GRUPO_ATUACAO, NO_GRUPO_ATUACAO, ST_REGISTRO_ATIVO, DT_INCLUSAO, CO_PROJETO, ST_CONFIRMACAO)
+                      VALUES(DBPET.SQ_GRUPOATUACAO_COSEQGRPATUAC.NEXTVAL, :NO_GRUPO_ATUACAO, :ST_REGISTRO_ATIVO, :DT_INCLUSAO, :CO_PROJETO, :ST_CONFIRMACAO)";
+            $statement = $this->_em->getConnection()->prepare($query);
+            $statement->bindValue('NO_GRUPO_ATUACAO', $nomeGrupo);
+            $statement->bindValue('ST_REGISTRO_ATIVO', 'S');
+            $statement->bindValue('DT_INCLUSAO', date('Y-m-d H:i:s'));
+            $statement->bindValue('CO_PROJETO', $projeto->getCoSeqProjeto());
+            $statement->bindValue('ST_CONFIRMACAO', 'N');
+            $statement->execute();
+
+        }
+
+    }
+
+    public function deletarGrupos($coProjeto)
+    {
+        $query = <<<SQL
+                  UPDATE 
+                    DBPET.TB_GRUPO_ATUACAO GA
+                  SET ST_REGISTRO_ATIVO = :ST_REGISTRO_ATIVO
+                  WHERE GA.CO_PROJETO = :CO_PROJETO
+SQL;
+        $statement = $this->_em->getConnection()->prepare($query);
+        $statement->bindValue('ST_REGISTRO_ATIVO', 'N');
+        $statement->bindValue('CO_PROJETO', $coProjeto);
+        $statement->execute();
+    }
+
+    public function getNrGrupos($coProjeto)
+    {
+        $queryParams = $queryTypes = [];
+
+        $query = <<<SQL
+                  SELECT COUNT(GA.CO_SEQ_GRUPO_ATUACAO) nrGrupos
+                    FROM DBPET.TB_GRUPO_ATUACAO GA
+                    WHERE GA.CO_PROJETO = ? 
+                    AND GA.ST_REGISTRO_ATIVO = ?
+SQL;
+
+        $queryParams[] = (int) $coProjeto;
+        $queryTypes[]  = \PDO::PARAM_INT;
+
+        $queryParams[] = 'S';
+        $queryTypes[]  = \PDO::PARAM_STR;
+
+        $stmt = $this->_em->getConnection()->executeQuery(
+            $query, $queryParams, $queryTypes
+        );
+
+        return $stmt->fetch();
     }
 
     /**

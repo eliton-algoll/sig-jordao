@@ -47,6 +47,15 @@ abstract class ProjetoTypeAbstract extends FormAbstract
                     'max' => 99999
                 )
             ))
+            ->add('qtGrupos', ChoiceType::class, array(
+                'label' => 'Quantidade total de grupos',
+                'choices' => array(
+                    '2' => '2',
+                    '3' => '3',
+                    '4' => '4',
+                    '5' => '5',
+                ),
+            ))
             ->add('areasTematicasSaude', EntityType::class, array(
                 'class' => 'AppBundle:TipoAreaTematica',
                 'label' => 'Área Temática',
