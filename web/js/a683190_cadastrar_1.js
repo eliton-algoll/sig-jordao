@@ -5,11 +5,11 @@
             this.listAreasTematicas();
         },
         events: function(){
-            $('#label-todos-temas').hide();
-            $('#todos-temas-saude').click(this.checkListTemaSaude);
-            $('#todos-temas-cienciasHumanas').click(this.checkListTemaCienciasHumanas);
-            $('#todos-temas-cienciasSociais').click(this.checkListTemaCienciasSociais);
-            // $('#todos-temas').click(this.checkListAreasTematicas);
+            // $('#todos-temas-saude').click(this.checkListTemaSaude);
+            // $('#todos-temas-cienciasHumanas').click(this.checkListTemaCienciasHumanas);
+            // $('#todos-temas-cienciasSociais').click(this.checkListTemaCienciasSociais);
+            $('#todos-temas_').click(this.checkListAreasTematicas);
+
             $('#cadastrar_projeto_publicacao').change(this.handleChangePublicacao);
             $('#btn-salvar').click(this.handleClickSalvar);
         },
@@ -59,10 +59,23 @@
             });
         },
         checkListAreasTematicas: function () {
-            var checkBoxs = document.querySelectorAll('input[type="checkbox"]:not([id=todos-temas])');
+            var checked = $('#todos-temas_');
+            var valueCheck = checked.is(':checked');
+            var checkBoxs = document.querySelectorAll('input[type="checkbox"][data-tp-area-sub="1"]');
             [].forEach.call(checkBoxs, function(checkbox) {
-                checkbox.checked = checkbox.checked ? false : true;
+                checkbox.checked = valueCheck;
             });
+
+            var checkBoxs = document.querySelectorAll('input[type="checkbox"][data-tp-area-sub="2"]');
+            [].forEach.call(checkBoxs, function(checkbox) {
+                checkbox.checked = valueCheck;
+            });
+
+            var checkBoxs = document.querySelectorAll('input[type="checkbox"][data-tp-area-sub="3"]');
+            [].forEach.call(checkBoxs, function(checkbox) {
+                checkbox.checked = valueCheck;
+            });
+
         },
         handleClickSalvar: function(){
             if ($('#table-secretarias').find('input[type="hidden"]').length < 1) {

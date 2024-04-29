@@ -118,20 +118,23 @@
                     </table>
                 </div>                        
                 <div class="tab-pane" id="dados-area-tematica">
+                    <p>
+                        <label id="label-todos-temas"> <input type="checkbox" id="todos-temas_"> Selecionar todos os temas </label>
+                    </p>
                     <p><b>SAÚDE</b></p>
-                    <label id="label-todos-temas-saude"> <input type="checkbox" id="todos-temas-saude"> Selecionar todos </label>
+{#                    <label id="label-todos-temas-saude"> <input type="checkbox" id="todos-temas-saude"> Selecionar todos </label>#}
                     {{ form_errors(form.areasTematicasSaude) }}
                     {{ form_widget(form.areasTematicasSaude) }}
                     <br><br>
 
                     <p><b>CIÊNCIAS HUMANAS</b></p>
-                    <label id="label-todos-temas-cienciasHumanas"> <input type="checkbox" id="todos-temas-cienciasHumanas"> Selecionar todos </label>
+{#                    <label id="label-todos-temas-cienciasHumanas"> <input type="checkbox" id="todos-temas-cienciasHumanas"> Selecionar todos </label>#}
                     {{ form_errors(form.areasTematicasCienciasHumanas) }}
                     {{ form_widget(form.areasTematicasCienciasHumanas) }}
                     <br><br>
 
                     <p><b>CIÊNCIAS SOCIAIS APLICADAS</b></p>
-                    <label id="label-todos-temas-cienciasSociais"> <input type="checkbox" id="todos-temas-cienciasSociais"> Selecionar todos </label>
+{#                    <label id="label-todos-temas-cienciasSociais"> <input type="checkbox" id="todos-temas-cienciasSociais"> Selecionar todos </label>#}
                     {{ form_errors(form.areasTematicasCienciasSociais) }}
                     {{ form_widget(form.areasTematicasCienciasSociais) }}
                     <br><br>
