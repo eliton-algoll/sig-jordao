@@ -442,10 +442,14 @@ SQL;
                   SELECT COUNT(GA.CO_SEQ_GRUPO_ATUACAO) nrGrupos
                     FROM DBPET.TB_GRUPO_ATUACAO GA
                     WHERE GA.CO_PROJETO = ? 
+                    AND GA.ST_REGISTRO_ATIVO = ?
 SQL;
 
         $queryParams[] = (int) $coProjeto;
         $queryTypes[]  = \PDO::PARAM_INT;
+
+        $queryParams[] = 'S';
+        $queryTypes[]  = \PDO::PARAM_STR;
 
         $stmt = $this->_em->getConnection()->executeQuery(
             $query, $queryParams, $queryTypes

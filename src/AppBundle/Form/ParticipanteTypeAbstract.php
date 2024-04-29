@@ -252,7 +252,7 @@ class ParticipanteTypeAbstract extends AbstractType
                     return $grupoAtuacao->getNoGrupoAtuacao();
                 },
                 'choice_value' => function ($grupoAtuacao) {
-                    return $grupoAtuacao->getCoSeqGrupoAtuacao() ? $grupoAtuacao->getCoSeqGrupoAtuacao()  : null;
+                    return ($grupoAtuacao && $grupoAtuacao->getCoSeqGrupoAtuacao()) ? $grupoAtuacao->getCoSeqGrupoAtuacao()  : null;
                 },
                 'required' => true
             ])

@@ -128,7 +128,7 @@ class ParticipanteController extends ControllerAbstract
                 $this->addFlash('success', $message);
 
                 if ($projeto && $projeto->getPublicacao()->getPrograma()->isGrupoTutorial()) {
-                    $this->addFlash('info', 'Após cadastrar todos os participantes do grupo, clicar no botão Confirmar Grupo Tutorial.');
+                    $this->addFlash('info', 'Após cadastrar todos os participantes de todos os grupos, clicar no botão Confirmar Grupo Tutorial.');
                 }
                 
                 return $this->redirectToRoute('participante');
