@@ -85,6 +85,24 @@ class ProjetoQuery
     {
         return $this->projetoRepository->getNrGrupos($coProjeto);
     }
+
+    /**
+     * @param integer $coProjeto
+     * @return \AppBundle\Entity\Projeto | null
+     */
+    public function getNrGruposComParticpantesPorProjeto($coProjeto)
+    {
+        return $this->projetoRepository->getNrGruposComParticpantes($coProjeto);
+    }
+
+    /**
+     * @param integer $coProjeto
+     * @return \AppBundle\Entity\Projeto | null
+     */
+    public function getEixosComParticpantes($coProjeto)
+    {
+        return $this->projetoRepository->getEixosComParticpantes($coProjeto);
+    }
     
     /**
      * @param PessoaPerfil $pessoaPerfil
