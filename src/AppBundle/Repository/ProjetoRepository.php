@@ -458,6 +458,64 @@ SQL;
         return $stmt->fetch();
     }
 
+    public function getNrGruposComParticpantes($coProjeto)
+    {
+        $queryParams = $queryTypes = [];
+
+        $query = <<<SQL
+                  SELECT TGA.CO_EIXO_ATUACAO FROM 
+                    DBPET.TB_GRUPO_ATUACAO TGA 
+                    INNER JOIN DBPET.TB_PROJETO_PESSOA tpp ON tpp.CO_PROJETO = TGA.CO_PROJETO AND tpp.ST_REGISTRO_ATIVO = ?
+                    WHERE TGA.CO_PROJETO = ? 
+                    AND tga.CO_EIXO_ATUACAO IS NOT NULL 
+                    AND TGA.ST_REGISTRO_ATIVO = ?
+                    GROUP BY TGA.CO_EIXO_ATUACAO
+SQL;
+        $queryParams[] = 'S';
+        $queryTypes[]  = \PDO::PARAM_STR;
+
+        $queryParams[] = (int) $coProjeto;
+        $queryTypes[]  = \PDO::PARAM_INT;
+
+        $queryParams[] = 'S';
+        $queryTypes[]  = \PDO::PARAM_STR;
+
+        $stmt = $this->_em->getConnection()->executeQuery(
+            $query, $queryParams, $queryTypes
+        );
+
+        return $stmt->fetchAll();
+    }
+
+    public function getEixosComParticpantes($coProjeto)
+    {
+        $queryParams = $queryTypes = [];
+
+        $query = <<<SQL
+                    SELECT TGA.CO_EIXO_ATUACAO FROM 
+                    DBPET.TB_GRUPO_ATUACAO TGA 
+                    INNER JOIN DBPET.RL_PROJETOPESSOA_GRUPOATUACAO RPG ON RPG.CO_GRUPO_ATUACAO = TGA.CO_SEQ_GRUPO_ATUACAO 
+                    INNER JOIN DBPET.TB_PROJETO_PESSOA TPP ON TPP.CO_SEQ_PROJETO_PESSOA = RPG.CO_PROJETO_PESSOA AND TPP.ST_REGISTRO_ATIVO = ?
+                    WHERE TGA.CO_PROJETO = ? 
+                    AND tga.CO_EIXO_ATUACAO IS NOT NULL 
+                    AND TGA.ST_REGISTRO_ATIVO = ?
+SQL;
+        $queryParams[] = 'S';
+        $queryTypes[]  = \PDO::PARAM_STR;
+
+        $queryParams[] = (int) $coProjeto;
+        $queryTypes[]  = \PDO::PARAM_INT;
+
+        $queryParams[] = 'S';
+        $queryTypes[]  = \PDO::PARAM_STR;
+
+        $stmt = $this->_em->getConnection()->executeQuery(
+            $query, $queryParams, $queryTypes
+        );
+
+        return $stmt->fetchAll();
+    }
+
     /**
      * @param $nuSipar
      * @param null $publicacao

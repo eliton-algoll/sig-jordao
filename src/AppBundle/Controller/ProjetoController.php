@@ -351,6 +351,7 @@ class ProjetoController extends ControllerAbstract
                 $gruposAtuacao = $em->getRepository(GrupoAtuacao::class)
                     ->findByProjetoAndId($projeto->getCoSeqProjeto(), $request->query->get('grupoTutorial'));
 
+                $totalGrupos = count($gruposAtuacao);
                 $grupoAtuacaoEncontrado = null;
 
                 foreach ($gruposAtuacao as $grupoAtuacao) {
@@ -500,6 +501,93 @@ class ProjetoController extends ControllerAbstract
                     ));
                 }
 
+                $eixosOriginais = ['A','B','C'];
+                $eixosDisponiveis = [];
+                if( !$eixoAtuacao ) {
+                    if( $totalGrupos < 3 ) {
+                        $eixosDisponiveis = $eixosOriginais;
+                    }
+
+                    if( $totalGrupos > 2 ) {
+                        $nrGruposProjetoComParticipantes = $this->get('app.projeto_query')->getNrGruposComParticpantesPorProjeto($projeto->getCoSeqProjeto());
+                        if( count($nrGruposProjetoComParticipantes) && $totalGrupos > 2 ) {
+                            //Para projetos com 5 grupos.
+                            if( $totalGrupos == 3 ) {
+                                foreach ($nrGruposProjetoComParticipantes as $eixosEncontrados) {
+                                    $eixosDisponiveis[] = $eixosEncontrados['CO_EIXO_ATUACAO'];
+                                }
+                            }
+
+                            //Dados para validar projeto com 4 e 5 grupos.
+                            $nrGruposProjetoComParticipantes = $this->get('app.projeto_query')->getEixosComParticpantes($projeto->getCoSeqProjeto());
+                            $eixoA = 0;
+                            $eixoB = 0;
+                            $eixoC = 0;
+                            foreach ($nrGruposProjetoComParticipantes as $eixosEncontrados) {
+                                if(  $eixosEncontrados['CO_EIXO_ATUACAO'] == 'A' ) {
+                                    $eixoA++;
+                                }
+
+                                if(  $eixosEncontrados['CO_EIXO_ATUACAO'] == 'B' ) {
+                                    $eixoB++;
+                                }
+
+                                if(  $eixosEncontrados['CO_EIXO_ATUACAO'] == 'C' ) {
+                                    $eixoC++;
+                                }
+                            }
+                            //Para projetos com 4 grupos.
+                            if( $totalGrupos == 4 ) {
+
+                                if( $eixoA > 1 ) {
+                                    $eixosDisponiveis[] = 'A';
+                                }
+
+                                if( $eixoB > 1 ) {
+                                    $eixosDisponiveis[] = 'B';
+                                }
+
+                                if( $eixoC > 1 ) {
+                                    $eixosDisponiveis[] = 'C';
+                                }
+                            }
+                            //Para projetos com 5 grupos.
+                            if( $totalGrupos == 5 ) {
+
+                                if( $eixoA > 2 ) {
+                                    $eixosDisponiveis[] = 'A';
+                                    if( $eixoB == 2 ) {
+                                        $eixosDisponiveis[] = 'B';
+                                    }
+                                    if( $eixoC == 2 ) {
+                                        $eixosDisponiveis[] = 'C';
+                                    }
+                                }
+
+                                if( $eixoB > 2 ) {
+                                    $eixosDisponiveis[] = 'B';
+                                    if( $eixoA == 2 ) {
+                                        $eixosDisponiveis[] = 'A';
+                                    }
+                                    if( $eixoC == 2 ) {
+                                        $eixosDisponiveis[] = 'C';
+                                    }
+                                }
+
+                                if( $eixoC > 2 ) {
+                                    $eixosDisponiveis[] = 'C';
+                                    if( $eixoA == 2 ) {
+                                        $eixosDisponiveis[] = 'A';
+                                    }
+                                    if( $eixoB == 2 ) {
+                                        $eixosDisponiveis[] = 'B';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
                 $response->details = [
                     'eixoAtuacao' => $eixoAtuacao,
                     'temDoisPreceptores' => (count($preceptores) >= 2),
@@ -512,7 +600,8 @@ class ProjetoController extends ControllerAbstract
                     'estudantesCienciasSociaisEncontrados' => count($estudantesCienciasSociaisEncontradosGrupo),
                     'estudantesCienciasHumanas' => count($estudantesCienciasHumanasEncontradosGrupo),
                     'cursoCandidatoSaude' => $cursoCandidatoSaude,
-                    'preceptores' => $preceptoresIds
+                    'preceptores' => $preceptoresIds,
+                    'eixosPermitidos' => $eixosDisponiveis
                 ];
             } else {
                 $response->details = [

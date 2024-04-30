@@ -797,6 +797,7 @@
                                     bootbox.alert('Não foi possível obter os detalhes do Grupo Tutorial.');
                                     return false;
                                 } else {
+                                    console.log(response.details)
                                     if (response.details.eixoAtuacao) {
                                         switch (response.details.eixoAtuacao) {
                                             case 'A': { // Gestão em Saúde
@@ -821,6 +822,23 @@
                                                 break;
                                             }
                                         }
+                                    } else
+                                    {
+                                        if( response.details.eixosPermitidos.includes('A') ) {
+                                            console.log('A', response.details)
+                                            $('[name$="participante[coEixoAtuacao]"][value="A"]').prop('disabled', true);
+                                        }
+
+                                        if( response.details.eixosPermitidos.includes('B') ) {
+                                            $('[id$="participante_coEixoAtuacao_1"] input').attr('disabled', 'disabled');
+                                            $('[name$="participante[coEixoAtuacao]"][value="B"]').prop('disabled', true);
+                                        }
+
+                                        if( response.details.eixosPermitidos.includes('C') ) {
+                                            $('[id$="participante_coEixoAtuacao_2"] input').attr('disabled', 'disabled');
+                                            $('[name$="participante[coEixoAtuacao]"][value="C"]').prop('disabled', true);
+                                        }
+
                                     }
 
                                     if (perfil == 4) { // Preceptor
