@@ -681,7 +681,22 @@ class Projeto extends AbstractEntity
         
         return ($projetoPessoa) ? $projetoPessoa->first() : null;
     }
-    
+
+    /**
+     *
+     * @return null|\AppBundle\Entity\ProjetoPessoa
+     */
+    public function getOrientadorServicoNaoVoluntario()
+    {
+        $projetoPessoa = $this->projetosPessoas->filter(function($projetoPessoa){
+            return $projetoPessoa->isAtivo() &&
+                $projetoPessoa->getPessoaPerfil()->getPerfil()->isOrientadorProjeto() &&
+                !$projetoPessoa->isVoluntario();
+        });
+
+        return ($projetoPessoa) ? $projetoPessoa->first() : null;
+    }
+
     /**
      * 
      * @return null|\AppBundle\Entity\ProjetoPessoa
