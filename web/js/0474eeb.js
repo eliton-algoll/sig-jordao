@@ -10,7 +10,7 @@
             var selectArea = document.getElementById("atualizar_programa_tpAreaTematica");
             if( selectArea != null ) {
                 for (var i = 0; i < selectArea.options.length; i++) {
-                    if (selectArea.options[i].value === '2') {
+                    if (selectArea.options[i].value === '1') {
                         selectArea.remove(i);
                         break;
                     }
