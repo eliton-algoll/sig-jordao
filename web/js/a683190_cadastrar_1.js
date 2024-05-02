@@ -20,12 +20,12 @@
             var tpAreaTematica = $('#cadastrar_projeto_publicacao > option:selected').attr('data-tp-area-tematica')
 
             var pane = $('#dados-area-tematica');
-            
+
             pane.find('input[data-tp-area-tematica!=' + tpAreaTematica + ']')
                 .prop('checked', false)
                 .parents('.checkbox')
                 .hide();
-        
+
             pane.find('input[data-tp-area-tematica="' + tpAreaTematica + '"]')
                 .parents('.checkbox')
                 .show();
@@ -89,7 +89,7 @@
             $('form[name="cadastrar_projeto"]').submit();
         }
     };
-    
+
     $(document).ready(function(){
         Cadastrar.init();
     })
