@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Projeto;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\ResultSetMapping;
@@ -16,7 +17,7 @@ use AppBundle\Exception\SiparInvalidoException;
 class ProjetoRepository extends RepositoryAbstract
 {
     use \AppBundle\Traits\MaskTrait;
-    
+
     /**
      * @param ParameterBag $params
      * @return \AppBundle\Entity\Projeto[]
@@ -333,6 +334,184 @@ SQL;
         );
 
 
+
+        return $stmt->fetchAll();
+    }
+
+    public function findParticipanteOrientadorByProjeto($coProjeto, $coPerfil)
+    {
+        $queryParams = $queryTypes = [];
+
+        $query = <<<SQL
+                   SELECT count(*) AS NR_ORIENTADOR FROM 
+                    DBPET.TB_PROJETO_PESSOA tp
+                   INNER JOIN DBPET.TB_PESSOA_PERFIL per ON per.CO_SEQ_PESSOA_PERFIL = tp.CO_PESSOA_PERFIL 
+                   WHERE tp.ST_REGISTRO_ATIVO = 'S'
+                   AND tp.CO_PROJETO = ? 
+                   AND per.CO_PERFIL = ? 
+SQL;
+
+        $queryParams[] = (int) $coProjeto;
+        $queryTypes[]  = \PDO::PARAM_INT;
+
+        $queryParams[] = (int) $coPerfil;
+        $queryTypes[]  = \PDO::PARAM_INT;
+
+        $stmt = $this->_em->getConnection()->executeQuery(
+                $query, $queryParams, $queryTypes
+        );
+
+        return $stmt->fetchAll();
+    }
+
+
+    public function findParticipantesByProjetoAndPefilAndGroup($coProjeto, $coPerfil, $coGrupo, $cpf)
+    {
+        $queryParams = $queryTypes = [];
+
+        $query = <<<SQL
+                  SELECT 
+                        COUNT(*) AS NR_CADASTRADO
+                    FROM 
+                        DBPET.TB_PROJETO_PESSOA tp
+                    INNER JOIN DBPET.TB_PESSOA_PERFIL per ON per.CO_SEQ_PESSOA_PERFIL = tp.CO_PESSOA_PERFIL 
+                    INNER JOIN DBPET.RL_PROJETOPESSOA_GRUPOATUACAO gru ON gru.CO_PROJETO_PESSOA = tp.CO_SEQ_PROJETO_PESSOA  
+                    WHERE tp.ST_REGISTRO_ATIVO = 'S'
+                    AND tp.CO_PROJETO = ? 
+                    AND per.CO_PERFIL = ? 
+                    AND gru.CO_GRUPO_ATUACAO = ? 
+                    AND per.NU_CPF <> ? 
+SQL;
+
+        $queryParams[] = (int) $coProjeto;
+        $queryTypes[]  = \PDO::PARAM_INT;
+
+        $queryParams[] = (int) $coPerfil;
+        $queryTypes[]  = \PDO::PARAM_INT;
+
+        $queryParams[] = (int) $coGrupo;
+        $queryTypes[]  = \PDO::PARAM_INT;
+
+        $queryParams[] = $cpf;
+        $queryTypes[]  = \PDO::PARAM_STR;
+
+        $stmt = $this->_em->getConnection()->executeQuery(
+            $query, $queryParams, $queryTypes
+        );
+
+        return $stmt->fetchAll();
+    }
+
+    public function setAddGrupos(Projeto $projeto, $nrGrupos)
+    {
+        for ($i = 1; $i <= $nrGrupos; $i++) {
+            $nomeGrupo = 'Grupo '.$i;
+            $query = "INSERT INTO DBPET.TB_GRUPO_ATUACAO (CO_SEQ_GRUPO_ATUACAO, NO_GRUPO_ATUACAO, ST_REGISTRO_ATIVO, DT_INCLUSAO, CO_PROJETO, ST_CONFIRMACAO)
+                      VALUES(DBPET.SQ_GRUPOATUACAO_COSEQGRPATUAC.NEXTVAL, :NO_GRUPO_ATUACAO, :ST_REGISTRO_ATIVO, :DT_INCLUSAO, :CO_PROJETO, :ST_CONFIRMACAO)";
+            $statement = $this->_em->getConnection()->prepare($query);
+            $statement->bindValue('NO_GRUPO_ATUACAO', $nomeGrupo);
+            $statement->bindValue('ST_REGISTRO_ATIVO', 'S');
+            $statement->bindValue('DT_INCLUSAO', date('Y-m-d H:i:s'));
+            $statement->bindValue('CO_PROJETO', $projeto->getCoSeqProjeto());
+            $statement->bindValue('ST_CONFIRMACAO', 'N');
+            $statement->execute();
+
+        }
+
+    }
+
+    public function deletarGrupos($coProjeto)
+    {
+        $query = <<<SQL
+                  UPDATE 
+                    DBPET.TB_GRUPO_ATUACAO GA
+                  SET ST_REGISTRO_ATIVO = :ST_REGISTRO_ATIVO
+                  WHERE GA.CO_PROJETO = :CO_PROJETO
+SQL;
+        $statement = $this->_em->getConnection()->prepare($query);
+        $statement->bindValue('ST_REGISTRO_ATIVO', 'N');
+        $statement->bindValue('CO_PROJETO', $coProjeto);
+        $statement->execute();
+    }
+
+    public function getNrGrupos($coProjeto)
+    {
+        $queryParams = $queryTypes = [];
+
+        $query = <<<SQL
+                  SELECT COUNT(GA.CO_SEQ_GRUPO_ATUACAO) nrGrupos
+                    FROM DBPET.TB_GRUPO_ATUACAO GA
+                    WHERE GA.CO_PROJETO = ? 
+                    AND GA.ST_REGISTRO_ATIVO = ?
+SQL;
+
+        $queryParams[] = (int) $coProjeto;
+        $queryTypes[]  = \PDO::PARAM_INT;
+
+        $queryParams[] = 'S';
+        $queryTypes[]  = \PDO::PARAM_STR;
+
+        $stmt = $this->_em->getConnection()->executeQuery(
+            $query, $queryParams, $queryTypes
+        );
+
+        return $stmt->fetch();
+    }
+
+    public function getNrGruposComParticpantes($coProjeto)
+    {
+        $queryParams = $queryTypes = [];
+
+        $query = <<<SQL
+                  SELECT TGA.CO_EIXO_ATUACAO FROM 
+                    DBPET.TB_GRUPO_ATUACAO TGA 
+                    INNER JOIN DBPET.TB_PROJETO_PESSOA tpp ON tpp.CO_PROJETO = TGA.CO_PROJETO AND tpp.ST_REGISTRO_ATIVO = ?
+                    WHERE TGA.CO_PROJETO = ? 
+                    AND tga.CO_EIXO_ATUACAO IS NOT NULL 
+                    AND TGA.ST_REGISTRO_ATIVO = ?
+                    GROUP BY TGA.CO_EIXO_ATUACAO
+SQL;
+        $queryParams[] = 'S';
+        $queryTypes[]  = \PDO::PARAM_STR;
+
+        $queryParams[] = (int) $coProjeto;
+        $queryTypes[]  = \PDO::PARAM_INT;
+
+        $queryParams[] = 'S';
+        $queryTypes[]  = \PDO::PARAM_STR;
+
+        $stmt = $this->_em->getConnection()->executeQuery(
+            $query, $queryParams, $queryTypes
+        );
+
+        return $stmt->fetchAll();
+    }
+
+    public function getEixosComParticpantes($coProjeto)
+    {
+        $queryParams = $queryTypes = [];
+
+        $query = <<<SQL
+                    SELECT TGA.CO_EIXO_ATUACAO FROM 
+                    DBPET.TB_GRUPO_ATUACAO TGA 
+                    INNER JOIN DBPET.RL_PROJETOPESSOA_GRUPOATUACAO RPG ON RPG.CO_GRUPO_ATUACAO = TGA.CO_SEQ_GRUPO_ATUACAO 
+                    INNER JOIN DBPET.TB_PROJETO_PESSOA TPP ON TPP.CO_SEQ_PROJETO_PESSOA = RPG.CO_PROJETO_PESSOA AND TPP.ST_REGISTRO_ATIVO = ?
+                    WHERE TGA.CO_PROJETO = ? 
+                    AND tga.CO_EIXO_ATUACAO IS NOT NULL 
+                    AND TGA.ST_REGISTRO_ATIVO = ?
+SQL;
+        $queryParams[] = 'S';
+        $queryTypes[]  = \PDO::PARAM_STR;
+
+        $queryParams[] = (int) $coProjeto;
+        $queryTypes[]  = \PDO::PARAM_INT;
+
+        $queryParams[] = 'S';
+        $queryTypes[]  = \PDO::PARAM_STR;
+
+        $stmt = $this->_em->getConnection()->executeQuery(
+            $query, $queryParams, $queryTypes
+        );
 
         return $stmt->fetchAll();
     }

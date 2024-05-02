@@ -40,13 +40,21 @@ class TipoAreaTematica extends AbstractEntity
     private $tpAreaTematica;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="TP_AREA_FORMACAO", type="string", length=1)
+     */
+    private $tpAreaFormacao;
+
+    /**
      * @param string $dsTipoAreaTematica
      * @param string $tpAreaTematica
      */
-    public function __construct($dsTipoAreaTematica, $tpAreaTematica)
+    public function __construct($dsTipoAreaTematica, $tpAreaTematica, $tpAreaFormacao)
     {
         $this->dsTipoAreaTematica = $dsTipoAreaTematica;
         $this->tpAreaTematica = $tpAreaTematica;
+        $this->tpAreaFormacao = $tpAreaFormacao;
         $this->dtInclusao = new \DateTime();
         $this->stRegistroAtivo = 'S';
     }
@@ -89,6 +97,27 @@ class TipoAreaTematica extends AbstractEntity
         }
         
         return $this->tpAreaTematica;
+    }
+
+    /**
+     * Get tpAreaTematica
+     *
+     * @return string
+     */
+    public function getTpAreaFormacao($returnNome = false)
+    {
+        if ($returnNome) {
+
+            $nomes = array(
+                1 => 'Saúde',
+                2 => 'Ciências Humanas',
+                3 => 'Ciências Sociais Aplicadas'
+            );
+
+            return $nomes[$this->tpAreaFormacao];
+        }
+
+        return $this->tpAreaFormacao;
     }
     
     /**

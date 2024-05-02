@@ -91,6 +91,7 @@ class CadastrarProjetoHandler
             $publicacao, 
             $command->getNuSipar(),
             $command->getDsObservacao(),
+            $command->getStOrientadorServico(),
             $command->getQtBolsa(),
             (isset($filename)) ? $filename : null
         );
@@ -114,9 +115,12 @@ class CadastrarProjetoHandler
         }
         
         $this->projetoRepository->add($projeto);
-        
+        $this->projetoRepository->flush($projeto);
+
         if (isset($filename)) {
             $this->fileUploader->upload($command->getNoDocumentoProjeto(), $filename);
         }
+
+        $this->projetoRepository->setAddGrupos($projeto, $command->getQtGrupos());
     }
 }

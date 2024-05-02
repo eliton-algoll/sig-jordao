@@ -31,6 +31,7 @@ class ProjetoPessoaRepository extends RepositoryAbstract
             'prp.stRegistroAtivo',
             'prp.dtDesligamento',
             'prp.stVoluntarioProjeto',
+            'cg.dsCursoGraduacao',
             'ga.noGrupoAtuacao',
             'ga.coEixoAtuacao'
         ];
@@ -56,6 +57,8 @@ class ProjetoPessoaRepository extends RepositoryAbstract
                 'WITH',
                 'ga.stRegistroAtivo = \'S\''
             )
+            ->leftJoin('prp.projetoPessoaCursoGraduacao', 'ppcg')
+            ->leftJoin('ppcg.cursoGraduacao', 'cg')
             ->where("p.stRegistroAtivo = 'S'")
             ->setParameter('tpPrograma', Programa::GRUPO_TUTORIAL);
         
@@ -114,6 +117,8 @@ class ProjetoPessoaRepository extends RepositoryAbstract
         
         $qb->orderBy('p.noPessoa', 'asc');
 
+//        var_dump($qb->getQuery()->getSQL());
+//        die;
         return $qb;
     }
     

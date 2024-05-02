@@ -43,6 +43,14 @@ class ProjetoPessoa extends AbstractEntity
     private $pessoaPerfil;
 
     /**
+     * @var IdentidadeGenero
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\IdentidadeGenero", cascade={"persist"})
+     * @ORM\JoinColumn(name="CO_IDENTIDADE_GENERO", referencedColumnName="CO_IDENTIDADE_GENERO")
+     */
+    private $identidadeGenero;
+
+    /**
      * @var string stVoluntarioProjeto
      *
      * @ORM\Column(name="ST_VOLUNTARIO_PROJETO", type="string", nullable=false)
@@ -63,6 +71,22 @@ class ProjetoPessoa extends AbstractEntity
      * @ORM\Column(name="CO_EIXO_ATUACAO", type="string", length=1, nullable=true)
      */
     private $coEixoAtuacao;
+
+    /**
+     *
+     * @var string
+     *
+     * @ORM\Column(name="NO_DOCUMENTO_BANCARIO", type="string", length=200)
+     */
+    private $noDocumentoBancario;
+
+    /**
+     *
+     * @var string
+     *
+     * @ORM\Column(name="NO_DOCUMENTO_MATRICULA", type="string", length=200, nullable=true)
+     */
+    private $noDocumentoMatricula;
 
     /**
      * @var ProjetoPessoaGrupoAtuacao
@@ -87,15 +111,18 @@ class ProjetoPessoa extends AbstractEntity
      * @param PessoaPerfil $pessoaPerfil
      * @param string $stVoluntarioProjeto
      */
-    public function __construct(Projeto $projeto, PessoaPerfil $pessoaPerfil, $stVoluntarioProjeto = 'N', $coEixoAtuacao = null)
+    public function __construct(Projeto $projeto, PessoaPerfil $pessoaPerfil, $stVoluntarioProjeto = 'N', $coEixoAtuacao = null, $genero = null, $filenameBank = null, $filenameMatricula = null)
     {
         $this->projetoPessoaGrupoAtuacao = new ArrayCollection();
         $this->projetoPessoaCursoGraduacao = new ArrayCollection();
         $this->dadosAcademicos = new ArrayCollection();
         $this->projeto = $projeto;
         $this->pessoaPerfil = $pessoaPerfil;
+        $this->identidadeGenero = $genero;
         $this->stVoluntarioProjeto = $stVoluntarioProjeto;
         $this->coEixoAtuacao = $coEixoAtuacao;
+        $this->noDocumentoBancario = $filenameBank;
+        $this->noDocumentoMatricula = $filenameMatricula;
         $this->stRegistroAtivo = 'S';
         $this->dtInclusao = new \DateTime();
     }
@@ -128,6 +155,31 @@ class ProjetoPessoa extends AbstractEntity
     public function getPessoaPerfil()
     {
         return $this->pessoaPerfil;
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getNoDocumentoBancario()
+    {
+        return $this->noDocumentoBancario;
+    }
+    /**
+     *
+     * @return string
+     */
+    public function getNoDocumentoMatricula()
+    {
+        return $this->noDocumentoMatricula;
+    }
+
+    /**
+     * @return IdentidadeGenero|mixed|null
+     */
+    public function getIdentidadeGenero()
+    {
+        return $this->identidadeGenero;
     }
 
     /**
@@ -219,6 +271,41 @@ class ProjetoPessoa extends AbstractEntity
         return $this->projetoPessoaCursoGraduacao->filter(function ($projetoPessoaCursoGraduacao) {
             return $projetoPessoaCursoGraduacao->isAtivo();
         });
+    }
+
+    /**
+     * Get projetoPessoaCursoGraduacao
+     *
+     * @return ProjetoPessoaCursoGraduacao
+     */
+    public function getProjetoPessoaCursoGraduacaoFist()
+    {
+        return $this->projetoPessoaCursoGraduacao->first();
+    }
+
+    /**
+     * @param IdentidadeGenero|mixed|null $identidadeGenero
+     */
+    public function setIdentidadeGenero($identidadeGenero)
+    {
+        $this->identidadeGenero = $identidadeGenero;
+    }
+
+    /**
+     *
+     * @param string $noDocumentoBancario
+     */
+    public function setNoDocumentoBancario($noDocumentoBancario)
+    {
+        $this->noDocumentoBancario = $noDocumentoBancario;
+    }
+    /**
+     *
+     * @param string $noDocumentoMatricula
+     */
+    public function setNoDocumentoMatricula($noDocumentoMatricula)
+    {
+        $this->noDocumentoMatricula = $noDocumentoMatricula;
     }
 
     /**
@@ -598,6 +685,15 @@ class ProjetoPessoa extends AbstractEntity
         return $this->getProjeto()->getCoSeqProjeto() . ' - '
             . $this->getPessoaPerfil()->getPessoaFisica()->getPessoa()->getNuCpfCnpjPessoa() . ' '
             . $this->getPessoaPerfil()->getPessoaFisica()->getPessoa()->getNoPessoa();
+    }
+
+    /**
+     *
+     * @return int
+     */
+    public function getPerfilParticipante()
+    {
+        return $this->getPessoaPerfil()->getPerfil()->getCoSeqPerfil();
     }
 
 }
