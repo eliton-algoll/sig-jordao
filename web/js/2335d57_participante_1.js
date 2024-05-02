@@ -61,7 +61,7 @@
 
             }, 500);
 
-           // $('[id$="participante_sexo"] option:selected').removeAttr('disabled');
+            // $('[id$="participante_sexo"] option:selected').removeAttr('disabled');
         },
 
         events: function () {
@@ -167,7 +167,7 @@
             var _optionsCategoriaProf = sessionStorage.getItem('optionsCategoriaProf');
             $('[id$="cadastrar_participante_categoriaProfissional"]').html(_optionsCategoriaProf);
 
-           $('[id$="participante_noDocumentoMatricula"]').parent('div.form-group').hide();
+            $('[id$="participante_noDocumentoMatricula"]').parent('div.form-group').hide();
 
             $('[id$="participante_grupoTutorial"]').parent('div.form-group').show();
             $('[id$="participante_coEixoAtuacao"]').parent('div.form-group').show();
@@ -415,16 +415,16 @@
                         sessionStorage.setItem('participante_pessoa', JSON.stringify(response.pessoa));
 
                         let dataNas = new Date(response.dtNascimento.date);
-                            dataNas = dataNas.toLocaleDateString('pt-BR', {
-                                timeZone: 'UTC',
-                            });
+                        dataNas = dataNas.toLocaleDateString('pt-BR', {
+                            timeZone: 'UTC',
+                        });
 
                         $('[id$="participante_sexo"] option').removeAttr('selected');
                         $('[id$="participante_sexo"] option').attr('disabled', 'disabled');
                         $('[id$="participante_noPessoa"]').val(response.pessoa.noPessoa);
                         $('[id$="participante_dtNascimento"]').val(dataNas);
-                      //  $('[id$="participante_sexo"] option[value="' + response.sexo.coSexo + '"]').attr('selected', 'selected');
-                      //  $('[id$="participante_sexo"] option[value="' + response.sexo.coSexo + '"]').removeAttr('disabled');
+                        //  $('[id$="participante_sexo"] option[value="' + response.sexo.coSexo + '"]').attr('selected', 'selected');
+                        //  $('[id$="participante_sexo"] option[value="' + response.sexo.coSexo + '"]').removeAttr('disabled');
                         $('[id$="participante_noMae"]').val(response.noMae);
                         $('[id$="participante_coCep"]').val(response.pessoa.nuCep);
                         $('[id$="participante_noLogradouro"]').val(response.pessoa.noLogradouro);
@@ -606,7 +606,7 @@
         handleChangeCursoGraduacao: function (curso) {
 
             // if( $('#salvar-participante').val() == 'add' ) {
-                $('[id$="participante_grupoTutorial"]').val('');
+            $('[id$="participante_grupoTutorial"]').val('');
             // }
             $('[name$="areaTematica][]"] option').removeAttr('disabled');
 
