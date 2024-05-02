@@ -4,6 +4,9 @@ var/logs
 var/sessions
 var/bootstrap.php.cache
 
+#Arquivo com conexões de banco
+app/config/parameters.yml
+
 # Dependências do Symfony
 vendor/
 
@@ -20,3 +23,4 @@ web/uploads
 
 .idea
 .nbproject
+
