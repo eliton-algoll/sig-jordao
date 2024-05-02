@@ -3,6 +3,7 @@
 namespace AppBundle\CommandBus;
 
 use AppBundle\Entity\GrupoAtuacao;
+use AppBundle\Entity\Perfil;
 use AppBundle\Entity\Projeto;
 use AppBundle\Exception\ConfirmarGrupoTutorialException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -67,6 +68,126 @@ final class ConfirmarGrupoTutorialCommand
                     ->addViolation();
             }
         }
+    }
+
+    /**
+     * @param $projetosPessaGrupoAtuacao
+     * @return array
+     */
+    public function validateComposicaoGrupoTutorial($projetosPessaGrupoAtuacao, $categoriasProfissionais)
+    {
+        $error = array();
+        $coordenadorGrupo = 0;
+        $tutor = 0;
+        $preceptor = 0;
+        $estudante = 0;
+
+        if( count($projetosPessaGrupoAtuacao) < 12) {
+            $error[] = ['msg' => 'O '.$this->getGrupoAtuacao()->getNoGrupoAtuacao().' deve ser composto por 12 (doze) participantes.'];
+        }
+        foreach ($projetosPessaGrupoAtuacao as $pro) {
+            if( $pro->getProjetoPessoa()->getPessoaPerfil()->getPerfil()->getCoSeqPerfil() == Perfil::PERFIL_COORDENADOR_GRUPO ) {
+                $coordenadorGrupo++;
+            }
+            if( $pro->getProjetoPessoa()->getPessoaPerfil()->getPerfil()->getCoSeqPerfil() == Perfil::PERFIL_TUTOR ) {
+                $tutor++;
+            }
+            if( $pro->getProjetoPessoa()->getPessoaPerfil()->getPerfil()->getCoSeqPerfil() == Perfil::PERFIL_PRECEPTOR ) {
+                $preceptor++;
+            }
+            if( $pro->getProjetoPessoa()->getPessoaPerfil()->getPerfil()->getCoSeqPerfil() == Perfil::PERFIL_ESTUDANTE ) {
+                $estudante++;
+            }
+        }
+
+        if( $coordenadorGrupo != 1 ) {
+            $error[] = ['msg' => 'O '.$this->getGrupoAtuacao()->getNoGrupoAtuacao().' deve possuir 1 (um) coordenador de grupo.'];
+        }
+
+        if( $tutor != 1 ) {
+            $error[] = ['msg' => 'O '.$this->getGrupoAtuacao()->getNoGrupoAtuacao().' deve possuir 1 (um) tutor.'];
+        }
+
+        if( $preceptor != 2 ) {
+            $error[] = ['msg' => 'O '.$this->getGrupoAtuacao()->getNoGrupoAtuacao().' deve possuir 2 (dois) preceptores.'];
+        }
+
+        if( $estudante != 8 ) {
+            $error[] = ['msg' => 'O '.$this->getGrupoAtuacao()->getNoGrupoAtuacao().' deve possuir 8 (oito) estudantes.'];
+        }
+
+        $listCategoriasProfissionais = $this->getCategoriaProfissionalPorArea($categoriasProfissionais);
+        $estudantesPorArea = $this->countEstudantesPorAreaSaude($listCategoriasProfissionais, $projetosPessaGrupoAtuacao);
+        if( $estudantesPorArea['saude'] != 6 ) {
+            $error[] = ['msg' => 'O '.$this->getGrupoAtuacao()->getNoGrupoAtuacao().' deve possuir 6 (seis) estudantes da área da Saúde.'];
+        }
+
+        return $error;
+    }
+
+    private function countEstudantesPorAreaSaude($listCategoriasProfissionais, $projetosPessaGrupoAtuacao)
+    {
+        $categoriasSaude           = $listCategoriasProfissionais['categoriasSaude'];
+        $categoriasCienciasHumanas = $listCategoriasProfissionais['categoriasCienciasHumanas'];
+        $categoriasCienciasSociais = $listCategoriasProfissionais['categoriasCienciasSociais'];
+
+        $estudantesSaudeEncontradosGrupo = 0;
+        $estudantesCienciasHumanasEncontradosGrupo = 0;
+        $estudantesCienciasSociaisEncontradosGrupo = 0;
+
+        foreach ($projetosPessaGrupoAtuacao as $ppga) {
+            if( $ppga->getProjetoPessoa()->getPessoaPerfil()->getPerfil()->getCoSeqPerfil() == Perfil::PERFIL_ESTUDANTE ) {
+
+                foreach ($categoriasSaude as $cat) {
+                    if( $ppga->getDescricaoCursoGraducao() == $cat->getDsCategoriaProfissional() ) {
+                        $estudantesSaudeEncontradosGrupo++;
+                    }
+                }
+//
+//                foreach ($categoriasCienciasHumanas as $cat) {
+//                    if( $ppga->getDescricaoCursoGraducao() == $cat->getDsCategoriaProfissional() ) {
+//                        $estudantesCienciasHumanasEncontradosGrupo++;
+//                    }
+//                }
+//
+//                foreach ($categoriasCienciasSociais as $cat) {
+//                    if( $ppga->getDescricaoCursoGraducao() == $cat->getDsCategoriaProfissional() ) {
+//                        $estudantesCienciasSociaisEncontradosGrupo++;
+//                    }
+//                }
+            }
+        }
+
+        return ['saude' => $estudantesSaudeEncontradosGrupo,
+                'cienciasHumanas' => $estudantesCienciasHumanasEncontradosGrupo,
+                'CienciasSociais' => $estudantesCienciasSociaisEncontradosGrupo ];
+
+    }
+
+    private function getCategoriaProfissionalPorArea($categoriasProfissionais_)
+    {
+
+        $categoriasSaude = [];
+        $categoriasCienciasHumanas = [];
+        $categoriasCienciasSociais  = [];
+        foreach ($categoriasProfissionais_ as $categ) {
+            switch ($categ->getTpAreaFormacao()) {
+                case '1':
+                    $categoriasSaude[] = $categ;
+                    break;
+                case '2':
+                    $categoriasCienciasHumanas[] = $categ;
+                    break;
+                case '3':
+                    $categoriasCienciasSociais[] = $categ;
+                    break;
+            }
+        }
+
+        return ['categoriasSaude' => $categoriasSaude,
+                'categoriasCienciasHumanas' => $categoriasCienciasHumanas,
+                'categoriasCienciasSociais' => $categoriasCienciasSociais ];
+
     }
 
     /**

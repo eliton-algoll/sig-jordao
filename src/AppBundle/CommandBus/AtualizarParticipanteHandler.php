@@ -3,7 +3,10 @@
 namespace AppBundle\CommandBus;
 
 use AppBundle\Event\HandleSituacaoGrupoAtuacaoEvent;
+use AppBundle\Facade\FileNameGeneratorFacade;
+use AppBundle\Facade\FileUploaderFacade;
 use AppBundle\Repository\AreaTematicaRepository;
+use AppBundle\Repository\IdentidadeGeneroRepository;
 use AppBundle\WebServices\Cnes;
 use AppBundle\CommandBus\AtualizarParticipanteCommand;
 use AppBundle\CommandBus\CadastrarParticipanteCommand;
@@ -31,6 +34,7 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
     /**
      * AtualizarParticipanteHandler constructor.
      * @param PerfilRepository $perfilRepository
+     * @param IdentidadeGeneroRepository $identidadeRepository
      * @param ProjetoPessoaRepository $projetoPessoaRepository
      * @param ProjetoRepository $projetoRepository
      * @param PessoaFisicaRepository $pessoaFisicaRepository
@@ -44,9 +48,12 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
      * @param CepRepository $cepRepository
      * @param ProjetoPessoaGrupoAtuacaoRepository $projetoPessoaGrupoAtuacaoRepository
      * @param AreaTematicaRepository $areaTematicaRepository
+     * @param FileUploaderFacade $fileUploader
+     * @param FileNameGeneratorFacade $filenameGenerator
      */
     public function __construct(
         PerfilRepository $perfilRepository,
+        IdentidadeGeneroRepository $identidadeRepository,
         ProjetoPessoaRepository $projetoPessoaRepository,
         ProjetoRepository $projetoRepository,
         PessoaFisicaRepository $pessoaFisicaRepository,
@@ -60,10 +67,13 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
         CepRepository $cepRepository,
         ProjetoPessoaGrupoAtuacaoRepository $projetoPessoaGrupoAtuacaoRepository,
         AreaTematicaRepository $areaTematicaRepository,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        FileUploaderFacade $fileUploader,
+        FileNameGeneratorFacade $filenameGenerator
     ) {
 //        $this->wsCnes = $wsCnes;
         $this->perfilRepository = $perfilRepository;
+        $this->identidadeGeneroRepository = $identidadeRepository;
         $this->projetoPessoaRepository = $projetoPessoaRepository;
         $this->projetoRepository = $projetoRepository;
         $this->pessoaFisicaRepository = $pessoaFisicaRepository;
@@ -78,6 +88,8 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
         $this->projetoPessoaGrupoAtuacaoRepository = $projetoPessoaGrupoAtuacaoRepository;
         $this->areaTematicaRepository = $areaTematicaRepository;
         $this->eventDispatcher = $eventDispatcher;
+        $this->fileUploader = $fileUploader;
+        $this->filenameGenerator = $filenameGenerator;
     }
     
     /**
@@ -96,9 +108,22 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
         $agenciaBancaria = $command->getCoAgenciaBancaria();
         $conta           = $command->getCoConta();
         $conta           = (!$conta) ? ' ' : $conta;
+        $genero          = $this->getGeneroValid($command->getGenero());
         $perfil          = $this->getPerfilIfNonViolatedConstraints($command);
-//        $this->constraintCNES($command);
 
+        if ($perfil->getCoSeqPerfil() == Perfil::PERFIL_PRECEPTOR) {
+            $this->constraintCNES($command);
+        }
+
+        if ($command->getNoDocumentoBancario()) {
+            $filename = $this->filenameGenerator->generate($command->getNoDocumentoBancario());
+            $projetoPessoa->setNoDocumentoBancario($filename);
+        }
+
+        if ($command->getNoDocumentoMatricula()) {
+            $filenameMatricula = $this->filenameGenerator->generate($command->getNoDocumentoMatricula());
+            $projetoPessoa->setNoDocumentoMatricula($filenameMatricula);
+        }
 
         if ($pessoaFisica->getDadoPessoal()) {
             $pessoaFisica->getDadoPessoal()->setBanco($banco);
@@ -107,11 +132,21 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
         } else {
             $pessoaFisica->setDadoPessoal($banco, $agenciaBancaria, $conta);
         }
+
+        if (isset($filename)) {
+            $this->fileUploader->upload($command->getNoDocumentoBancario(), $filename);
+        }
+
+        if (isset($filenameMatricula)) {
+            $this->fileUploader->upload($command->getNoDocumentoBancario(), $filenameMatricula);
+        }
         
         $pessoaFisica->getPessoa()->addEnderecoWeb($command->getDsEnderecoWeb());
         
         $projetoPessoa->setStVoluntarioProjeto($command->getStVoluntarioProjeto());
-        
+
+        $projetoPessoa->setIdentidadeGenero($genero);
+
         $this->addEndereco($pessoaFisica, $cep, $command);
         $this->addDadosAcademicos($projetoPessoa, $command);
         $this->addTelefones($pessoaFisica, $command);

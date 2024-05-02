@@ -84,12 +84,14 @@ class ProjetoPessoaGrupoAtuacaoRepository extends RepositoryAbstract
         $qb = $this->createQueryBuilder('ppga');
 
         return $qb
-            ->select('ppga, pp, pperf, perfil, pf, p, ppgaat, at, tat')
+            ->select('ppga, pp, pperf, perfil, pf, p, ppcg, pcg, ppgaat, at, tat')
             ->innerJoin('ppga.projetoPessoa', 'pp')
             ->innerJoin('pp.pessoaPerfil', 'pperf')
             ->innerJoin('pperf.perfil', 'perfil')
             ->innerJoin('pperf.pessoaFisica', 'pf')
             ->innerJoin('pf.pessoa', 'p')
+            ->leftJoin('pp.projetoPessoaCursoGraduacao', 'ppcg')
+            ->leftJoin('ppcg.cursoGraduacao', 'pcg', 'WITH', 'ppcg.cursoGraduacao = pcg.coSeqCursoGraduacao')
             ->leftJoin('ppga.projetosPessoasGrupoAtuacaoAreasTematicas', 'ppgaat')
             ->leftJoin('ppgaat.areaTematica', 'at')
             ->leftJoin('at.tipoAreaTematica', 'tat')
@@ -102,6 +104,7 @@ class ProjetoPessoaGrupoAtuacaoRepository extends RepositoryAbstract
             ->addOrderBy('perfil.dsPerfil')
             ->getQuery()
             ->getResult()
+//            ->getSQL()
         ;
     }
 }

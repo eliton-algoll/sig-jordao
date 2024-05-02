@@ -124,12 +124,18 @@ services:
         arguments: 
             - AppBundle\Entity\CboOcupacao
     
-    app.perfil_repository:
+    app.identidade_genero_repository:
         class: Doctrine\ORM\EntityRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments: 
+            - AppBundle\Entity\IdentidadeGenero
+
+    app.perfil_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
             - AppBundle\Entity\Perfil
-    
+
     app.orgao_emissor_repository:
         class: Doctrine\ORM\EntityRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]

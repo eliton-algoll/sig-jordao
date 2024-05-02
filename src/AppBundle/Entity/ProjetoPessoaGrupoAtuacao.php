@@ -178,5 +178,21 @@ class ProjetoPessoaGrupoAtuacao extends AbstractEntity
 
         return implode(', ', $aresTematicas);
     }
+
+    public function getDescricaoCursoGraducao()
+    {
+        $cursos = $this->getProjetoPessoa()->getCursoGraduacaoEstudanteOuPreceptor();
+        if( $cursos  ) {
+            return  $cursos->getDsCursoGraduacao();
+        }
+
+        $dadoAcademico = $this->getProjetoPessoa()->getDadoAcademicoAtivo();
+        if( $dadoAcademico ) {
+            return $dadoAcademico->getCategoriaProfissional()->getDsCategoriaProfissional();
+        }
+
+        return '';
+
+    }
 }
 

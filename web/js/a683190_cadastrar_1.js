@@ -5,6 +5,11 @@
             this.listAreasTematicas();
         },
         events: function(){
+            // $('#todos-temas-saude').click(this.checkListTemaSaude);
+            // $('#todos-temas-cienciasHumanas').click(this.checkListTemaCienciasHumanas);
+            // $('#todos-temas-cienciasSociais').click(this.checkListTemaCienciasSociais);
+            $('#todos-temas_').click(this.checkListAreasTematicas);
+
             $('#cadastrar_projeto_publicacao').change(this.handleChangePublicacao);
             $('#btn-salvar').click(this.handleClickSalvar);
         },
@@ -15,15 +20,62 @@
             var tpAreaTematica = $('#cadastrar_projeto_publicacao > option:selected').attr('data-tp-area-tematica')
 
             var pane = $('#dados-area-tematica');
-            
+
             pane.find('input[data-tp-area-tematica!=' + tpAreaTematica + ']')
                 .prop('checked', false)
                 .parents('.checkbox')
                 .hide();
-        
+
             pane.find('input[data-tp-area-tematica="' + tpAreaTematica + '"]')
                 .parents('.checkbox')
                 .show();
+
+            if( pane.find('input[data-tp-area-tematica="' + tpAreaTematica + '"]').length > 0 ){
+                $('#label-todos-temas').show();
+            }
+        },
+        checkListTemaSaude: function () {
+            var checked = $('#todos-temas-saude');
+            var valueCheck = checked.is(':checked');
+            var checkBoxs = document.querySelectorAll('input[type="checkbox"][data-tp-area-sub="1"]');
+            [].forEach.call(checkBoxs, function(checkbox) {
+                checkbox.checked = valueCheck;
+            });
+        },
+        checkListTemaCienciasHumanas: function () {
+            var checked = $('#todos-temas-cienciasHumanas');
+            var valueCheck = checked.is(':checked');
+            var checkBoxs = document.querySelectorAll('input[type="checkbox"][data-tp-area-sub="2"]');
+            [].forEach.call(checkBoxs, function(checkbox) {
+                checkbox.checked = valueCheck;
+            });
+        },
+        checkListTemaCienciasSociais: function () {
+            var checked = $('#todos-temas-cienciasSociais');
+            var valueCheck = checked.is(':checked');
+            var checkBoxs = document.querySelectorAll('input[type="checkbox"][data-tp-area-sub="3"]');
+            [].forEach.call(checkBoxs, function(checkbox) {
+                checkbox.checked = valueCheck;
+            });
+        },
+        checkListAreasTematicas: function () {
+            var checked = $('#todos-temas_');
+            var valueCheck = checked.is(':checked');
+            var checkBoxs = document.querySelectorAll('input[type="checkbox"][data-tp-area-sub="1"]');
+            [].forEach.call(checkBoxs, function(checkbox) {
+                checkbox.checked = valueCheck;
+            });
+
+            var checkBoxs = document.querySelectorAll('input[type="checkbox"][data-tp-area-sub="2"]');
+            [].forEach.call(checkBoxs, function(checkbox) {
+                checkbox.checked = valueCheck;
+            });
+
+            var checkBoxs = document.querySelectorAll('input[type="checkbox"][data-tp-area-sub="3"]');
+            [].forEach.call(checkBoxs, function(checkbox) {
+                checkbox.checked = valueCheck;
+            });
+
         },
         handleClickSalvar: function(){
             if ($('#table-secretarias').find('input[type="hidden"]').length < 1) {
@@ -37,7 +89,7 @@
             $('form[name="cadastrar_projeto"]').submit();
         }
     };
-    
+
     $(document).ready(function(){
         Cadastrar.init();
     })

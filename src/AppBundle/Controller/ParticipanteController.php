@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\GrupoAtuacao;
+use AppBundle\Entity\Perfil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
@@ -69,14 +70,6 @@ class ParticipanteController extends ControllerAbstract
      */
     public function cadastrarAction(Request $request)
     {
-        /*
-        if ($this->isGranted(array('HAS_FOLHA_PAGAMENTO_ABERTA', 'HAS_FOLHA_PAGAMENTO_FECHADA')) && 
-            !$this->isGranted('HAS_AUTORIZACAO_CADASTRO_PARTICIPANTE')
-        ) {
-            $this->addFlash('danger', 'Não é possível cadastrar participantes enquanto a folha de pagamento do programa estiver aberta ou até que seja cadastrado um período excepcional de abertura de cadastro pelo administrador do sistema.');
-            return $this->redirectToRoute('participante');
-        }
-        */
 
         $projeto = $this->getProjetoAutenticado();
         $command = new CadastrarParticipanteCommand();
@@ -91,11 +84,12 @@ class ParticipanteController extends ControllerAbstract
 
         if ($form->isSubmitted()) {
             $data = new ParameterBag($request->request->get('cadastrar_participante'));
-           
+
             # Bind manual devido a complexidade do formulário
             $command
                 ->setPerfil($data->get('perfil'))
                 ->setNuCpf($data->getDigits('nuCpf'))
+                ->setGenero($data->get('genero'))
                 ->setCoBanco($data->get('coBanco'))
                 ->setCoAgenciaBancaria($data->get('coAgenciaBancaria'))
                 ->setCoConta($data->get('coConta'))
@@ -123,7 +117,7 @@ class ParticipanteController extends ControllerAbstract
             try {
                 $projetoPessoa = $this->getBus()->handle($command);
                 $cadastrarUsuarioCommand->setProjetoPessoa($projetoPessoa);
-                
+
                 $this->getBus()->handle($cadastrarUsuarioCommand);
 
                 $link = $this->generateUrl('participante_termo', array('projetoPessoa' => $projetoPessoa->getCoSeqProjetoPessoa()));
@@ -134,7 +128,7 @@ class ParticipanteController extends ControllerAbstract
                 $this->addFlash('success', $message);
 
                 if ($projeto && $projeto->getPublicacao()->getPrograma()->isGrupoTutorial()) {
-                    $this->addFlash('info', 'Após cadastrar todos os participantes do grupo, clicar no botão Confirmar Grupo Tutorial.');
+                    $this->addFlash('info', 'Após cadastrar todos os participantes de todos os grupos, clicar no botão Confirmar Grupo Tutorial.');
                 }
                 
                 return $this->redirectToRoute('participante');
@@ -210,7 +204,7 @@ class ParticipanteController extends ControllerAbstract
         } catch (\Exception $e) {
             // Do nothing.
         }
-        
+
         $command = new AtualizarParticipanteCommand($projetoPessoa);
         $form = $this->get('form.factory')->createNamed('atualizar_participante', AtualizarParticipanteType::class, $command, array(
             'projeto' => $this->getProjetoAutenticado(),
@@ -227,6 +221,7 @@ class ParticipanteController extends ControllerAbstract
             $command
                 ->setPerfil($data->get('perfil'))
                 ->setNuCpf($data->getDigits('nuCpf'))
+                ->setGenero($data->get('genero'))
                 ->setCoBanco($data->get('coBanco'))
                 ->setCoAgenciaBancaria($data->get('coAgenciaBancaria'))
                 ->setCoConta($data->get('coConta'))
@@ -354,5 +349,41 @@ class ParticipanteController extends ControllerAbstract
                 'dsPrograma' => $dsPrograma
             )
         );
+    }
+
+    /**
+     * @Route("/participante/orientadorservico/{perfil}", name="get_orientador_servico_projeto", options={"expose"=true}))
+     * @param Request $request
+     */
+    public function getOrientadorServicoAction(Request $request, Perfil $perfil) {
+
+        try {
+            $projetoPessoa = $this->getProjetoAutenticado();
+            $coProjeto = $projetoPessoa->getCoSeqProjeto();
+            $coPerfil  = $perfil->getCoSeqPerfil();
+            $data = $this->get('app.projeto_query')->findParticipanteOrientadorByProjeto($coProjeto, $coPerfil);
+        } catch(NoResultException $e) {
+            $data = null;
+        }
+        return new JsonResponse($data);
+
+    }
+
+    /**
+     * @Route("/participante/perfil-limit-qtd/{perfil}/{coGrupo}/{cpf}", name="get_perfil_limit_qtd_grupo", options={"expose"=true}))
+     * @param Request $request
+     */
+    public function getPerfilLimitQtdAction(Request $request, Perfil $perfil, $coGrupo, $cpf) {
+
+        try {
+            $projetoPessoa = $this->getProjetoAutenticado();
+            $coProjeto = $projetoPessoa->getCoSeqProjeto();
+            $coPerfil  = $perfil->getCoSeqPerfil();
+            $data = $this->get('app.projeto_query')->countParticipanteCadastradoByProjetoAndGrupo($coProjeto, $coPerfil, $coGrupo, $cpf);
+        } catch(NoResultException $e) {
+            $data = null;
+        }
+        return new JsonResponse($data);
+
     }
 }

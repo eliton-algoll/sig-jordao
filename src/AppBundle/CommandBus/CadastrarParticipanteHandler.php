@@ -3,7 +3,10 @@
 namespace AppBundle\CommandBus;
 
 use AppBundle\Entity\ProjetoPessoa;
+use AppBundle\Entity\Perfil;
 use AppBundle\Event\HandleSituacaoGrupoAtuacaoEvent;
+use AppBundle\Facade\FileNameGeneratorFacade;
+use AppBundle\Facade\FileUploaderFacade;
 use AppBundle\Repository\AgenciaBancariaRepository;
 use AppBundle\Repository\AreaTematicaRepository;
 use AppBundle\Repository\BancoRepository;
@@ -14,6 +17,7 @@ use AppBundle\Repository\DadoPessoalRepository;
 use AppBundle\Repository\EnderecoRepository;
 use AppBundle\Repository\EnderecoWebRepository;
 use AppBundle\Repository\GrupoAtuacaoRepository;
+use AppBundle\Repository\IdentidadeGeneroRepository;
 use AppBundle\Repository\MunicipioRepository;
 use AppBundle\Repository\PerfilRepository;
 use AppBundle\Repository\PessoaFisicaRepository;
@@ -28,8 +32,21 @@ class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
 {
 
     /**
+     *
+     * @var FileUploaderFacade
+     */
+    private $fileUploader;
+
+    /**
+     *
+     * @var FileNameGeneratorFacade
+     */
+    private $filenameGenerator;
+
+    /**
      * CadastrarParticipanteHandler constructor.
      * @param PerfilRepository $perfilRepository
+     * @param IdentidadeGeneroRepository $identidadeGeneroRepository
      * @param ProjetoPessoaRepository $projetoPessoaRepository
      * @param ProjetoRepository $projetoRepository
      * @param PessoaFisicaRepository $pessoaFisicaRepository
@@ -50,6 +67,7 @@ class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
      */
     public function __construct(
         PerfilRepository                    $perfilRepository,
+        IdentidadeGeneroRepository          $identidadeGeneroRepository,
         ProjetoPessoaRepository             $projetoPessoaRepository,
         ProjetoRepository                   $projetoRepository,
         PessoaFisicaRepository              $pessoaFisicaRepository,
@@ -67,11 +85,14 @@ class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
         TelefoneRepository                  $telefoneRepository,
         ProjetoPessoaGrupoAtuacaoRepository $projetoPessoaGrupoAtuacaoRepository,
         AreaTematicaRepository              $areaTematicaRepository,
-        EventDispatcherInterface            $eventDispatcher
+        EventDispatcherInterface            $eventDispatcher,
+        FileUploaderFacade                  $fileUploader,
+        FileNameGeneratorFacade             $filenameGenerator
     )
     {
 //        $this->wsCnes = $wsCnes;
         $this->perfilRepository = $perfilRepository;
+        $this->identidadeGeneroRepository = $identidadeGeneroRepository;
         $this->projetoPessoaRepository = $projetoPessoaRepository;
         $this->projetoRepository = $projetoRepository;
         $this->pessoaFisicaRepository = $pessoaFisicaRepository;
@@ -89,6 +110,8 @@ class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
         $this->telefoneRepository = $telefoneRepository;
         $this->projetoPessoaGrupoAtuacaoRepository = $projetoPessoaGrupoAtuacaoRepository;
         $this->areaTematicaRepository = $areaTematicaRepository;
+        $this->fileUploader = $fileUploader;
+        $this->filenameGenerator = $filenameGenerator;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -107,15 +130,46 @@ class CadastrarParticipanteHandler extends ParticipanteHandlerAbstract
         $agenciaBancaria = $command->getCoAgenciaBancaria();
         $conta           = $command->getCoConta();
         $conta           = !($conta) ? ' ' : $conta;
+        $genero          = $this->getGeneroValid($command->getGenero());
         $projeto = $this->getProjetoIfNotExistsProjetoVinculado($pessoaFisica, $command);
         $perfil = $this->getPerfilIfNonViolatedConstraints($command);
 
-//        $this->constraintCNES($command);
+        if ($perfil->getCoSeqPerfil() == Perfil::PERFIL_PRECEPTOR) {
+            $this->constraintCNES($command);
+        }
 
         $pessoaPerfil = $pessoaFisica->addPerfil($perfil);
 
-        $projetoPessoa = $pessoaPerfil->addProjetoPessoa($projeto, $command->getStVoluntarioProjeto(),
-            $command->getCoEixoAtuacao());
+        if( is_null($command->getNoDocumentoBancario()) ) {
+            throw new \InvalidArgumentException('É obrigatório anexar o comprovante bancário.');
+        }
+
+        if ($command->getNoDocumentoBancario()) {
+            $filename = $this->filenameGenerator->generate($command->getNoDocumentoBancario());
+        }
+
+        if ($perfil->getCoSeqPerfil() == Perfil::PERFIL_ESTUDANTE && is_null($command->getNoDocumentoMatricula())) {
+            throw new \InvalidArgumentException('É obrigatório anexar o comprovante de matrícula para estudantes.');
+        }
+
+        if ($command->getNoDocumentoMatricula()) {
+            $filenameMatricula = $this->filenameGenerator->generate($command->getNoDocumentoMatricula());
+        }
+
+        $projetoPessoa = $pessoaPerfil->addProjetoPessoa($projeto,
+                                                         $command->getStVoluntarioProjeto(),
+                                                         $command->getCoEixoAtuacao(),
+                                                         $genero,
+                                                         (isset($filename)) ? $filename : null,
+                                                         (isset($filenameMatricula)) ? $filenameMatricula : null );
+
+        if (isset($filename)) {
+            $this->fileUploader->upload($command->getNoDocumentoBancario(), $filename);
+        }
+
+        if (isset($filenameMatricula)) {
+            $this->fileUploader->upload($command->getNoDocumentoMatricula(), $filenameMatricula);
+        }
 
         $this->addDadosAcademicos($projetoPessoa, $command);
 

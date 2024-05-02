@@ -27,7 +27,14 @@ class CadastrarProjetoCommand
      * @Assert\NotBlank()
      */
     private $publicacao;
-    
+
+    /**
+     * @var string
+     * @Assert\NotBlank()
+     * @Assert\Length(min = 1, max = 1)
+     */
+    private $stOrientadorServico;
+
     /**
      * @var integer
      * @Assert\NotBlank()
@@ -40,6 +47,16 @@ class CadastrarProjetoCommand
      * )
      */
     private $qtBolsa;
+
+    /**
+     * @var string
+     * @Assert\NotBlank()
+     * @Assert\Range(
+     *     min = 2,
+     *     max = 5
+     * )
+     */
+    private $qtGrupos;
     
     /**
      *
@@ -53,7 +70,39 @@ class CadastrarProjetoCommand
      * )
      */
     private $noDocumentoProjeto;
-    
+
+    /**
+     * @var array
+     * @Assert\NotBlank()
+     * @Assert\Count(
+     *  min="1",
+     *  minMessage="Pelo menos uma área temática da saúde deve ser selecionada"
+     * )
+     */
+    private $areasTematicasSaude;
+
+
+    /**
+     * @var array
+     * @Assert\NotBlank()
+     * @Assert\Count(
+     *  min="1",
+     *  minMessage="Pelo menos uma área temática de Ciências Humanas deve ser selecionada"
+     * )
+     */
+    private $areasTematicasCienciasHumanas;
+
+
+    /**
+     * @var array
+     * @Assert\NotBlank()
+     * @Assert\Count(
+     *  min="1",
+     *  minMessage="Pelo menos uma área temática de Ciências Sociais Aplicadas deve ser selecionada"
+     * )
+     */
+    private $areasTematicasCienciasSociais;
+
     /**
      * @var array
      * @Assert\NotBlank()
@@ -99,6 +148,24 @@ class CadastrarProjetoCommand
     }
 
     /**
+     * @return string
+     */
+    public function getStOrientadorServico()
+    {
+        return $this->stOrientadorServico;
+    }
+
+    /**
+     * @param string $stOrientadorServico
+     * @return CadastrarProjetoCommand
+     */
+    public function setStOrientadorServico($stOrientadorServico)
+    {
+        $this->stOrientadorServico = $stOrientadorServico;
+        return $this;
+    }
+
+    /**
      * @param string $nuSipar
      * @return CadastrarProjetoCommand
      */
@@ -133,6 +200,60 @@ class CadastrarProjetoCommand
     public function setPublicacao($publicacao)
     {
         $this->publicacao = $publicacao;
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getAreasTematicasSaude()
+    {
+        return $this->areasTematicasSaude;
+    }
+
+    /**
+     * @param integer $areasTematicasSaude
+     * @return CadastrarProjetoCommand
+     */
+    public function setAreasTematicasSaude($areasTematicasSaude)
+    {
+        $this->areasTematicasSaude = $areasTematicasSaude;
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getAreasTematicasCienciasHumanas()
+    {
+        return $this->areasTematicasCienciasHumanas;
+    }
+
+    /**
+     * @param integer $areasTematicasCienciasHumanas
+     * @return CadastrarProjetoCommand
+     */
+    public function setAreasTematicasCienciasHumanas($areasTematicasCienciasHumanas)
+    {
+        $this->areasTematicasCienciasHumanas = $areasTematicasCienciasHumanas;
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getAreasTematicasCienciasSociais()
+    {
+        return $this->areasTematicasCienciasSociais;
+    }
+
+    /**
+     * @param integer $areasTematicasCienciasSociais
+     * @return CadastrarProjetoCommand
+     */
+    public function setAreasTematicasCienciasSociais($areasTematicasCienciasSociais)
+    {
+        $this->areasTematicasCienciasSociais = $areasTematicasCienciasSociais;
         return $this;
     }
     
@@ -205,6 +326,24 @@ class CadastrarProjetoCommand
     public function setQtBolsa($qtBolsa)
     {
         $this->qtBolsa = $qtBolsa;
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getQtGrupos()
+    {
+        return $this->qtGrupos;
+    }
+
+    /**
+     * @param integer $qtGrupos
+     * @return CadastrarProjetoCommand
+     */
+    public function setQtGrupos($qtGrupos)
+    {
+        $this->qtGrupos = $qtGrupos;
         return $this;
     }
     

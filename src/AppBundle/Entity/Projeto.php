@@ -48,6 +48,13 @@ class Projeto extends AbstractEntity
      * @ORM\Column(name="DS_OBSERVACAO", type="string", length=4000, nullable=true)
      */
     private $dsObservacao;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ST_ORIENTADOR_SERVICO", type="string", length=1, nullable=false)
+     */
+    private $stOrientadorServico;
     
     /**
      * @var integer
@@ -115,6 +122,7 @@ class Projeto extends AbstractEntity
         Publicacao $publicacao,
         $nuSipar,
         $dsObservacao = null,
+        $stOrientadorServico = 'N',
         $qtBolsa = null,
         $noDocumentoProjeto = null
     ) {
@@ -123,6 +131,7 @@ class Projeto extends AbstractEntity
         $this->dsObservacao = $dsObservacao;
         $this->qtBolsa = $qtBolsa;
         $this->noDocumentoProjeto = $noDocumentoProjeto;
+        $this->stOrientadorServico = $stOrientadorServico;
         $this->stRegistroAtivo = 'S';
         $this->dtInclusao = new \DateTime();
         $this->projetosPessoas = new ArrayCollection();
@@ -171,6 +180,14 @@ class Projeto extends AbstractEntity
     public function getDsObservacao()
     {
         return $this->dsObservacao;
+    }
+
+    /**
+     * @return mixed|string|null
+     */
+    public function getStOrientadorServico()
+    {
+        return $this->stOrientadorServico;
     }
     
     /**
@@ -273,6 +290,27 @@ class Projeto extends AbstractEntity
     /**
      * @return ArrayCollection<GrupoAtuacao>
      */
+    public function getGruposAtuacaoAtivosComEixoAtuacao()
+    {
+        return $this->gruposAtuacao->filter(function (GrupoAtuacao $grupoAtuacao) {
+            $eixos = ['A','B','C'];
+            return $grupoAtuacao->isAtivo() && in_array($grupoAtuacao->getCoEixoAtuacao(), $eixos);
+        });
+    }
+
+    /**
+     * @return ArrayCollection<GrupoAtuacao>
+     */
+    public function getGruposAtuacaoAtivosPorEixoAtuacao($eixo)
+    {
+        return $this->gruposAtuacao->filter(function (GrupoAtuacao $grupoAtuacao) use ($eixo) {
+            return ($grupoAtuacao->isAtivo() && ($grupoAtuacao->getCoEixoAtuacao() == $eixo));
+        });
+    }
+
+    /**
+     * @return ArrayCollection<GrupoAtuacao>
+     */
     public function getGruposAtuacaoAtivosEConfirmados()
     {
         return $this->gruposAtuacao->filter(function (GrupoAtuacao $grupoAtuacao) {
@@ -287,6 +325,39 @@ class Projeto extends AbstractEntity
     {
         return $this->gruposAtuacao->filter(function (GrupoAtuacao $grupoAtuacao) {
             return ($grupoAtuacao->isAtivo()) && (!$grupoAtuacao->isConfirmado());
+        });
+    }
+
+    /**
+     * @return ArrayCollection<GrupoAtuacao>
+     */
+    public function getGruposAtuacaoEixoAAtivosENaoConfirmados()
+    {
+        return $this->gruposAtuacao->filter(function (GrupoAtuacao $grupoAtuacao) {
+            return ($grupoAtuacao->isAtivo()) && (!$grupoAtuacao->isConfirmado()) &&
+                ($grupoAtuacao->getCoEixoAtuacao() == 'A');
+        });
+    }
+
+    /**
+     * @return ArrayCollection<GrupoAtuacao>
+     */
+    public function getGruposAtuacaoEixoBAtivosENaoConfirmados()
+    {
+        return $this->gruposAtuacao->filter(function (GrupoAtuacao $grupoAtuacao) {
+            return ($grupoAtuacao->isAtivo()) && (!$grupoAtuacao->isConfirmado()) &&
+                ($grupoAtuacao->getCoEixoAtuacao() == 'B');
+        });
+    }
+
+    /**
+     * @return ArrayCollection<GrupoAtuacao>
+     */
+    public function getGruposAtuacaoEixoCAtivosENaoConfirmados()
+    {
+        return $this->gruposAtuacao->filter(function (GrupoAtuacao $grupoAtuacao) {
+            return ($grupoAtuacao->isAtivo()) && (!$grupoAtuacao->isConfirmado()) &&
+                ($grupoAtuacao->getCoEixoAtuacao() == 'C');
         });
     }
 
@@ -375,6 +446,15 @@ class Projeto extends AbstractEntity
     public function setDsObservacao($dsObservacao)
     {
         $this->dsObservacao = $dsObservacao;
+        return $this;
+    }
+
+    /**
+     * @param mixed|string|null $stOrientadorServico
+     */
+    public function setStOrientadorServico($stOrientadorServico)
+    {
+        $this->stOrientadorServico = $stOrientadorServico;
         return $this;
     }
     
@@ -601,7 +681,22 @@ class Projeto extends AbstractEntity
         
         return ($projetoPessoa) ? $projetoPessoa->first() : null;
     }
-    
+
+    /**
+     *
+     * @return null|\AppBundle\Entity\ProjetoPessoa
+     */
+    public function getOrientadorServicoNaoVoluntario()
+    {
+        $projetoPessoa = $this->projetosPessoas->filter(function($projetoPessoa){
+            return $projetoPessoa->isAtivo() &&
+                $projetoPessoa->getPessoaPerfil()->getPerfil()->isOrientadorProjeto() &&
+                !$projetoPessoa->isVoluntario();
+        });
+
+        return ($projetoPessoa) ? $projetoPessoa->first() : null;
+    }
+
     /**
      * 
      * @return null|\AppBundle\Entity\ProjetoPessoa

@@ -169,6 +169,11 @@ class GrupoAtuacao extends AbstractEntity
         $this->noGrupoAtuacao = implode(', ', $nomes);
     }
 
+    private function setNoGrupoAtuacaoDes($noGrupoAtuacao)
+    {
+        $this->noGrupoAtuacao = $noGrupoAtuacao;
+    }
+
     /**
      * @param string $coEixoAtuacao
      * @return GrupoAtuacao

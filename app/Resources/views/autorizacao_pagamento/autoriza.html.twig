@@ -64,6 +64,20 @@
                     <td class="text-right">
                         R$ {{ projeto.getCoordenadorDeProjetoNaoVoluntario().getVlBolsa()|number_format(2, ',', '.') }}</td>
                 </tr>
+                {% if projeto.getOrientadorServicoNaoVoluntario() %}
+                    <tr>
+                        <td class="text-center">
+                            <input type="checkbox" name="autorizacao_pagamento_orientador"
+                                   id="autorizacao_pagamento_orientador"
+                                   value="{{ projeto.getOrientadorServicoNaoVoluntario().coSeqProjetoPessoa }}">
+                        </td>
+                        <td class="text-center">{{ projeto.getOrientadorServicoNaoVoluntario().pessoaPerfil.pessoaFisica.nuCpf|cpf }}</td>
+                        <td>{{ projeto.getOrientadorServicoNaoVoluntario().pessoaPerfil.pessoaFisica.pessoa.noPessoa }}</td>
+                        <td class="text-center">{{ projeto.getOrientadorServicoNaoVoluntario().pessoaPerfil.perfil.dsPerfil }}</td>
+                        <td class="text-right">
+                            R$ {{ projeto.getOrientadorServicoNaoVoluntario().getVlBolsa()|number_format(2, ',', '.') }}</td>
+                    </tr>
+                {% endif %}
             {% endif %}
 
             {% for grupo in grupos %}

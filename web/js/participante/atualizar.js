@@ -15,9 +15,11 @@
                         if ($.inArray(index, unsaveFields) >= 0) {
                             if (index == 'pessoa') {
                                 $('[name$="noPessoa]"]').val(obj.noPessoa);
-                            } else if (index == 'sexo') {
-                                $('[name$="sexo]"] option[value="' + obj.coSexo + '"]').attr('selected', 'selected');
-                            } else {
+                            }
+                            // else if (index == 'sexo') {
+                            //     $('[name$="sexo]"] option[value="' + obj.coSexo + '"]').attr('selected', 'selected');
+                            // }
+                            else {
                                 $('[name$="' + index + ']"]').val(obj);
                             }
                         }
