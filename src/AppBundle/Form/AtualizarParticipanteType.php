@@ -88,11 +88,12 @@ class AtualizarParticipanteType extends ParticipanteTypeAbstract
             ))
 
             ->add('genero', EntityType::class, array(
-                'label' => 'Gênero',
+                'label' => 'Orientação sexual',
                 'class' => 'AppBundle:IdentidadeGenero',
                 'query_builder' => function (IdentidadeGeneroRepository $repo) {
                     return $repo->createQueryBuilder('s')
                         ->where('s.stRegistroAtivo = \'S\'')
+                        ->andWhere('s.coIdentidadeGenero > 3')
                         ->orderBy('s.dsIdentidadeGenero', 'ASC');
                 },
                 'choice_label' => function ($genero) {
