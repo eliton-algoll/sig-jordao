@@ -14,5 +14,3 @@ parameters:
     mailer_user: null
     mailer_password: null
     secret: 136g9a935aee07d1e77j4d318f8d9mcc11s0dr8t
-
-
