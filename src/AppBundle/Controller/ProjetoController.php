@@ -588,6 +588,10 @@ class ProjetoController extends ControllerAbstract
                     }
                 }
 
+                if(count($participantes) == '0') {
+                    $eixosDisponiveis = [];
+                }
+
                 $response->details = [
                     'eixoAtuacao' => $eixoAtuacao,
                     'temDoisPreceptores' => (count($preceptores) >= 2),
