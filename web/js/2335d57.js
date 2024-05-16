@@ -797,7 +797,6 @@
                                     bootbox.alert('Não foi possível obter os detalhes do Grupo Tutorial.');
                                     return false;
                                 } else {
-                                    console.log(response.details)
                                     if (response.details.eixoAtuacao) {
                                         switch (response.details.eixoAtuacao) {
                                             case 'A': { // Gestão em Saúde
