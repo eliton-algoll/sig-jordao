@@ -797,7 +797,6 @@
                                     bootbox.alert('Não foi possível obter os detalhes do Grupo Tutorial.');
                                     return false;
                                 } else {
-                                    console.log(response.details)
                                     if (response.details.eixoAtuacao) {
                                         switch (response.details.eixoAtuacao) {
                                             case 'A': { // Gestão em Saúde
@@ -918,8 +917,6 @@
 
                                             if( (response.details.estudantesSaude == 5) && (response.details.cursoCandidatoSaude == true )) {
                                                 var estudantesCursoSaude = response.details.estudantesCursoSaude;
-                                                console.log('estudantesCursoSaude', estudantesCursoSaude);
-                                                console.log('estudantesCursoSaude', estudantesCursoSaude);
                                                 if (estudantesCursoSaude.length < 3) {
                                                     if ( estudantesCursoSaude.includes(cursoGraduacao) ) {
                                                         $('#btn-salvar').hide();
