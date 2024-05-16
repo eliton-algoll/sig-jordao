@@ -21,7 +21,7 @@
             bootbox.confirm('Deseja realmente remover esse participante?', function (result) {
                 if (!result) return;
 
-                if ((eixo === 'A') && (perfil === 4)) { // Preceptor
+                if ((perfil === 4)) { // Preceptor
                     bootbox.confirm('Ao remover este Preceptor todos os Estudantes vinculados ao mesmo Curso de Graduação também serão removidos. Deseja realmente remover esse participante?', function (result1) {
                         if (!result1) return;
 
