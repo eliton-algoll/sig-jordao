@@ -57,7 +57,10 @@ class ProjetoPessoaRepository extends RepositoryAbstract
                 'WITH',
                 'ga.stRegistroAtivo = \'S\''
             )
-            ->leftJoin('prp.projetoPessoaCursoGraduacao', 'ppcg')
+            ->leftJoin('prp.projetoPessoaCursoGraduacao',
+                       'ppcg',
+                'WITH',
+                'ppcg.stRegistroAtivo = \'S\'')
             ->leftJoin('ppcg.cursoGraduacao', 'cg')
             ->where("p.stRegistroAtivo = 'S'")
             ->setParameter('tpPrograma', Programa::GRUPO_TUTORIAL);
