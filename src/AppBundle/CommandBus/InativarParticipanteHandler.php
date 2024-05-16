@@ -61,8 +61,8 @@ class InativarParticipanteHandler
                 $eixoAtuacao = $grupoAtuacao->getCoEixoAtuacao();
 
 //                if ($eixoAtuacao === 'A') { // Assistência a Saúde
-                    $cursoGraduacaoPreceptor = $projetoPessoa->getCursoGraduacaoEstudanteOuPreceptor();
-
+//                    $cursoGraduacaoPreceptor = $projetoPessoa->getCursoGraduacaoEstudanteOuPreceptor();
+                    /*
                     if (!is_null($cursoGraduacaoPreceptor)) {
                         // Obtém todas as pessoas do mesmo grupo
                         // ProjetoPessoaGrupoAtuacao
@@ -81,6 +81,7 @@ class InativarParticipanteHandler
                             }
                         }
                     }
+                    */
 //                }
             }
         }
