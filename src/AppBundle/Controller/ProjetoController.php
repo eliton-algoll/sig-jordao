@@ -456,7 +456,7 @@ class ProjetoController extends ControllerAbstract
                                     $estudantesSaudeEncontradosGrupo[] = $cursoGraduacaoEstudante->getCursoGraduacao()->getCoSeqCursoGraduacao();
                                 }
 
-                                if( $cursoGraduacaoCandidato->getDsCursoGraduacao() == $cat->getDsCategoriaProfissional() ) {
+                                if( ($cursoGraduacaoCandidato) && $cursoGraduacaoCandidato->getDsCursoGraduacao() == $cat->getDsCategoriaProfissional() ) {
                                     $cursoCandidatoSaude = true;
                                 }
                             }
