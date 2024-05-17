@@ -374,8 +374,8 @@ SQL;
                         COUNT(*) AS NR_CADASTRADO
                     FROM 
                         DBPET.TB_PROJETO_PESSOA tp
-                    INNER JOIN DBPET.TB_PESSOA_PERFIL per ON per.CO_SEQ_PESSOA_PERFIL = tp.CO_PESSOA_PERFIL 
-                    INNER JOIN DBPET.RL_PROJETOPESSOA_GRUPOATUACAO gru ON gru.CO_PROJETO_PESSOA = tp.CO_SEQ_PROJETO_PESSOA  
+                    INNER JOIN DBPET.TB_PESSOA_PERFIL per ON per.CO_SEQ_PESSOA_PERFIL = tp.CO_PESSOA_PERFIL AND per.ST_REGISTRO_ATIVO = 'S'
+                    INNER JOIN DBPET.RL_PROJETOPESSOA_GRUPOATUACAO gru ON gru.CO_PROJETO_PESSOA = tp.CO_SEQ_PROJETO_PESSOA AND gru.ST_REGISTRO_ATIVO = 'S'
                     WHERE tp.ST_REGISTRO_ATIVO = 'S'
                     AND tp.CO_PROJETO = ? 
                     AND per.CO_PERFIL = ? 
