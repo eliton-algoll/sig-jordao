@@ -72,12 +72,15 @@ class AutorizacaoPagamentoController extends ControllerAbstract
         $command = new AutorizarPagamentoCommand();
         $command->setParticipantes((array) $request->request->get('autorizacao_pagamento_projeto_pessoa')); 
         $command->setCoordenadorDeProjetoNaoVoluntario($request->request->get('autorizacao_pagamento_coordenador'));
+        if( $request->request->get('autorizacao_pagamento_orientador') ) {
+            $command->setOrientadorDeProjetoNaoVoluntario($request->request->get('autorizacao_pagamento_orientador'));
+        }
         $command->setJustificativa($request->request->get('autorizacao_pagamento_justificativa'));
         $command->setProjeto($this->getProjetoAutenticado());
         $command->setFolhaPagamento($folha);
         $command->setStDeclaracao($request->request->get('stDeclaracao'));
         $command->setPessoaPerfil($this->getPessoaPerfilAutenticado());
-        
+
         try {
             $this->getBus()->handle($command);
             $this->addFlash('success', 'Folha de pagamento autorizada com sucesso.');

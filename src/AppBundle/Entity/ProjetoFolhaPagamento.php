@@ -2,9 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\AutorizacaoFolha;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use AppBundle\Entity\AutorizacaoFolha;
 
 /**
  * ProjetoFolhaPagamento
