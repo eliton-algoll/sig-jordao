@@ -28,6 +28,12 @@ class AutorizarPagamentoCommand
      * @var integer
      */
     private $coordenadorDeProjetoNaoVoluntario;
+
+    /**
+     *
+     * @var integer
+     */
+    private $orientadorDeProjetoNaoVoluntario;
     
     /**
      *
@@ -91,6 +97,15 @@ class AutorizarPagamentoCommand
     {
         return $this->coordenadorDeProjetoNaoVoluntario;
     }
+
+    /**
+     *
+     * @return integer
+     */
+    public function getOrientadorDeProjetoNaoVoluntario()
+    {
+        return $this->orientadorDeProjetoNaoVoluntario;
+    }
     
     /**
      * 
@@ -153,6 +168,15 @@ class AutorizarPagamentoCommand
     public function setCoordenadorDeProjetoNaoVoluntario($coordenadorDeProjetoNaoVoluntario)
     {
         $this->coordenadorDeProjetoNaoVoluntario = $coordenadorDeProjetoNaoVoluntario;
+    }
+
+    /**
+     *
+     * @param string $orientadorDeProjetoNaoVoluntario
+     */
+    public function setOrientadorDeProjetoNaoVoluntario($orientadorDeProjetoNaoVoluntario)
+    {
+        $this->orientadorDeProjetoNaoVoluntario = $orientadorDeProjetoNaoVoluntario;
     }
     
     /**
