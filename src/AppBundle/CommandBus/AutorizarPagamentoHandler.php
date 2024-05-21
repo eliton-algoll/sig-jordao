@@ -78,6 +78,15 @@ class AutorizarPagamentoHandler
                 new AutorizacaoFolha($projetoFolha, $projetoPessoa, $projetoPessoa->getVlBolsa(), 'S', $dadoPessoal->getBanco()->getCoBanco(), $dadoPessoal->getAgencia(), $dadoPessoal->getConta());
             }
         }
+
+        if ($command->getOrientadorDeProjetoNaoVoluntario()) {
+            $projetoPessoa = $this->projetoPessoaRepository->find($command->getOrientadorDeProjetoNaoVoluntario());
+
+            if ($projetoPessoa) {
+                $dadoPessoal = $projetoPessoa->getPessoaPerfil()->getPessoaFisica()->getDadoPessoal();
+                new AutorizacaoFolha($projetoFolha, $projetoPessoa, $projetoPessoa->getVlBolsa(), 'S', $dadoPessoal->getBanco()->getCoBanco(), $dadoPessoal->getAgencia(), $dadoPessoal->getConta());
+            }
+        }
         
         foreach ($command->getParticipantes() as $grupo) {           
             foreach ($grupo as $participante) {
@@ -89,7 +98,7 @@ class AutorizarPagamentoHandler
                 }
             }
         }        
-        
+
         $this->projetoFolhaPagamentoRepository->add($projetoFolha);
     }
 
@@ -116,7 +125,7 @@ class AutorizarPagamentoHandler
                 }
             }
         }
-        
+
         if ($erros) {
             throw new \UnexpectedValueException(implode('</br>', $erros));
         }
