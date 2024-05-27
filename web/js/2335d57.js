@@ -69,7 +69,7 @@
             $('input[name$="[nuSei]"]').on('change', this.onBlurSei);
 
             $('[id$="participante_perfil"]').on('change', function () {
-                if( $(this).val() == 7 ){
+                if( $(this).val() == 7 || $(this).val() == 8 ){
                     participante.handleKeyUpHasOrientadorServico();
                 }
                 participante.eraseAreaTematica();
@@ -201,7 +201,11 @@
                 }
                     break;
                 case '7' : {
-                    this.actionPerfilOrientador();
+                    this.actionPerfilOrientador(input.val());
+                }
+                    break;
+                case '8' : {
+                    this.actionPerfilOrientador(input.val());
                 }
                     break;
             }
@@ -300,14 +304,15 @@
             $('[id$="participante_cursosLecionados"]').parent('div.form-group').hide();
         },
 
-        actionPerfilOrientador: function () {
-            $('[id$="participante_categoriaProfissional"]').parent('div.form-group').show();
+        actionPerfilOrientador: function (idPerfil) {
+            if( idPerfil == 7 || idPerfil == 8 ) {
+                $('[id$="participante_categoriaProfissional"]').parent('div.form-group').show();
+            }
             $('[id$="participante_cursosLecionados"]').parent('div.form-group').show();
             $('[id$="participante_areaTematica"]').parent('div.form-group').show();
 
             $('[id$="participante_coCnes"]').parent('div.form-group').hide();
             $('[id$="participante_titulacao"]').parent('div.form-group').hide();
-            $('[id$="participante_cursoGraduacao"]').parent('div.form-group').hide();
             $('[id$="participante_noDocumentoMatricula"]').parent('div.form-group').hide();
             $('[id$="participante_nuAnoIngresso"]').parent('div.form-group').hide();
             $('[id$="participante_nuMatriculaIES"]').parent('div.form-group').hide();
@@ -348,6 +353,10 @@
                     msg = 'Já existe um Orientador de Serviço cadastrado no projeto';
                 }
                     break;
+                case '8' : {
+                    msg = 'Já existe um Orientador de Serviço cadastrado no projeto';
+                }
+                    break;
             }
 
             $.ajax({
@@ -375,8 +384,15 @@
 
             $('#btn-salvar').hide();
             var perfil = 7;
+            var cpf = $('[id$="participante_nuCpf"]');
+            if (cpf.val().length != 14) {
+                bootbox.alert('O CPF é obrigatório');
+                return;
+            }
+
+            cpf = cpf.val().replace(/[^0-9]/g, '');
             $.ajax({
-                url: Routing.generate('get_orientador_servico_projeto', {perfil: perfil}),
+                url: Routing.generate('get_orientador_servico_projeto', {perfil: perfil, cpf: cpf}),
                 method: 'GET',
                 dataType: 'json',
                 success: function (response) {
@@ -395,6 +411,7 @@
                 }
             });
         },
+
         handleKeyUpCpf: function (input) {
             sessionStorage.setItem('participante_pessoa', '');
             // $('[id$="participante_grupoTutorial"]').val('');
@@ -411,7 +428,6 @@
                     if ($.isEmptyObject(response)) {
                         bootbox.alert('CPF inválido!');
                     } else {
-                        // console.log(response.pessoa);
                         sessionStorage.setItem('participante_pessoa', JSON.stringify(response.pessoa));
 
                         let dataNas = new Date(response.dtNascimento.date);
@@ -824,7 +840,6 @@
                                     } else
                                     {
                                         if( response.details.eixosPermitidos.includes('A') ) {
-                                            console.log('A', response.details)
                                             $('[name$="participante[coEixoAtuacao]"][value="A"]').prop('disabled', true);
                                         }
 
@@ -917,8 +932,6 @@
 
                                             if( (response.details.estudantesSaude == 5) && (response.details.cursoCandidatoSaude == true )) {
                                                 var estudantesCursoSaude = response.details.estudantesCursoSaude;
-                                                console.log('estudantesCursoSaude', estudantesCursoSaude);
-                                                console.log('estudantesCursoSaude', estudantesCursoSaude);
                                                 if (estudantesCursoSaude.length < 3) {
                                                     if ( estudantesCursoSaude.includes(cursoGraduacao) ) {
                                                         $('#btn-salvar').hide();
@@ -979,6 +992,10 @@
         },
 
         handleChangeGrupoTutorialAoIniciarEditar: function (input) {
+            var idPerfil = $('[id$="participante_perfil"]').val();
+            if( idPerfil == 7 || idPerfil == 8  ) {
+                $('[id$="participante_cursoGraduacao"]').parent('div.form-group').hide();
+            }
             try {
                 var value = input.val();
 
@@ -1008,7 +1025,10 @@
                     }
 
                     $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
-                    $('[id$="participante_cursoGraduacao"] option').show();
+
+                    if( perfil != 7 && perfil != 8  ) {
+                        $('[id$="participante_cursoGraduacao"] option').show();
+                    }
 
                     if ((!perfil) || (perfil < 1)) {
                         return;
@@ -1038,7 +1058,6 @@
                             method: 'GET',
                             dataType: 'json',
                             success: function (response) {
-                                // console.log(response);
 
                                 if ($.isEmptyObject(response)) {
                                     // bootbox.alert('Não foi possível obter os detalhes do Grupo Tutorial.');
@@ -1153,7 +1172,6 @@
                     nuSipar: input.val()
                 },
                 success: function (response) {
-                    // console.log(response);
 
                     if (response.status === false) {
                         input.val('');

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Perfil;
 use AppBundle\Entity\Projeto;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Doctrine\ORM\Query\Expr\Join;
@@ -338,24 +339,27 @@ SQL;
         return $stmt->fetchAll();
     }
 
-    public function findParticipanteOrientadorByProjeto($coProjeto, $coPerfil)
+    public function findParticipanteOrientadorByProjeto($coProjeto, $coPerfis, $cpf)
     {
         $queryParams = $queryTypes = [];
+
+        $coPerfis = implode(',', $coPerfis);
 
         $query = <<<SQL
                    SELECT count(*) AS NR_ORIENTADOR FROM 
                     DBPET.TB_PROJETO_PESSOA tp
-                   INNER JOIN DBPET.TB_PESSOA_PERFIL per ON per.CO_SEQ_PESSOA_PERFIL = tp.CO_PESSOA_PERFIL 
-                   WHERE tp.ST_REGISTRO_ATIVO = 'S'
+                   INNER JOIN DBPET.TB_PESSOA_PERFIL per ON per.CO_SEQ_PESSOA_PERFIL = tp.CO_PESSOA_PERFIL
+                   WHERE tp.ST_REGISTRO_ATIVO = 'S' AND per.ST_REGISTRO_ATIVO = 'S'
                    AND tp.CO_PROJETO = ? 
-                   AND per.CO_PERFIL = ? 
+                   AND per.NU_CPF <> ? 
+                   AND per.CO_PERFIL in ( $coPerfis ) 
 SQL;
 
         $queryParams[] = (int) $coProjeto;
         $queryTypes[]  = \PDO::PARAM_INT;
 
-        $queryParams[] = (int) $coPerfil;
-        $queryTypes[]  = \PDO::PARAM_INT;
+        $queryParams[] = $cpf;
+        $queryTypes[]  = \PDO::PARAM_STR;
 
         $stmt = $this->_em->getConnection()->executeQuery(
                 $query, $queryParams, $queryTypes
@@ -368,6 +372,9 @@ SQL;
     public function findParticipantesByProjetoAndPefilAndGroup($coProjeto, $coPerfil, $coGrupo, $cpf)
     {
         $queryParams = $queryTypes = [];
+        if( $coPerfil == Perfil::PERFIL_ORIENTADOR_SUPERIOR || $coPerfil == Perfil::PERFIL_ORIENTADOR_MEDIO ) {
+            $coPerfil = [Perfil::PERFIL_ORIENTADOR_SUPERIOR, Perfil::PERFIL_ORIENTADOR_MEDIO];
+        }
 
         $query = <<<SQL
                   SELECT 
@@ -378,7 +385,7 @@ SQL;
                     INNER JOIN DBPET.RL_PROJETOPESSOA_GRUPOATUACAO gru ON gru.CO_PROJETO_PESSOA = tp.CO_SEQ_PROJETO_PESSOA AND gru.ST_REGISTRO_ATIVO = 'S'
                     WHERE tp.ST_REGISTRO_ATIVO = 'S'
                     AND tp.CO_PROJETO = ? 
-                    AND per.CO_PERFIL = ? 
+                    AND per.CO_PERFIL in (?) 
                     AND gru.CO_GRUPO_ATUACAO = ? 
                     AND per.NU_CPF <> ? 
 SQL;
@@ -386,8 +393,8 @@ SQL;
         $queryParams[] = (int) $coProjeto;
         $queryTypes[]  = \PDO::PARAM_INT;
 
-        $queryParams[] = (int) $coPerfil;
-        $queryTypes[]  = \PDO::PARAM_INT;
+        $queryParams[] = implode(',', $coPerfil);
+        $queryTypes[]  = \PDO::PARAM_STR;
 
         $queryParams[] = (int) $coGrupo;
         $queryTypes[]  = \PDO::PARAM_INT;

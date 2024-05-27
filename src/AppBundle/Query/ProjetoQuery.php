@@ -63,9 +63,9 @@ class ProjetoQuery
      * @param integer $coProjeto
      * @return \AppBundle\Entity\Projeto | null
      */
-    public function findParticipanteOrientadorByProjeto($coProjeto, $coPerfil)
+    public function findParticipanteOrientadorByProjeto($coProjeto, $coPerfis, $cpf)
     {
-        return $this->projetoRepository->findParticipanteOrientadorByProjeto($coProjeto, $coPerfil);
+        return $this->projetoRepository->findParticipanteOrientadorByProjeto($coProjeto, $coPerfis, $cpf);
     }
 
     /**
