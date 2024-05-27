@@ -352,16 +352,16 @@ class ParticipanteController extends ControllerAbstract
     }
 
     /**
-     * @Route("/participante/orientadorservico/{perfil}", name="get_orientador_servico_projeto", options={"expose"=true}))
+     * @Route("/participante/orientadorservico/{perfil}/{cpf}", name="get_orientador_servico_projeto", options={"expose"=true}))
      * @param Request $request
      */
-    public function getOrientadorServicoAction(Request $request, Perfil $perfil) {
+    public function getOrientadorServicoAction(Request $request, Perfil $perfil, $cpf) {
 
         try {
             $projetoPessoa = $this->getProjetoAutenticado();
             $coProjeto = $projetoPessoa->getCoSeqProjeto();
-            $coPerfil  = $perfil->getCoSeqPerfil();
-            $data = $this->get('app.projeto_query')->findParticipanteOrientadorByProjeto($coProjeto, $coPerfil);
+            $coPerfis = [Perfil::PERFIL_ORIENTADOR_SUPERIOR, Perfil::PERFIL_ORIENTADOR_MEDIO];
+            $data = $this->get('app.projeto_query')->findParticipanteOrientadorByProjeto($coProjeto, $coPerfis, $cpf);
         } catch(NoResultException $e) {
             $data = null;
         }

@@ -133,7 +133,7 @@ class CadastrarParticipanteCommand
     /**
      * @var string 
      * @Assert\NotBlank()
-     * @Assert\Length(max = 15)
+     * @Assert\Length(max = 160)
      * @Assert\Type(
      *     type="string"
      * )
@@ -939,7 +939,7 @@ class CadastrarParticipanteCommand
             $this->projeto instanceof Projeto &&
             $this->projeto->getPublicacao()->getPrograma()->isGrupoTutorial() &&
             !$this->grupoTutorial &&
-            !in_array($perfil, [Perfil::PERFIL_COORDENADOR_PROJETO, Perfil::PERFIL_ORIENTADOR])
+            !in_array($perfil, [Perfil::PERFIL_COORDENADOR_PROJETO, Perfil::PERFIL_ORIENTADOR_SUPERIOR, Perfil::PERFIL_ORIENTADOR_MEDIO])
         ) {
             $context->buildViolation('Este valor não deve ser vazio.')
                 ->atPath('grupoTutorial')
