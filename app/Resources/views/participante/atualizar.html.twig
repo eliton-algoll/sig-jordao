@@ -14,17 +14,17 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="dados-pessoais">
                     {{ form_row(form.nuSei) }}
-                    {{ form_row(form.perfil) }}
-                    {% if projetoPessoa.getProjeto() and projetoPessoa.getProjeto().getPublicacao().getPrograma().isAreaAtuacao()  %}
-                        {{ form_row(form.stVoluntarioProjeto) }}
-                    {% endif %}
                     {{ form_row(form.dtInclusao) }}
                     {{ form_row(form.dtDesligamento) }}
                     {{ form_row(form.nuCpf, {'attr' : {'class': 'nuCpf'}}) }}
                     {{ form_row(form.noPessoa) }}
                     {{ form_row(form.dtNascimento, {attr: {'class': 'datepicker dmY'}}) }}
-                    {{ form_row(form.genero) }}
                     {{ form_row(form.noMae) }}
+                    {{ form_row(form.perfil) }}
+                    {% if projetoPessoa.getProjeto() and projetoPessoa.getProjeto().getPublicacao().getPrograma().isAreaAtuacao()  %}
+                        {{ form_row(form.stVoluntarioProjeto) }}
+                    {% endif %}
+                    {{ form_row(form.genero) }}
                     {{ form_row(form.coBanco) }}
                     {{ form_row(form.coAgenciaBancaria) }}
                     {{ form_row(form.coConta) }}

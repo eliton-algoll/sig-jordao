@@ -115,6 +115,10 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
             $this->constraintCNES($command);
         }
 
+        if( !$banco ) {
+            throw new \InvalidArgumentException('O campo Banco é obrigatório.');
+        }
+
         if ($command->getNoDocumentoBancario()) {
             $filename = $this->filenameGenerator->generate($command->getNoDocumentoBancario());
             $projetoPessoa->setNoDocumentoBancario($filename);
