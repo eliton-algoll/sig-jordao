@@ -28,6 +28,9 @@
             setTimeout(function () {
                 // $('[id$="participante_cursoGraduacao"]').trigger('change');
 
+                var _idPerfil = $('#_idPerfil').val();
+                $('[id$="participante_perfil"]').val(_idPerfil);
+
                 // Bloqueia a edição do eixo de atuação quando alterando cadastro
                 if ($('.nuCpf:first').attr('readonly') == 'readonly') {
 
@@ -306,8 +309,13 @@
 
         actionPerfilOrientador: function (idPerfil) {
             if( idPerfil == 7 || idPerfil == 8 ) {
-                $('[id$="participante_categoriaProfissional"]').parent('div.form-group').show();
                 $('[id$="participante_cursoGraduacao"]').parent('div.form-group').hide();
+                if( idPerfil == 8 ) {
+                    $('[id$="participante_categoriaProfissional"]').parent('div.form-group').hide();
+                }
+                if( idPerfil == 7 ) {
+                    $('[id$="participante_categoriaProfissional"]').parent('div.form-group').show();
+                }
             }
             $('[id$="participante_cursosLecionados"]').parent('div.form-group').show();
             $('[id$="participante_areaTematica"]').parent('div.form-group').show();
