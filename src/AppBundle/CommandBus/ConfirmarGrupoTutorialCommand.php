@@ -81,6 +81,7 @@ final class ConfirmarGrupoTutorialCommand
         $tutor = 0;
         $preceptor = 0;
         $estudante = 0;
+        $estudanteBolsista = 0;
 
         if( count($projetosPessaGrupoAtuacao) < 12) {
             $error[] = ['msg' => 'O '.$this->getGrupoAtuacao()->getNoGrupoAtuacao().' deve ser composto por 12 (doze) participantes.'];
@@ -97,6 +98,9 @@ final class ConfirmarGrupoTutorialCommand
             }
             if( $pro->getProjetoPessoa()->getPessoaPerfil()->getPerfil()->getCoSeqPerfil() == Perfil::PERFIL_ESTUDANTE ) {
                 $estudante++;
+                if( !$pro->getProjetoPessoa()->isVoluntario()  ) {
+                    $estudanteBolsista++;
+                }
             }
         }
 
@@ -112,8 +116,8 @@ final class ConfirmarGrupoTutorialCommand
             $error[] = ['msg' => 'O '.$this->getGrupoAtuacao()->getNoGrupoAtuacao().' deve possuir 2 (dois) preceptores.'];
         }
 
-        if( $estudante != 8 ) {
-            $error[] = ['msg' => 'O '.$this->getGrupoAtuacao()->getNoGrupoAtuacao().' deve possuir 8 (oito) estudantes.'];
+        if( $estudanteBolsista != 8 ) {
+            $error[] = ['msg' => 'O '.$this->getGrupoAtuacao()->getNoGrupoAtuacao().' deve possuir 8 (oito) estudantes bolsista.'];
         }
 
         $listCategoriasProfissionais = $this->getCategoriaProfissionalPorArea($categoriasProfissionais);
