@@ -149,6 +149,11 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
         
         $projetoPessoa->setStVoluntarioProjeto($command->getStVoluntarioProjeto());
 
+        if( $perfil->getCoSeqPerfil() == Perfil::PERFIL_ORIENTADOR_SUPERIOR ||
+            $perfil->getCoSeqPerfil() == Perfil::PERFIL_ORIENTADOR_MEDIO ) {
+            $projetoPessoa->getPessoaPerfil()->setPerfil($perfil);
+        }
+
         $projetoPessoa->setIdentidadeGenero($genero);
 
         $this->addEndereco($pessoaFisica, $cep, $command);

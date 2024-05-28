@@ -426,7 +426,16 @@ class ProjetoController extends ControllerAbstract
                     }
                 }
 
-                $estudantesEncontradosGrupo = count($estudantes);
+                $estudantesBolsista = array();
+                $nrEstudantesBolsistas = 0;
+                foreach ($estudantes as $estudante) {
+                    if( !$estudante->isVoluntario() ) {
+                        $estudantesBolsista = $estudante;
+                        $nrEstudantesBolsistas++;
+                    }
+                }
+
+                $estudantesEncontradosGrupo = $nrEstudantesBolsistas;
 
                 $preceptoresIds = [];
                 if(count($participantes)==0){
@@ -444,7 +453,7 @@ class ProjetoController extends ControllerAbstract
                 $estudantesCienciasHumanasEncontradosGrupo = [];
                 $estudantesCienciasSociaisEncontradosGrupo = [];
                 if( count($preceptores) ) {
-                    foreach ($estudantes as $estudante) {
+                    foreach ($estudantesBolsista as $estudante) {
                         $cursoGraduacaoEstudante = $em->getRepository(ProjetoPessoaCursoGraduacao::class)->findOneBy(array(
                             'projetoPessoa' => $estudante['coSeqProjetoPessoa'],
                             'stRegistroAtivo' => 'S'
@@ -495,10 +504,6 @@ class ProjetoController extends ControllerAbstract
                         array_push($categoriasProfissionais,
                             $dadoAcademico->getCategoriaProfissional()->getCoSeqCategoriaProfissional());
                     }
-                    $cursoGraduacao = $em->getRepository(ProjetoPessoaCursoGraduacao::class)->findOneBy(array(
-                        'projetoPessoa' => $preceptor['coSeqProjetoPessoa'],
-                        'stRegistroAtivo' => 'S'
-                    ));
                 }
 
                 $eixosOriginais = ['A','B','C'];

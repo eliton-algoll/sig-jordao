@@ -4,6 +4,7 @@
 
 {% block body %}
     <div class="row">
+        <input type="hidden" id="_idPerfil" value="{{ perfil }}" />
         <div class="col-md-12">
             {{ form_start(form, {'method': 'post', 'attr': {'novalidate': 'novalidate', 'autocomplete': 'off'} }) }}
             <ul class="nav nav-tabs" role="tablist">

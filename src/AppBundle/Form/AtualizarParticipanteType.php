@@ -39,7 +39,7 @@ class AtualizarParticipanteType extends ParticipanteTypeAbstract
                 'query_builder' => function (PerfilRepository $repo) use ($perfilParticipante) {
                     $perfis = [$perfilParticipante->getCoSeqPerfil()];
                     if ($perfilParticipante->getCoSeqPerfil() == Perfil::PERFIL_ORIENTADOR_SUPERIOR ||
-                        $perfilParticipante->getCoSeqPerfil() == Perfil::PERFIL_ORIENTADOR_SUPERIOR)
+                        $perfilParticipante->getCoSeqPerfil() == Perfil::PERFIL_ORIENTADOR_MEDIO)
                     {
                         $perfis = [Perfil::PERFIL_ORIENTADOR_SUPERIOR, Perfil::PERFIL_ORIENTADOR_MEDIO];
                     }
