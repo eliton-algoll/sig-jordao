@@ -209,14 +209,14 @@ class ParticipanteController extends ControllerAbstract
         $form = $this->get('form.factory')->createNamed('atualizar_participante', AtualizarParticipanteType::class, $command, array(
             'projeto' => $this->getProjetoAutenticado(),
             'pessoaPerfil' => $this->getPessoaPerfilAutenticado(),
-            'projetoPessoaParticipante' => $projetoPessoa
+            'projetoPessoaParticipante' => $projetoPessoa,
         ));
 
         $form->handleRequest($request);
         
         if ($form->isSubmitted()) {
             $data = new ParameterBag($request->request->get('atualizar_participante'));
-            
+
             # Bind manual devido a complexidade do formulário
             $command
                 ->setPerfil($data->get('perfil'))
@@ -246,7 +246,7 @@ class ParticipanteController extends ControllerAbstract
             
             try {
                 $this->getBus()->handle($command);
-                $this->addFlash('success', 'Participante atualizado com sucesso');
+                $this->addFlash('success', 'Participante atualizado com sucesso.');
 
                 if (
                     !$projetoPessoa->getPessoaPerfil()->getPerfil()->isCoordenadorProjeto() &&
@@ -286,7 +286,8 @@ class ParticipanteController extends ControllerAbstract
             array(
                 'form' => $form->createView(),
                 'formTelefone' => $this->createForm(TelefoneType::class)->createView(),
-                'projetoPessoa' => $projetoPessoa
+                'projetoPessoa' => $projetoPessoa,
+                'perfil' => $projetoPessoa->getPessoaPerfil()->getPerfil()->getCoSeqPerfil()
             )
         );
     }

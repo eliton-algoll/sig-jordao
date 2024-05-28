@@ -83,6 +83,14 @@ class PessoaPerfil extends AbstractEntity
     }
 
     /**
+     * @param Perfil|mixed|null $perfil
+     */
+    public function setPerfil($perfil)
+    {
+        $this->perfil = $perfil;
+    }
+
+    /**
      * Get pessoaFisica
      *
      * @return PessoaFisica
