@@ -431,7 +431,7 @@ class CadastrarParticipanteCommand
     }
 
     /**
-     * @param integer $categoriaProfissional
+     * @param integer|null $categoriaProfissional
      * @return CadastrarParticipanteCommand
      */
     public function setCategoriaProfissional($categoriaProfissional)
@@ -868,7 +868,7 @@ class CadastrarParticipanteCommand
         $perfil = ($this->getPerfil() instanceof Perfil) ? $this->getPerfil()->getCoSeqPerfil() : $this->getPerfil();
 
         $hasError = function ($perfil, $categorias) {
-            return !in_array($perfil, [Perfil::PERFIL_ESTUDANTE, Perfil::PERFIL_COORDENADOR_PROJETO]) && !$categorias;
+            return !in_array($perfil, [Perfil::PERFIL_ESTUDANTE, Perfil::PERFIL_ORIENTADOR_MEDIO, Perfil::PERFIL_COORDENADOR_PROJETO]) && !$categorias;
         };
         
         if (
