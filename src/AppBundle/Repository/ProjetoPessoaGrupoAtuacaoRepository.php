@@ -83,7 +83,7 @@ class ProjetoPessoaGrupoAtuacaoRepository extends RepositoryAbstract
     {
         $qb = $this->createQueryBuilder('ppga');
 
-        return $qb
+        $query = $qb
             ->select('ppga, pp, pperf, perfil, pf, p, ppcg, pcg, ppgaat, at, tat')
             ->innerJoin('ppga.projetoPessoa', 'pp')
             ->innerJoin('pp.pessoaPerfil', 'pperf')
@@ -103,8 +103,14 @@ class ProjetoPessoaGrupoAtuacaoRepository extends RepositoryAbstract
             ->addOrderBy('pp.stVoluntarioProjeto')
             ->addOrderBy('perfil.dsPerfil')
             ->getQuery()
-            ->getResult()
-//            ->getSQL()
-        ;
+            ->getResult();
+
+        $results = array();
+        foreach ( $query as $row ) {
+            if( $row->getStRegistroAtivo() == 'S' ) {
+                $results[] = $row;
+            }
+        }
+        return $results;
     }
 }
