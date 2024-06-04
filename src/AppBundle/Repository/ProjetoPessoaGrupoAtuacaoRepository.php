@@ -83,7 +83,7 @@ class ProjetoPessoaGrupoAtuacaoRepository extends RepositoryAbstract
     {
         $qb = $this->createQueryBuilder('ppga');
 
-        $query = $qb
+        return $qb
             ->select('ppga, pp, pperf, perfil, pf, p, ppcg, pcg, ppgaat, at, tat')
             ->innerJoin('ppga.projetoPessoa', 'pp')
             ->innerJoin('pp.pessoaPerfil', 'pperf')
@@ -97,20 +97,14 @@ class ProjetoPessoaGrupoAtuacaoRepository extends RepositoryAbstract
             ->leftJoin('at.tipoAreaTematica', 'tat')
             ->where('ppga.grupoAtuacao = :grupoAtuacao')
             ->andWhere('ppga.stRegistroAtivo = :stAtivo')
+            ->andWhere('pp.stRegistroAtivo = :stAtivo')
             ->setParameter('grupoAtuacao', $grupoAtuacao)
             ->setParameter('stAtivo', 'S')
             ->orderBy('pp.stRegistroAtivo', 'DESC')
             ->addOrderBy('pp.stVoluntarioProjeto')
             ->addOrderBy('perfil.dsPerfil')
             ->getQuery()
+            ->getSQL()
             ->getResult();
-
-        $results = array();
-        foreach ( $query as $row ) {
-            if( $row->getStRegistroAtivo() == 'S' ) {
-                $results[] = $row;
-            }
-        }
-        return $results;
     }
 }
