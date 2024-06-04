@@ -104,7 +104,6 @@ class ProjetoPessoaGrupoAtuacaoRepository extends RepositoryAbstract
             ->addOrderBy('pp.stVoluntarioProjeto')
             ->addOrderBy('perfil.dsPerfil')
             ->getQuery()
-            ->getSQL()
             ->getResult();
     }
 }
