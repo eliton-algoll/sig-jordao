@@ -97,14 +97,13 @@ class ProjetoPessoaGrupoAtuacaoRepository extends RepositoryAbstract
             ->leftJoin('at.tipoAreaTematica', 'tat')
             ->where('ppga.grupoAtuacao = :grupoAtuacao')
             ->andWhere('ppga.stRegistroAtivo = :stAtivo')
+            ->andWhere('pp.stRegistroAtivo = :stAtivo')
             ->setParameter('grupoAtuacao', $grupoAtuacao)
             ->setParameter('stAtivo', 'S')
             ->orderBy('pp.stRegistroAtivo', 'DESC')
             ->addOrderBy('pp.stVoluntarioProjeto')
             ->addOrderBy('perfil.dsPerfil')
             ->getQuery()
-            ->getResult()
-//            ->getSQL()
-        ;
+            ->getResult();
     }
 }

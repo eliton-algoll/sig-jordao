@@ -111,6 +111,11 @@ class ProjetoPessoaGrupoAtuacao extends AbstractEntity
         return $this->grupoAtuacao;
     }
 
+    public function getStRegistroAtivo()
+    {
+        return $this->stRegistroAtivo;
+    }
+
     /**
      * @return ArrayCollection<ProjetoPessoaGrupoAtuacaoAreaTematica>
      */
