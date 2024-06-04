@@ -71,7 +71,7 @@ final class AdministradorController extends ControllerAbstract
             $form->handleRequest($request);
             try {
                 $this->getBus()->handle($command);
-                $this->addFlash('success', 'Inclusão realizada com sucesso!');
+                $this->addFlash('success', 'Inclusão realizada com sucesso! Consulte seu e-mail cadastrado para confirmar os dados de acesso.');
                 return $this->redirectToRoute('administrador');
             } catch (InvalidCommandException $e) {
                 $erros = array();
