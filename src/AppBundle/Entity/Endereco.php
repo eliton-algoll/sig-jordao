@@ -60,7 +60,7 @@ class Endereco extends AbstractEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="DS_COMPLEMENTO", type="string", length=15, nullable=true)
+     * @ORM\Column(name="DS_COMPLEMENTO", type="string", length=160, nullable=true)
      */
     private $dsComplemento;
 
