@@ -120,7 +120,7 @@ services:
         arguments: ["@app.projeto_estabelecimento_repository"]
         tags:
             - { name: tactician.handler, command: AppBundle\CommandBus\InativarEstabelecimentoCommand }          
-            
+
     app.cadastrar_participante_handler:
         class: AppBundle\CommandBus\CadastrarParticipanteHandler
         arguments: ["@app.perfil_repository" ,"@app.identidade_genero_repository", "@app.projeto_pessoa_repository" ,"@app.projeto_repository", "@app.pessoa_fisica_repository", "@app.grupo_atuacao_repository", "@app.endereco_repository", "@app.curso_graduacao_repository", "@app.titulacao_repository", "@app.banco_repository", "@app.agencia_bancaria_repository", "@app.municipio_repository", "@app.categoria_profissional_repository", "@app.cep_repository", "@app.dado_pessoal_repository", "@app.endereco_web_repository", "@app.telefone_repository", "@app.projeto_pessoa_grupo_atuacao_repository", "@app.area_tematica_repository", "@event_dispatcher","@app.file_uploader_facade", "@app.filename_generator_facade"]
@@ -132,7 +132,13 @@ services:
         arguments: ["@app.perfil_repository","@app.identidade_genero_repository", "@app.projeto_pessoa_repository" ,"@app.projeto_repository", "@app.pessoa_fisica_repository", "@app.grupo_atuacao_repository", "@app.curso_graduacao_repository", "@app.titulacao_repository", "@app.banco_repository", "@app.agencia_bancaria_repository", "@app.municipio_repository", "@app.categoria_profissional_repository", "@app.cep_repository", "@app.projeto_pessoa_grupo_atuacao_repository", "@app.area_tematica_repository", "@event_dispatcher", "@app.file_uploader_facade", "@app.filename_generator_facade"]
         tags:
             - { name: tactician.handler, command: AppBundle\CommandBus\AtualizarParticipanteCommand }
-            
+
+    app.cadastrar_administrador_handler:
+        class: AppBundle\CommandBus\CadastrarAdministradorHandler
+        arguments: [ "@mailer", "@templating", "@security.encoder_factory", "@app.usuario_repository", "@app.pessoa_fisica_repository", "@app.perfil_repository"]
+        tags:
+            - { name: tactician.handler, command: AppBundle\CommandBus\CadastrarAdministradorCommand }
+
     app.cadastrar_usuario_handler:
         class: AppBundle\CommandBus\CadastrarUsuarioHandler
         arguments: ["@mailer", "@templating", "@security.encoder_factory", "@app.usuario_repository", "@app.pessoa_fisica_repository"]
@@ -240,6 +246,12 @@ services:
         arguments: ["@app.banco_repository"]
         tags:
             - { name: tactician.handler, command: AppBundle\CommandBus\InativarBancoCommand }
+
+    app.inativar_usuario_handler:
+        class: AppBundle\CommandBus\InativarUsuarioHandler
+        arguments: [ "@app.usuario_repository" ]
+        tags:
+            - { name: tactician.handler, command: AppBundle\CommandBus\InativarUsuarioCommand }
 
     app.excluir_banco_handler:
         class: AppBundle\CommandBus\ExcluirBancoHandler
@@ -438,6 +450,10 @@ services:
     app.banco_query:
         class: AppBundle\Query\BancoQuery
         arguments: ["@knp_paginator", "@app.banco_repository"]
+
+    app.administrador_query:
+        class: AppBundle\Query\AdministradorQuery
+        arguments: ["@knp_paginator", "@app.usuario_repository"]
         
     app.planejamento_abertura_folha_query:
         class: AppBundle\Query\PlanejamentoAberturaFolhaQuery

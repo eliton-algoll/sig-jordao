@@ -139,6 +139,22 @@ class Usuario extends AbstractEntity implements UserInterface, \Serializable
     }
 
     /**
+     * @return string
+     */
+    public function getStRegistroAtivo()
+    {
+        return $this->stRegistroAtivo;
+    }
+
+    /**
+     * @param string $stRegistroAtivo
+     */
+    public function setStRegistroAtivo($stRegistroAtivo)
+    {
+        $this->stRegistroAtivo = $stRegistroAtivo;
+    }
+
+    /**
      * @inheritdoc
      */
     public function eraseCredentials(){}

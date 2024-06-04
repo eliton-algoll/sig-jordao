@@ -153,13 +153,8 @@
                     {% else %}
                         <td>{{ dados.coSeqProjetoPessoa }}</td>
                     {% endif %}
-                    {% if dados.coEixoAtuacao == 'G' %}
-                        <td>Gestão em Saúde</td>
-                    {% elseif dados.coEixoAtuacao == 'A' %}
-                        <td>Assistência à Saúde</td>
-                    {% else %}
-                        <td>-</td>
-                    {% endif %}
+
+                    <td>dados.coEixoAtuacao </td>
                     <td>{{ dados.noPessoa }}</td>
                     <td>{{ dados.nuCpfCnpjPessoa|cpf }}</td>
                     <td>{{ dados.nuSipar }}</td>
