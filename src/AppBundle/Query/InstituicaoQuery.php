@@ -6,9 +6,19 @@ use AppBundle\Entity\Municipio;
 use AppBundle\Entity\Instituicao;
 use AppBundle\Repository\InstituicaoRepository;
 use AppBundle\Repository\CampusInstituicaoRepository;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\Paginator;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class InstituicaoQuery
 {
+
+    /**
+     *
+     * @var Paginator
+     */
+    private $paginator;
+
     /**
      * @var InstituicaoRepository
      */
@@ -24,11 +34,27 @@ class InstituicaoQuery
      * @param CampusInstituicaoRepository $campusRepository
      */
     public function __construct(
+        Paginator $paginator,
         InstituicaoRepository $instituicaoRepository, 
         CampusInstituicaoRepository $campusRepository
     ) {
+        $this->paginator = $paginator;
         $this->instituicaoRepository = $instituicaoRepository;
         $this->campusRepository = $campusRepository;
+    }
+
+    /**
+     *
+     * @param ParameterBag $pb
+     * @return PaginationInterface
+     */
+    public function searchInst(ParameterBag $pb)
+    {
+        return $this->paginator->paginate(
+            $this->instituicaoRepository->findByFilter($pb),
+            $pb->getInt('page', 1),
+            $pb->getInt('limit', 10)
+        );
     }
     
     /**

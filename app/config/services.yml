@@ -409,7 +409,7 @@ services:
         
     app.instituicao_query:
         class: AppBundle\Query\InstituicaoQuery
-        arguments: ["@app.instituicao_repository", "@app.campus_instituicao_repository"]
+        arguments: ["@knp_paginator","@app.instituicao_repository", "@app.campus_instituicao_repository"]
         
     app.pessoa_juridica_query:
         class: AppBundle\Query\PessoaJuridicaQuery
@@ -454,7 +454,7 @@ services:
     app.administrador_query:
         class: AppBundle\Query\AdministradorQuery
         arguments: ["@knp_paginator", "@app.usuario_repository"]
-        
+
     app.planejamento_abertura_folha_query:
         class: AppBundle\Query\PlanejamentoAberturaFolhaQuery
         arguments: ["@knp_paginator", "@app.planejamento_ano_folha_repository"]
