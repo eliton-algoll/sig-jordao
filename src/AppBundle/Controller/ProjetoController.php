@@ -429,7 +429,7 @@ class ProjetoController extends ControllerAbstract
                 $estudantesBolsista = array();
                 $nrEstudantesBolsistas = 0;
                 foreach ($estudantes as $estudante) {
-                    if( !$estudante->isVoluntario() ) {
+                    if( !$estudante['stVoluntarioProjeto'] == 'N' ) {
                         $estudantesBolsista = $estudante;
                         $nrEstudantesBolsistas++;
                     }
