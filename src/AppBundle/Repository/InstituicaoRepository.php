@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Municipio;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * InstituicaoRepository
@@ -12,6 +13,36 @@ use AppBundle\Entity\Municipio;
  */
 class InstituicaoRepository extends RepositoryAbstract
 {
+
+    /**
+     * @param ParameterBag $pb
+     * @return \AppBundle\Entity\Instituicao[]
+     */
+    public function findByFilter(ParameterBag $pb)
+    {
+        var_dump($pb->get('nuCnpj'));
+        var_dump($pb->get('noInstituicaoProjeto'));
+        $qb = $this->createQueryBuilder('i');
+        $qb->select('i, pj')
+           ->join('i.pessoaJuridica', 'pj')
+           ->andWhere("i.stRegistroAtivo = 'S'");
+
+        if (!is_null($pb->get('nuCnpj')) && $pb->get('nuCnpj') != '' ) {
+            $cnpj = preg_replace("/[^0-9]/", "", $pb->get('nuCnpj'));
+            $qb->andWhere('pj.nuCnpj = :nuCnpj')
+               ->setParameter('nuCnpj',$cnpj);
+        }
+
+        if (!is_null($pb->get('noInstituicaoProjeto')) && $pb->get('noInstituicaoProjeto') != '') {
+            $qb->andWhere('upper(i.noInstituicaoProjeto) like :noInstituicaoProjeto')
+               ->setParameter('noInstituicaoProjeto', '%' . mb_strtoupper($pb->get('noInstituicaoProjeto')) . '%');
+        }
+
+        $qb->orderBy('i.noInstituicaoProjeto', 'asc');
+
+        return $qb;
+    }
+
     /**
      * @param Municipio $municipio
      * @param boolean $returnArrayResult

@@ -1,28 +1,16 @@
 {% extends "base.html.twig" %}
 
 {% block subtitle %}
-    {% if edit is defined and edit %}Editar{% else %}Cadastrar{% endif %} Administrador
+    {% if edit is defined and edit %}Editar{% else %}Cadastrar{% endif %} Instituição
 {% endblock %}
 
 {% block body %}
     {{ form_start(form) }}
     <div class="col-12">
-        <div class="col">
-            {{ form_row(form.nuCpf) }}
-        </div>
-        <div class="col">
-            {{ form_row(form.dsLogin) }}
-        </div>
-        <div class="col">
-            {{ form_row(form.email) }}
-            <p style=""> <i>O e-mail informado irá receber as credencias de acesso.</i> </p>
-        </div>
     </div>
-    <button type="submit" class="btn btn-primary">Salvar</button>
-    <a href="{{ path('administrador') }}" class="btn btn-default">Voltar</a>
     {{ form_end(form) }}
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('js/administrador/create.js') }}"></script>
+    <script src="{{ asset('js/instituicao/create.js') }}"></script>
 {% endblock %}

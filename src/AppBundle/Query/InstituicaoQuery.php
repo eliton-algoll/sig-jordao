@@ -44,16 +44,15 @@ class InstituicaoQuery
     }
 
     /**
-     *
-     * @param ParameterBag $pb
-     * @return PaginationInterface
+     * @param ParameterBag $params
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface
      */
-    public function searchInst(ParameterBag $pb)
+    public function searchInst(ParameterBag $params)
     {
         return $this->paginator->paginate(
-            $this->instituicaoRepository->findByFilter($pb),
-            $pb->getInt('page', 1),
-            $pb->getInt('limit', 10)
+            $this->instituicaoRepository->findByFilter($params),
+            $params->getInt('page', 1),
+            $params->getInt('limit', 10)
         );
     }
     

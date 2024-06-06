@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class ConsultarInstituicaoType extends AbstractType
+class CadastrarInstituicaoType extends AbstractType
 {
 
     /**
@@ -25,7 +25,7 @@ class ConsultarInstituicaoType extends AbstractType
             ->add('uf', EntityType::class, array(
                 'label' => 'UF',
                 'class' => 'AppBundle:Uf',
-                'required' => true,
+                'required' => false,
                 'choice_label' => 'sgUf',
                 'query_builder' => function (UfRepository $repository) {
                     $qb = $repository->createQueryBuilder('uf');
@@ -38,16 +38,16 @@ class ConsultarInstituicaoType extends AbstractType
             ))
             ->add('municipio', ChoiceType::class, array(
                 'label' => 'Município',
-                'required' => true,
+                'required' => false,
                 'choices' => array()
             ))
             ->add('noInstituicaoProjeto', TextType::class, array(
                 'label' => 'Instituição',
-                'required' => true
+                'required' => false
             ))
             ->add('nuCnpj', TextType::class, array(
                 'label' => 'CNPJ',
-                'required' => true,
+                'required' => false,
                 'attr' => array('class' => 'nuCnpj')
             ));
     }
