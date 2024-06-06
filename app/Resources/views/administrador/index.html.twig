@@ -1,0 +1,80 @@
+{% extends "base.html.twig" %}
+
+{% block subtitle %}
+    Consultar Administrador
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-2">
+            {{ form_row(form.nuCpf) }}
+        </div>
+        <div class="col-md-2">
+            {{ form_row(form.dsLogin) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.noNome) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.stRegistroAtivo) }}
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Pesquisar</button>
+    <a href="{{ path('adm_create') }}" class="btn btn-primary">Cadastrar</a>
+    {{ form_end(form) }}
+
+    <hr>
+    {% if pagination.count() > 0 %}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Login</th>
+                <th>CPF</th>
+                <th>Nome</th>
+                <th>Ativo</th>
+                <th>Ação</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for b in pagination %}
+                <tr {% if loop.index is odd %}class="color"{% endif %}>
+                    <td>{{ b.getDsLogin() }}</td>
+                    <td>{{ b.getPessoaFisica().getNuCpf() }}</td>
+                    <td>{{ b.getPessoaFisica().getPessoa().getNoPessoa() }}</td>
+                    <td>
+                        {% if b.getStRegistroAtivo() == 'S' %}
+                            Ativo
+                        {% else %}
+                            Inativo
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if b.stRegistroAtivo == 'S' %}
+                            <a data-id="{{ b.getCoSeqUsuario() }}" data-ativo="{{ b.getStRegistroAtivo() }}"
+                               data-nome="{{ b.getPessoaFisica().getPessoa().getNoPessoa() }}" data-codigo="{{ b.getPessoaFisica().getNuCpf() }}"
+                               class="glyphicon glyphicon-eye-close btn-activate-adm"
+                               style="margin-left: 8px;color:red; cursor: pointer" title="Desativar Registro"></a>
+                        {% else %}
+                            <a data-id="{{ b.getCoSeqUsuario() }}" data-ativo="{{ b.getStRegistroAtivo() }}"
+                               data-nome="{{ b.getPessoaFisica().getPessoa().getNoPessoa() }}" data-codigo="{{ b.getPessoaFisica().getNuCpf() }}"
+                               class="glyphicon glyphicon-eye-open btn-activate-adm" style="margin-left: 8px; ; cursor: pointer"
+                               title="Ativar Registro"></a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    {% elseif pagination is not null %}
+        Nenhum resultado encontrado.
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/administrador/index.js') }}"></script>
+{% endblock %}

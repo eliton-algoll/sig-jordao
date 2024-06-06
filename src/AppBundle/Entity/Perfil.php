@@ -31,7 +31,8 @@ class Perfil extends AbstractEntity implements RoleInterface
     const PERFIL_PRECEPTOR = 4;
     const PERFIL_TUTOR = 5;
     const PERFIL_ESTUDANTE = 6;
-    const PERFIL_ORIENTADOR = 7;
+    const PERFIL_ORIENTADOR_SUPERIOR = 7;
+    const PERFIL_ORIENTADOR_MEDIO = 8;
 
     /**
      * @var int
