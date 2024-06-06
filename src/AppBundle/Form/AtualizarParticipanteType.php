@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\Perfil;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -36,8 +37,14 @@ class AtualizarParticipanteType extends ParticipanteTypeAbstract
                 'mapped' => false,
                 'class' => 'AppBundle:Perfil',
                 'query_builder' => function (PerfilRepository $repo) use ($perfilParticipante) {
+                    $perfis = [$perfilParticipante->getCoSeqPerfil()];
+                    if ($perfilParticipante->getCoSeqPerfil() == Perfil::PERFIL_ORIENTADOR_SUPERIOR ||
+                        $perfilParticipante->getCoSeqPerfil() == Perfil::PERFIL_ORIENTADOR_MEDIO)
+                    {
+                        $perfis = [Perfil::PERFIL_ORIENTADOR_SUPERIOR, Perfil::PERFIL_ORIENTADOR_MEDIO];
+                    }
                     $qb = $repo->createQueryBuilder('p');
-                    return $qb->where('p.coSeqPerfil = :perfil')->setParameter('perfil', $perfilParticipante->getCoSeqPerfil());
+                    return $qb->where('p.coSeqPerfil in (:perfil)')->setParameter('perfil', $perfis);
                 },
                 'choice_label' => function ($perfil) {
                     return $perfil->getDsPerfil();

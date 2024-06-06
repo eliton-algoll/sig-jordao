@@ -115,6 +115,10 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
             $this->constraintCNES($command);
         }
 
+        if( !$banco ) {
+            throw new \InvalidArgumentException('O campo Banco é obrigatório.');
+        }
+
         if ($command->getNoDocumentoBancario()) {
             $filename = $this->filenameGenerator->generate($command->getNoDocumentoBancario());
             $projetoPessoa->setNoDocumentoBancario($filename);
@@ -144,6 +148,11 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
         $pessoaFisica->getPessoa()->addEnderecoWeb($command->getDsEnderecoWeb());
         
         $projetoPessoa->setStVoluntarioProjeto($command->getStVoluntarioProjeto());
+
+        if( $perfil->getCoSeqPerfil() == Perfil::PERFIL_ORIENTADOR_SUPERIOR ||
+            $perfil->getCoSeqPerfil() == Perfil::PERFIL_ORIENTADOR_MEDIO ) {
+            $projetoPessoa->getPessoaPerfil()->setPerfil($perfil);
+        }
 
         $projetoPessoa->setIdentidadeGenero($genero);
 
