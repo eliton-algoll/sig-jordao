@@ -33,6 +33,10 @@ final class CadastrarAdministradorType extends AbstractType
             ->add('dsLogin', TextType::class, [
                 'label' => 'Login',
                 'required' => true
+            ])
+            ->add('email', TextType::class, [
+                'label' => 'E-mail',
+                'required' => true
             ])->setMethod('POST');
     }
     

@@ -2,6 +2,7 @@
 
 namespace AppBundle\CommandBus;
 
+use AppBundle\Entity\EnderecoWeb;
 use AppBundle\Repository\PerfilRepository;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Bundle\TwigBundle\TwigEngine;
@@ -79,14 +80,26 @@ class CadastrarAdministradorHandler
         $encoder = $this->encoderFactory->getEncoder('AppBundle\Entity\Usuario');
         $perfil = $this->perfilRepository->find(1);
         $pessoaFisica = $this->pessoaFisicaRepository->find($cpf);
-        $emailUsuarioNovo = false;
+
 
         if (!$pessoaFisica->getUsuario()) {
-            $emailUsuarioNovo = true;
             $usuario = new Usuario($pessoaFisica, $command->getDsLogin(), $encoder->encodePassword($senha, null));
         } else {
             $usuario = $pessoaFisica->getUsuario()->ativar();
             $usuario->setDsLogin($command->getDsLogin());
+        }
+        $emails = $usuario->getPessoaFisica()->getPessoa()->getEnderecosWebAtivos();
+
+        $saveEmail = true;
+        foreach ($emails as $email) {
+            if( $command->getEmail() == $email->getDsEnderecoWeb()) {
+                $saveEmail = false;
+            }
+        }
+        if( $saveEmail ) {
+            $pessoa = $usuario->getPessoaFisica()->getPessoa();
+            $enderecoWeb = new EnderecoWeb($pessoa, $command->getEmail());
+            $usuario->getPessoaFisica()->getPessoa()->getEnderecosWeb()->add($enderecoWeb);
         }
 
         $pessoaFisica->addPerfil($perfil);
@@ -95,7 +108,7 @@ class CadastrarAdministradorHandler
 
         foreach ($pessoaFisica->getPessoasPerfisAtivos() as $pessoaPerfil) {
             if ($pessoaPerfil->getPerfil()->isAdministrador()) {
-                $this->sendEmailConfirmacao($usuario, $senha, $emailUsuarioNovo);
+                $this->sendEmailConfirmacao($usuario, $senha);
                 break;
             }
         }
@@ -107,16 +120,14 @@ class CadastrarAdministradorHandler
      * @param bool $emailUsuarioNovo
      * @throws \Twig_Error
      */
-    public function sendEmailConfirmacao(Usuario $usuario, $rawPassword, $emailUsuarioNovo = false)
+    public function sendEmailConfirmacao(Usuario $usuario, $rawPassword)
     {
         $message = new \Swift_Message();
         $message->setFrom('info.sgtes@saude.gov.br');
         $message->setSubject('SIGPET - Confirmação de cadastro');
-        $message->setBody($this->templateEngine->render('/participante/email_confirmacao_cadastro_usuario.html.twig', array(
+        $message->setBody($this->templateEngine->render('/participante/email_confirmacao_cadastro_adm.html.twig', array(
             'dsLogin' => $usuario->getDsLogin(),
             'dsSenha' => $rawPassword,
-            'emailUsuarioNovo' => $emailUsuarioNovo,
-            'programa' => null,
         )), 'text/html');
 
         $emails = $usuario->getPessoaFisica()->getPessoa()->getEnderecosWebAtivos();
