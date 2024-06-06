@@ -22,6 +22,13 @@ class CadastrarAdministradorCommand
      */
     private $dsLogin;
 
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank()
+     */
+    private $email;
+
     
     /**
      * @return string
@@ -38,6 +45,15 @@ class CadastrarAdministradorCommand
     {
         return $this->dsLogin;
     }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
 
     /**
      * @return string
@@ -78,6 +94,18 @@ class CadastrarAdministradorCommand
         $this->dsLogin = $dsLogin;
         return $this;
     }
+
+    /**
+     * @param string $email
+     * @return CadastrarAdministradorCommand
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+
 
 
 }
