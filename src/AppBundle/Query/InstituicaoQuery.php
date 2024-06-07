@@ -55,6 +55,19 @@ class InstituicaoQuery
             $params->getInt('limit', 10)
         );
     }
+
+    /**
+     * @param ParameterBag $params
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     */
+    public function searchCampus(ParameterBag $params)
+    {
+        return $this->paginator->paginate(
+            $this->campusRepository->findByFilter($params),
+            $params->getInt('page', 1),
+            $params->getInt('limit', 10)
+        );
+    }
     
     /**
      * @param Municipio $municipio

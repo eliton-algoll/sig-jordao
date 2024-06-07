@@ -3,16 +3,21 @@
 namespace AppBundle\Controller;
 
 use AppBundle\CommandBus\CadastrarAdministradorCommand;
+use AppBundle\CommandBus\CadastrarCampusInstituicaoCommand;
 use AppBundle\CommandBus\CadastrarInstituicaoCommand;
 use AppBundle\CommandBus\CadastrarProjetoCommand;
+use AppBundle\CommandBus\InativarCampusInstituicaoCommand;
 use AppBundle\CommandBus\InativarInstituicaoCommand;
 use AppBundle\CommandBus\InativarUsuarioCommand;
+use AppBundle\Entity\CampusInstituicao;
 use AppBundle\Entity\Instituicao;
 use AppBundle\Entity\Usuario;
 use AppBundle\Form\CadastrarAdministradorType;
+use AppBundle\Form\CadastrarCampusInstituicaoType;
 use AppBundle\Form\CadastrarInstituicaoType;
 use AppBundle\Form\CadastrarProjetoType;
 use AppBundle\Form\ConsultarAdministradorType;
+use AppBundle\Form\ConsultarCampusInstituicaoType;
 use AppBundle\Form\ConsultarInstituicaoType;
 use AppBundle\Form\PesquisarCampusType;
 use AppBundle\Form\PesquisarProjetoType;
@@ -82,7 +87,7 @@ final class InstituicaoCampusController extends ControllerAbstract
                 ->setNoInstituicaoProjeto(mb_strtoupper($data->get('noInstituicaoProjeto')));
             try {
                 $this->getBus()->handle($command);
-                $this->addFlash('success', 'Instituição cadastrada com sucesso');
+                $this->addFlash('success', 'Instituição cadastrada com sucesso.');
                 return $this->redirectToRoute('instituicao');
 
             } catch (InvalidCommandException $e) {
@@ -99,6 +104,48 @@ final class InstituicaoCampusController extends ControllerAbstract
                 'form' => $form->createView(),
                 'edit' => false,
                 'ibge' => $command->getMunicipio()
+            )
+        );
+    }
+
+    /**
+     * @Route("/campus/cadastrar", name="campus_create")
+     */
+    public function cadastrarCampusAction(Request $request)
+    {
+        $command = new CadastrarCampusInstituicaoCommand();
+
+        $form = $this->get('form.factory')->createNamed('cadastrar_instituicao', CadastrarCampusInstituicaoType::class, $command);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+
+            $data = new ParameterBag($request->request->get('cadastrar_instituicao'));
+            $command
+                ->setUf($data->get('uf'))
+                ->setMunicipio($data->get('municipio'))
+                ->setInstituicao($data->get('instituicao'))
+                ->setNoCampus(mb_strtoupper($data->get('noCampus')));
+            try {
+                $this->getBus()->handle($command);
+                $this->addFlash('success', 'Campus cadastrado com sucesso.');
+                return $this->redirectToRoute('campus');
+
+            } catch (InvalidCommandException $e) {
+                $this->addFlashValidationError();
+            } catch (\InvalidArgumentException $e) {
+                $this->addFlash('danger', $e->getMessage());
+            }
+
+        }
+
+        return $this->render(
+            'campus/create.html.twig',
+            array(
+                'form' => $form->createView(),
+                'edit' => false,
+                'ibge' => $command->getMunicipio(),
+                'instituicaoCod' => $command->getInstituicao()
             )
         );
     }
@@ -129,7 +176,7 @@ final class InstituicaoCampusController extends ControllerAbstract
 
             try {
                 $this->getBus()->handle($command);
-                $this->addFlash('success', 'Instituição alterada com sucesso');
+                $this->addFlash('success', 'Instituição alterada com sucesso.');
                 return $this->redirectToRoute('instituicao');
             } catch (InvalidCommandException $e) {
                 $this->addFlashValidationError();
@@ -142,6 +189,48 @@ final class InstituicaoCampusController extends ControllerAbstract
             'form' => $form->createView(),
             'edit' => true,
             'ibge' => $command->getMunicipio()
+        ]);
+    }
+
+    /**
+     *
+     * @param Request $request
+     * @return Response
+     *
+     * @Route("campus/atualizar/{campusInstituicao}", name="campus_atualizar")
+     * @Method({"GET", "POST"})
+     */
+    public function atualizarCampusAction(Request $request, CampusInstituicao $campusInstituicao)
+    {
+        $command = new CadastrarCampusInstituicaoCommand();
+        $command->setValuesByEntity($campusInstituicao);
+
+        $form = $this->get('form.factory')->createNamed('cadastrar_instituicao', CadastrarCampusInstituicaoType::class, $command);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $data = new ParameterBag($request->request->get('cadastrar_instituicao'));
+            $command
+                ->setUf($data->get('uf'))
+                ->setMunicipio($data->get('municipio'))
+                ->setInstituicao($data->get('instituicao'))
+                ->setNoCampus(mb_strtoupper($data->get('noCampus')));
+            try {
+                $this->getBus()->handle($command);
+                $this->addFlash('success', 'Campus alterado com sucesso.');
+                return $this->redirectToRoute('campus');
+            } catch (InvalidCommandException $e) {
+                $this->addFlashValidationError();
+            } catch (\InvalidArgumentException $e) {
+                $this->addFlash('danger', $e->getMessage());
+            }
+        }
+
+        return $this->render('campus/create.html.twig', [
+            'form' => $form->createView(),
+            'edit' => true,
+            'ibge' => $command->getMunicipio(),
+            'instituicaoCod' => $command->getInstituicao()
         ]);
     }
 
@@ -167,6 +256,27 @@ final class InstituicaoCampusController extends ControllerAbstract
 
         return $this->redirectToRoute('instituicao');
     }
+    /**
+     *
+     * @param CampusInstituicao $campusInstituicao
+     * @return RedirectResponse
+     *
+     * @Route("/campus/activate/{id}", name="campus_activate", options={"expose"=true})
+     * @Method({"GET"})
+     */
+    public function campusactivate(CampusInstituicao $campusInstituicao)
+    {
+        try {
+            $command = new InativarCampusInstituicaoCommand($campusInstituicao);
+            $this->getBus()->handle($command);
+            $this->addFlash('success', 'Operação ativar/desativar realizada com sucesso!');
+        } catch (Exception $e) {
+            $this->addFlash('warning', $e->getMessage());
+            $this->addFlash('danger', 'Ocorreu um erro ao executar a operação.');
+        }
+
+        return $this->redirectToRoute('campus');
+    }
 
     /**
      *
@@ -178,21 +288,20 @@ final class InstituicaoCampusController extends ControllerAbstract
      */
     public function campus(Request $request)
     {
-        $pagination = null;
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(ConsultarInstituicaoType::class);
-        $form->handleRequest($request);
-        $pagination = null;
+        $queryParams = $request->query->get('consultar_campus_instituicao', array());
+        $queryParams['page'] = $request->query->get('page', 1);
 
-        if (($request->isMethod('GET'))) {
-            if( $form->isValid() ) {
-                $request->query->add((array)$form->getData());
-            }
-            $pagination = $this->get('app.instituicao_query')->search($request->query);
-        }
+        $pagination = $this
+            ->get('app.instituicao_query')
+            ->searchCampus(
+                new ParameterBag($queryParams)
+            );
+
+        $form = $this->createForm(ConsultarCampusInstituicaoType::class);
 
         return $this->render('campus/index.html.twig', [
             'form' => $form->createView(),
+            'queryParams' => $queryParams,
             'pagination' => $pagination,
         ]);
     }
