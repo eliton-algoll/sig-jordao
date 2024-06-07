@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Instituicao;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * CampusInstituicaoRepository
@@ -34,5 +35,27 @@ class CampusInstituicaoRepository extends RepositoryAbstract
         }
         
         return $qb->getQuery()->getResult();
-    }        
+    }
+
+    /**
+     * @param ParameterBag $pb
+     * @return \AppBundle\Entity\CampusInstituicao[]
+     */
+    public function findByFilter(ParameterBag $pb)
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb->select('c, i')
+            ->join('c.instituicao', 'i');
+
+        if (!is_null($pb->get('noCampus')) && $pb->get('noCampus') != '') {
+            $qb->andWhere('upper(c.noCampus) like :noCampus')
+                ->setParameter('noCampus', '%' . mb_strtoupper($pb->get('noCampus')) . '%');
+        }
+
+        $qb->orderBy('c.noCampus', 'ASC');
+        $qb->addOrderBy('c.stRegistroAtivo ', 'DESC');
+
+        return $qb;
+    }
+
 }
