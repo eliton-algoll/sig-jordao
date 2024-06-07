@@ -20,12 +20,9 @@ class InstituicaoRepository extends RepositoryAbstract
      */
     public function findByFilter(ParameterBag $pb)
     {
-        var_dump($pb->get('nuCnpj'));
-        var_dump($pb->get('noInstituicaoProjeto'));
         $qb = $this->createQueryBuilder('i');
         $qb->select('i, pj')
-           ->join('i.pessoaJuridica', 'pj')
-           ->andWhere("i.stRegistroAtivo = 'S'");
+           ->join('i.pessoaJuridica', 'pj');
 
         if (!is_null($pb->get('nuCnpj')) && $pb->get('nuCnpj') != '' ) {
             $cnpj = preg_replace("/[^0-9]/", "", $pb->get('nuCnpj'));
@@ -39,6 +36,7 @@ class InstituicaoRepository extends RepositoryAbstract
         }
 
         $qb->orderBy('i.noInstituicaoProjeto', 'asc');
+        $qb->orderBy('i.stRegistroAtivo ', 'DESC');
 
         return $qb;
     }

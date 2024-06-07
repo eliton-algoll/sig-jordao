@@ -21,8 +21,8 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>CNPJ</th>
                 <th>Instituição</th>
+                <th>CNPJ</th>
                 <th>UF</th>
                 <th>Município</th>
                 <th>Ativo</th>
@@ -32,8 +32,8 @@
             <tbody>
             {% for b in pagination %}
                 <tr {% if loop.index is odd %}class="color"{% endif %}>
-                    <td>{{ b.getPessoaJuridica().getNuCnpj() }}</td>
                     <td>{{ b.getNoInstituicaoProjeto() }}</td>
+                    <td class="nuCnpj">{{ b.getPessoaJuridica().getNuCnpj() }}</td>
                     <td>{{ b.getMunicipio().getCoUfIbge().getSgUf() }}</td>
                     <td>{{ b.getMunicipio().getNoMunicipioAcentuado() }}</td>
                     <td>
@@ -48,12 +48,12 @@
                         {% if b.stRegistroAtivo == 'S' %}
                             <a data-id="{{ b.getCoSeqInstituicao() }}" data-ativo="{{ b.getStRegistroAtivo() }}"
                                data-nome="{{ b.getNoInstituicaoProjeto() }}" data-codigo="{{ b.getPessoaJuridica().getNuCnpj() }}"
-                               class="glyphicon glyphicon-eye-close btn-activate-adm"
+                               class="glyphicon glyphicon-eye-close btn-activate-inst"
                                style="margin-left: 8px;color:red; cursor: pointer" title="Desativar Registro"></a>
                         {% else %}
                             <a data-id="{{ b.getCoSeqInstituicao() }}" data-ativo="{{ b.getStRegistroAtivo() }}"
                                data-nome="{{ b.getNoInstituicaoProjeto() }}" data-codigo="{{ b.getPessoaJuridica().getNuCnpj() }}"
-                               class="glyphicon glyphicon-eye-open btn-activate-adm" style="margin-left: 8px; ; cursor: pointer"
+                               class="glyphicon glyphicon-eye-open btn-activate-inst" style="margin-left: 8px; ; cursor: pointer"
                                title="Ativar Registro"></a>
                         {% endif %}
                     </td>
@@ -71,5 +71,5 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('js/administrador/index.js') }}"></script>
+    <script src="{{ asset('js/instituicao/index.js') }}"></script>
 {% endblock %}

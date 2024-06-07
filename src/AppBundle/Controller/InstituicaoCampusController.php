@@ -5,6 +5,10 @@ namespace AppBundle\Controller;
 use AppBundle\CommandBus\CadastrarAdministradorCommand;
 use AppBundle\CommandBus\CadastrarInstituicaoCommand;
 use AppBundle\CommandBus\CadastrarProjetoCommand;
+use AppBundle\CommandBus\InativarInstituicaoCommand;
+use AppBundle\CommandBus\InativarUsuarioCommand;
+use AppBundle\Entity\Instituicao;
+use AppBundle\Entity\Usuario;
 use AppBundle\Form\CadastrarAdministradorType;
 use AppBundle\Form\CadastrarInstituicaoType;
 use AppBundle\Form\CadastrarProjetoType;
@@ -16,6 +20,7 @@ use AppBundle\Form\PesquisarSecretariaType;
 use Exception;
 use League\Tactician\Bundle\Middleware\InvalidCommandException;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -70,53 +75,33 @@ final class InstituicaoCampusController extends ControllerAbstract
         if ($form->isSubmitted()) {
 
             $data = new ParameterBag($request->request->get('cadastrar_instituicao'));
-
-            $areasTematicasSaude = [];
-            if ( !is_null($data->get('areasTematicasSaude')) ) {
-                $areasTematicasSaude = $data->get('areasTematicasSaude');
-            }
-
-            $areasTematicasCienciasHumanas = [];
-            if ( !is_null($data->get('areasTematicasCienciasHumanas')) ) {
-                $areasTematicasCienciasHumanas = $data->get('areasTematicasCienciasHumanas');
-            }
-
-            $areasTematicasCienciasSociais = [];
-            if ( !is_null($data->get('areasTematicasCienciasSociais')) ) {
-                $areasTematicasCienciasSociais = $data->get('areasTematicasCienciasSociais');
-            }
-
-
-            $areasTematicas = array_merge($areasTematicasSaude, $areasTematicasCienciasHumanas);
-            $areasTematicas = array_merge($areasTematicas, $areasTematicasCienciasSociais);
-
-            # bind manual devido a complexidade do formulário
             $command
-                ->setNuSipar($data->get('nuSipar'))
-                ->setDsObservacao($data->get('dsObservacao'))
-                ->setStOrientadorServico($data->get('stOrientadorServico'))
-                ->setPublicacao($data->get('publicacao'))
-                ->setAreasTematicas($areasTematicas)
-                ->setCampus($data->get('campus'))
-                ->setSecretarias($data->get('secretarias'));
+                ->setUf($data->get('uf'))
+                ->setMunicipio($data->get('municipio'))
+                ->setNuCnpj($data->get('nuCnpj'))
+                ->setNoInstituicaoProjeto(mb_strtoupper($data->get('noInstituicaoProjeto')));
             try {
                 $this->getBus()->handle($command);
-                $this->addFlash('success', 'Projeto cadastrado com sucesso');
-                return $this->redirectToRoute('projeto');
+                $this->addFlash('success', 'Instituição cadastrada com sucesso');
+                return $this->redirectToRoute('instituicao');
 
             } catch (InvalidCommandException $e) {
                 $this->addFlashValidationError();
+            } catch (\InvalidArgumentException $e) {
+                $this->addFlash('danger', $e->getMessage());
             }
+
         }
 
         return $this->render(
             'instituicao/create.html.twig',
             array(
                 'form' => $form->createView(),
+                'edit' => false,
+                'ibge' => $command->getMunicipio()
             )
         );
     }
-
 
     /**
      *
@@ -126,14 +111,61 @@ final class InstituicaoCampusController extends ControllerAbstract
      * @Route("instituicao/atualizar/{instituicao}", name="instituicao_atualizar")
      * @Method({"GET", "POST"})
      */
-    public function atualizarInstAction(Request $request)
+    public function atualizarInstAction(Request $request, Instituicao $instituicao)
     {
+        $command = new CadastrarInstituicaoCommand();
+        $command->setValuesByEntity($instituicao);
 
-        $form = $this->createForm(ConsultarInstituicaoType::class);
+        $form = $this->get('form.factory')->createNamed('cadastrar_instituicao', CadastrarInstituicaoType::class, $command);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $data = new ParameterBag($request->request->get('cadastrar_instituicao'));
+            $command
+                ->setUf($data->get('uf'))
+                ->setMunicipio($data->get('municipio'))
+                ->setNuCnpj($data->get('nuCnpj'))
+                ->setNoInstituicaoProjeto(mb_strtoupper($data->get('noInstituicaoProjeto')));
+
+            try {
+                $this->getBus()->handle($command);
+                $this->addFlash('success', 'Instituição alterada com sucesso');
+                return $this->redirectToRoute('instituicao');
+            } catch (InvalidCommandException $e) {
+                $this->addFlashValidationError();
+            } catch (\InvalidArgumentException $e) {
+                $this->addFlash('danger', $e->getMessage());
+            }
+        }
 
         return $this->render('instituicao/create.html.twig', [
             'form' => $form->createView(),
+            'edit' => true,
+            'ibge' => $command->getMunicipio()
         ]);
+    }
+
+    /**
+     *
+     * @param Instituicao $instituicao
+     * @return RedirectResponse
+     *
+     * @Route("/instituicao/activate/{id}", name="instituicao_activate", options={"expose"=true})
+     * @Method({"GET"})
+     */
+    public function activate(Instituicao $instituicao)
+    {
+        try {
+            $command = new InativarInstituicaoCommand($instituicao);
+            $this->getBus()->handle($command);
+
+            $this->addFlash('success', 'Operação ativar/desativar realizada com sucesso!');
+        } catch (Exception $e) {
+            $this->addFlash('warning', $e->getMessage());
+            $this->addFlash('danger', 'Ocorreu um erro ao executar a operação.');
+        }
+
+        return $this->redirectToRoute('instituicao');
     }
 
     /**

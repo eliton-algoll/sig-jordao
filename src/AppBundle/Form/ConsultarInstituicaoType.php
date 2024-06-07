@@ -22,25 +22,6 @@ class ConsultarInstituicaoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('uf', EntityType::class, array(
-                'label' => 'UF',
-                'class' => 'AppBundle:Uf',
-                'required' => true,
-                'choice_label' => 'sgUf',
-                'query_builder' => function (UfRepository $repository) {
-                    $qb = $repository->createQueryBuilder('uf');
-                    $qb
-                        ->where("uf.stRegistroAtivo = 'S'")
-                        ->orderBy('uf.sgUf', 'asc');
-                    return $qb;
-                }
-
-            ))
-            ->add('municipio', ChoiceType::class, array(
-                'label' => 'Município',
-                'required' => true,
-                'choices' => array()
-            ))
             ->add('noInstituicaoProjeto', TextType::class, array(
                 'label' => 'Instituição',
                 'required' => true

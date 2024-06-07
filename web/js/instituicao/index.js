@@ -1,14 +1,14 @@
-var banco_index = {
+var instituicao_index = {
 
     init: function () {
         this.events();
     },
 
     events: function () {
-        $('.btn-activate-adm').click(banco_index.handleActivateBanco);
+        $('.btn-activate-inst').click(instituicao_index.handleActivate);
     },
 
-    handleActivateBanco: function () {
+    handleActivate: function () {
         var id = $(this).attr('data-id');
         var ativo = $(this).attr('data-ativo');
         var nome = $(this).attr('data-nome');
@@ -16,7 +16,7 @@ var banco_index = {
 
         if (id) {
             bootbox.confirm({
-                message: 'Tem certeza que deseja ' + (ativo === 'S' ? 'desativar' : 'ativar') + ' o Administrador ' + nome + ' (' + codigo + ')?',
+                message: 'Tem certeza que deseja ' + (ativo === 'S' ? 'desativar' : 'ativar') + ' a instituição ' + nome + ' de CNPJ ' + codigo + '?',
                 buttons: {
                     confirm: {
                         label: 'Sim'
@@ -27,7 +27,7 @@ var banco_index = {
                 },
                 callback: function (result) {
                     if (result) {
-                        window.location.href = Routing.generate('adm_activate', {id: id});
+                        window.location.href = Routing.generate('instituicao_activate', {id: id});
                     }
                 }
             });
@@ -35,4 +35,4 @@ var banco_index = {
     },
 };
 
-banco_index.init();
+instituicao_index.init();

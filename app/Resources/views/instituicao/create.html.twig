@@ -1,14 +1,31 @@
 {% extends "base.html.twig" %}
 
 {% block subtitle %}
-    {% if edit is defined and edit %}Editar{% else %}Cadastrar{% endif %} Instituição
+    {% if edit %}Editar{% else %}Cadastrar{% endif %} Instituição
 {% endblock %}
 
 {% block body %}
     {{ form_start(form) }}
     <div class="col-12">
+        <div class="col">
+            {{ form_row(form.uf) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.municipio) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.nuCnpj) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.noInstituicaoProjeto) }}
+        </div>
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    <a href="{{ path('instituicao') }}" class="btn btn-default">Voltar</a>
     </div>
     {{ form_end(form) }}
+
+        <div id="municipioIbge" style="display: none">{{ ibge }}</div>
+
 {% endblock %}
 
 {% block javascripts %}

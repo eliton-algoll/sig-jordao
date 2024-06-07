@@ -96,6 +96,12 @@ services:
         arguments: ["@app.projeto_repository", "@app.pessoa_juridica_repository", "@app.publicacao_repository", "@app.tipo_area_tematica_repository", "@app.campus_instituicao_repository", "@app.file_uploader_facade", "@app.filename_generator_facade"]
         tags:
             - { name: tactician.handler, command: AppBundle\CommandBus\AtualizarProjetoCommand }
+
+    app.cadastrar_instituicao_handler:
+        class: AppBundle\CommandBus\CadastrarInstituicaoHandler
+        arguments: [ "@app.pessoa_juridica_repository", "@app.municipio_repository", "@app.instituicao_repository" ]
+        tags:
+            - { name: tactician.handler, command: AppBundle\CommandBus\CadastrarInstituicaoCommand }
             
     app.cadastrar_grupo_atuacao_handler:
         class: AppBundle\CommandBus\CadastrarGrupoAtuacaoHandler
@@ -252,6 +258,12 @@ services:
         arguments: [ "@app.usuario_repository" ]
         tags:
             - { name: tactician.handler, command: AppBundle\CommandBus\InativarUsuarioCommand }
+
+    app.inativar_instituicao_handler:
+        class: AppBundle\CommandBus\InativarInstituicaoHandler
+        arguments: [ "@app.instituicao_repository" ]
+        tags:
+            - { name: tactician.handler, command: AppBundle\CommandBus\InativarInstituicaoCommand }
 
     app.excluir_banco_handler:
         class: AppBundle\CommandBus\ExcluirBancoHandler

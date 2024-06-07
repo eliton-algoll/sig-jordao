@@ -21,7 +21,7 @@ class Instituicao extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\Column(name="CO_SEQ_INSTITUICAO", type="integer")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_INSTITUICAO_COSEQINSTITUICAO", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_INSTITUICAO_COSEQINSTITUICA", allocationSize=1, initialValue=1)
      */
     private $coSeqInstituicao;
 
@@ -98,5 +98,45 @@ class Instituicao extends AbstractEntity
     public function getNoInstituicaoProjeto()
     {
         return $this->noInstituicaoProjeto;
+    }
+
+    /**
+     * @param PessoaJuridica $pessoaJuridica
+     */
+    public function setPessoaJuridica($pessoaJuridica)
+    {
+        $this->pessoaJuridica = $pessoaJuridica;
+    }
+
+    /**
+     * @param Municipio $municipio
+     */
+    public function setMunicipio($municipio)
+    {
+        $this->municipio = $municipio;
+    }
+
+    /**
+     * @param string $noInstituicaoProjeto
+     */
+    public function setNoInstituicaoProjeto($noInstituicaoProjeto)
+    {
+        $this->noInstituicaoProjeto = $noInstituicaoProjeto;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStRegistroAtivo()
+    {
+        return $this->stRegistroAtivo;
+    }
+
+    /**
+     * @param string $stRegistroAtivo
+     */
+    public function setStRegistroAtivo($stRegistroAtivo)
+    {
+        $this->stRegistroAtivo = $stRegistroAtivo;
     }
 }

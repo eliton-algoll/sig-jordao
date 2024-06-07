@@ -25,8 +25,9 @@ class CadastrarInstituicaoType extends AbstractType
             ->add('uf', EntityType::class, array(
                 'label' => 'UF',
                 'class' => 'AppBundle:Uf',
-                'required' => false,
+                'required' => true,
                 'choice_label' => 'sgUf',
+                'placeholder' => '',
                 'query_builder' => function (UfRepository $repository) {
                     $qb = $repository->createQueryBuilder('uf');
                     $qb
@@ -34,20 +35,19 @@ class CadastrarInstituicaoType extends AbstractType
                         ->orderBy('uf.sgUf', 'asc');
                     return $qb;
                 }
-
             ))
             ->add('municipio', ChoiceType::class, array(
                 'label' => 'Município',
-                'required' => false,
+                'required' => true,
                 'choices' => array()
             ))
             ->add('noInstituicaoProjeto', TextType::class, array(
                 'label' => 'Instituição',
-                'required' => false
+                'required' => true
             ))
             ->add('nuCnpj', TextType::class, array(
                 'label' => 'CNPJ',
-                'required' => false,
+                'required' => true,
                 'attr' => array('class' => 'nuCnpj')
             ));
     }
