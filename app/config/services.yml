@@ -96,6 +96,18 @@ services:
         arguments: ["@app.projeto_repository", "@app.pessoa_juridica_repository", "@app.publicacao_repository", "@app.tipo_area_tematica_repository", "@app.campus_instituicao_repository", "@app.file_uploader_facade", "@app.filename_generator_facade"]
         tags:
             - { name: tactician.handler, command: AppBundle\CommandBus\AtualizarProjetoCommand }
+
+    app.cadastrar_instituicao_handler:
+        class: AppBundle\CommandBus\CadastrarInstituicaoHandler
+        arguments: [ "@app.pessoa_juridica_repository", "@app.municipio_repository", "@app.instituicao_repository" ]
+        tags:
+            - { name: tactician.handler, command: AppBundle\CommandBus\CadastrarInstituicaoCommand }
+
+    app.cadastrar_campus_instituicao_handler:
+        class: AppBundle\CommandBus\CadastrarCampusInstituicaoHandler
+        arguments: [ "@app.municipio_repository", "@app.instituicao_repository" ]
+        tags:
+            - { name: tactician.handler, command: AppBundle\CommandBus\CadastrarCampusInstituicaoCommand }
             
     app.cadastrar_grupo_atuacao_handler:
         class: AppBundle\CommandBus\CadastrarGrupoAtuacaoHandler
@@ -253,6 +265,20 @@ services:
         tags:
             - { name: tactician.handler, command: AppBundle\CommandBus\InativarUsuarioCommand }
 
+    app.inativar_instituicao_handler:
+        class: AppBundle\CommandBus\InativarInstituicaoHandler
+        arguments: [ "@app.instituicao_repository" ]
+        tags:
+            - { name: tactician.handler, command: AppBundle\CommandBus\InativarInstituicaoCommand }
+
+    app.inativar_campus_instituicao_handler:
+        class: AppBundle\CommandBus\InativarCampusInstituicaoHandler
+        arguments: [ "@app.campus_instituicao_repository" ]
+        tags:
+            - { name: tactician.handler, command: AppBundle\CommandBus\InativarCampusInstituicaoCommand }
+
+
+
     app.excluir_banco_handler:
         class: AppBundle\CommandBus\ExcluirBancoHandler
         arguments: ["@app.banco_repository"]
@@ -409,7 +435,7 @@ services:
         
     app.instituicao_query:
         class: AppBundle\Query\InstituicaoQuery
-        arguments: ["@app.instituicao_repository", "@app.campus_instituicao_repository"]
+        arguments: ["@knp_paginator","@app.instituicao_repository", "@app.campus_instituicao_repository"]
         
     app.pessoa_juridica_query:
         class: AppBundle\Query\PessoaJuridicaQuery
@@ -454,7 +480,7 @@ services:
     app.administrador_query:
         class: AppBundle\Query\AdministradorQuery
         arguments: ["@knp_paginator", "@app.usuario_repository"]
-        
+
     app.planejamento_abertura_folha_query:
         class: AppBundle\Query\PlanejamentoAberturaFolhaQuery
         arguments: ["@knp_paginator", "@app.planejamento_ano_folha_repository"]

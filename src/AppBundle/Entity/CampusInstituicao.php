@@ -101,5 +101,45 @@ class CampusInstituicao extends AbstractEntity
     {
         return $this->municipio;
     }
+
+    /**
+     * @return string
+     */
+    public function getStRegistroAtivo()
+    {
+        return $this->stRegistroAtivo;
+    }
+
+    /**
+     * @param string $stRegistroAtivo
+     */
+    public function setStRegistroAtivo($stRegistroAtivo)
+    {
+        $this->stRegistroAtivo = $stRegistroAtivo;
+    }
+
+    /**
+     * @param Municipio $municipio
+     */
+    public function setMunicipio($municipio)
+    {
+        $this->municipio = $municipio;
+    }
+
+    /**
+     * @param Instituicao $instituicao
+     */
+    public function setInstituicao($instituicao)
+    {
+        $this->instituicao = $instituicao;
+    }
+
+    /**
+     * @param string $noCampus
+     */
+    public function setNoCampus($noCampus)
+    {
+        $this->noCampus = $noCampus;
+    }
 }
 
