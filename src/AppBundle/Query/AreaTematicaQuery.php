@@ -3,16 +3,20 @@
 namespace AppBundle\Query;
 
 use AppBundle\Entity\Projeto;
+use AppBundle\Repository\AreaTematicaRepository;
 
 class AreaTematicaQuery
 {
+    /**
+     * @var AreaTematicaRepository
+     */
     private $repository;
-    
+
     public function __construct($repository)
     {
         $this->repository = $repository;
     }
-    
+
     public function listTipoAreaTematicaByProjeto($projeto)
     {
         $arrayResult = array();
