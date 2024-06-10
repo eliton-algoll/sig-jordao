@@ -1,0 +1,71 @@
+{% extends "base.html.twig" %}
+
+{% block subtitle %}
+    Consultar Curso de Formação
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+    {{ form_start(form, {'method': 'get', attr: {'novalidate': 'novalidate'}}) }}
+        <div class="col-12">
+            {{ form_row(form.dsTipoAreaTematica, {value: queryParams.dsTipoAreaTematica}) }}
+            {{ form_row(form.tpAreaFormacao, {value: queryParams.tpAreaFormacao}) }}
+        </div>
+        <button type="submit" class="btn btn-primary">Pesquisar</button>
+        <a href="{{ path('area_formacao_create') }}" class="btn btn-primary">Cadastrar</a>
+    {{ form_end(form) }}
+    </div>
+
+    <hr>
+    {% if pagination.count() > 0 %}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Curso</th>
+                <th>Área de formação</th>
+                <th>Ativo</th>
+                <th>Ação</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for b in pagination %}
+                <tr {% if loop.index is odd %}class="color"{% endif %}>
+                    <td>{{ b.getDsTipoAreaTematica() }}</td>
+                    <td>{{ b.getTpAreaFormacao(true) }}</td>
+                    <td>
+                        {% if b.getStRegistroAtivo() == 'S' %}
+                            Ativo
+                        {% else %}
+                            Inativo
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('curso_formacao_atualizar', {tipoAreaTematica: b.getCoSeqTipoAreaTematica()}) }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                        {% if b.stRegistroAtivo == 'S' %}
+                            <a data-id="{{ b.getCoSeqTipoAreaTematica() }}" data-ativo="{{ b.getStRegistroAtivo() }}"
+                               data-nome="{{ b.getDsTipoAreaTematica() }}" data-codigo="{{ b.getCoSeqTipoAreaTematica() }}"
+                               class="glyphicon glyphicon-eye-close btn-activate-area"
+                               style="margin-left: 8px;color:red; cursor: pointer" title="Desativar Registro"></a>
+                        {% else %}
+                            <a data-id="{{ b.getCoSeqTipoAreaTematica() }}" data-ativo="{{ b.getStRegistroAtivo() }}"
+                               data-nome="{{ b.getDsTipoAreaTematica() }}" data-codigo="{{ b.getCoSeqTipoAreaTematica() }}"
+                               class="glyphicon glyphicon-eye-open btn-activate-area" style="margin-left: 8px; ; cursor: pointer"
+                               title="Ativar Registro"></a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    {% elseif pagination is not null %}
+        Nenhum resultado encontrado.
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/area_formacao/index.js') }}"></script>
+{% endblock %}

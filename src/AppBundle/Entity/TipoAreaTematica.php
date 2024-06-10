@@ -80,6 +80,46 @@ class TipoAreaTematica extends AbstractEntity
     }
 
     /**
+     * @param string $dsTipoAreaTematica
+     */
+    public function setDsTipoAreaTematica($dsTipoAreaTematica)
+    {
+        $this->dsTipoAreaTematica = $dsTipoAreaTematica;
+    }
+
+    /**
+     * @param string $tpAreaTematica
+     */
+    public function setTpAreaTematica($tpAreaTematica)
+    {
+        $this->tpAreaTematica = $tpAreaTematica;
+    }
+
+    /**
+     * @param string $tpAreaFormacao
+     */
+    public function setTpAreaFormacao($tpAreaFormacao)
+    {
+        $this->tpAreaFormacao = $tpAreaFormacao;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStRegistroAtivo()
+    {
+        return $this->stRegistroAtivo;
+    }
+
+    /**
+     * @param string $stRegistroAtivo
+     */
+    public function setStRegistroAtivo($stRegistroAtivo)
+    {
+        $this->stRegistroAtivo = $stRegistroAtivo;
+    }
+
+    /**
      * Get tpAreaTematica
      *
      * @return string
@@ -114,7 +154,7 @@ class TipoAreaTematica extends AbstractEntity
                 3 => 'Ciências Sociais Aplicadas'
             );
 
-            return $nomes[$this->tpAreaFormacao];
+            return ($this->tpAreaFormacao) ? $nomes[$this->tpAreaFormacao] : '-';
         }
 
         return $this->tpAreaFormacao;
