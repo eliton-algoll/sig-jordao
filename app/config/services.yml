@@ -103,6 +103,12 @@ services:
         tags:
             - { name: tactician.handler, command: AppBundle\CommandBus\CadastrarInstituicaoCommand }
 
+    app.cadastrar_tipo_area_tematcia_handler:
+        class: AppBundle\CommandBus\CadastrarTipoAreaTematicaHandler
+        arguments: [ "@app.tipo_area_tematica_repository", "@app.curso_graduacao_repository" ]
+        tags:
+            - { name: tactician.handler, command: AppBundle\CommandBus\CadastrarTipoAreaTematicaCommand }
+
     app.cadastrar_campus_instituicao_handler:
         class: AppBundle\CommandBus\CadastrarCampusInstituicaoHandler
         arguments: [ "@app.municipio_repository", "@app.instituicao_repository" ]
@@ -264,6 +270,13 @@ services:
         arguments: [ "@app.usuario_repository" ]
         tags:
             - { name: tactician.handler, command: AppBundle\CommandBus\InativarUsuarioCommand }
+
+
+    app.inativar_tipo_area_tematica_handler:
+        class: AppBundle\CommandBus\InativarTipoAreaTematicaHandler
+        arguments: [ "@app.tipo_area_tematica_repository", "@app.curso_graduacao_repository" ]
+        tags:
+            - { name: tactician.handler, command: AppBundle\CommandBus\InativarTipoAreaTematicaCommand }
 
     app.inativar_instituicao_handler:
         class: AppBundle\CommandBus\InativarInstituicaoHandler
@@ -448,6 +461,10 @@ services:
     app.area_tematica_query:
         class: AppBundle\Query\AreaTematicaQuery
         arguments: ["@app.area_tematica_repository"]
+
+    app.tipo_area_tematica_query:
+        class: AppBundle\Query\TipoAreaTematicaQuery
+        arguments: [ "@app.tipo_area_tematica_repository", "@knp_paginator" ]
         
     app.estabelecimento_query:
         class: AppBundle\Query\EstabelecimentoQuery

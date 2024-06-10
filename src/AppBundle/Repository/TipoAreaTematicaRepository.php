@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use Symfony\Component\HttpFoundation\ParameterBag;
+
 /**
  * TipoAreaTematicaRepository
  *
@@ -10,4 +12,29 @@ namespace AppBundle\Repository;
  */
 class TipoAreaTematicaRepository extends RepositoryAbstract
 {
+    /**
+     * @param ParameterBag $pb
+     * @return \AppBundle\Entity\TipoAreaTematica[]
+     */
+    public function findByFilter(ParameterBag $pb)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb->select('a');
+        $qb->andWhere('a.tpAreaFormacao is not null');
+
+        if (!is_null($pb->get('dsTipoAreaTematica')) && $pb->get('dsTipoAreaTematica') != '') {
+            $qb->andWhere('upper(a.dsTipoAreaTematica) like :dsTipoAreaTematica')
+                ->setParameter('dsTipoAreaTematica', '%' . mb_strtoupper($pb->get('dsTipoAreaTematica')) . '%');
+        }
+
+        if (!is_null($pb->get('tpAreaFormacao')) && $pb->get('tpAreaFormacao') != '') {
+            $qb->andWhere('a.tpAreaFormacao = :tpAreaFormacao')
+                ->setParameter('tpAreaFormacao', $pb->get('tpAreaFormacao'));
+        }
+
+        $qb->orderBy('a.dsTipoAreaTematica', 'ASC');
+        $qb->addOrderBy('a.stRegistroAtivo ', 'DESC');
+
+        return $qb;
+    }
 }
