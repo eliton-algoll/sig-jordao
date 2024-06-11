@@ -67,6 +67,12 @@ services:
         tags:
             - { name: tactician.handler, command: AppBundle\CommandBus\CadastrarProgramaCommand }
 
+    app.cadastrar_texto_saudacao_handler:
+        class: AppBundle\CommandBus\CadastrarTextoSaudacaoHandler
+        arguments: [ "@app.texto_saudacao_repository"]
+        tags:
+            - { name: tactician.handler, command: AppBundle\CommandBus\CadastrarTextoSaudacaoCommand }
+
     app.atualizar_programa_handler:
         class: AppBundle\CommandBus\AtualizarProgramaHandler
         arguments: ["@app.programa_repository", "@app.tipo_quantitativo_publicacao_repository"]
@@ -473,6 +479,10 @@ services:
     app.perfil_query:
         class: AppBundle\Query\PerfilQuery
         arguments: ["@app.pessoa_perfil_repository"]
+
+    app.texto_saudacao_query:
+        class: AppBundle\Query\TextoSaudacaoQuery
+        arguments: [ "@app.texto_saudacao_repository" ]
         
     app.autorizacao_folha_query:
         class: AppBundle\Query\AutorizacaoFolhaQuery
