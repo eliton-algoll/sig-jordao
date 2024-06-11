@@ -39,6 +39,12 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - AppBundle\Entity\PessoaPerfil
+
+    app.texto_saudacao_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory: [ '@doctrine.orm.default_entity_manager', getRepository ]
+        arguments:
+            - AppBundle\Entity\TextoSaudacao
             
     app.projeto_repository:
         class: Doctrine\ORM\EntityRepository

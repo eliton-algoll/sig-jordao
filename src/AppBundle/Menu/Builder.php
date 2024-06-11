@@ -109,6 +109,7 @@ class Builder implements ContainerAwareInterface
         $menu['Gerenciar Sistema']->addChild('Manter Instituição', ['route' => 'instituicao']);
         $menu['Gerenciar Sistema']->addChild('Manter Campus', ['route' => 'campus']);
         $menu['Gerenciar Sistema']->addChild('Manter Cursos de Formação', ['route' => 'curso_formacao']);
+        $menu['Gerenciar Sistema']->addChild('Manter Texto Saudação', ['route' => 'saudacao']);
 
         $menu->addChild('Folha de Pagamento/Arquivos Bancários')->setAttribute('dropdown', true);
         $menu['Folha de Pagamento/Arquivos Bancários']->addChild('Retorno de Cadastro', array('route' => 'arquivo_retorno_cadastro'));
