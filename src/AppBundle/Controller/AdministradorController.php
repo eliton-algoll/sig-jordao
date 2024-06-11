@@ -3,15 +3,21 @@
 namespace AppBundle\Controller;
 
 use AppBundle\CommandBus\CadastrarAdministradorCommand;
+use AppBundle\CommandBus\CadastrarInstituicaoCommand;
+use AppBundle\CommandBus\CadastrarTextoSaudacaoCommand;
 use AppBundle\CommandBus\CadastrarUsuarioCommand;
 use AppBundle\CommandBus\InativarUsuarioCommand;
+use AppBundle\Entity\TextoSaudacao;
 use AppBundle\Entity\Usuario;
 use AppBundle\Exception\BancoExistsException;
 use AppBundle\Form\CadastrarAdministradorType;
+use AppBundle\Form\CadastrarInstituicaoType;
+use AppBundle\Form\CadastrarTextoSaudacaoType;
 use AppBundle\Form\ConsultarAdministradorType;
 use Composer\Package\Loader\ValidatingArrayLoader;
 use Exception;
 use League\Tactician\Bundle\Middleware\InvalidCommandException;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,6 +57,41 @@ final class AdministradorController extends ControllerAbstract
         return $this->render('administrador/index.html.twig', [
             'form' => $form->createView(),
             'pagination' => $pagination,
+        ]);
+    }
+
+    /**
+     *
+     * @param Request $request
+     * @return Response
+     *
+     * @Route("saudacao", name="saudacao")
+     * @Method({"GET", "POST"})
+     */
+    public function saudacaoAction(Request $request)
+    {
+        $textoSaudacao =  $this->get('app.texto_saudacao_query')->find();
+        $command = new CadastrarTextoSaudacaoCommand();
+        $command->setValuesByEntity($textoSaudacao);
+
+        $form = $this->get('form.factory')->createNamed('cadastrar_saudacao', CadastrarTextoSaudacaoType::class, $command);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $data = new ParameterBag($request->request->get('cadastrar_saudacao'));
+            $command->setDsTextoSaudacao($data->get('dsTextoSaudacao'));
+            try {
+                $this->getBus()->handle($command);
+                $this->addFlash('success', 'Texto alterado com sucesso.');
+            } catch (InvalidCommandException $e) {
+                $this->addFlashValidationError();
+            } catch (\InvalidArgumentException $e) {
+                $this->addFlash('danger', $e->getMessage());
+            }
+        }
+
+        return $this->render('saudacao/create.html.twig', [
+            'form' => $form->createView()
         ]);
     }
 
