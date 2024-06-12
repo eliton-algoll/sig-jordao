@@ -456,7 +456,7 @@ class ParticipanteHandlerAbstract
      */
     protected function addGrupoTutorial(ProjetoPessoa $projetoPessoa, CadastrarParticipanteCommand $command)
     {
-            var_dump($projetoPessoa->getPessoaPerfil()->getPerfil()->isOrientadorProjeto());
+
         if (
             $projetoPessoa->getProjeto()->getPublicacao()->getPrograma()->isGrupoTutorial() &&
             !$projetoPessoa->getPessoaPerfil()->getPerfil()->isCoordenadorProjeto() &&
