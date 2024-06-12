@@ -182,15 +182,6 @@ class ParticipanteController extends ControllerAbstract
      */
     public function atualizarAction(Request $request, ProjetoPessoa $projetoPessoa)
     {
-        /*
-        if ($this->isGranted(array('HAS_FOLHA_PAGAMENTO_ABERTA', 'HAS_FOLHA_PAGAMENTO_FECHADA')) && 
-            !$this->isGranted('HAS_AUTORIZACAO_CADASTRO_PARTICIPANTE')
-        ) {
-            $this->addFlash('danger', 'Não é possível alterar as informações dos participantes enquanto a folha de pagamento do programa estiver aberta ou até que seja cadastrado um período excepcional de abertura de cadastro pelo administrador do sistema.');
-            return $this->redirectToRoute('participante');
-        }
-        */
-
         // Obtém o projeto da pessoa do grupo, caso não haja
         try {
             if (is_null($projetoPessoa->getCoEixoAtuacao())) {
