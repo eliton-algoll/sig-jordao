@@ -107,7 +107,7 @@ class ParticipanteTypeAbstract extends AbstractType
             ))
             ->add('dsComplemento', TextType::class, array(
                 'label' => 'Complemento',
-                'attr' => array('maxlength' => 15)
+                'attr' => array('maxlength' => 160)
             ))
             ->add('noBairro', TextType::class, array(
                 'label' => 'Bairro',
