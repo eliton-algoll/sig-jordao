@@ -88,10 +88,10 @@ class CadastrarParticipanteCommand
      * @var UploadedFile
      *
      * @Assert\File(
-     *      maxSize = "2M",
-     *      maxSizeMessage = "Arquivo selecionado tem o formato ou o tamanho inválido. Serão aceitos arquivos com os formatos: PDF e de até 02 (dois) Megabytes. Selecione novo arquivo e refaça a operação.",
+     *      maxSize = "5M",
+     *      maxSizeMessage = "Arquivo selecionado tem o formato ou o tamanho inválido. Serão aceitos arquivos com os formatos: PDF e de até 05 (cinco) Megabytes. Selecione novo arquivo e refaça a operação.",
      *      mimeTypes = {"application/pdf", "application/x-pdf"},
-     *      mimeTypesMessage = "Arquivo selecionado tem o formato ou o tamanho inválido. Serão aceitos arquivos com os formatos: PDF e de até 02 (dois) Megabytes. Selecione novo arquivo e refaça a operação. "
+     *      mimeTypesMessage = "Arquivo selecionado tem o formato ou o tamanho inválido. Serão aceitos arquivos com os formatos: PDF e de até 05 (cinco) Megabytes. Selecione novo arquivo e refaça a operação. "
      * )
      */
     private $noDocumentoBancario;
@@ -102,10 +102,10 @@ class CadastrarParticipanteCommand
      * @var UploadedFile
      *
      * @Assert\File(
-     *      maxSize = "2M",
-     *      maxSizeMessage = "Arquivo selecionado tem o formato ou o tamanho inválido. Serão aceitos arquivos com os formatos: PDF e de até 02 (dois) Megabytes. Selecione novo arquivo e refaça a operação.",
+     *      maxSize = "5M",
+     *      maxSizeMessage = "Arquivo selecionado tem o formato ou o tamanho inválido. Serão aceitos arquivos com os formatos: PDF e de até 05 (cinco) Megabytes. Selecione novo arquivo e refaça a operação.",
      *      mimeTypes = {"application/pdf", "application/x-pdf"},
-     *      mimeTypesMessage = "Arquivo selecionado tem o formato ou o tamanho inválido. Serão aceitos arquivos com os formatos: PDF e de até 02 (dois) Megabytes. Selecione novo arquivo e refaça a operação. "
+     *      mimeTypesMessage = "Arquivo selecionado tem o formato ou o tamanho inválido. Serão aceitos arquivos com os formatos: PDF e de até 05 (cinco) Megabytes. Selecione novo arquivo e refaça a operação. "
      * )
      */
     private $noDocumentoMatricula;
