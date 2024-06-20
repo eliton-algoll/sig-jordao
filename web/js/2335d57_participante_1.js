@@ -823,30 +823,38 @@
                                     return false;
                                 } else {
                                     if (response.details.eixoAtuacao) {
+                                        var editar_ = $('#editar_').val();
                                         switch (response.details.eixoAtuacao) {
                                             case 'A': { // Gestão em Saúde
-                                                $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                if( editar_ != '1' ) {
+                                                    $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                }
                                                 $('[id$="participante_coEixoAtuacao_0"]').attr('checked', true);
                                                 $('[name$="participante[coEixoAtuacao]"][value="A"]').prop('checked', true);
                                                 $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
                                                 break;
                                             }
                                             case 'B': { // Assistência à Saúde
-                                                $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                if( editar_ != '1' ) {
+                                                    $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                }
                                                 $('[id$="participante_coEixoAtuacao_1"]').attr('checked', true);
                                                 $('[name$="participante[coEixoAtuacao]"][value="B"]').prop('checked', true);
                                                 $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
                                                 break;
                                             }
                                             case 'C': { // Assistência à Saúde
-                                                $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                if( editar_ != '1' ) {
+                                                    $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                }
                                                 $('[id$="participante_coEixoAtuacao_2"]').attr('checked', true);
                                                 $('[name$="participante[coEixoAtuacao]"][value="C"]').prop('checked', true);
                                                 $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
                                                 break;
                                             }
                                         }
-                                    } else
+                                    }
+                                    else
                                     {
                                         if( response.details.eixosPermitidos.includes('A') ) {
                                             $('[name$="participante[coEixoAtuacao]"][value="A"]').prop('disabled', true);
@@ -1070,23 +1078,30 @@
                                     return false;
                                 } else {
                                     if (response.details.eixoAtuacao) {
+                                        var editar = $('#editar_').val();
                                         switch (response.details.eixoAtuacao) {
                                             case 'A': { // Gestão em Saúde
-                                                $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                if( editar != '1' ) {
+                                                    $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                }
                                                 $('[id$="participante_coEixoAtuacao_0"]').attr('checked', true);
                                                 $('[name$="participante[coEixoAtuacao]"][value="A"]').prop('checked', true);
                                                 $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
                                                 break;
                                             }
                                             case 'B': { // Assistência à Saúde
-                                                $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                if( editar != '1' ) {
+                                                    $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                }
                                                 $('[id$="participante_coEixoAtuacao_1"]').attr('checked', true);
                                                 $('[name$="participante[coEixoAtuacao]"][value="B"]').prop('checked', true);
                                                 $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
                                                 break;
                                             }
                                             case 'C': { // Assistência à Saúde
-                                                $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                if( editar != '1' ) {
+                                                    $('[id$="participante_coEixoAtuacao"] input').attr('disabled', 'disabled');
+                                                }
                                                 $('[id$="participante_coEixoAtuacao_2"]').attr('checked', true);
                                                 $('[name$="participante[coEixoAtuacao]"][value="C"]').prop('checked', true);
                                                 $('[id$="participante_stDeclaracaoCursoPenultimo"]').parent().parent().parent().hide();
@@ -1096,12 +1111,7 @@
                                     }
 
                                     if (perfil == 4) { // Preceptor
-
-                                        // Se Preceptor, não deve exibir os Cursos de Graduação que já esteja vinculado
-                                        // aos Preceptores
-
                                         var options = $('[id$="participante_cursoGraduacao"] option');
-
                                         for (var i = 0; i < response.details.cursosGraduacao.length; i++) {
                                             for (var j = 0; j < options.length; j++) {
                                                 if ($(options[j]).val() == response.details.cursosGraduacao[i]) {
@@ -1111,7 +1121,6 @@
                                         }
                                     }
 
-                                    // if ((perfil == 5) || (perfil == 6)) { // Tutor | Estudante
                                     if (perfil == 6) { // Estudante
                                         if (response.details.temDoisPreceptores) {
                                             $('#btn-salvar').show();
@@ -1120,7 +1129,8 @@
                                             // bootbox.alert('É necessário ter no mínimo 2 (dois) Preceptores bolsistas cadastrados. Salvar não é permitido.');
                                             return;
                                         }
-                                    } else {
+                                    }
+                                    else {
                                         $('#btn-salvar').show();
                                     }
 

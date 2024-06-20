@@ -66,17 +66,17 @@ class DefaultController extends ControllerAbstract
         if( ($this->getPessoaPerfilAutenticado()) &&
             !is_null($this->getPessoaPerfilAutenticado()->getPerfil()) &&
             !$this->getPessoaPerfilAutenticado()->getPerfil()->isAdministrador()) {
-//            $dsPrograma = $this->getProjetoAutenticado()->getPublicacao()->getPrograma()->getDsPrograma();
-//            $coPrograma = $this->getProjetoAutenticado()->getPublicacao()->getPrograma()->getCoSeqPrograma();
-
             $programa = $this->getProjetoAutenticado()->getPublicacao()->getPrograma();
         }
+
+        $saudacao = $this->get('app.texto_saudacao_query')->find();
 
         return $this->render(
             'default/index.html.twig',
             array(
                 'pessoaPerfil' => $this->getPessoaPerfilAutenticado(),
                 'programa' => $programa,
+                'saudacao' => $saudacao->getDsTextoSaudacao()
             )
         );
     }    

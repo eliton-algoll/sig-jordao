@@ -80,7 +80,7 @@
         </div>
         <footer>
             <div id="rodape-datasus"></div>
-            <div style="text-align:right;margin-top:1rem;margin-right:1rem;font-size:.8em;">v 2.3.4</div>
+            <div style="text-align:right;margin-top:1rem;margin-right:1rem;font-size:.8em;">v 2.3.10</div>
         </footer>
         <script type="text/javascript" >
             var assetPath = '{{ asset('/') }}';
@@ -96,7 +96,8 @@
             'js/sigpet.js'
             'js/helper.js'
             'js/filters.js'
-            'js/jquery.battatech.excelexport.js' %}
+            'js/jquery.battatech.excelexport.js'
+            'js/ckeditor.js' %}
         <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
         <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>

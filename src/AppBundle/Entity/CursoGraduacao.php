@@ -38,6 +38,16 @@ class CursoGraduacao extends AbstractEntity
      */
     private $projetoPessoaCursoGraduacao;
 
+    /**
+     * @param string $dsCursoGraduacao
+     * @param string $tpAreaTematica
+     */
+    public function __construct($dsCursoGraduacao)
+    {
+        $this->dsCursoGraduacao = $dsCursoGraduacao;
+        $this->dtInclusao = new \DateTime();
+        $this->stRegistroAtivo = 'S';
+    }
 
     /**
      * Get coSeqCursoGraduacao
@@ -71,6 +81,22 @@ class CursoGraduacao extends AbstractEntity
     public function getDsCursoGraduacao()
     {
         return $this->dsCursoGraduacao;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStRegistroAtivo()
+    {
+        return $this->stRegistroAtivo;
+    }
+
+    /**
+     * @param string $stRegistroAtivo
+     */
+    public function setStRegistroAtivo($stRegistroAtivo)
+    {
+        $this->stRegistroAtivo = $stRegistroAtivo;
     }
     
     public function getProjetoPessoaCursoGraduacao()

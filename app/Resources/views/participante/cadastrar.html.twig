@@ -132,6 +132,7 @@
             </div>
             {{ form_end(form) }}
             <input type="hidden" name="prejetoAreaAtuacao" id="prejetoAreaAtuacao" value="{{ projeto.getPublicacao().getPrograma().isAreaAtuacao() ? 1 : 0 }}">
+            <input type="hidden" id="editar_" value="0">
         </div>
     </div>
 

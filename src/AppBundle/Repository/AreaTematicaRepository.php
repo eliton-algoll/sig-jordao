@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Projeto;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * AreaTematicaRepository
@@ -12,7 +13,7 @@ use AppBundle\Entity\Projeto;
  */
 class AreaTematicaRepository extends RepositoryAbstract
 {
-    
+
     /**
      * @param Projeto $projeto
      * @return \AppBundle\Entity\AreaTematica

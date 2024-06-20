@@ -2,6 +2,7 @@
 
 namespace AppBundle\CommandBus;
 
+use AppBundle\Entity\GrupoAtuacao;
 use AppBundle\Event\HandleSituacaoGrupoAtuacaoEvent;
 use AppBundle\Facade\FileNameGeneratorFacade;
 use AppBundle\Facade\FileUploaderFacade;
@@ -98,9 +99,8 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
      */
     public function handle(AtualizarParticipanteCommand $command)
     {
-        $projetoPessoa = $this->projetoPessoaRepository->find($command->getCoSeqProjetoPessoa());
-        $projeto       = $this->projetoRepository->find($command->getProjeto());
-
+        $projetoPessoa   = $this->projetoPessoaRepository->find($command->getCoSeqProjetoPessoa());
+        $projeto         = $this->projetoRepository->find($command->getProjeto());
         $pessoaFisica    = $this->getPessoaFisicaIfCPFExists($command->getNuCpf());
         $banco           = $command->getCoBanco() ? $this->getBancoIfExists($command->getCoBanco()) : $command->getCoBanco();
         $banco           = !($banco) ? null : $banco;
@@ -179,6 +179,14 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
         } else {
             $this->addGrupoTutorial($projetoPessoa, $command);
         }
+
+        //Desconfirmando todos os grupos
+        if( $perfil->getCoSeqPerfil() != Perfil::PERFIL_COORDENADOR_PROJETO  ) {
+            $grupoAtuacoes = $projeto->getGruposAtuacao();
+            foreach ( $grupoAtuacoes as $grupoAtuacao ) {
+                $this->confirmGrupoAtuacao($grupoAtuacao);
+            }
+        }
         
         $this->projetoPessoaRepository->add($projetoPessoa);
 
@@ -186,6 +194,15 @@ class AtualizarParticipanteHandler extends ParticipanteHandlerAbstract
             HandleSituacaoGrupoAtuacaoEvent::NAME,
             new HandleSituacaoGrupoAtuacaoEvent($projetoPessoa)
         );
+    }
+
+    /**
+     * @param GrupoAtuacao
+     */
+    protected function confirmGrupoAtuacao(GrupoAtuacao $grupoAtuacao)
+    {
+        $grupoAtuacao->desconfirmar();
+        $this->grupoAtuacaoRepository->add($grupoAtuacao);
     }
 
     /**
