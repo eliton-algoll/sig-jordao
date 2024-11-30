@@ -157,8 +157,11 @@ class ParticipanteHandlerAbstract
         if(preg_match('#sigpet\.saude\.gov\.br#i', $host, $match)){
             $flag = true;
         }
-        if ($command->getCoCnes() && !$this->isCnesValido($command->getCoCnes()) && $flag) {
-            throw new \InvalidArgumentException('Número CNES inválido ou inexistente.');
+        //IF Msg fora do ar
+        $resultadoValid = $this->isCnesValido($command->getCoCnes());
+
+        if (!$resultadoValid && $flag) {
+            throw new \InvalidArgumentException('Número CNES inválido ou inexistente!!!');
         }
     }
       
@@ -168,12 +171,15 @@ class ParticipanteHandlerAbstract
      */
     protected function isCnesValido($coCnes)
     {
-        try {
-            $cnesObj = new \AppBundle\WebServices\Cnes();
-            return (bool) $cnesObj->consultarEstabelecimentoSaude($coCnes);
-        } catch (\SoapFault $e) {
-            return false;
+        $cnesObj = new \AppBundle\WebServices\Cnes();
+        $res = $cnesObj->consultarEstabelecimentoSaude($coCnes);
+        if ($res == null) {
+            throw new \InvalidArgumentException('Problema ao consultar o serviço externo de validação Cnes. Error: '. $cnesObj->getMsgErro());
+        } elseif ($res != null && $res == false) {
+            throw new \InvalidArgumentException('Número CNES inválido ou inexistente!');
         }
+        
+        return (bool) $res;
     }
     
     /**
