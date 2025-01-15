@@ -8,7 +8,6 @@ use AppBundle\Facade\FileNameGeneratorFacade;
 use AppBundle\Facade\FileUploaderFacade;
 use AppBundle\Repository\AreaTematicaRepository;
 use AppBundle\Repository\IdentidadeGeneroRepository;
-use AppBundle\WebServices\Cnes;
 use AppBundle\CommandBus\AtualizarParticipanteCommand;
 use AppBundle\CommandBus\CadastrarParticipanteCommand;
 use AppBundle\Repository\ProjetoPessoaRepository;

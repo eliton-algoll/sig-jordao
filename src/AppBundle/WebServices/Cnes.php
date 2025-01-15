@@ -25,7 +25,9 @@ class Cnes extends ClientAbstract
         
         parent::__construct($wsdl, $options, $env);
         
-        $this->setSecurityHeader();
+        if (!empty($this->client)) {
+            $this->setSecurityHeader();
+        }
     }
     
     protected function setSecurityHeader()
@@ -60,6 +62,10 @@ XML;
         $params->CodigoCNES = new \stdClass();
         $params->CodigoCNES->codigo = $codigoCnes;
         
-        return $this->client->consultarEstabelecimentoSaude($params);
+        if (!empty($this->client)) {
+            return $this->client->consultarEstabelecimentoSaude($params);
+        }
+
+        return null;
     }
 }

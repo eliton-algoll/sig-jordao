@@ -12,7 +12,9 @@ abstract class ClientAbstract
     /**
      * @var \SoapClient
      */
-    protected $client;
+    protected $client = null;
+
+    protected $msgErro = '';
     
     /**
      * @param string $wsdl
@@ -48,9 +50,21 @@ abstract class ClientAbstract
             $defaults['proxy_port'] = '80';
         }
         
-        $this->client = new \SoapClient($this->wsdl, array_merge($defaults, $options));
+        try{
+            $this->client = new \SoapClient($this->wsdl, array_merge($defaults, $options));
+        } catch(\SoapFault $ex) {
+            $this->msgErro = $ex->getMessage(). " - Code: ". $ex->getCode();
+        } catch (\Exception $ex) { 
+            // Trata outros erros gerais
+            $this->msgErro = $ex->getMessage(). " - Code: ". $ex->getCode();
+        }
     }
     
+    public function getMsgErro()
+    {
+        return $this->msgErro;
+    }
+
     /**
      * @return array
      */
