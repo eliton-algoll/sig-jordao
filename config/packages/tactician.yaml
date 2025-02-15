@@ -1,0 +1,9 @@
+tactician:
+  commandbus:
+    default:
+      middleware:
+        # service ids for all your middlewares, top down. First in, first out.
+        - tactician.middleware.validator
+        - tactician.middleware.doctrine
+        - tactician.middleware.locking
+        - tactician.middleware.command_handler

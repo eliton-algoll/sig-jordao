@@ -1,0 +1,36 @@
+security:
+    providers:
+        dbpet:
+            entity:
+                class: AppBundle:Usuario
+                property: dsLogin
+    encoders:
+        AppBundle\Entity\Usuario:
+            algorithm: bcrypt
+            cost: 12
+            
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: ~
+            form_login:
+                login_path: login
+                check_path: login
+                username_parameter: logar[dsLogin]
+                password_parameter: logar[dsSenha]
+                always_use_default_target_path: true
+                default_target_path: default_direcionar_login
+            logout:
+                path: /logout
+                target: login
+            switch_user: { role : ADMINISTRADOR }
+                
+    access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/devel, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/esqueci-minha-senha, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/informe-rendimento, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/fale-conosco, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: ROLE_USER }
