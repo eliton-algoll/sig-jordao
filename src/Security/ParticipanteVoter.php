@@ -20,7 +20,7 @@ class ParticipanteVoter extends Voter
     /**
      * @param EntityManagerInterface
      */
-    public function __construct($entityManager)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->em = $entityManager;
     }
