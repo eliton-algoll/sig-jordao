@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -8,9 +8,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use League\Tactician\Bundle\Middleware\InvalidCommandException;
-use AppBundle\Form\CadastrarGrupoAtuacaoType;
-use AppBundle\CommandBus\CadastrarGrupoAtuacaoCommand;
-use AppBundle\CommandBus\InativarGrupoAtuacaoCommand;
+use App\Form\CadastrarGrupoAtuacaoType;
+use App\CommandBus\CadastrarGrupoAtuacaoCommand;
+use App\CommandBus\InativarGrupoAtuacaoCommand;
 
 /**
  * @Security("is_granted('COORDENADOR_PROJETO', 'ROLE_PREVIOUS_ADMIN')")

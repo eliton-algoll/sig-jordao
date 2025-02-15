@@ -1,19 +1,19 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
-use AppBundle\CommandBus\CadastrarAdministradorCommand;
-use AppBundle\CommandBus\CadastrarInstituicaoCommand;
-use AppBundle\CommandBus\CadastrarTextoSaudacaoCommand;
-use AppBundle\CommandBus\CadastrarUsuarioCommand;
-use AppBundle\CommandBus\InativarUsuarioCommand;
-use AppBundle\Entity\TextoSaudacao;
-use AppBundle\Entity\Usuario;
-use AppBundle\Exception\BancoExistsException;
-use AppBundle\Form\CadastrarAdministradorType;
-use AppBundle\Form\CadastrarInstituicaoType;
-use AppBundle\Form\CadastrarTextoSaudacaoType;
-use AppBundle\Form\ConsultarAdministradorType;
+use App\CommandBus\CadastrarAdministradorCommand;
+use App\CommandBus\CadastrarInstituicaoCommand;
+use App\CommandBus\CadastrarTextoSaudacaoCommand;
+use App\CommandBus\CadastrarUsuarioCommand;
+use App\CommandBus\InativarUsuarioCommand;
+use App\Entity\TextoSaudacao;
+use App\Entity\Usuario;
+use App\Exception\BancoExistsException;
+use App\Form\CadastrarAdministradorType;
+use App\Form\CadastrarInstituicaoType;
+use App\Form\CadastrarTextoSaudacaoType;
+use App\Form\ConsultarAdministradorType;
 use Composer\Package\Loader\ValidatingArrayLoader;
 use Exception;
 use League\Tactician\Bundle\Middleware\InvalidCommandException;

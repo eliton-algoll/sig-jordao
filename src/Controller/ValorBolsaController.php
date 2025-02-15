@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
-use AppBundle\CommandBus\CadastrarValorBolsaCommand;
-use AppBundle\CommandBus\InativarValorBolsaCommand;
-use AppBundle\Entity\ValorBolsaPrograma;
-use AppBundle\Exception\ValorBolsaHasInFolhaException;
-use AppBundle\Exception\ValorBolsaProgramaExistsException;
-use AppBundle\Form\CadastrarValorBolsaType;
-use AppBundle\Form\ConsultarValorBolsaType;
+use App\CommandBus\CadastrarValorBolsaCommand;
+use App\CommandBus\InativarValorBolsaCommand;
+use App\Entity\ValorBolsaPrograma;
+use App\Exception\ValorBolsaHasInFolhaException;
+use App\Exception\ValorBolsaProgramaExistsException;
+use App\Form\CadastrarValorBolsaType;
+use App\Form\ConsultarValorBolsaType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -43,7 +43,7 @@ final class ValorBolsaController extends ControllerAbstract
             foreach ($pagination->getItems() as $valorBolsaPrograma) {
                 if ($valorBolsaPrograma->isAtivo()) {
                     try {
-                        $em->getRepository('AppBundle:FolhaPagamento')->checkNuMesNuAnoHasInFolha(
+                        $em->getRepository('App:FolhaPagamento')->checkNuMesNuAnoHasInFolha(
                             $valorBolsaPrograma->getNuMesVigencia(),
                             $valorBolsaPrograma->getNuAnoVigencia());                        
                     } catch (\Exception $e) {

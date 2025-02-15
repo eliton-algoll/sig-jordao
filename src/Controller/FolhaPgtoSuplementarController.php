@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
-use AppBundle\Entity\AutorizacaoFolha;
-use AppBundle\Entity\Projeto;
-use AppBundle\Repository\FolhaPagamentoRepository;
+use App\Entity\AutorizacaoFolha;
+use App\Entity\Projeto;
+use App\Repository\FolhaPagamentoRepository;
 use League\Tactician\Bundle\Middleware\InvalidCommandException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,14 +15,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use AppBundle\Form\CadastarFolhaSuplementarType;
-use AppBundle\Exception\FolhaSuplementarException;
-use AppBundle\Entity\SituacaoFolha;
-use AppBundle\Entity\Publicacao;
-use AppBundle\Entity\FolhaPagamento;
-use AppBundle\CommandBus\InativarAutorizacoesFolhaSuplementarCommand;
-use AppBundle\CommandBus\CancelarFolhaSuplementarCommand;
-use AppBundle\CommandBus\CadastarFolhaSuplementarCommand;
+use App\Form\CadastarFolhaSuplementarType;
+use App\Exception\FolhaSuplementarException;
+use App\Entity\SituacaoFolha;
+use App\Entity\Publicacao;
+use App\Entity\FolhaPagamento;
+use App\CommandBus\InativarAutorizacoesFolhaSuplementarCommand;
+use App\CommandBus\CancelarFolhaSuplementarCommand;
+use App\CommandBus\CadastarFolhaSuplementarCommand;
 
 /**
  * @Security("is_granted('ADMINISTRADOR')")
@@ -301,7 +301,7 @@ final class FolhaPgtoSuplementarController extends ControllerAbstract
     {
         $em = $this->getDoctrine()->getManager();
 
-        $folhasPagamento = $em->getRepository('AppBundle:FolhaPagamento')->search(
+        $folhasPagamento = $em->getRepository('App:FolhaPagamento')->search(
             new ParameterBag([
                 'publicacao' => $publicacao,
                 'tpFolha' => FolhaPagamento::SUPLEMENTAR,

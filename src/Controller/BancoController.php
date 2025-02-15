@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
-use AppBundle\CommandBus\CadastrarBancoCommand;
-use AppBundle\CommandBus\ExcluirBancoCommand;
-use AppBundle\CommandBus\InativarBancoCommand;
-use AppBundle\Entity\Banco;
-use AppBundle\Exception\BancoExistsException;
-use AppBundle\Form\CadastrarBancoType;
-use AppBundle\Form\ConsultarBancoType;
+use App\CommandBus\CadastrarBancoCommand;
+use App\CommandBus\ExcluirBancoCommand;
+use App\CommandBus\InativarBancoCommand;
+use App\Entity\Banco;
+use App\Exception\BancoExistsException;
+use App\Form\CadastrarBancoType;
+use App\Form\ConsultarBancoType;
 use Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,7 +46,7 @@ final class BancoController extends ControllerAbstract
 //            foreach ($pagination->getItems() as $valorBolsaPrograma) {
 //                if ($valorBolsaPrograma->isAtivo()) {
 //                    try {
-//                        $em->getRepository('AppBundle:FolhaPagamento')->checkNuMesNuAnoHasInFolha(
+//                        $em->getRepository('App:FolhaPagamento')->checkNuMesNuAnoHasInFolha(
 //                            $valorBolsaPrograma->getNuMesVigencia(),
 //                            $valorBolsaPrograma->getNuAnoVigencia());
 //                    } catch (Exception $e) {

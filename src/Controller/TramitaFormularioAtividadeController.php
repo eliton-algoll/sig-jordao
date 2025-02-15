@@ -1,23 +1,23 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
-use AppBundle\CommandBus\AnalisarRetornoFormularioAvaliacaoAtividadeCommand;
-use AppBundle\CommandBus\AtualizarEnvioFormularioAvaliacaoAtividadeCommand;
-use AppBundle\CommandBus\CadastrarEnvioFormularioAvaliacaoAtividadeCommand;
-use AppBundle\CommandBus\CadastrarRetornoFormularioAvaliacaoAtividadeCommand;
-use AppBundle\CommandBus\InativarEnvioFormularioAvaliacaoAtividadeCommand;
-use AppBundle\CommandBus\InativarTramitacaoFormularioCommand;
-use AppBundle\Entity\EnvioFormularioAvaliacaoAtividade;
-use AppBundle\Entity\FormularioAvaliacaoAtividade;
-use AppBundle\Entity\Projeto;
-use AppBundle\Entity\TramitacaoFormulario;
-use AppBundle\Form\AnalisarRetornoFormularioAvaliacaoAtividadeType;
-use AppBundle\Form\AtualizarEnvioFormularioAvaliacaoAtividadeType;
-use AppBundle\Form\CadastrarEnvioFormularioAvaliacaoAtividadeType;
-use AppBundle\Form\CadastrarRetornoFormularioAvaliacaoAtividadeType;
-use AppBundle\Form\ConsultarEnvioFormulariosAvaliacaoAtividadeType;
-use AppBundle\Form\ConsultarFormulariosAvaliacaoAtividadeParticipanteType;
+use App\CommandBus\AnalisarRetornoFormularioAvaliacaoAtividadeCommand;
+use App\CommandBus\AtualizarEnvioFormularioAvaliacaoAtividadeCommand;
+use App\CommandBus\CadastrarEnvioFormularioAvaliacaoAtividadeCommand;
+use App\CommandBus\CadastrarRetornoFormularioAvaliacaoAtividadeCommand;
+use App\CommandBus\InativarEnvioFormularioAvaliacaoAtividadeCommand;
+use App\CommandBus\InativarTramitacaoFormularioCommand;
+use App\Entity\EnvioFormularioAvaliacaoAtividade;
+use App\Entity\FormularioAvaliacaoAtividade;
+use App\Entity\Projeto;
+use App\Entity\TramitacaoFormulario;
+use App\Form\AnalisarRetornoFormularioAvaliacaoAtividadeType;
+use App\Form\AtualizarEnvioFormularioAvaliacaoAtividadeType;
+use App\Form\CadastrarEnvioFormularioAvaliacaoAtividadeType;
+use App\Form\CadastrarRetornoFormularioAvaliacaoAtividadeType;
+use App\Form\ConsultarEnvioFormulariosAvaliacaoAtividadeType;
+use App\Form\ConsultarFormulariosAvaliacaoAtividadeParticipanteType;
 use League\Tactician\Bundle\Middleware\InvalidCommandException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

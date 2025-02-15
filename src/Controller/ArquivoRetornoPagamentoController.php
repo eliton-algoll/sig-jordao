@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,23 +10,23 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use League\Tactician\Bundle\Middleware\InvalidCommandException;
-use AppBundle\Form\RecepcionarArquivoRetornoPagamentoType;
-use AppBundle\Form\FiltroRelatorioRetornoPagamentoType;
-use AppBundle\Form\ConsultarRetonosPagamentoType;
-use AppBundle\Exception\UnexpectedCommandBehaviorException;
-use AppBundle\Entity\RetornoPagamento;
-use AppBundle\Entity\Publicacao;
-use AppBundle\Entity\FolhaPagamento;
-use AppBundle\CommandBus\RecepcionarArquivoRetornoPagamentoCommand;
-use AppBundle\CommandBus\InativarRetornoPagamentoCommand;
-use AppBundle\CommandBus\FinalizaFolhaPagamentoCommand;
+use App\Form\RecepcionarArquivoRetornoPagamentoType;
+use App\Form\FiltroRelatorioRetornoPagamentoType;
+use App\Form\ConsultarRetonosPagamentoType;
+use App\Exception\UnexpectedCommandBehaviorException;
+use App\Entity\RetornoPagamento;
+use App\Entity\Publicacao;
+use App\Entity\FolhaPagamento;
+use App\CommandBus\RecepcionarArquivoRetornoPagamentoCommand;
+use App\CommandBus\InativarRetornoPagamentoCommand;
+use App\CommandBus\FinalizaFolhaPagamentoCommand;
 
 /**
  * @Security("is_granted('ADMINISTRADOR')")
  */
 final class ArquivoRetornoPagamentoController extends ControllerAbstract
 {
-    use \AppBundle\Traits\DownloadResponseTrait;
+    use \App\Traits\DownloadResponseTrait;
     
     /**
      * 
@@ -76,7 +76,7 @@ final class ArquivoRetornoPagamentoController extends ControllerAbstract
         if ($form->isSubmitted()) {
             try {
                 $this->getBus()->handle($command);
-                return $this->forward('AppBundle:ArquivoRetornoPagamento:finalizarFolha', [ 'folhaPagamento' => $command->getFolhaPagamento() ]);
+                return $this->forward('App:ArquivoRetornoPagamento:finalizarFolha', [ 'folhaPagamento' => $command->getFolhaPagamento() ]);
             } catch(UnexpectedCommandBehaviorException $ucb) {
                 $this->addFlash('danger', $ucb->getMessage());
             }catch (InvalidCommandException $ie) {

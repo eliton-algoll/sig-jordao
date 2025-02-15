@@ -6,18 +6,18 @@
  * Time: 10:59
  */
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
-use AppBundle\CommandBus\ConsultarInformeRendimentoCommand;
-use AppBundle\Controller\ControllerAbstract;
-use AppBundle\Entity\ProjetoPessoa;
+use App\CommandBus\ConsultarInformeRendimentoCommand;
+use App\Controller\ControllerAbstract;
+use App\Entity\ProjetoPessoa;
 use Doctrine\Common\Util\Debug;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\NoResultException;
-use AppBundle\Form\ConsultarInformeRendimentoType;
+use App\Form\ConsultarInformeRendimentoType;
 
 class InformeRendimentoController extends ControllerAbstract
 {

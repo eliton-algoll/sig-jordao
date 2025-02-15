@@ -1,24 +1,24 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
-use AppBundle\Entity\GrupoAtuacao;
-use AppBundle\Entity\Perfil;
+use App\Entity\GrupoAtuacao;
+use App\Entity\Perfil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use League\Tactician\Bundle\Middleware\InvalidCommandException;
-use AppBundle\Form\PesquisarParticipanteType;
-use AppBundle\Form\CadastrarParticipanteType;
-use AppBundle\Form\AtualizarParticipanteType;
-use AppBundle\Form\TelefoneType;
-use AppBundle\CommandBus\CadastrarUsuarioCommand;
-use AppBundle\CommandBus\CadastrarParticipanteCommand;
-use AppBundle\CommandBus\AtualizarParticipanteCommand;
-use AppBundle\Entity\ProjetoPessoa;
-use AppBundle\CommandBus\InativarParticipanteCommand;
+use App\Form\PesquisarParticipanteType;
+use App\Form\CadastrarParticipanteType;
+use App\Form\AtualizarParticipanteType;
+use App\Form\TelefoneType;
+use App\CommandBus\CadastrarUsuarioCommand;
+use App\CommandBus\CadastrarParticipanteCommand;
+use App\CommandBus\AtualizarParticipanteCommand;
+use App\Entity\ProjetoPessoa;
+use App\CommandBus\InativarParticipanteCommand;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
