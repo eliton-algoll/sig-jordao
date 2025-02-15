@@ -1,23 +1,36 @@
 security:
-    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
-    providers:
-        users_in_memory: { memory: null }
-    firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-        main:
-            anonymous: lazy
-            provider: users_in_memory
+  providers:
+    dbpet:
+      entity:
+        class: App:Usuario
+        property: dsLogin
+  encoders:
+    App\Entity\Usuario:
+      algorithm: bcrypt
+      cost: 12
 
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#firewalls-authentication
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+    main:
+      anonymous: ~
+      form_login:
+        login_path: login
+        check_path: login
+        username_parameter: logar[dsLogin]
+        password_parameter: logar[dsSenha]
+        always_use_default_target_path: true
+        default_target_path: default_direcionar_login
+      logout:
+        path: /logout
+        target: login
+      switch_user: { role: ADMINISTRADOR }
 
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
-
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
-    access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+  access_control:
+    - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/devel, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/esqueci-minha-senha, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/informe-rendimento, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/fale-conosco, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/, roles: ROLE_USER }
