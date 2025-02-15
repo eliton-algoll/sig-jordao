@@ -2,11 +2,18 @@
 
 namespace App\Repository;
 
-use Symfony\Component\HttpFoundation\ParameterBag;
+use App\Entity\AgenciaBancaria;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class VwParticipanteRepository extends RepositoryAbstract
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AgenciaBancaria::class);
+    }
+    
     public function searchRelatorioParticipante(ParameterBag $params)
     {
         $queryParams = $queryTypes = [];

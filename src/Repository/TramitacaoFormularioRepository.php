@@ -2,14 +2,21 @@
 
 namespace App\Repository;
 
-use App\Entity\EnvioFormularioAvaliacaoAtividade;
-use App\Entity\SituacaoTramiteFormulario;
+use App\Entity\AgenciaBancaria;
 use App\Entity\TramitacaoFormulario;
+use App\Entity\SituacaoTramiteFormulario;
+use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\EnvioFormularioAvaliacaoAtividade;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class TramitacaoFormularioRepository extends RepositoryAbstract
 {
     use \App\Traits\MaskTrait;    
+    
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AgenciaBancaria::class);
+    }
     
     private $baseFields = [
         'tf.coSeqTramitacaoFormulario',

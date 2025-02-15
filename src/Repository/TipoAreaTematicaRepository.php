@@ -2,6 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\AgenciaBancaria;
+use App\Repository\RepositoryAbstract;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
@@ -12,6 +15,11 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  */
 class TipoAreaTematicaRepository extends RepositoryAbstract
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AgenciaBancaria::class);
+    }
+    
     /**
      * @param ParameterBag $pb
      * @return \App\Entity\TipoAreaTematica[]

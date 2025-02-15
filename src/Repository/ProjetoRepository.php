@@ -2,12 +2,17 @@
 
 namespace App\Repository;
 
+use PDO;
 use App\Entity\Perfil;
 use App\Entity\Projeto;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use App\Entity\AgenciaBancaria;
 use Doctrine\ORM\Query\Expr\Join;
+use App\Entity\SituacaoProjetoFolha;
+use App\Repository\RepositoryAbstract;
 use Doctrine\ORM\Query\ResultSetMapping;
 use App\Exception\SiparInvalidoException;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * ProjetoRepository
@@ -19,6 +24,11 @@ class ProjetoRepository extends RepositoryAbstract
 {
     use \App\Traits\MaskTrait;
 
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AgenciaBancaria::class);
+    }
+    
     /**
      * @param ParameterBag $params
      * @return \App\Entity\Projeto[]

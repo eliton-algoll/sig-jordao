@@ -4,12 +4,19 @@ namespace App\Repository;
 
 use App\Entity\Perfil;
 use App\Entity\Publicacao;
+use App\Entity\AgenciaBancaria;
 use App\Entity\ValorBolsaPrograma;
-use App\Exception\ValorBolsaProgramaExistsException;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use App\Exception\ValorBolsaProgramaExistsException;
 
 class ValorBolsaProgramaRepository extends RepositoryAbstract
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AgenciaBancaria::class);
+    }
+    
     /**
      * 
      * @param Publicacao $publicacao

@@ -4,16 +4,17 @@ namespace App\Security;
 
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ProjetoPessoaVoter extends Voter
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManagerInterface
      */
     private $em;
     
     /**
-     * @param \Doctrine\ORM\EntityManager
+     * @param EntityManagerInterface
      */
     public function __construct($entityManager)
     {

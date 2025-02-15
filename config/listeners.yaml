@@ -1,7 +1,7 @@
 services:
   app.send_mail_fale_conosco_listener:
     class: App\EventListener\SendMailFaleConoscoListener
-    arguments: ["@mailer", "@templating"]
+    arguments: ["@mailer", "@twig"]
     tags:
       - { name: kernel.event_subscriber }
 
@@ -17,20 +17,19 @@ services:
 
   app.send_mail_notificacao_formulario_avaliacao_atividade:
     class: App\EventListener\SendMailNotificacaoFormularioAvaliacaoAtividadeListener
-    arguments:
-      ["@mailer", "@templating", "@app.tramitacao_formulario_repository"]
+    arguments: ["@mailer", "@twig", "@app.tramitacao_formulario_repository"]
     tags:
       - { name: kernel.event_subscriber }
 
   app.send_mail_notificacao_analise_retorno_formulario_avaliacao_atividade:
     class: App\EventListener\SendMailNotificacaoAnaliseRetornoFormularioAvaliacaoAtividadeListener
-    arguments: ["@mailer", "@templating"]
+    arguments: ["@mailer", "@twig"]
     tags:
       - { name: kernel.event_subscriber }
 
   app.send_mail_notificacao_exclusao_envio_formulario_avaliacao_atividade:
     class: App\EventListener\SendMailNotificacaoExcusaoEnvioFormularioAvaliacaoAtividadeListener
-    arguments: ["@mailer", "@templating"]
+    arguments: ["@mailer", "@twig"]
     tags:
       - { name: kernel.event_subscriber }
 

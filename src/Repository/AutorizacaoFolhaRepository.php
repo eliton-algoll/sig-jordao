@@ -2,14 +2,18 @@
 
 namespace App\Repository;
 
-use App\Entity\AutorizacaoFolha;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use PDO;
 use Doctrine\ORM\Query;
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Query\Expr\Join;
-use App\Entity\FolhaPagamento;
-use App\Entity\ProjetoFolhaPagamento;
 use App\Cpb\DicionarioCpb;
+use App\Entity\FolhaPagamento;
+use Doctrine\ORM\QueryBuilder;
+use App\Entity\AgenciaBancaria;
+use App\Entity\AutorizacaoFolha;
+use Doctrine\ORM\Query\Expr\Join;
+use App\Entity\ProjetoFolhaPagamento;
+use App\Repository\RepositoryAbstract;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * AutorizacaoFolhaRepository
@@ -19,6 +23,11 @@ use App\Cpb\DicionarioCpb;
  */
 class AutorizacaoFolhaRepository extends RepositoryAbstract
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AgenciaBancaria::class);
+    }
+    
     /**
      * @param ParameterBag $pb
      * @param int $hydrationMode

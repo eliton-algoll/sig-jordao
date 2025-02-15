@@ -2,9 +2,13 @@
 
 namespace App\Repository;
 
+use PDO;
 use App\Entity\Projeto;
 use App\Entity\FolhaPagamento;
+use App\Entity\AgenciaBancaria;
 use Doctrine\Common\Util\Debug;
+use App\Repository\RepositoryAbstract;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
@@ -15,6 +19,11 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  */
 class ProjetoFolhaPagamentoRepository extends RepositoryAbstract
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AgenciaBancaria::class);
+    }
+    
     /**
      * @param Projeto $projeto
      * @param FolhaPagamento $folha

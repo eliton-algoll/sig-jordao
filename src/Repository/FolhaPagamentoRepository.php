@@ -2,19 +2,28 @@
 
 namespace App\Repository;
 
-use App\Entity\Programa;
+use PDO;
+use App\Entity\Perfil;
 use App\Entity\Projeto;
 use Doctrine\ORM\Query;
-use App\Entity\Perfil;
-use App\Entity\FolhaPagamento;
+use App\Entity\Programa;
 use App\Entity\Publicacao;
 use App\Entity\SituacaoFolha;
+use App\Entity\FolhaPagamento;
+use App\Entity\AgenciaBancaria;
+use App\Repository\RepositoryAbstract;
+use Doctrine\Persistence\ManagerRegistry;
 use App\Exception\ValorBolsaHasInFolhaException;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class FolhaPagamentoRepository extends RepositoryAbstract
 {
     use \App\Traits\MaskTrait;
+    
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AgenciaBancaria::class);
+    }
     
     /**
      * @param ParameterBag $params

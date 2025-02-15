@@ -2,13 +2,21 @@
 
 namespace App\Repository;
 
-use App\Entity\AutorizaCadastroParticipante;
 use App\Entity\Projeto;
-use App\Exception\AutorizacaoCadastroParticipanteVigenteExistsException;
+use App\Entity\AgenciaBancaria;
+use App\Repository\RepositoryAbstract;
+use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\AutorizaCadastroParticipante;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use App\Exception\AutorizacaoCadastroParticipanteVigenteExistsException;
 
 class AutorizaCadastroParticipanteRepository extends RepositoryAbstract
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AgenciaBancaria::class);
+    }
+    
     /**
      * 
      * @param Projeto $projeto

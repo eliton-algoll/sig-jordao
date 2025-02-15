@@ -2,13 +2,19 @@
 
 namespace App\Repository;
 
-use Symfony\Component\HttpFoundation\ParameterBag;
+use \App\Traits\MaskTrait;
+use App\Entity\AgenciaBancaria;
 use App\Entity\SituacaoProjetoFolha;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class VwFolhaPagamentoRepository extends RepositoryAbstract
 {
-    use \App\Traits\MaskTrait;
-    
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AgenciaBancaria::class);
+    }
+
     private static $RELATORIO_PAGAMENTO = [
         SituacaoProjetoFolha::AUTORIZADA => 'getQueryAutorizadas',
         SituacaoProjetoFolha::HOMOLOGADA => 'getQueryHomologadas'

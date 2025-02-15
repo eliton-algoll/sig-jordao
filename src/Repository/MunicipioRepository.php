@@ -3,9 +3,17 @@
 namespace App\Repository;
 
 use App\Entity\Uf;
+use App\Entity\AgenciaBancaria;
+use App\Repository\RepositoryAbstract;
+use Doctrine\Persistence\ManagerRegistry;
 
 class MunicipioRepository extends RepositoryAbstract
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AgenciaBancaria::class);
+    }
+    
     /**
      * @param Uf $uf
      * @param boolean $returnArrayResult

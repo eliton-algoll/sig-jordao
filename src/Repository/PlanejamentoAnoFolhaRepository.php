@@ -2,11 +2,19 @@
 
 namespace App\Repository;
 
-use App\Exception\PlanejamentoAberturaFolhaNotExistsException;
+use App\Entity\AgenciaBancaria;
+use App\Repository\RepositoryAbstract;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use App\Exception\PlanejamentoAberturaFolhaNotExistsException;
 
 class PlanejamentoAnoFolhaRepository extends RepositoryAbstract
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AgenciaBancaria::class);
+    }
+    
     /**
      * 
      * @param integer $id

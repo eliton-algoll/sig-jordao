@@ -2,8 +2,11 @@
 
 namespace App\Repository;
 
-use App\Entity\GrupoAtuacao;
 use App\Entity\Projeto;
+use App\Entity\GrupoAtuacao;
+use App\Entity\AgenciaBancaria;
+use App\Repository\RepositoryAbstract;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * GrupoAtuacaRepository
@@ -13,6 +16,10 @@ use App\Entity\Projeto;
  */
 class GrupoAtuacaoRepository  extends RepositoryAbstract
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AgenciaBancaria::class);
+    }
 
     /**
      * @param integer $coProjeto

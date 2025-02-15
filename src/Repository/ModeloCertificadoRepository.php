@@ -2,13 +2,20 @@
 
 namespace App\Repository;
 
-use App\Entity\ModeloCertificado;
 use Doctrine\DBAL\Types\Type;
+use App\Entity\AgenciaBancaria;
+use App\Entity\ModeloCertificado;
+use App\Repository\RepositoryAbstract;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\UnexpectedResultException;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class ModeloCertificadoRepository extends RepositoryAbstract
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AgenciaBancaria::class);
+    }
 
     /**
      * @param array $params

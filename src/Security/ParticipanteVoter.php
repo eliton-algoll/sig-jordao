@@ -5,6 +5,7 @@ namespace App\Security;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use App\Entity\ProjetoPessoa;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Vota se o usuario esta no mesmo projeto da pessoa que ele ta tentando acessar/alterar
@@ -12,12 +13,12 @@ use App\Entity\ProjetoPessoa;
 class ParticipanteVoter extends Voter
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManagerInterface
      */
     private $em;
     
     /**
-     * @param \Doctrine\ORM\EntityManager
+     * @param EntityManagerInterface
      */
     public function __construct($entityManager)
     {

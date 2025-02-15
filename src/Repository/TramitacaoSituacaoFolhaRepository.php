@@ -4,9 +4,16 @@ namespace App\Repository;
 
 use App\Entity\SituacaoFolha;
 use App\Entity\FolhaPagamento;
+use App\Entity\AgenciaBancaria;
+use Doctrine\Persistence\ManagerRegistry;
 
 class TramitacaoSituacaoFolhaRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AgenciaBancaria::class);
+    }
+    
     /**
      * 
      * @param FolhaPagamento $folhaPagamento

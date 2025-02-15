@@ -2,6 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\AgenciaBancaria;
+use Doctrine\Persistence\ManagerRegistry;
+
 /**
  * TitulacaoRepository
  *
@@ -10,4 +13,8 @@ namespace App\Repository;
  */
 class TitulacaoRepository extends RepositoryAbstract
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AgenciaBancaria::class);
+    }
 }

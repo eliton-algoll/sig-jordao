@@ -2,11 +2,18 @@
 
 namespace App\Repository;
 
-use App\Report\GerencialPagamentoFilter;
+use App\Entity\AgenciaBancaria;
 use Doctrine\ORM\EntityRepository;
+use App\Report\GerencialPagamentoFilter;
+use Doctrine\Persistence\ManagerRegistry;
 
 class VwGerencialPagamentoRepository extends EntityRepository
 {   
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AgenciaBancaria::class);
+    }
+
     /**
      * 
      * @param GerencialPagamentoFilter $filter

@@ -322,7 +322,7 @@ services:
     arguments:
       [
         "@mailer",
-        "@templating",
+        "@twig",
         "@security.encoder_factory",
         "@app.usuario_repository",
         "@app.pessoa_fisica_repository",
@@ -339,7 +339,7 @@ services:
     arguments:
       [
         "@mailer",
-        "@templating",
+        "@twig",
         "@security.encoder_factory",
         "@app.usuario_repository",
         "@app.pessoa_fisica_repository",
@@ -355,7 +355,7 @@ services:
     arguments:
       [
         "@mailer",
-        "@templating",
+        "@twig",
         "@security.encoder_factory",
         "@app.usuario_repository",
       ]

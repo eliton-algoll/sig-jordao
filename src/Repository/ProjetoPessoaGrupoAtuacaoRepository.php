@@ -2,9 +2,12 @@
 
 namespace App\Repository;
 
+use App\Entity\Perfil;
 use App\Entity\Projeto;
 use App\Entity\GrupoAtuacao;
-use App\Entity\Perfil;
+use App\Entity\AgenciaBancaria;
+use App\Repository\RepositoryAbstract;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * ProjetoPessoaGrupoAtuacaoRepository
@@ -14,6 +17,11 @@ use App\Entity\Perfil;
  */
 class ProjetoPessoaGrupoAtuacaoRepository extends RepositoryAbstract
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AgenciaBancaria::class);
+    }
+    
     /**
      * @param \App\Entity\Projeto|integer $projeto
      * @return \App\Entity\ProjetoPessoa[]
