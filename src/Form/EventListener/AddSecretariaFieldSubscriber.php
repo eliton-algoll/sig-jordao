@@ -8,6 +8,11 @@ use Doctrine\ORM\EntityRepository;
 
 class AddSecretariaFieldSubscriber extends LoadFieldAbstractSubscriber
 {
+    public function __construct(string $target, string $origin)
+    {
+        parent::__construct($target, $origin);
+    }
+    
     public function addField(Form $form, $param)
     {   
         $form->add($this->target, EntityType::class, array(

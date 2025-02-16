@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\Role\RoleInterface;
 
 /**
  * Perfil
@@ -11,7 +10,7 @@ use Symfony\Component\Security\Core\Role\RoleInterface;
  * @ORM\Table(name="DBPET.TB_PERFIL")
  * @ORM\Entity(repositoryClass="App\Repository\PerfilRepository")
  */
-class Perfil extends AbstractEntity implements RoleInterface
+class Perfil extends AbstractEntity
 {
     use \App\Traits\DeleteLogicoTrait;
     use \App\Traits\DataInclusaoTrait;     

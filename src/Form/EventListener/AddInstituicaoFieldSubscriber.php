@@ -8,6 +8,10 @@ use Doctrine\ORM\EntityRepository;
 
 class AddInstituicaoFieldSubscriber extends LoadFieldAbstractSubscriber
 {
+    public function __construct(string $target, string $origin)
+    {
+        parent::__construct($target, $origin);
+    }
 
     public function addField(Form $form, $param)
     {

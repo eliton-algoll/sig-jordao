@@ -129,8 +129,8 @@ class DevelController extends ControllerAbstract
     {
         $command1 = 'cd ' . $this->_getRootDir() . ' && cd app && ls -laR';
         $command2 = 'cd ' . $this->_getRootDir() . ' && cd src && ls -laR';
-        $command3 = 'cd ' . $this->_getRootDir() . ' && cd web/css && ls -laR';
-        $command4 = 'cd ' . $this->_getRootDir() . ' && cd web/js && ls -laR';
+        $command3 = 'cd ' . $this->_getRootDir() . ' && cd public/css && ls -laR';
+        $command4 = 'cd ' . $this->_getRootDir() . ' && cd public/js && ls -laR';
         
         exec($command1, $out1);
         exec($command2, $out2);

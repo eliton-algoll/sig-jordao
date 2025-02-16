@@ -22,7 +22,7 @@ abstract class LoadFieldAbstractSubscriber implements EventSubscriberInterface, 
      * @param string $target name do campo que será populado
      * @param string $origin name do campo que dispara o carregamento do $target
      */
-    public function __construct($target, $origin)
+    public function __construct(string $target, string $origin)
     {
         $this->target = $target;
         $this->origin = $origin;
