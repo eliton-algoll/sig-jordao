@@ -1,0 +1,27 @@
+{% if not isAtualizacao %}
+<p>
+    O SIGPET – Saúde informa que foi cadastrado para o seu perfil de participante um novo 
+    Formulário de Avaliação de Atividade: {{ envioFormularioAvaliacaoAtividade.getFormularioAvaliacaoAtividade().getNoFormulario() }}, 
+    que deverá ser retornado no período de {{ envioFormularioAvaliacaoAtividade.getDtInicioPeriodo()|date('d/m/Y') }} a 
+    {{ envioFormularioAvaliacaoAtividade.getDtFimPeriodo()|date('d/m/Y') }}. Para registrar o retorno, o formulário preenchido 
+    deverá ser anexado ao cadastro.
+</p>
+<p>
+    Para acessar o Formulário cadastrado, acesse o SIGPet e acione a opção de menu “Avaliação de Atividades / Tramitar Formulário de Atividades”. <br />
+    Coordenação de Ações Estratégicas em Educação na Saúde <br />
+    <strong>DEGES/ SGTES/MS</strong>
+</p>
+{% else %}
+<p>
+    O SIGPET – Saúde informa que o período de retorno para o Formulário de Avaliação de Atividade: 
+    {{ envioFormularioAvaliacaoAtividade.getFormularioAvaliacaoAtividade().getNoFormulario() }}, foi alterado para o período 
+    de {{ envioFormularioAvaliacaoAtividade.getDtInicioPeriodo()|date('d/m/Y') }} a {{ envioFormularioAvaliacaoAtividade.getDtFimPeriodo()|date('d/m/Y') }}. 
+    Para registrar o retorno, o formulário preenchido deverá ser anexado ao cadastro.
+</p>
+<p>
+    Para acessar o Formulário cadastrado, acesse o SIGPet e acione a opção de menu “Avaliação de Atividades / Tramitar Formulário de Atividades”. <br />
+
+    Coordenação de Ações Estratégicas em Educação na Saúde <br />
+    <strong>DEGES/ SGTES/MS</strong>
+</p>
+{% endif %}

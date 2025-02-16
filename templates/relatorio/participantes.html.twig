@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th><a class="header-order-by" href="javascript:void(0)" data-order-by="NU_SIPAR" data-sort="{{ ascDesc(queryParams) }}">N° SEI</a></th>
+                    <th><a class="header-order-by" href="javascript:void(0)" data-order-by="DS_PERFIL" data-sort="{{ ascDesc(queryParams) }}">Perfil</a></th>
+                    <th><a class="header-order-by" href="javascript:void(0)" data-order-by="NO_PESSOA" data-sort="{{ ascDesc(queryParams) }}">Nome</a></th>
+                    <th><a class="header-order-by" href="javascript:void(0)" data-order-by="NU_CPF_CNPJ_PESSOA" data-sort="{{ ascDesc(queryParams) }}">CPF</a></th>
+                    <th><a class="header-order-by" href="javascript:void(0)" data-order-by="DS_EMAIL" data-sort="{{ ascDesc(queryParams) }}">E-mail</a></th>
+                    <th><a class="header-order-by" href="javascript:void(0)" data-order-by="CURSO_GRADUACAO" data-sort="{{ ascDesc(queryParams) }}">Curso Graduacao</a></th>
+                    <th><a class="header-order-by" href="javascript:void(0)" data-order-by="ST_VOLUNTARIO_PROJETO" data-sort="{{ ascDesc(queryParams) }}">Voluntário?</a></th>
+                    <th><a class="header-order-by" href="javascript:void(0)" data-order-by="DT_INCLUSAO_PROJPESSOA" data-sort="{{ ascDesc(queryParams) }}">Data de Cadastro</a></th>
+                    <th><a class="header-order-by" href="javascript:void(0)" data-order-by="NO_GRUPO_ATUACAO" data-sort="{{ ascDesc(queryParams) }}">Grupo de Atuação</a></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for participante in participantes %}
+                    <tr>
+                        <td>{{ participante.NU_SIPAR }}</td>
+                        <td>{{ participante.DS_PERFIL }}</td>
+                        <td>{{ participante.NO_PESSOA }}</td>
+                        <td>{{ participante.NU_CPF_CNPJ_PESSOA }}</td>
+                        <td>{{ participante.DS_EMAIL }}</td>
+                        <td>{{ participante.CURSO_GRADUACAO }}</td>
+                        <td>{{ participante.ST_VOLUNTARIO_PROJETO|strst }}</td>
+                        <td>{{ participante.DT_INCLUSAO_PROJPESSOA|date('d/m/Y') }}</td>
+                        <td>{{ participante.NO_GRUPO_ATUACAO }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="text-center">Nenhum resultado encontrado para os filtros informados.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

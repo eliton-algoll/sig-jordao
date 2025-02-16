@@ -9,7 +9,7 @@ use App\Exception\ValorBolsaHasInFolhaException;
 use App\Exception\ValorBolsaProgramaExistsException;
 use App\Form\CadastrarValorBolsaType;
 use App\Form\ConsultarValorBolsaType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;

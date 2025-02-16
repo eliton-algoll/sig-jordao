@@ -1,0 +1,99 @@
+{% extends "::base.html.twig" %}
+
+{% block subtitle %}Confimar Grupo Tutorial{% endblock %}
+
+{% block body %}
+
+    <!-- quantidade de grupos ativos e confirmados -->
+    <input type="hidden" id="grupos-ativos-e-confirmados" value="{{ projeto.getGruposAtuacaoAtivosEConfirmados()|length() }}" />
+
+    {% if projeto.getGruposAtuacaoAtivosENaoConfirmados()|length() <= 0 %}
+        Nenhum grupo precisa ser confirmado.
+    {% endif %}
+
+    {% if projeto.getGruposAtuacaoAtivosENaoConfirmados()|length() == 1 %}
+        <div>
+            <label>Grupo Tutorial</label>
+            <select id="grupos" class="form-control seletor-grupo" data-grid="grid-grupo-tutorial">
+                <option value=""></option>
+                {% for grupo in projeto.getGruposAtuacaoAtivos() %}
+                    <option value="{{ grupo.getCoSeqGrupoAtuacao() }}">{{ grupo.getNoGrupoAtuacao() }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div id="grid-grupo-tutorial" class="margin-top-20"></div>
+        <br/>
+    {% endif %}
+
+    {% if projeto.getGruposAtuacaoAtivosENaoConfirmados()|length() > 1 %}
+        <div>
+            <label>Grupo Tutorial - Eixo Valorização das trabalhadoras e futuras trabalhadoras no âmbito do SUS, Gênero, Identidade de Gênero, Sexualidade, Raça, Etnia, Deficiências e as interseccionalidades no trabalho na saúde. (A)</label>
+            <select id="grupos-eixo-gestao-em-saude" class="form-control seletor-grupo"
+                    data-grid="grid-grupo-tutorial-eixo-a">
+                <option value="">Todos os grupos do eixo</option>
+                {% for grupo in projeto.getGruposAtuacaoEixoAAtivosENaoConfirmados() %}
+                    <option value="{{ grupo.getCoSeqGrupoAtuacao() }}">{{ grupo.getNoGrupoAtuacao() }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div id="grid-grupo-tutorial-eixo-a" class="margin-top-20"></div>
+        <br/>
+
+        <div>
+            <label>Grupo Tutorial - Valorização das trabalhadoras e futuras trabalhadoras no âmbito do SUS, saúde mental e as violências relacionadas ao trabalho na saúde. (B)</label>
+            <select id="grupos-eixo-assistencia-a-saude" class="form-control seletor-grupo"
+                    data-grid="grid-grupo-tutorial-eixo-b">
+                <option value="">Todos os grupos do eixo</option>
+                {% for grupo in projeto.getGruposAtuacaoEixoBAtivosENaoConfirmados() %}
+                    <option value="{{ grupo.getCoSeqGrupoAtuacao() }}">{{ grupo.getNoGrupoAtuacao() }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div id="grid-grupo-tutorial-eixo-b" class="margin-top-20"></div>
+        <br/>
+
+        <div>
+            <label>Grupo Tutorial - Acolhimento e valorização às trabalhadoras e futuras trabalhadoras da saúde no processo de maternagem e acolhimento e valorização de homens trans e outras pessoas que gestam. (C)</label>
+            <select id="grupos-eixo-assistencia-a-saude" class="form-control seletor-grupo"
+                    data-grid="grid-grupo-tutorial-eixo-c">
+                <option value="">Todos os grupos do eixo</option>
+                {% for grupo in projeto.getGruposAtuacaoEixoCAtivosENaoConfirmados() %}
+                    <option value="{{ grupo.getCoSeqGrupoAtuacao() }}">{{ grupo.getNoGrupoAtuacao() }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div id="grid-grupo-tutorial-eixo-c" class="margin-top-20"></div>
+        <br/>
+    {% endif %}
+
+    {% if projeto.getGruposAtuacaoAtivosENaoConfirmados()|length() >= 1 %}
+        <input type="hidden" name="projeto" id="coSeqProjeto" value="{{ projeto.getCoSeqProjeto() }}">
+        <button id="btn-confimar-grupo-tutorial" class="btn btn-primary">
+            Confirmar Grupo Tutorial
+        </button>
+    {% endif %}
+
+<div class="row">
+    <div class="col-md-12 margin-top-50">
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading"><strong>Grupos Confirmados</strong></div>
+    <div class="panel-body">
+        {% if projeto.getGruposAtuacaoAtivosEConfirmados()|length() > 0  %}
+            {% for grupo in projeto.getGruposAtuacaoAtivosEConfirmados() %}
+                <p class="text-success">{{ grupo.getNoGrupoAtuacao() }}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {% javascripts 'js/confirmar_grupo_atuacao/main.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

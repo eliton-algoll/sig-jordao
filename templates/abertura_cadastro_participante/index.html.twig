@@ -1,0 +1,55 @@
+{% extends "base.html.twig" %}
+
+{% block subtitle %}
+    Consultar abertura do sistema para Cadastro de Participante
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">Pesquisar</button>
+        <a href="{{ path('abertura_cadastro_participante_create') }}" class="btn btn-primary">Abrir Cadastro de Participante</a>
+    {{ form_end(form) }}
+    
+    {% if pagination is not null and pagination.count() > 0 %}
+        <hr>
+        
+        <table class="table table-striped">
+            <tr>
+                <th>{{ knp_pagination_sortable(pagination, '#', 'acp.coSeqAutorCadParticipante') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Programa', 'pub.dsPublicacao') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Projeto', 'proj.nuSipar') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Referência', 'fp.nuAno') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Período de Aberturra', 'acp.dtInicioPeriodo') }}</th>
+                <th style="text-align: center;">Ação</th>
+            </tr>
+            {% for acp in pagination %}
+                <tr>
+                    <td>{{ acp.getCoSeqAutorCadParticipante() }}</td>
+                    <td>{{ acp.getProjeto().getPublicacao().getDescricaoCompleta() }}</td>
+                    <td>{{ acp.getProjeto().getNuSipar() }}</td>
+                    <td>{{ acp.getFolhaPagamento().getReferenciaExtenso() }}</td>
+                    <td>{{ acp.getDtInicioPeriodo()|date('d/m/Y') ~ ' a ' ~ acp.getDtFimPeriodo()|date('d/m/Y') }}</td>
+                    <td style="text-align: center;">
+                        {% if acp.isPeriodoVigente() or acp.getDtInicioPeriodo() > date() %}
+                            <a href="{{ path('abertura_cadastro_participante_edit', { id : acp.getCoSeqAutorCadParticipante() }) }}" class="glyphicon glyphicon-pencil" title="Editar registro"></a>                        
+                        {% endif %}
+                        {% if acp.getDtInicioPeriodo() > date() %}
+                            <a class="glyphicon glyphicon-trash cursor-pointer btn-delete-abertura" data-id="{{ acp.getCoSeqAutorCadParticipante() }}" title="Excluir registro"></a>
+                        {% endif %}
+                        {% if not acp.isPeriodoVigente() and not apc.getDtInicioPeriodo() > date() %}
+                            -
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% elseif pagination is not null and pagination.count() == 0 %}
+        Nenhum registro encontrado.
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/abertura_cadastro_participante/index.js') }}"></script>
+{% endblock %}
+

@@ -11,7 +11,7 @@ use App\Form\CadastarAberturaSistemaCadastroParticipanteType;
 use App\Form\ConsultarAberturaSistemaCadastroParticipanteType;
 use League\Tactician\Bundle\Middleware\InvalidCommandException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

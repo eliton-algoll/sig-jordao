@@ -1,0 +1,19 @@
+{% extends "::base.html.twig" %}
+
+{% block subtitle %}
+    Relatório Detalhado da Folha de Pagamento
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        
+        <button type="submit" class="btn btn-primary">Gerar Relatório</button>
+        <a class="btn btn-link" id="btn-clear-form">Limpar</a>
+        <a href="{{ path('folha_pagamento') }}" class="btn btn-default">Voltar</a>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/relatorio/pagamento_detalhado.js') }}"></script>
+{% endblock %}

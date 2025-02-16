@@ -10,7 +10,7 @@ use App\Form\FiltroModeloCertificadoType;
 use App\Form\ModeloCertificadoType;
 use League\Tactician\Bundle\Middleware\InvalidCommandException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;

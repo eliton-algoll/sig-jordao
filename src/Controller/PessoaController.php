@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Controller\ControllerAbstract;
 use App\Entity\Pessoa;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\ORM\NoResultException;

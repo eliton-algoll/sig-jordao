@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}Pesquisar Projetos{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form, {'method': 'get', attr: {'novalidate': 'novalidate'}}) }}
+            {{ form_row(form.nuSipar, {value: queryParams.nuSipar, attr: {'class': 'nuSipar'}}) }}
+            {{ form_row(form.publicacao, {value: queryParams.publicacao}) }}
+            {{ form_row(form.instituicaoEnsino, {value: queryParams.instituicaoEnsino}) }}
+            {{ form_row(form.secretariaSaude, {value: queryParams.secretariaSaude}) }}
+            <input type="submit" class="btn btn-primary" value="Pesquisar">
+            <a class="btn btn-default" href="{{ path('projeto_cadastrar') }}">Cadastrar Projeto</a>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Nº SEI', 'p.nuSipar') }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Edital', 'pu.nuPublicacao') }}</th>
+                        <th>Instituicao de Ensino</th>
+                        <th>Secretaria de Saúde</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for projeto in pagination %}
+                        <tr>
+                            <td>{{ projeto.coSeqProjeto }}</td>
+                            <td>{{ projeto.nuSipar }}</td>
+                            <td>{{ projeto.publicacao.descricaoCompleta }}</td>
+                            <td>{{ projeto.descricaoInstituicaoEnsino }}</td>
+                            <td>{{ projeto.descricaoSecretariaSaude }}</td>
+                            <td>
+                                <a href="{{ path('projeto_atualizar', {projeto: projeto.coSeqProjeto}) }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                {% if projeto.noDocumentoProjeto %}
+                                    <a href="{{ asset('uploads/' ~ projeto.noDocumentoProjeto) }}" download="" title="Download do arquivo anexado"><span class="glyphicon glyphicon-download-alt"></span></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6">Nenhum projeto cadastrado.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

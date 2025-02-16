@@ -1,0 +1,24 @@
+{% if report %}
+<table class="table table-striped">
+    <thead>            
+        <tr>
+            {% for title,value in report[0] %}
+                <th>{{ title|trans }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in report %}
+        <tr>
+            {% for colName,col in row %}
+                {% if colName == 'NU_CPF_CNPJ_PESSOA' %}
+                    <td>{{ col|cpf }}</td>
+                {% else %}
+                    <td>{{ col }}</td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>    
+{% endif %}

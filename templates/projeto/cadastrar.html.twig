@@ -1,0 +1,155 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}{{ title ?: 'Cadastrar Projeto' }}{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form, {'method': 'post', 'attr': {'novalidate': 'novalidate'} }) }}
+            {{ form.coSeqProjeto ? form_row(form.coSeqProjeto) }}
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="active"><a href="#dados-projeto" data-toggle="tab">Projeto</a></li>
+                <li><a href="#dados-secretaria" data-toggle="tab">Secretaria de Saúde Proponente</a></li>
+                <li><a href="#dados-instituicao" data-toggle="tab">Instituição de Ensino Superior Proponente</a></li>
+                <li><a href="#dados-area-tematica" data-toggle="tab">Área de Atuação dos Grupos</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="dados-projeto">
+                    {{ form_row(form.publicacao) }}
+                    {{ form_row(form.nuSipar, {attr: {class: 'nuSipar'}}) }}
+                    {{ form_row(form.dsObservacao) }}
+                    {{ form_row(form.stOrientadorServico) }}
+                    {{ form_row(form.qtBolsa) }}
+                    {{ form_row(form.qtGrupos) }}
+                    {{ form_row(form.noDocumentoProjeto) }}
+                    {% if form.vars.data.projeto and form.vars.data.projeto.noDocumentoProjeto %}
+                        <div>
+                            <label>Documento Anexado</label>
+                            <div style="margin-bottom: 10px;">
+                                {{ form.vars.data.projeto.noDocumentoProjeto }} <a href="{{ asset('uploads/' ~ form.vars.data.projeto.noDocumentoProjeto) }}" class="glyphicon glyphicon-download-alt" download=""></a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <a href="{{ path('projeto') }}" class="btn btn-default">Voltar</a>
+                </div>
+                <div class="tab-pane" id="dados-secretaria">
+                    {{ form_start(formPesquisarSecretaria, {'method': 'get'}) }}
+                        {{ form_row(formPesquisarSecretaria.nuCnpj, {attr: {'class': 'nuCnpj'}}) }}
+                        {{ form_row(formPesquisarSecretaria.uf) }}
+                        {{ form_row(formPesquisarSecretaria.municipio) }}
+                        {{ form_row(formPesquisarSecretaria.secretaria) }}
+                        <a href="javascript:;" id="btn-incluir-secretaria" class="btn btn-primary">Incluir Secretaria</a>
+                    {{ form_end(formPesquisarSecretaria) }}
+                    <br>
+                    <br>
+                    <span id="helpBlock" class="help-block">Todas informações serão salvas após a conclusão do cadastro.</span>
+                    <table class="table table-striped" id="table-secretarias">
+                        <thead>
+                            <tr>
+                                <th>UF</th>
+                                <th>Município</th>
+                                <th>Secretaria</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for secretaria in form.vars.data.secretarias if secretaria.pessoaJuridica is defined %}
+                                <tr>
+                                    <input type="hidden" name="cadastrar_projeto[secretarias][]" value="{{ secretaria.pessoaJuridica.nuCnpj }}"/>
+                                    <td>{{ secretaria.pessoaJuridica.pessoa.sgUf }}</td>
+                                    <td>{{ secretaria.pessoaJuridica.pessoa.noMunicipio }}</td>
+                                    <td>{{ secretaria.pessoaJuridica.pessoa.noPessoa }}</td>
+                                    <td>
+                                        <a href="javascript:;" class="btn-excluir-secretaria">
+                                            <span class="glyphicon glyphicon-remove" title="Remover"</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr class="secretaria-placeholder">
+                                    <td colspan="4">Nenhuma secretaria de saúde vinculada</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane" id="dados-instituicao">
+                    {{ form_start(formPesquisarCampus, {'method': 'get'}) }}
+                        {{ form_row(formPesquisarCampus.uf) }}
+                        {{ form_row(formPesquisarCampus.municipio) }}
+                        {{ form_row(formPesquisarCampus.instituicao) }}
+                        {{ form_row(formPesquisarCampus.campus) }}
+                        <a href="javascript:;" id="btn-incluir-campus" class="btn btn-primary">Incluir Campus</a>
+                    {{ form_end(formPesquisarCampus) }}
+                    <br>
+                    <br>
+                    <span id="helpBlock" class="help-block">Todas informações serão salvas após a conclusão do cadastro.</span>
+                    <table class="table table-striped" id="table-campus">
+                        <thead>
+                            <tr>
+                                <th>Campus</th>
+                                <th>Instituicao</th>
+                                <th>Município</th>
+                                <th>UF</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for campus in form.vars.data.campus if campus.campus is defined %}
+                                <tr data-instituicao="{{ campus.campus.instituicao.coSeqInstituicao }}">
+                                    <input type="hidden" name="cadastrar_projeto[campus][]" value="{{ campus.campus.coSeqCampusInstituicao }}"/>
+                                    <td>{{ campus.campus.noCampus }}</td>
+                                    <td>{{ campus.campus.instituicao.noInstituicaoProjeto }}</td>
+                                    <td>{{ campus.campus.municipio.noMunicipio }}</td>
+                                    <td>{{ campus.campus.municipio.sgUf }}</td>
+                                    <td>                                        
+                                        <a href="javascript:;" class="btn-excluir-campus">
+                                            <span class="glyphicon glyphicon-remove" title="Remover"</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr class="campus-placeholder">
+                                    <td colspan="5">Nenhum campus/instituição vinculada</td>
+                                </tr>
+                            {% endfor %}                            
+                        </tbody>
+                    </table>
+                </div>                        
+                <div class="tab-pane" id="dados-area-tematica">
+                    <p>
+                        <label id="label-todos-temas"> <input type="checkbox" id="todos-temas_"> Selecionar todos os temas </label>
+                    </p>
+                    <p><b>SAÚDE</b></p>
+{#                    <label id="label-todos-temas-saude"> <input type="checkbox" id="todos-temas-saude"> Selecionar todos </label>#}
+                    {{ form_errors(form.areasTematicasSaude) }}
+                    {{ form_widget(form.areasTematicasSaude) }}
+                    <br><br>
+
+                    <p><b>CIÊNCIAS HUMANAS</b></p>
+{#                    <label id="label-todos-temas-cienciasHumanas"> <input type="checkbox" id="todos-temas-cienciasHumanas"> Selecionar todos </label>#}
+                    {{ form_errors(form.areasTematicasCienciasHumanas) }}
+                    {{ form_widget(form.areasTematicasCienciasHumanas) }}
+                    <br><br>
+
+                    <p><b>CIÊNCIAS SOCIAIS APLICADAS</b></p>
+{#                    <label id="label-todos-temas-cienciasSociais"> <input type="checkbox" id="todos-temas-cienciasSociais"> Selecionar todos </label>#}
+                    {{ form_errors(form.areasTematicasCienciasSociais) }}
+                    {{ form_widget(form.areasTematicasCienciasSociais) }}
+                    <br><br>
+
+                    <a href="javascript:;" id="btn-salvar" class="btn btn-primary">Salvar</a>                    
+                </div>
+            </div>
+            {{ form_end(form) }}                 
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {% javascripts 'js/projeto/cadastrar.js' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
+    {% javascripts 'js/projeto/cadastrar_instituicao.js' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
+    {% javascripts 'js/projeto/cadastrar_secretaria.js' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
+{% endblock %}

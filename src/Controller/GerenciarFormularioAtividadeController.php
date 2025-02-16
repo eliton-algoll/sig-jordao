@@ -8,7 +8,7 @@ use App\Entity\FormularioAvaliacaoAtividade;
 use App\Form\CadastrarFormularioAvaliacaoAtividadeType;
 use App\Form\ConsultarFormulariosAtividadesType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;

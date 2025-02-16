@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th><a class="header-order-by" href="javascript:void(0)" data-order-by="C.NU_SIPAR" data-sort="{{ ascDesc(queryParams) }}">N° SEI</a></th>
+                    <th><a class="header-order-by" href="javascript:void(0)" data-order-by="FP.NU_MES" data-sort="{{ ascDesc(queryParams) }}">Mês de referência</a></th>
+                    <th><a class="header-order-by" href="javascript:void(0)" data-order-by="FP.NU_ANO" data-sort="{{ ascDesc(queryParams) }}">Ano de referência</a></th>
+                    <th><a class="header-order-by" href="javascript:void(0)" data-order-by="G.NU_CPF_CNPJ_PESSOA" data-sort="{{ ascDesc(queryParams) }}">CPF</a></th>
+                    <th><a class="header-order-by" href="javascript:void(0)" data-order-by="G.NO_PESSOA" data-sort="{{ ascDesc(queryParams) }}">Participante</a></th>
+                    <th><a class="header-order-by" href="javascript:void(0)" data-order-by="F.DS_PERFIL" data-sort="{{ ascDesc(queryParams) }}">Perfil</a></th>
+                    <th><a class="header-order-by" href="javascript:void(0)" data-order-by="SUB_INST.NO_INSTITUICAO_PROJETO" data-sort="{{ ascDesc(queryParams) }}">Instituição de ensino superior</a></th>
+                    <th><a class="header-order-by" href="javascript:void(0)" data-order-by="SUB_SEC.SECRETARIA_SAUDE" data-sort="{{ ascDesc(queryParams) }}">Secretaria de saúde</a></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for participante in participantes %}
+                    <tr>
+                        <td>{{ participante.NU_SIPAR }}</td>
+                        <td>{{ participante.NU_MES|strmes }}</td>
+                        <td>{{ participante.NU_ANO }}</td>
+                        <td>{{ participante.NU_CPF_CNPJ_PESSOA|cpf }}</td>
+                        <td>{{ participante.NO_PESSOA }}</td>
+                        <td>{{ participante.DS_PERFIL }}</td>
+                        <td>{{ participante.NO_INSTITUICAO_PROJETO }}</td>
+                        <td>{{ participante.SECRETARIA_SAUDE }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7">Nenhum resultado encontrado para os filtros informados.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>

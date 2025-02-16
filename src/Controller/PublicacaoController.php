@@ -5,7 +5,7 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use League\Tactician\Bundle\Middleware\InvalidCommandException;
 use App\CommandBus\AtualizarPublicacaoCommand;
 use App\CommandBus\InativarPublicacaoCommand;

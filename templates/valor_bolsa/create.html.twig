@@ -1,0 +1,17 @@
+{% extends "base.html.twig" %}
+
+{% block subtitle %}
+    {% if edit is defined and edit %}Editar{% else %}Cadastrar{% endif %} Valor Bolsa
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">Salvar</button> 
+        <a href="{{ path('valor_bolsa_index') }}" class="btn btn-default">Voltar</a>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/valor_bolsa/create.js') }}"></script>
+{% endblock %}

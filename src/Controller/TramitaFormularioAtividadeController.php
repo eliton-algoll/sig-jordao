@@ -20,7 +20,7 @@ use App\Form\ConsultarEnvioFormulariosAvaliacaoAtividadeType;
 use App\Form\ConsultarFormulariosAvaliacaoAtividadeParticipanteType;
 use League\Tactician\Bundle\Middleware\InvalidCommandException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;

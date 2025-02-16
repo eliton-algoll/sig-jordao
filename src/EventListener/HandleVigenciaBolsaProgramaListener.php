@@ -42,11 +42,17 @@ final class HandleVigenciaBolsaProgramaListener implements EventSubscriberInterf
     public function onKernelController(FilterControllerEvent $event)
     {
         $controller = $event->getController();
-        
-        if (isset($controller[0]) && 
-            ($controller[0] instanceof \App\Controller\ValorBolsaController ||
-            $controller[0] instanceof \App\Controller\FolhaPagamentoController)
-        ) {
+
+        if (is_array($controller)) {
+            $controllerInstance = $controller[0];
+        } elseif (is_object($controller)) {
+            $controllerInstance = $controller;
+        } else {
+            return;
+        }
+    
+        if ($controllerInstance instanceof \App\Controller\ValorBolsaController ||
+            $controllerInstance instanceof \App\Controller\FolhaPagamentoController) {
             $this->handleVigenciaBolsaPrograma();
         }
     }

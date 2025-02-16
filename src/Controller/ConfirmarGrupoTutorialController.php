@@ -10,7 +10,7 @@ use App\Entity\Projeto;
 use App\Entity\ProjetoPessoa;
 use App\Entity\ProjetoPessoaCursoGraduacao;
 use League\Tactician\Bundle\Middleware\InvalidCommandException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;

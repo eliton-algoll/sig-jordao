@@ -20,6 +20,6 @@ class CustomQuoteStrategy extends DefaultQuoteStrategy
         $columnName = preg_replace('/[^A-Za-z0-9]/', '', $columnName);
         $columnName = is_numeric($columnName) ? '_' . $columnName : $columnName;
         
-        return $platform->getSQLResultCasing($columnName);
+        return strtoupper($columnName);
     }
 }

@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}
+    Cadastrar Planejamento anual de Abertura da Folha de Pagamento
+{% endblock %}
+
+{% block body %}
+    
+    {% import 'macros.html.twig' as macros %}
+    
+    <form name="" method="POST" action="">        
+        <div class="form-group {{ macros.add_error_class(errors, 'coPublicacao') }}">
+            <label class="control-label">Programa/Publicação</label>
+            <select name="coPublicacao" id="coPublicacao" class="form-control">
+                {% if command.getPlanejamentoAnoFolha() %}
+                    <option value="{{ command.getPlanejamentoAnoFolha().getPublicacao().getCoSeqPublicacao() }}">{{ command.getPlanejamentoAnoFolha().getPublicacao().getDescricaoCompleta() }}</option>
+                {% endif %}
+                {% if publicacoes %}
+                    <option value="">Selecione</option>
+                    {% for publicacao in publicacoes %}
+                        <option value="{{ publicacao.getCoSeqPublicacao() }}"
+                        {{ publicacao.getCoSeqPublicacao() == command.getCoPublicacao() ? 'selected="selected"' : null }}        
+                        >{{ publicacao.getDescricaoCompleta() }}</option>
+                    {% endfor %}
+                {% endif %}
+            </select>
+            {{ macros.render_error(errors, 'coPublicacao') }}
+        </div>
+        
+        <div class="form-group {{ macros.add_error_class(errors, 'coPublicacao') }}">
+            <label class="control-label">Ano Referência</label>
+            <input type="text" name="nuAnoReferencia" id="nuAnoReferencia" class="form-control" value="{{ command.getNuAnoReferencia() }}" readonly="readonly" />
+            {{ macros.render_error(errors, 'coPublicacao') }}
+            {% if not command.getPlanejamentoAnoFolha() %}
+                <button type="button" class="btn btn-primary margin-top-10" id="btn-copy-planejamento"><i class="glyphicon glyphicon-copy"></i> Copiar planejamento do ano anterior</button>
+            {% endif %}
+        </div>
+        
+        <hr class="clear-both">
+        
+        {% if errors %}
+            {% for error in errors %}            
+                {% if error.propertyPath == '' %}
+                    <div class="alert alert-danger">{{ error.message }}</div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        
+        <div class="col-lg-6 pull-left">
+            <table class="table table-striped">
+                <thead>
+                    <th>Mês de Referência</th>
+                    <th title="Informe o dia de abertura automática da folha de pagamento no respectivo mês/ano de referência.">Dia para Abertura</th>
+                </thead>
+                <tbody>            
+                {% for nuMes,mes in command.mesesReferencia|slice(0, 6, true) %}
+                <tr class="{{ macros.add_error_class(errors, 'mes_' ~ nuMes) }}">
+                    <td>{{ mes.label|trans }}</td>
+                    <td>
+                        <input type="text" name="mesesReferencia[{{ nuMes }}]" value="{{ mes.nuDia }}" class="form-control" maxlength="2" {{ command.getNuAnoReferencia() == date|date('Y') and nuMes < date|date('m') ? 'readonly="readonly"' : null }}/>
+                        {{ macros.render_error(errors, 'mes_' ~ nuMes) }}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-6 pull-right">
+            <table class="table table-striped">
+                <thead>
+                    <th>Mês de Referência</th>
+                    <th title="Informe o dia de abertura automática da folha de pagamento no respectivo mês/ano de referência.">Dia para Abertura</th>
+                </thead>
+                <tbody>            
+                {% for nuMes,mes in command.mesesReferencia|slice(6, 6, true) %}
+                <tr class="{{ macros.add_error_class(errors, 'mes_' ~ nuMes) }}">
+                    <td>{{ mes.label|trans }}</td>
+                    <td>
+                        <input type="text" name="mesesReferencia[{{ nuMes }}]" value="{{ mes.nuDia }}" class="form-control" maxlength="2" {{ command.getNuAnoReferencia() == date|date('Y') and nuMes < date|date('m') ? 'readonly="readonly"' : null }}/>
+                        {{ macros.render_error(errors, 'mes_' ~ nuMes) }}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+                
+        <div class="clear-both">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a href="{{ path('planejamento_abertura_folha') }}" class="btn btn-default">Voltar</a>
+        </div>
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/planejamento_abertura_folha_pagamento/create.js') }}"></script>
+{% endblock %}

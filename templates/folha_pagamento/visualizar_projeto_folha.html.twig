@@ -1,0 +1,80 @@
+{% extends "base.html.twig" %}
+
+{% block subtitle %}Autorização de Folha de Pagamento - SEI {{ projetoFolha.projeto.nuSipar }}{% endblock %}
+
+{% block body %}
+    {% set isGrupoTutorial = projetoFolha.getProjeto().getPublicacao().getPrograma().isGrupoTutorial() %}
+    <div class="row">
+        <div class="col-md-3 pull-left">
+            <strong>Mês/Ano de Referência</strong>
+            <div>{{ projetoFolha.folhaPagamento.referenciaExtenso|capitalize }}</div>
+        </div>                
+        <div class="col-md-4 pull-right">            
+            <div>
+                Quantidade total de bolsistas <span class="badge pull-right">{{ projetoFolha.projeto.getParticipantesNaoVoluntarios()|length }}</span>
+            </div>
+            <div>
+                Quantidade total de bolsistas autorizadas <span class="badge pull-right">{{ autorizacaoFolhas|length }}</span>
+            </div>                                    
+            {% if qtParticipantes and not isGrupoTutorial %}
+                <p></p>
+                <div>
+                    Bolsas autorizadas por grupo:
+                </div>
+                <div class="well well-sm">
+                {% for qt in qtParticipantes %}
+                <div>
+                    {{ qt.noGrupoAtuacao }} <span class="badge pull-right">{{ qt.qtParticipantes }}</span>
+                </div>                
+                {% endfor %}
+                <br>
+                <span class="text-small">Obs.: A contagem pode não ser exata por ter participantes que estejam em mais de um grupo de atuação.</span>
+                </div>                
+            {% endif %}
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">CPF</th>
+                    <th class="text-center">Nome do Participante</th>
+                    <th class="text-center">Perfil</th>
+                    <th class="text-center">
+                        {% if isGrupoTutorial %}
+                            Grupo
+                        {% else %}
+                            Grupos de atuação
+                        {% endif %}
+                    </th>
+                    <th class="text-center">Valor da Bolsa</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for autorizacao in autorizacaoFolhas %}
+                    <tr {% if not autorizacao.projetoPessoa.pessoaPerfil.pessoaFisica.isCpfRegular() %}class="alert-danger"{% endif %}>
+                        <td class="text-center">{{ autorizacao.projetoPessoa.pessoaPerfil.pessoaFisica.nuCpf }}</td>
+                        <td>{{ autorizacao.projetoPessoa.pessoaPerfil.pessoaFisica.pessoa.noPessoa }}</td>
+                        <td class="text-center">{{ autorizacao.projetoPessoa.pessoaPerfil.perfil.dsPerfil }}</td>
+                        <td>{{ isGrupoTutorial ? autorizacao.projetoPessoa.getProjetoPessoaGrupoAtuacaoAtivos().first().getGrupoAtuacao().getNoGrupoAtuacao() : autorizacao.projetoPessoa.descricaoGruposAtuacao }}</td>
+                        <td class="text-right">R$ {{ autorizacao.vlBolsa|number_format(2, ',', '.') }}</td>
+                    </tr>                    
+                {% endfor %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-right"><strong>TOTAL</strong></td>
+                    <td class="text-right">R$ {{ projetoFolha.valorTotal|number_format(2, ',', '.')  }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <label>Relatório Mensal de Atividades</label>
+            <p>{{ projetoFolha.dsJustificativa|undefined }}
+        </div>
+    </div>
+{% endblock %}

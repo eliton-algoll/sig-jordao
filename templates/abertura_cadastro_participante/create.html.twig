@@ -1,0 +1,35 @@
+{% extends "base.html.twig" %}
+
+{% block subtitle %}
+    {% if edit is defined and edit %}Editar{% else %}Cadastrar{% endif %} abertura do sistema do sistema para Cadastro de Participante
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_row(form.publicacao, { 'attr' : { 'disabled' : (form.vars.data.getAutorizaCadastroParticipante()) ? true : false } }) }}
+        {{ form_row(form.projeto, { 'attr' : { 'disabled' : (form.vars.data.getAutorizaCadastroParticipante()) ? true : false } }) }}
+        {{ form_row(form.noMesAnoReferencia) }}        
+        
+        <div class="form-group col-md-5 pull-left padding-0 {% if not form.dtInicioPeriodo.vars.valid %}has-error{% endif %}">
+            {{ form_label(form.dtInicioPeriodo) }}
+            {{ form_widget(form.dtInicioPeriodo, { 'attr' : { 'readonly' : (form.vars.data.getAutorizaCadastroParticipante() and form.vars.data.getAutorizaCadastroParticipante().getDtInicioPeriodo()|date('Ymd') < date()|date('Ymd')) } }) }}
+            {{ form_errors(form.dtInicioPeriodo) }}
+        </div>
+        <div class="pull-left text-center margin-top-25 col-md-1">
+            <label style="font-size: 18px">a</label>
+        </div>
+        <div class="form-group col-md-6 pull-right padding-0 {% if not form.dtFimPeriodo.vars.valid %}has-error{% endif %}">
+            {{ form_widget(form.dtFimPeriodo) }}
+            {{ form_errors(form.dtFimPeriodo) }}
+        </div>
+        
+        <div class="clear-both"></div>
+        
+        <button type="submit" class="btn btn-primary" id="btn-save">Salvar</button>
+        <a href="{{ path('abertura_cadastro_participante') }}" class="btn btn-default">Voltar</a>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/abertura_cadastro_participante/create.js') }}"></script>
+{% endblock %}

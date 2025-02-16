@@ -7,7 +7,7 @@ use App\Entity\ModeloCertificado;
 use App\Form\DadosEmissaoCertificadoType;
 use App\Form\FiltroGerarCertificadoType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

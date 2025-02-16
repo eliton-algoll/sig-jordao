@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\GrupoAtuacao;
 use App\Entity\Perfil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;

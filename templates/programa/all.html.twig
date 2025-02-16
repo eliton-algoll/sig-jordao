@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}Pesquisar Programas{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form, {'method': 'get', attr: {'novalidate': 'novalidate'}}) }}
+            {{ form_row(form.dsPrograma, {value: queryParams.dsPrograma}) }}
+            <input type="submit" class="btn btn-primary" value="Pesquisar">
+            <a class="btn btn-default" href="{{ path('programa_cadastrar') }}">Cadastrar Programa</a>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Programa', 'p.dsPrograma') }}</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for programa in pagination %}
+                        <tr>
+                            <td>{{ programa.coSeqPrograma }}</td>
+                            <td>{{ programa.dsPrograma }}</td>
+                            <td><a href="{{ path('programa_atualizar', {'programa': programa.coSeqPrograma}) }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="2">Nenhum programa cadastrado.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

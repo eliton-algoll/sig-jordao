@@ -1,0 +1,81 @@
+<style type="text/css">
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+    }
+    thead { display: table-header-group }
+    tfoot { display: table-row-group }
+    tr { page-break-inside: avoid }
+</style>
+<table>
+    <thead>
+    <tr>
+        <th colspan="5">
+            Relatório da Folha de Pagamento {{ report[0].projetoFolhaPagamento.folhaPagamento.nuMes|strmes }}/
+            {{ report[0].projetoFolhaPagamento.folhaPagamento.nuAno }}
+        </th>
+    </tr>
+    <tr>
+        <th>Nome do Participante</th>
+        <th>CPF</th>
+        <th>Perfil</th>
+        <th>Banco</th>
+        <th>Agência</th>
+        <th>Conta</th>
+        <th>Valor da Bolsa</th>
+        <th>Nº SEI Projeto</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% set total = 0 %}
+    {% for row in report %}
+        {% set total = total + row.vlBolsa %}
+        <tr>
+            <td>
+                {{ row.projetoPessoa.pessoaPerfil.pessoaFisica.pessoa.noPessoa }}
+            </td>
+            <td>
+                {{ row.projetoPessoa.pessoaPerfil.pessoaFisica.nuCpf|cpf }}
+            </td>
+            <td>
+                {{ row.projetoPessoa.pessoaPerfil.perfil.dsPerfil }}
+            </td>
+            <td>
+                {{ row.projetoPessoa.pessoaPerfil.pessoaFisica.dadoPessoal.banco.noBanco }}
+            </td>
+            <td>
+                {{ row.projetoPessoa.pessoaPerfil.pessoaFisica.dadoPessoal.agencia }}
+            </td>
+            <td>
+                {{ row.projetoPessoa.pessoaPerfil.pessoaFisica.dadoPessoal.conta }}
+            </td>
+            <td>
+                R$ {{ row.vlBolsa|number_format(2, ',', '.') }}
+            </td>
+            <td>
+                {{ row.projetoFolhaPagamento.projeto.nuSipar }}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    <tfooter>
+        <tr>
+            <th colspan="2"></th>
+            <th style="text-align: left;">Valor Total</th>
+            <th style="text-align: left;">
+                R$ {{ total|number_format(2, ',', '.') }}
+            </th>
+            <th></th>
+        </tr>
+        <tr>
+            <th colspan="2"></th>
+            <th style="text-align: left;">Total de Bolsistas</th>
+            <th style="text-align: left;">{{ report|length }}</th>
+            <th></th>
+        </tr>
+    </tfooter>
+</table>

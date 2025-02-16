@@ -1,0 +1,62 @@
+{% extends "base.html.twig" %}
+
+{% block subtitle %}
+    Consultar Valor de Bolsa
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">Pesquisar</button>
+        <a href="{{ path('valor_bolsa_create') }}" class="btn btn-primary">Novo Valor</a>
+    {{ form_end(form) }}    
+    
+    <hr>
+    {% if pagination.count() > 0 %}        
+    <table class="table table-striped">
+        <thead>
+            <tr>            
+                <th>{{ knp_pagination_sortable(pagination, '#', 'vlb.coSeqValorBolsaPrograma') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Programa', 'prog.dsPrograma') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Tipo de Participante', 'perf.dsPerfil') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Data de Cadastro', 'vlb.dtInclusao') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Inicio Vigência', 'vlb.nuAnoVigencia') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Valor da Bolsa', 'vlb.vlBolsa') }}</th> 
+                <th>{{ knp_pagination_sortable(pagination, 'Vigente', 'vlb.stPeriodoVigencia') }}</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vbp in pagination %}
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+                <td>{{ vbp.coSeqValorBolsaPrograma }}</td>
+                <td>{{ vbp.getPublicacao().getDescricaoCompleta() }}</td>
+                <td>{{ vbp.getPerfil().getDsPerfil() }}</td>
+                <td>{{ vbp.getDtInclusao()|date('d/m/Y') }}</td>
+                <td>{{ vbp.getInicoVigencia() }}</td>
+                <td>R$ {{ vbp.getVlBolsa()|number_format(2, ',', '.') }}</td>
+                <td>{{ vbp.getStPeriodoVigencia() }}</td>
+                <td>
+                    {% if vbp.isAtivo() and vbp.isVigenciaFutura() and not vbp.isInFolha %}
+                        <a href="{{ path('valor_bolsa_edit', { id : vbp.getCoSeqValorBolsaPrograma() }) }}" class="glyphicon glyphicon-edit" title="Editar Registro"></a>
+                        <a data-id="{{ vbp.getCoSeqValorBolsaPrograma() }}" class="glyphicon glyphicon-trash btn-delete-vl-bolsa" style="margin-left: 8px;" title="Excluir Registro"></a>
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+        
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+    {% elseif pagination is not null %}
+        Nenhum resultado encontrado.
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/valor_bolsa/index.js') }}"></script>
+{% endblock %}

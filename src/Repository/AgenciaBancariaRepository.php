@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\AgenciaBancaria;
 use Doctrine\Persistence\ManagerRegistry;
+
 class AgenciaBancariaRepository extends RepositoryAbstract
 {
     public function __construct(ManagerRegistry $registry)

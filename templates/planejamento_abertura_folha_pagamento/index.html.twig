@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}
+    Consultar Planejamento de Abertura da Folha de Pagamento
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        
+        <button type="submit" class="btn btn-primary">Pesquisar</button>
+        {% if is_granted('ADMINISTRADOR') %}
+            <a href="{{ path('planejamento_abertura_folha_create') }}" class="btn btn-primary">Novo Planejamento</a>
+        {% endif %}
+    {{ form_end(form) }}
+    
+    {% if pagination and pagination.count() > 0 %}
+        <hr>
+
+        <table class="table table-striped" id="grid-planejamento">
+        <tr>        
+            <th>{{ knp_pagination_sortable(pagination, '#', 'paf.coSeqPlanejamentoAnoFolha') }}</th>
+            <th{% if pagination.isSorted('paf.nuAno') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Ano de Referência', 'paf.nuAno') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Programa/Publicação', 'paf.publicacao') }}</th>
+            <th style="text-align: center;">Planejamento</th>
+            <th style="text-align: center;">Ação</th>
+        </tr>
+        {% for planejamento in pagination %}
+        <tr {% if loop.index is odd %}class="color"{% endif %}>
+            <td>{{ planejamento.getCoSeqPlanejamentoAnoFolha() }}</td>            
+            <td>{{ planejamento.getNuAno() }}</td>
+            <td>{{ planejamento.getPublicacao().getDescricaoCompleta() }}</td>
+            <td style="text-align: center;">
+                <a class="glyphicon glyphicon-eye-open btn-detail cursor-pointer" id-planejamento="{{ planejamento.getCoSeqPlanejamentoAnoFolha() }}" 
+                title="Clique na imagem para visualizar a consulta detalhada do planejamento de abertura de folha de pagamento do respectivo ano de referência"></a>
+            </td>
+            <td style="text-align: center;">
+                {% if is_granted('ADMINISTRADOR') %}
+                    {% if planejamento.isNuAnoCorrente() or planejamento.isNuAnoFuturo() %}
+                        <a href="{{ path('planejamento_abertura_folha_edit', { id : planejamento.getCoSeqPlanejamentoAnoFolha() }) }}" class="glyphicon glyphicon-edit" title="Editar registro"></a>
+                    {% endif %}
+                    {% if planejamento.isNuAnoFuturo() %}
+                        <a class="glyphicon glyphicon-trash cursor-pointer btn-remove-planejamento" id-planejamento="{{ planejamento.getCoSeqPlanejamentoAnoFolha() }}" title="Excluir registro"></a>
+                    {% endif %}
+                    {% if not planejamento.isNuAnoCorrente() and not planejamento.isNuAnoFuturo() %}
+                        -
+                    {% endif %}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        </table>
+        
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    {% elseif pagination and pagination.count() == 0 %}
+        <hr>
+        
+        Nenhum registro encontrado.
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/planejamento_abertura_folha_pagamento/index.js') }}"></script>
+{% endblock %}

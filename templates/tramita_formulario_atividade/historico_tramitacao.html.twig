@@ -1,0 +1,36 @@
+{% if historico %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Data e Hora</th>
+                <th>Situação</th>
+                <th>Protocolo FormSUS</th>
+                <th>Descrição do Tramite</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tramitacaoFormulario in historico %}
+            <tr>
+                <td>{{ tramitacaoFormulario.getCoSeqTramitacaoFormulario() }}</td>
+                <td>{{ tramitacaoFormulario.getDtInclusao()|date('d/m/Y H:i:s') }}</td>
+                <td>
+                    {{ tramitacaoFormulario.getSituacaoTramiteFormulario().getNoSituacaoTramiteFormulario() }}
+                    {% if tramitacaoFormulario.getNoArquivoRetornoFormulario() %}
+                        <a href="{{ asset('uploads/' ~ tramitacaoFormulario.getNoArquivoRetornoFormulario()) }}" class="glyphicon glyphicon-save"></a>
+                    {% endif %}
+                </td>
+                <td>{{ tramitacaoFormulario.getNuProtocoloFormsus() }}</td>
+                <td>
+                    {{ tramitacaoFormulario.getSituacaoTramiteFormulario().getDsSituacaoTramiteFormulario() }}
+                    {% if tramitacaoFormulario.getDsJustificativa() %}
+                        <a class="glyphicon glyphicon-eye-open cursor-pointer btn-detail-justificativa" title="Visualizar justificativa do resultado de análise do preenchimento do formulário" ds-justificativa="{{ tramitacaoFormulario.getDsJustificativa() }}"></a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    Histórico não encontrado.
+{% endif %}

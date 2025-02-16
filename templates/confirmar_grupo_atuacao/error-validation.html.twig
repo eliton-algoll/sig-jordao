@@ -1,0 +1,7 @@
+<table class="table">
+    {% for error in errors %}
+        <tr>
+            <td>{{ error.getMessage() }}</td>
+        </tr>
+    {% endfor %}
+</table>

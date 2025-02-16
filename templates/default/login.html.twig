@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}Autenticação{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-6">
+            <h2>SIGPET-SAÚDE</h2>
+            <p>Bem vindo ao Sistema de Informações Gerenciais do PET-SAÚDE.</p>
+        </div>
+        <div class="col-md-6">
+            {{ form_start(form, {'method': 'post', 'action': path('login')}) }}
+            {{ form_row(form.dsLogin, {value: lastUsername}) }}
+            {{ form_row(form.dsSenha) }}
+            <a href="{{ path('esqueci_minha_senha') }}" class="pull-right">Esqueci minha senha</a>
+            <input type="submit" class="btn btn-primary pull-left" value="Enviar">
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}

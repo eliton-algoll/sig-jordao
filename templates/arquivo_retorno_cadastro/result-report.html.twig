@@ -1,0 +1,106 @@
+<style type="text/css">
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+    }
+    thead { display: table-header-group }
+    tfoot { display: table-row-group }
+    tr { page-break-inside: avoid }
+</style>
+
+{% if formatRelatorio != 'pdf' %}
+<div style="text-align: center">
+    <h3>SIGPET - {{ report.publicacao.programa.dsPrograma }}</h3>
+    <h3>Retorno de Remessa de Cadastro do Banco do Brasil</h3>
+    <h4>{{ tpRelatorio }}</h4>
+</div>
+{% endif %}
+<hr>
+
+<table style="margin-bottom: 20px;">
+    <tr>
+        <td><strong>Mês/Ano de Retorno</strong></td>
+        <td>{{ report.dtInclusao|date('m/Y') }}</td>
+    </tr>
+    <tr>
+        <td><strong>Data de recepção pelo SIGPET</strong></td>
+        <td>{{ report.dtInclusao|date('d/m/Y') }}</td>
+    </tr>
+    <tr>
+        <td><strong>Nome do arquivo de retorno</strong></td>
+        <td>{{ report.noArquivoOriginal }}</td>
+    </tr>
+    <tr>
+        <td><strong>Número do Lote</strong></td>
+        <td>{{ report.cabecalhoRetornoCriacaoConta.nuSequencialLote }}</td>
+    </tr>    
+</table>
+        
+<div>
+{% if stCadastro %}
+    <strong>Situação do Cadastro:</strong>
+    {% for key,st in stCadastro %}
+         <br>{{ st|int ~ ' - ' ~ key }}
+    {% endfor %}
+{% endif %}
+</div>
+    
+<table style="margin-top: 20px; width:100%; border-collapse: collapse;">
+    <tr style="border-bottom: 1px solid #000;">
+        <th>Participante</th>
+        <th>CPF</th>
+        <th>Data de Nascimento</th>
+        <th>Nome da Mãe</th>
+        <th>Agência</th>
+        <th>Conta</th>
+        <th>Posição no arquivo</th>
+        <th>Ocorrência</th>
+    </tr>    
+    {% for detalhe in report.detalheRetornoCriacaoConta %}
+        <tr>
+            <td>{{ detalhe.noBeneficiario|trim }}</td>
+            <td style="text-align: center;">{{ detalhe.nuCpf|cpf }}</td>
+            <td style="text-align: center;">{{ detalhe.dtNascimento|date('d/m/Y') }}</td>
+            <td>{{ detalhe.noMaeBeneficiario|trim }}</td>
+            <td style="text-align: center;">{{ detalhe.nuIdOrgaoPagador }}</td>
+            <td style="text-align: center;">{{ detalhe.nuConta }}</td>
+            <td style="text-align: center;">{{ detalhe.nuSequencialRegistro|int }}</td>
+            <td>{{ detalhe.stBeneficiarioPrograma == 'N' ? 'Participante não encontrado no SIGPET' : '' }}</td>
+        </tr>        
+    {% endfor %}
+</table>
+
+<hr>
+
+{% if not stCadastro %}
+<table>
+    <tr>
+        <td><strong>Quantidade Total de participantes</strong></td>
+        <td>{{ report.rodapeRetornoCriacaoConta.qtRegistroDetalhe|int }}</td>
+    </tr>    
+</table>
+{% else %}
+<table>
+    <tr>
+        <td><strong>Quantidade de participantes da situação</strong></td>
+        <td>{{ report.detalheRetornoCriacaoConta|length }}</td>
+    </tr>    
+</table>
+{% endif %}
+
+{% if formatRelatorio != 'pdf' %}
+<hr>
+
+<table>
+    <tr>
+        <td>Relatório emitido em {{ date()|date('d/m/Y H:i:s') }}</td>        
+    </tr>
+    <tr>
+        <td>Responsável: {{ app.user.username }}</td>        
+    </tr>
+</table>
+{% endif %}

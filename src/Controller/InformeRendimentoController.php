@@ -12,7 +12,7 @@ use App\CommandBus\ConsultarInformeRendimentoCommand;
 use App\Controller\ControllerAbstract;
 use App\Entity\ProjetoPessoa;
 use Doctrine\Common\Util\Debug;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;

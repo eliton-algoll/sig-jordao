@@ -19,3 +19,8 @@ framework:
 
   mailer:
     dsn: "%env(MAILER_DSN)%"
+
+  translator:
+    default_path: "%kernel.project_dir%/translations"
+    fallbacks:
+      - "pt_BR"

@@ -1,0 +1,128 @@
+<html>
+<head>
+    <title></title>
+    <style>
+        {#body {
+            width: 595px;
+            height: 842px;
+            border: 1px solid #ccc;
+        }#}
+        p {
+            text-align: justify;
+        }
+
+        .brasao {
+            margin-left: 50%;
+        }
+
+        .brasao img {
+            margin-left: -50px;
+        }
+
+        .center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="brasao">
+    <img src="{{ absolute_url(asset('images/brasao.png')) }}" width="80" height="80"/>
+</div>
+<p class="center">
+    MINISTÉRIO DA SAÚDE<br/>
+    SECRETARIA DE GESTÃO DO TRABALHO E DA EDUCAÇÃO NA SAÚDE<br/>
+    DEPARTAMENTO DE GESTÃO DA EDUCAÇÃO NA SAÚDE
+</p>
+<p>
+    <b>Dados do Participante</b>
+</p>
+<p>
+    Nome: <b>{{ projetoPessoa.pessoaPerfil.pessoaFisica.pessoa.noPessoa }}</b><br/>
+    CPF: <b>{{ projetoPessoa.pessoaPerfil.pessoaFisica.pessoa.nuCpfCnpjPessoa }}</b><br/>
+    Data de Nascimento: <b>{{ projetoPessoa.pessoaPerfil.pessoaFisica.dtNascimento|date('d/m/Y') }}</b><br/>
+    Nome da Mãe: <b>{{ projetoPessoa.pessoaPerfil.pessoaFisica.noMae }}</b><br/>
+    Tipo participante: <b>{{ projetoPessoa.pessoaPerfil.perfil.dsPerfil }}</b><br/>
+    Voluntário: <b>{{ projetoPessoa.stVoluntarioProjeto == 'S' ? 'Sim' : 'Não' }}</b>
+</p>
+<p>
+    <b>Endereço</b>
+</p>
+{% set endereco = projetoPessoa.pessoaPerfil.pessoaFisica.pessoa.enderecos.first %}
+{% set dadoAcademico = projetoPessoa.getDadoAcademicoAtivo() %}
+<p>
+    CEP: <b>{{ endereco.cep.nuCep }}</b><br/>
+    UF: <b>{{ endereco.municipio.sgUf }}</b> &nbsp;&nbsp;&nbsp;
+    Municipio: <b>{{ endereco.municipio.noMunicipio }}</b>&nbsp;&nbsp;&nbsp;
+    Bairro: <b>{{ endereco.noBairro }}</b><br/>
+    Logradouro: <b>{{ endereco.noLogradouro }}</b>&nbsp;&nbsp;&nbsp;
+    Complemento: <b>{{ endereco.dsComplemento }}</b><br/>
+    {% if projetoPessoa.pessoaPerfil.pessoaFisica.pessoa.getTelefoneComercial %}
+        Telefone Comercial: <b>{{ projetoPessoa.pessoaPerfil.pessoaFisica.pessoa.getTelefoneComercial }}</b><br/>
+    {% endif %}
+    {% if projetoPessoa.pessoaPerfil.pessoaFisica.pessoa.getTelefoneResidencial %}
+        Telefone Residencial: <b>{{ projetoPessoa.pessoaPerfil.pessoaFisica.pessoa.getTelefoneResidencial }}</b><br/>
+    {% endif %}
+    {% if projetoPessoa.pessoaPerfil.pessoaFisica.pessoa.getTelefoneCelular %}
+        Celular: <b>{{ projetoPessoa.pessoaPerfil.pessoaFisica.pessoa.getTelefoneCelular }}</b><br/>
+    {% endif %}
+    E-mail: <b>{{ projetoPessoa.pessoaPerfil.pessoaFisica.pessoa.enderecoWebRecente }}</b><br/>
+</p>
+
+{% if not projetoPessoa.pessoaPerfil.perfil.isCoordenadorProjeto() %}
+    <p>
+        <b>Dados Complementares</b>
+    </p>
+    <p>
+        {% if projetoPessoa.pessoaPerfil.perfil.isCoordenadorGrupo() %}
+            Categoria do profissional: <b>{{ dadoAcademico.categoriaProfissional.dsCategoriaProfissional }}</b><br/>
+            Cursos Lecionados: <b>{{ projetoPessoa.getCursosLecionadosStr }}</b><br/>
+        {% endif %}
+        {% if projetoPessoa.pessoaPerfil.perfil.isPreceptor() %}
+            Categoria do profissional: <b>{{ dadoAcademico.categoriaProfissional.dsCategoriaProfissional }}</b><br/>
+            CNES: <b>{{ dadoAcademico.coCnes }}</b><br/>
+            {# Área Temática: <b>{{ projetoPessoa.dadoAcademico.cursoGraduacao.dsCursoGraduacao }}</b><br/> #}
+        {% endif %}
+        {% if projetoPessoa.pessoaPerfil.perfil.isTutor() %}
+            Categoria do profissional: <b>{{ dadoAcademico.categoriaProfissional.dsCategoriaProfissional }}</b><br/>
+            Cursos Lecionados: <b>{{ projetoPessoa.getCursosLecionadosStr }}</b><br/>
+            {# Área Temática: <b>{{ projetoPessoa.dadoAcademico.cursoGraduacao.dsCursoGraduacao }}</b><br/> #}
+        {% endif %}
+        {% if projetoPessoa.pessoaPerfil.perfil.isEstudante() %}
+            Curso Graduação:
+            <b>{{ projetoPessoa.getProjetoPessoaCursoGraduacaoAtivo.first().cursoGraduacao.dsCursoGraduacao|capitalize }}</b>
+            <br/>
+            Ano ingresso: <b>{{ dadoAcademico.nuAnoIngresso }}</b><br/>
+            Semestre atual: <b>{{ dadoAcademico.nuSemestre }}</b><br/>
+            {# Área Temática: <b>{{ projetoPessoa.dadoAcademico.cursoGraduacao.dsCursoGraduacao }}</b><br/> #}
+        {% endif %}
+    </p>
+{% endif %}
+<p>
+    <b>Dados Bancários</b>
+</p>
+<p>
+    Banco: <b>{{ banco.noBanco }}</b><br/>
+    Agência Bancária: <b>{{ agenciaBancaria }}</b><br/>
+    Conta: <b>{{ conta }}</b><br/>
+</p>
+<p>
+    Declaro, sob as penas da lei, que as informações prestadas são a expressão da verdade e que preencho plenamente os
+    requisitos expressos na legislação pertinente do Programa de Educação pelo Trabalho para a Saúde - {{ dsPrograma }},
+    para participação no âmbito deste Programa.<br/>Comprometo-me a desenvolver as atividades previstas no Projeto da
+    Secretaria(s) ___________________ (Municipal e/ou Estadual) de Saúde de ______________ em parceria com a Instituição
+    de Educação Superior ____________________________.
+</p>
+<p>
+    Local e Data: ______________________________________
+</p>
+<p>
+    __________________________________<br/>
+    PARTICIPANTE
+</p>
+<p>
+    __________________________________<br/>
+    COORDENADOR DO PROJETO
+</p>
+</body>
+</html>
+    

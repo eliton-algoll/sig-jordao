@@ -1,0 +1,57 @@
+{% extends "base.html.twig" %}
+
+{% block subtitle %}
+    Consultar Retorno de Cadastro
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">Pesquisar</button>
+        <a href="{{ path('arquivo_retorno_cadastro_recepcionar_arquivo') }}" class="btn btn-primary">Novo retorno</a>
+    {{ form_end(form) }}
+    
+    {% if pagination != null and pagination.count() > 0 %}
+    <hr>
+    
+    <table class="table table-striped margin-top-10">
+        <tr>        
+            <th>{{ knp_pagination_sortable(pagination, 'Data de Recepção', 'rcc.dtInclusao') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Publicaçao', 'pub.nuPublicacao') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Arquivo', 'rcc.noArquivoOriginal') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Qtde. Recepcionada', 'rcc.qtParticipante') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Qtde. de Cadastros realizados', 'rcc.qtParticipanteContaCriada') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Qtde. de Cadastros não realizados', 'rcc.qtParticipContaNaoCriada') }}</th>            
+            <th>Ação</th>
+        </tr>
+        
+        {% for rcc in pagination %}
+        <tr {% if loop.index is odd %}class="color"{% endif %}>
+            <td>{{ rcc.dtInclusao|date('d/m/Y') }}</td>
+            <td>{{ rcc.publicacao.programa.dsPrograma ~ ' - ' ~ rcc.publicacao.tpPublicacao|publicacao ~ ' nº ' ~ rcc.publicacao.nuPublicacao ~ ' de ' ~ rcc.publicacao.dtPublicacao|date('d/m/Y') }}</td>
+            <td>{{ rcc.noArquivoOriginal }}</td>
+            <td>{{ rcc.qtParticipante }}</td>
+            <td>{{ rcc.qtParticipanteContaCriada }}</td>
+            <td>{{ rcc.qtParticipContaNaoCriada }}</td>            
+            <td>
+                <a href="{{ asset('uploads/' ~ rcc.noArquivoUpload) }}" download="{{ asset('uploads/' ~ rcc.noArquivoUpload) }}" class="glyphicon glyphicon-download-alt" target="_blank" title="Baixar Arquivo de Retorno"></a> 
+                <a href="{{ path('arquivo_retorno_cadastro_report', { 'retornoCriacaoConta' : rcc.coSeqRetornoCriacaoConta }) }}" class="glyphicon glyphicon-list-alt" title="Imprimir relatório do Retorno de Cadastro de Conta."></a>
+                <a class="glyphicon glyphicon-trash btn-remove-retorno cursor-pointer" data-id="{{ rcc.coSeqRetornoCriacaoConta }}" title="Excluir registro."></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>    
+    {% elseif pagination != null and pagination.count() == 0 %}
+        <hr>
+        Nenhum registro encontrado.
+    {% endif %}
+{% endblock %}
+
+
+{% block javascripts %}
+    <script src="{{ asset('js/arquivo_retorno_cadastro/index.js') }}"></script>
+{% endblock %}

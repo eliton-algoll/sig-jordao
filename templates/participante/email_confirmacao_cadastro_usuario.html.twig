@@ -1,0 +1,28 @@
+{% if emailUsuarioNovo == true %}
+    <p>O cadastro do seu usuário no SIGPET foi realizado com sucesso.</p>
+    <p>
+        Para entrar no sistema acesse:
+        <br><br>http://sigpet.saude.gov.br/login
+        <br>Usuário: {{ dsLogin }}
+        <br>Senha: {{ dsSenha }}
+    </p>
+    <br>
+{% else %}
+    <p>O cadastro do seu usuário no SIGPET foi realizado com sucesso.</p>
+    <p>
+        Para entrar no sistema acesse:
+        <br><br>http://sigpet.saude.gov.br/login
+        <br>O login e a senha são os mesmos utilizados no programa anterior.
+        <br>O login é o CPF (sem ponto e sem hífen).
+        <br>Caso não se recorde da senha, utilize a ferramenta "esqueci minha senha".
+    </p>
+    <br>
+{% endif %}
+
+{% if programa %}
+    <p>
+        Seja bem-vindo (a) ao {{ programa.getDsPrograma() }}.
+    </p>
+    <p>O SIGPET-Saúde é o sistema pelo qual vamos gerenciar as informações de pagamento dos bolsistas e também
+        acompanhar o desenvolvimento dos projetos.</p>
+{% endif %}

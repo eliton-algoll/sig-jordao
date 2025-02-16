@@ -1,0 +1,117 @@
+{% extends "base.html.twig" %}
+
+{% block subtitle %}
+    Cadastrar Envio de Formulário de Avaliação de Atividade
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        <h4 class="text-info">Dados do Envio</h4>
+        <hr>
+    
+        {{ form_row(form.formularioAvaliacaoAtividade) }}
+        
+        <div class="form-group col-md-5 pull-left padding-0 {% if not form.dtInicioPeriodo.vars.valid %}has-error{% endif %}">
+            {{ form_label(form.dtInicioPeriodo) }}
+            {{ form_widget(form.dtInicioPeriodo) }}
+            {{ form_errors(form.dtInicioPeriodo) }}
+        </div>
+        <div class="pull-left text-center margin-top-25 col-md-1">
+            <label style="font-size: 18px">a</label>
+        </div>
+        <div class="form-group col-md-6 pull-right padding-0 {% if not form.dtFimPeriodo.vars.valid %}has-error{% endif %}">
+            {{ form_widget(form.dtFimPeriodo) }}
+            {{ form_errors(form.dtFimPeriodo) }}
+        </div>
+        
+        <h4 class="clear-both text-info">Opções de Envio</h4>
+        <hr>
+        
+        <div class="form-group {% if not form.publicacoes.vars.valid %}has-error{% endif %}">
+            {{ form_label(form.publicacoes) }}
+            <div class="checkbox-group">
+                <div class="checkbox">
+                    {% set checkAllPublicacao = (form.publicacoes.children) ? true : false %}
+                    {% for opt in form.publicacoes.children %}                        
+                        {% if not opt.vars.checked %}
+                            {% set checkAllPublicacao = false %}
+                        {% endif %}
+                    {% endfor %}
+                    <label><input type="checkbox" id="btn-mark-publicacoes" {{ checkAllPublicacao ? 'checked="checked"' : null }}> <strong>Todos os programas/publicações ativos</strong></label>
+                </div>
+                {{ form_widget(form.publicacoes) }}                
+            </div>
+            {{ form_errors(form.publicacoes) }}
+        </div>
+            
+        <div class="form-group {% if not form.projetos.vars.valid %}has-error{% endif %}">
+            {{ form_label(form.projetos) }}
+            <div class="checkbox-group">
+                <div class="checkbox">
+                    {% set checkAllProjeto = (form.projetos.children) ? true : false %}
+                    {% for opt in form.projetos.children %}                        
+                        {% if not opt.vars.checked %}
+                            {% set checkAllProjeto = false %}
+                        {% endif %}
+                    {% endfor %}
+                    <label><input type="checkbox" id="btn-mark-projetos" {{ checkAllProjeto ? 'checked="checked"' : null }}> <strong>Todos os projetos ativos</strong></label>
+                </div>
+                <div id="checkbox-projetos"></div>
+                {{ form_widget(form.projetos) }}                
+            </div>
+            {{ form_errors(form.projetos) }}
+        </div>        
+            
+        <div class="form-group {% if not form.perfis.vars.valid %}has-error{% endif %}">
+            {{ form_label(form.perfis) }}
+            <div class="checkbox-group">                                
+                {{ form_widget(form.perfis) }}                
+            </div>
+            {{ form_errors(form.perfis) }}
+        </div>        
+        
+        <h4 class="text-info">Participantes para envio</h4>
+        <hr>
+        
+        <div class="form-group {% if not form.stEnviaTodos.vars.valid %}has-error{% endif %}">
+            {{ form_widget(form.stEnviaTodos) }}
+            {{ form_errors(form.stEnviaTodos) }}
+        </div>
+        
+        <div id="selecionar-participantes" class="{% if form.stEnviaTodos.vars.value == 1 %}hidden{% endif %}">
+            <div class="form-group">
+                {{ form_label(form.projetoSelecionado) }}
+                {{ form_widget(form.projetoSelecionado) }}
+            </div>
+
+            <div class="form-group col-md-5 pull-left padding-0">
+                {{ form_label(form.from_participantes) }}
+                {{ form_widget(form.from_participantes) }}
+                {{ form_errors(form.from_participantes) }}           
+            </div>
+            <div class="pull-left col-md-2 text-center margin-top-50">
+                <div class="margin-top-100">
+                    <a class="btn btn-success" id="btn-add-item"><i class="glyphicon glyphicon-plus"></i> Adicionar</a>
+                </div>
+                <div class="margin-top-10">
+                    <a class="btn btn-danger" id="btn-remove-item">Remover <i class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="form-group col-md-5 pull-right padding-0 {% if not form.to_participantes.vars.valid %}has-error{% endif %}">
+                {{ form_label(form.to_participantes) }}
+                {{ form_widget(form.to_participantes) }}
+                {{ form_errors(form.to_participantes) }}
+            </div>
+        </div>
+        
+        <div class="clear-both">
+            <button type="submit" class="btn btn-primary" id="btn-salvar">Salvar</button>
+            <a href="{{ path('tramita_formulario_atividade') }}" class="btn btn-default">Voltar</a>
+            <a class="btn btn-link" id="btn-clear-form">Limpar</a>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/tramita_formulario_atividade/create.js') }}"></script>
+{% endblock %}

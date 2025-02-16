@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\CommandBus\EnviarFaleConoscoCommand;
 use App\Form\EnviarFaleConoscoType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 class FaleConoscoController extends ControllerAbstract

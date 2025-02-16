@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "doctrine/doctrine-bundle": "2.5.7",
         "doctrine/orm": "^2.20",
+        "friendsofsymfony/jsrouting-bundle": "^2.8",
         "knplabs/knp-menu-bundle": "^3.0",
         "knplabs/knp-paginator-bundle": "5.0.0",
         "league/tactician-bundle": "^1.0",

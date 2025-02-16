@@ -1,0 +1,25 @@
+{% if report.data %}
+<table class="table table-striped">
+    <thead>            
+        <tr>
+            {% for title in report.titles %}
+                <th>{{ title }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in report.data %}
+        <tr>                   
+            {% for colName,col in row %}
+                {% if colName == 'qtValorFolha' %}
+                    <td>R$ {{ col|number_format(2, ',', '.') }}</td>
+                {% else %}
+                    <td>{{ col }}</td>
+                {% endif %}
+            {% endfor %}                         
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>    
+{% endif %}
+

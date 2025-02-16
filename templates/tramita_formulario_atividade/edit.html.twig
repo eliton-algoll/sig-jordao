@@ -1,0 +1,69 @@
+{% extends "base.html.twig" %}
+
+{% block subtitle %}
+    Editar Envio de Formulário de Avaliação de Atividade
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        <h4 class="text-info">Dados do Envio</h4>
+        <hr>
+    
+        {{ form_row(form.formularioAvaliacaoAtividade) }}
+        
+        <div class="form-group col-md-5 pull-left padding-0 {% if not form.dtInicioPeriodo.vars.valid %}has-error{% endif %}">
+            {{ form_label(form.dtInicioPeriodo) }}
+            {{ form_widget(form.dtInicioPeriodo, { 'attr' : { 'readonly' : date()|date('Ymd') > form.dtInicioPeriodo.vars.data|date('Ymd') and not not form.dtInicioPeriodo.vars.valid } }) }}
+            {{ form_errors(form.dtInicioPeriodo) }}
+        </div>
+        <div class="pull-left text-center margin-top-25 col-md-1">
+            <label style="font-size: 18px">a</label>
+        </div>
+        <div class="form-group col-md-6 pull-right padding-0 {% if not form.dtFimPeriodo.vars.valid %}has-error{% endif %}">
+            {{ form_widget(form.dtFimPeriodo) }}
+            {{ form_errors(form.dtFimPeriodo) }}
+        </div>
+        
+        <h4 class="clear-both text-info">Opções de Envio</h4>
+        <hr>
+        
+        <div class="form-group">
+            <label class="control-label required">Programa/Publicação</label>
+            <select class="form-control" multiple="true" disabled="true">
+                {% for publicacao in formData.publicacoes %}
+                    <option>{{ publicacao.getDescricaoCompleta() }}</option>
+                {% endfor %}
+            </select>
+        </div>
+            
+        <div class="form-group">
+            <label class="control-label required">Projeto</label>
+            <select class="form-control" multiple="true" disabled="true">
+                {% for projeto in formData.projetos %}
+                    <option>{{ projeto.getNuSipar() }}</option>
+                {% endfor %}
+            </select>
+        </div>
+            
+        <div class="form-group">
+            <label class="control-label required">Perfil Responsável</label>
+            <select class="form-control" multiple="true" disabled="true">
+                {% for perfil in formData.perfis %}
+                    <option>{{ perfil.getDsPerfil() }}</option>
+                {% endfor %}
+            </select>
+        </div>
+            
+        <div class="form-group">
+            <label class="control-label required">Participantes Selecionados para Envio</label>
+            <select class="form-control" multiple="true" disabled="true" style="min-height: 250px;">
+                {% for participante in formData.participantes %}
+                    <option>{{ participante.getDescricaoParticipante() }}</option>
+                {% endfor %}
+            </select>
+        </div>
+            
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a href="{{ path('tramita_formulario_atividade') }}" class="btn btn-default">Voltar</a>
+    {{ form_end(form) }}
+{% endblock %}    

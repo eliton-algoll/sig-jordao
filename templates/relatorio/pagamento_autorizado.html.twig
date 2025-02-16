@@ -1,0 +1,32 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th><a class="header-order-by" href="javascript:void(0)" data-order-by="NU_SIPAR" data-sort="{{ ascDesc(queryParams) }}">N° SEI</a></th>
+            <th><a class="header-order-by" href="javascript:void(0)" data-order-by="NU_MES" data-sort="{{ ascDesc(queryParams) }}">Mês de referência</a></th>
+            <th><a class="header-order-by" href="javascript:void(0)" data-order-by="BOLSAS_PERMITIDAS" data-sort="{{ ascDesc(queryParams) }}">Bolsas permitidas</a></th>
+            <th><a class="header-order-by" href="javascript:void(0)" data-order-by="BOLSAS_AUTORIZADAS" data-sort="{{ ascDesc(queryParams) }}">Bolsas autorizadas</a></th>
+            <th><a class="header-order-by" href="javascript:void(0)" data-order-by="DT_AUTORIZACAO" data-sort="{{ ascDesc(queryParams) }}">Data da autorização</a></th>
+            <th><a class="header-order-by" href="javascript:void(0)" data-order-by="NO_INSTITUICAO_PROJETO" data-sort="{{ ascDesc(queryParams) }}">Instituição de ensino superior</a></th>
+            <th><a class="header-order-by" href="javascript:void(0)" data-order-by="SECRETARIA_SAUDE" data-sort="{{ ascDesc(queryParams) }}">Secretaria municipal de saúde</a></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for result in results %}
+            <tr>
+                <td>{{ result.CO_SEQ_PROJETO }}</td>
+                <td>{{ result.NU_SIPAR }}</td>
+                <td>{{ result.NU_MES|strmes }}</td>
+                <td>{{ result.BOLSAS_PERMITIDAS }}</td>
+                <td>{{ result.BOLSAS_AUTORIZADAS }}</td>
+                <td>{{ result.DT_AUTORIZACAO|date('d/m/Y') }}</td>
+                <td>{{ result.NO_INSTITUICAO_PROJETO }}</td>
+                <td>{{ result.SECRETARIA_SAUDE }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">Nenhum resultado encontrado para os filtros informados.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

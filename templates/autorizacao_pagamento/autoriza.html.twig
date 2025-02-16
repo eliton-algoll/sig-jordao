@@ -1,0 +1,170 @@
+{% extends "base.html.twig" %}
+
+{% block subtitle %}Autorização de Pagamento{% endblock %}
+
+{% block body %}
+    <div>
+        <div class="col-md-3 pull-left">
+            Mês/Ano de Referência
+            <div>{{ folha.getReferenciaExtenso()|upper }}</div>
+        </div>
+
+        <div class="col-md-4 pull-right">
+            <div>
+                Quantidade total de bolsistas <span class="badge pull-right">{{ projeto.qtBolsa }}</span>
+                <input type="hidden" id="qtTotalBolsistas" value="{{ projeto.qtBolsa }}">
+            </div>
+            <div>
+                {{ projeto.publicacao.getQuantidadeMinimaGrupo().tipoQuantitativoPublicacao.dsTipoquantidadePublicacao }}
+                <span class="badge pull-right">{{ projeto.publicacao.getQuantidadeMinimaGrupo().qtParticipante }}</span>
+                <input type="hidden" id="qtMinimaParticipante"
+                       value="{{ projeto.publicacao.getQuantidadeMinimaGrupo().qtParticipante }}">
+            </div>
+            <div>
+                {{ projeto.publicacao.getQuantidadeMaximaGrupo().tipoQuantitativoPublicacao.dsTipoquantidadePublicacao }}
+                <span class="badge pull-right">{{ projeto.publicacao.getQuantidadeMaximaGrupo().qtParticipante }}</span>
+                <input type="hidden" id="qtMaximaParticipante"
+                       value="{{ projeto.publicacao.getQuantidadeMaximaGrupo().qtParticipante }}">
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <hr>
+    <form name="form_autoriza_pagamento" id="form-autoriza-pagamento"
+          action="{{ path('autorizacao_pagamento_autoriza_pagamento') }}" method="POST">
+        <table class="table table-bordered">
+            {% if grupos or projeto.getCoordenadorDeProjeto() %}
+                <thead>
+                <tr>
+                    <th colspan="5" class="text-center">FOLHA DE PAGAMENTO {{ folha.publicacao.getDescricaoCompleta() }}
+                                                        - {{ folha.getReferenciaExtenso()|upper }}</th>
+                </tr>
+                </thead>
+            {% endif %}
+            <tbody>
+            {% if projeto.getCoordenadorDeProjetoNaoVoluntario() %}
+                <tr>
+                    <th class="text-center"></th>
+                    <th class="text-center">CPF</th>
+                    <th class="text-center">Nome do Participante</th>
+                    <th class="text-center">Perfil</th>
+                    <th class="text-center">Valor da Bolsa</th>
+                </tr>
+                <tr>
+                    <td class="text-center">
+                        <input type="checkbox" name="autorizacao_pagamento_coordenador"
+                               id="autorizacao_pagamento_coordenador"
+                               value="{{ projeto.getCoordenadorDeProjetoNaoVoluntario().coSeqProjetoPessoa }}">
+                    </td>
+                    <td class="text-center">{{ projeto.getCoordenadorDeProjetoNaoVoluntario().pessoaPerfil.pessoaFisica.nuCpf|cpf }}</td>
+                    <td>{{ projeto.getCoordenadorDeProjetoNaoVoluntario().pessoaPerfil.pessoaFisica.pessoa.noPessoa }}</td>
+                    <td class="text-center">{{ projeto.getCoordenadorDeProjetoNaoVoluntario().pessoaPerfil.perfil.dsPerfil }}</td>
+                    <td class="text-right">
+                        R$ {{ projeto.getCoordenadorDeProjetoNaoVoluntario().getVlBolsa()|number_format(2, ',', '.') }}</td>
+                </tr>
+                {% if projeto.getOrientadorServicoNaoVoluntario() %}
+                    <tr>
+                        <td class="text-center">
+                            <input type="checkbox" name="autorizacao_pagamento_orientador"
+                                   id="autorizacao_pagamento_orientador"
+                                   value="{{ projeto.getOrientadorServicoNaoVoluntario().coSeqProjetoPessoa }}">
+                        </td>
+                        <td class="text-center">{{ projeto.getOrientadorServicoNaoVoluntario().pessoaPerfil.pessoaFisica.nuCpf|cpf }}</td>
+                        <td>{{ projeto.getOrientadorServicoNaoVoluntario().pessoaPerfil.pessoaFisica.pessoa.noPessoa }}</td>
+                        <td class="text-center">{{ projeto.getOrientadorServicoNaoVoluntario().pessoaPerfil.perfil.dsPerfil }}</td>
+                        <td class="text-right">
+                            R$ {{ projeto.getOrientadorServicoNaoVoluntario().getVlBolsa()|number_format(2, ',', '.') }}</td>
+                    </tr>
+                {% endif %}
+
+            {% endif %}
+
+            {% for grupo in grupos %}
+                {% set qtd_estudante, qtd_tutor, qtd_preceptor, qtd_coordenador_grupo, qtd_coordenador_projeto = 0,0,0,0,0 %}
+                {% if not grupo.projetoPessoaGrupoAtuacao.isEmpty() %}
+                    <tr>
+                        <th colspan="5" class="text-left">
+                            {{ grupo.getCoSeqGrupoAtuacao() }} -
+                            {{ projeto.publicacao.programa.isGrupoTutorial() ? grupo.getNoGrupoAtuacao() : grupo.getDescricaoAreasTematicas() }}
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="text-center"></th>
+                        <th class="text-center">CPF</th>
+                        <th class="text-center">Nome do Participante</th>
+                        <th class="text-center">Perfil</th>
+                        <th class="text-center">Valor da Bolsa</th>
+                    </tr>
+
+                    {% for ppga in grupo.projetoPessoaGrupoAtuacaoAtivas %}
+                        {% if not ppga.projetoPessoa.isVoluntario() %}
+                            {% set isCpfRegular = ppga.projetoPessoa.pessoaPerfil.pessoaFisica.isCpfRegular() %}
+                            <tr {% if not isCpfRegular %}class="alert-danger"{% endif %}>
+                                <td class="text-center">
+                                    {% if isCpfRegular %}
+                                        <input type="checkbox"
+                                               name="autorizacao_pagamento_projeto_pessoa[{{ grupo.getCoSeqGrupoAtuacao() }}][]"
+                                               grupo="{{ grupo.getCoSeqGrupoAtuacao() }}"
+                                               value="{{ ppga.projetoPessoa.coSeqProjetoPessoa }}"/>
+                                    {% endif %}
+                                </td>
+                                <td class="text-center">{{ ppga.projetoPessoa.pessoaPerfil.pessoaFisica.nuCpf|cpf }}</td>
+                                <td>{{ ppga.projetoPessoa.pessoaPerfil.pessoaFisica.pessoa.noPessoa }}</td>
+                                <td class="text-center">{{ ppga.projetoPessoa.pessoaPerfil.perfil.dsPerfil }}</td>
+                                <td class="text-right">
+                                    R$ {{ ppga.projetoPessoa.getVlBolsa()|number_format(2, ',', '.') }}</td>
+                            </tr>
+                            {% if not isCpfRegular %}
+                                <tr class="bg-danger">
+                                    <td colspan="5" class="text-danger">Não é possível autorizar pagamento para um
+                                                                        participante com pendência cadastral na Receita
+                                                                        Federal.
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                <tr class="info">
+                    <td colspan="5">
+                        <table class="table table-bordered">
+                            <tr class="info">
+                                <td><span class="badge pull-left">{{ grupo.qtdEstudantesBolsistas() }}</span>&nbsp;Estudantes
+                                </td>
+                                <td><span class="badge pull-left">{{ grupo.qtdTutoresBolsistas() }}</span>&nbsp;Tutores
+                                </td>
+                                <td><span class="badge pull-left">{{ grupo.qtdPreceptoresBolsistas() }}</span>&nbsp;Preceptores
+                                </td>
+                                <td><span class="badge pull-left">{{ grupo.qtdCoordenadoresGrupoBolsistas() }}</span>&nbsp;Coordenadores
+                                                                                                                     de
+                                                                                                                     grupo
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+                
+        <label>Relatório Mensal de Atividades</label>
+        <textarea name="autorizacao_pagamento_justificativa" id="autorizacao_pagamento_justificativa" class="form-control" maxlength="4000"></textarea>
+        <div class="text-justify text-info">
+            <input type="checkbox" name="stDeclaracao" value="S"> 
+            Eu, {{ app.user.getPessoaFisica().getPessoa().getNoPessoa() }}, Coordenador do Projeto {{ projeto.getNuSipar() ~ ' - ' ~ projeto.getPublicacao().getDescricaoCompleta() }}, atesto que os bolsistas acima relacionados desenvolveram as atividades previstas no projeto PET-Saúde em {{ folha.getReferenciaExtenso()|upper }},  e declaro para os devidos fins, que estou de acordo com as normativas do Programa de Educação pelo Trabalho para a Saúde (PET-Saúde)  e ciente da responsabilidade pela autorização de pagamento dos participantes selecionados na lista apresentada, pela prestação de contas e por eventuais divergências.
+        </div>
+        
+        <hr>
+
+        <a href="{{ path('autorizacao_pagamento') }}" class="btn btn-default">Cancelar</a>
+        <a href="javascript:void(0);" class="btn btn-primary pull-right" id="btn-autoriza-pagamento">Autorizar
+                                                                                                     Pagamento</a>
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    {% javascripts 'js/autorizacao_pagamento/autoriza.js' %}
+        <script src="{{ asset_url }}"></script>{% endjavascripts %}
+{% endblock %}

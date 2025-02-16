@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+
+{% block subtitle %}
+    {% if edit is defined and edit %}Editar{% else %}Cadastrar{% endif %} Banco
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-2">
+            {{ form_row(form.coBanco) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.noBanco) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.stRegistroAtivo) }}
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    <a href="{{ path('banco_index') }}" class="btn btn-default">Voltar</a>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/banco/create.js') }}"></script>
+{% endblock %}
