@@ -10,7 +10,7 @@ use Twig\Environment;
 
 final class SendMailNotificacaoExcusaoEnvioFormularioAvaliacaoAtividadeListener implements EventSubscriberInterface
 {
-    private $subject = 'SIGPET-Saúde –Formulário de Avaliação de Atividade – Formulário EXCLUÍDO';
+    private $subject = 'SIGPET-INFOSD –Formulário de Avaliação de Atividade – Formulário EXCLUÍDO';
     
     private $bodyView = 'tramita_formulario_atividade/email_notificacao_exclusao.html.twig';
     

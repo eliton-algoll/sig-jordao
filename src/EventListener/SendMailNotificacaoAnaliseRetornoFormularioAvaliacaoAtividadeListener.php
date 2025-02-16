@@ -11,8 +11,8 @@ use Twig\Environment;
 class SendMailNotificacaoAnaliseRetornoFormularioAvaliacaoAtividadeListener implements EventSubscriberInterface
 {
     private $subject = [
-        'satisfatorio' => 'SIGPET-Saúde – Análise de retorno do Formulário de Avaliação de Atividade – Formulário SATISFATÓRIO e FINALIZADO',
-        'nao_satisfatorio' => 'SIGPET-Saúde – Análise de retorno do Formulário de Avaliação de Atividade – Formulário NÃO SATISFATÓRIO',
+        'satisfatorio' => 'SIGPET-INFOSD – Análise de retorno do Formulário de Avaliação de Atividade – Formulário SATISFATÓRIO e FINALIZADO',
+        'nao_satisfatorio' => 'SIGPET-INFOSD – Análise de retorno do Formulário de Avaliação de Atividade – Formulário NÃO SATISFATÓRIO',
     ];
     
     private $bodyView = 'tramita_formulario_atividade/email-notificacao-analise.html.twig';
