@@ -14,7 +14,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 COPY . /var/www/html
 
 # Corrige permissões
-RUN chmod -R 775 /var/www/html/ /var/www/html/public
+RUN chmod -R 775 /var/www/html/var /var/www/html/public
 
 # Instala as dependências do Symfony
 RUN composer install --no-interaction --optimize-autoloader --no-scripts
