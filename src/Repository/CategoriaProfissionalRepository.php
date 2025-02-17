@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\AgenciaBancaria;
+use App\Entity\CategoriaProfissional;
 use App\Repository\RepositoryAbstract;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,6 +16,6 @@ class CategoriaProfissionalRepository extends RepositoryAbstract
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, AgenciaBancaria::class);
+        parent::__construct($registry, CategoriaProfissional::class);
     }
 }

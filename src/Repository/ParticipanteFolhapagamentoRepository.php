@@ -8,7 +8,7 @@
 
 namespace App\Repository;
 
-use App\Entity\AgenciaBancaria;
+use App\Entity\ParticipanteFolhapagamento;
 use App\Repository\RepositoryAbstract;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,6 +16,6 @@ class ParticipanteFolhapagamentoRepository extends RepositoryAbstract
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, AgenciaBancaria::class);
+        parent::__construct($registry, ParticipanteFolhapagamento::class);
     }
 } 

@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\AgenciaBancaria;
+use App\Entity\VwGerencialPagamento;
 use Doctrine\ORM\EntityRepository;
 use App\Report\GerencialPagamentoFilter;
 use Doctrine\Persistence\ManagerRegistry;
@@ -11,7 +11,7 @@ class VwGerencialPagamentoRepository extends EntityRepository
 {   
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, AgenciaBancaria::class);
+        parent::__construct($registry, VwGerencialPagamento::class);
     }
 
     /**

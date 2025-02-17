@@ -7,7 +7,6 @@ use Doctrine\ORM\Query;
 use App\Cpb\DicionarioCpb;
 use App\Entity\FolhaPagamento;
 use Doctrine\ORM\QueryBuilder;
-use App\Entity\AgenciaBancaria;
 use App\Entity\AutorizacaoFolha;
 use Doctrine\ORM\Query\Expr\Join;
 use App\Entity\ProjetoFolhaPagamento;
@@ -25,7 +24,7 @@ class AutorizacaoFolhaRepository extends RepositoryAbstract
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, AgenciaBancaria::class);
+        parent::__construct($registry, AutorizacaoFolha::class);
     }
     
     /**

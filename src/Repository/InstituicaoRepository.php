@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Municipio;
-use App\Entity\AgenciaBancaria;
+use App\Entity\Instituicao;
 use App\Repository\RepositoryAbstract;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -18,7 +18,7 @@ class InstituicaoRepository extends RepositoryAbstract
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, AgenciaBancaria::class);
+        parent::__construct($registry, Instituicao::class);
     }
 
     /**

@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Perfil;
 use App\Entity\Publicacao;
-use App\Entity\AgenciaBancaria;
 use App\Entity\ValorBolsaPrograma;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -14,7 +13,7 @@ class ValorBolsaProgramaRepository extends RepositoryAbstract
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, AgenciaBancaria::class);
+        parent::__construct($registry, ValorBolsaPrograma::class);
     }
     
     /**

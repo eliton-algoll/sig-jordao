@@ -5,7 +5,6 @@ namespace App\Repository;
 use PDO;
 use App\Entity\Perfil;
 use App\Entity\Projeto;
-use App\Entity\AgenciaBancaria;
 use Doctrine\ORM\Query\Expr\Join;
 use App\Entity\SituacaoProjetoFolha;
 use App\Repository\RepositoryAbstract;
@@ -26,7 +25,7 @@ class ProjetoRepository extends RepositoryAbstract
 
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, AgenciaBancaria::class);
+        parent::__construct($registry, Projeto::class);
     }
     
     /**

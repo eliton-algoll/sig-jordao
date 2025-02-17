@@ -10,7 +10,6 @@ use App\Entity\Programa;
 use App\Entity\Publicacao;
 use App\Entity\SituacaoFolha;
 use App\Entity\FolhaPagamento;
-use App\Entity\AgenciaBancaria;
 use App\Repository\RepositoryAbstract;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Exception\ValorBolsaHasInFolhaException;
@@ -22,7 +21,7 @@ class FolhaPagamentoRepository extends RepositoryAbstract
     
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, AgenciaBancaria::class);
+        parent::__construct($registry, FolhaPagamento::class);
     }
     
     /**

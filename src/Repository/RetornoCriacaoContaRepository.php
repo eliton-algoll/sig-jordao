@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use PDO;
 use Doctrine\ORM\Query;
-use App\Entity\AgenciaBancaria;
 use App\Entity\RetornoCriacaoConta;
 use App\Repository\RepositoryAbstract;
 use Doctrine\Persistence\ManagerRegistry;
@@ -14,7 +13,7 @@ class RetornoCriacaoContaRepository extends RepositoryAbstract
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, AgenciaBancaria::class);
+        parent::__construct($registry, RetornoCriacaoConta::class);
     }
     
     /**

@@ -2,14 +2,14 @@
 
 namespace App\Repository;
 
-use App\Entity\AgenciaBancaria;
+use App\Entity\VwGrupoatuacaoQtprofissional;
 use Doctrine\Persistence\ManagerRegistry;
 
 class VwGrupoatuacaoQtprofissionalRepository extends RepositoryAbstract
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, AgenciaBancaria::class);
+        parent::__construct($registry, VwGrupoatuacaoQtprofissional::class);
     }
     
     public function quantidadeDePerfisPorGrupoDeAtuacao($coProjeto)

@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\AgenciaBancaria;
 use App\Entity\TramitacaoFormulario;
 use App\Entity\SituacaoTramiteFormulario;
 use Doctrine\Persistence\ManagerRegistry;
@@ -15,7 +14,7 @@ class TramitacaoFormularioRepository extends RepositoryAbstract
     
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, AgenciaBancaria::class);
+        parent::__construct($registry, TramitacaoFormulario::class);
     }
     
     private $baseFields = [
