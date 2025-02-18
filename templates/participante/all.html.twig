@@ -84,7 +84,7 @@
                             <td>{{ participante.stVoluntarioProjeto|strst }}</td>
                             <td>
                                 <a href="{{ path('participante_atualizar', { 'projetoPessoa': participante.coSeqProjetoPessoa }) }}" title="Editar cadastro de participante" class=""><span class="glyphicon glyphicon-pencil"></span></a>
-                                {% if participante.dsPerfil|upper != constant('AppBundle\\Entity\\Perfil::ROLE_ADMINISTRADOR') %}
+                                {% if participante.dsPerfil|upper != constant('App\\Entity\\Perfil::ROLE_ADMINISTRADOR') %}
                                     <a href="{{ path('participante_termo', { 'projetoPessoa': participante.coSeqProjetoPessoa }) }}" target="_blank" title="Download do Termo de Compromisso"><span class="glyphicon glyphicon-save"></span></a>
                                 {% endif %}
                                 {% if 

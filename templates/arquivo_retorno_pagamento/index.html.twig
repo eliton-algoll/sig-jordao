@@ -30,7 +30,7 @@
         {% for rp in pagination %}
         <tr {% if loop.index is odd %}class="color"{% endif %}>
             <td>{{ rp.folhaPagamento.nuMes ~ '/' ~ rp.folhaPagamento.nuAno }}</td>
-            <td>{{ rp.folhaPagamento.tpFolhaPagamento == constant('\\AppBundle\\Entity\\FolhaPagamento::MENSAL') ? 'Mensal' : 'Suplementar' }}</td>
+            <td>{{ rp.folhaPagamento.tpFolhaPagamento == constant('\\App\\Entity\\FolhaPagamento::MENSAL') ? 'Mensal' : 'Suplementar' }}</td>
             <td>{{ rp.noArquivoOriginal }}</td>
             <td>{{ rp.qtParticipante }}</td>
             <td>{{ rp.qtParticipantePago }}</td>

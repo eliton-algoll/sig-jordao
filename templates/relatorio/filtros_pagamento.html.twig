@@ -34,10 +34,10 @@
 
 <div class="row">
     <div class="col-md-12">
-        {#{% if queryParams.stProjetoFolha == constant('AppBundle\\Entity\\SituacaoProjetoFolha::AUTORIZADA') %}#}
+        {#{% if queryParams.stProjetoFolha == constant('App\\Entity\\SituacaoProjetoFolha::AUTORIZADA') %}#}
             {#{% include 'relatorio/pagamento_autorizado.html.twig' %}#}
         {#{% endif %}#}
-        {#{% if queryParams.stProjetoFolha == constant('AppBundle\\Entity\\SituacaoProjetoFolha::HOMOLOGADA') %}#}
+        {#{% if queryParams.stProjetoFolha == constant('App\\Entity\\SituacaoProjetoFolha::HOMOLOGADA') %}#}
             {#{% include 'relatorio/pagamento_homologado.html.twig' %}#}
         {#{% endif %}#}
         {% include 'relatorio/pagamento.html.twig' %}

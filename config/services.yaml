@@ -43,6 +43,17 @@ services:
       - "@doctrine.orm.entity_manager"
     tags: ["twig.extension"]
 
+  App\Menu\Builder:
+    arguments:
+      $factory: "@knp_menu.factory"
+      $tokenStorage: "@security.token_storage"
+      $authorizationChecker: "@security.authorization_checker"
+      $entityManager: "@doctrine.orm.default_entity_manager"
+    tags:
+      - { name: knp_menu.menu_builder, method: mainMenu, alias: mainMenu }
+      - { name: knp_menu.menu_builder, method: menu, alias: menu }
+      - { name: knp_menu.menu_builder, method: menuExterno, alias: menuExterno }
+
   app.participante_voter:
     class: App\Security\ParticipanteVoter
     arguments: ["@doctrine.orm.entity_manager"]

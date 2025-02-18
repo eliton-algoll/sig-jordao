@@ -1,395 +1,66 @@
-# Learn more about services, parameters and containers at
-# http://symfony.com/doc/current/book/service_container.html
-parameters:
-#    parameter_name: value
-
 services:
-  app.usuario_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\Usuario
-
-  app.programa_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\Programa
-
-  app.tipo_quantitativo_publicacao_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\TipoQuantitativoPublicacao
-
-  app.publicacao_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\Publicacao
-
-  app.projeto_pessoa_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\ProjetoPessoa
-
-  app.pessoa_perfil_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\PessoaPerfil
-
-  app.texto_saudacao_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\TextoSaudacao
-
-  app.projeto_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\Projeto
-
-  app.municipio_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\Municipio
-
-  app.dado_pessoal_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\DadoPessoal
-
-  app.instituicao_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\Instituicao
-
-  app.campus_instituicao_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\CampusInstituicao
-
-  app.pessoa_juridica_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\PessoaJuridica
-
-  app.pessoa_fisica_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\PessoaFisica
-
-  app.tipo_area_tematica_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\TipoAreaTematica
-
-  app.area_tematica_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\AreaTematica
-
-  app.grupo_atuacao_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\GrupoAtuacao
-
-  app.endereco_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\Endereco
-
-  app.curso_graduacao_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\CursoGraduacao
-
-  app.titulacao_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\Titulacao
-
-  app.cbo_ocupacao_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\CboOcupacao
-
-  app.identidade_genero_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\IdentidadeGenero
-
-  app.perfil_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\Perfil
-
-  app.orgao_emissor_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\OrgaoEmissor
-
-  app.uf_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\Uf
-
-  app.estado_civil_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\EstadoCivil
-
-  app.banco_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\Banco
-
-  app.agencia_bancaria_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\AgenciaBancaria
-
-  app.projeto_estabelecimento_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\ProjetoEstabelecimento
-
-  app.categoria_profissional_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\CategoriaProfissional
-
-  app.cep_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\Cep
-
-  app.folha_pagamento_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\FolhaPagamento
-
-  app.projeto_folha_pagamento_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\ProjetoFolhaPagamento
-
-  app.autorizacao_folha_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\AutorizacaoFolha
-
-  app.situacao_projeto_folha_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\SituacaoProjetoFolha
-
-  app.situacao_folha_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\SituacaoFolha
-
-  app.integracao_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\Integracao
-
-  app.endereco_web_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\EnderecoWeb
-
-  app.telefone_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\Telefone
-
-  app.projeto_pessoa_grupo_atuacao_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\ProjetoPessoaGrupoAtuacao
-
-  app.vw_folha_pagamento_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\VwFolhaPagamento
-
-  app.vw_grupoatuacao_qtprofissional_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\VwGrupoatuacaoQtprofissional
-
-  app.vw_participante:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\VwParticipante
-
-  app.participante_folhapagamento_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\ParticipanteFolhapagamento
-
-  app.tramitacao_situacao_folha_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\TramitacaoSituacaoFolha
-
-  app.fale_conosco_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\FaleConosco
-
-  app.valor_bolsa_programa_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\ValorBolsaPrograma
-
-  app.emissao_certificado_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\EmissaoCertificado
-
-  app.modelo_certificado_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\ModeloCertificado
-
-  app.planejamento_ano_folha_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\PlanejamentoAnoFolha
-
-  app.planejamento_mes_folha_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\PlanejamentoMesFolha
-
-  app.formulario_avaliacao_atividade_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\FormularioAvaliacaoAtividade
-
-  app.envio_formulario_avaliacao_atividade_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\EnvioFormularioAvaliacaoAtividade
-
-  app.situacao_tramite_formulario_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\SituacaoTramiteFormulario
-
-  app.tramitacao_formulario_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\TramitacaoFormulario
-
-  app.autoriza_cadastro_participante_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\AutorizaCadastroParticipante
-
-  app.retorno_pagamento_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\RetornoPagamento
-
-  app.cabecalho_arquivo_retorno_pagamento_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\CabecalhoArquivoRetornoPagamento
-
-  app.detalhe_arquivo_retorno_pagamento_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\DetalheArquivoRetornoPagamento
-
-  app.rodape_arquivo_retorno_pagamento_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\RodapeArquivoRetornoPagamento
-
-  app.retorno_criacao_conta_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\RetornoCriacaoConta
-
-  app.cabecalho_retorno_criacao_conta_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\CabecalhoRetornoCriacaoConta
-
-  app.detalhe_retorno_criacao_conta_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\DetalheRetornoCriacaoConta
-
-  app.rodape_retorno_criacao_conta_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\RodapeRetornoCriacaoConta
-
-  app.projeto_pessoa_area_tematica_grupo_atuacao_repository:
-    class: Doctrine\ORM\EntityRepository
-    factory: ["@doctrine.orm.default_entity_manager", getRepository]
-    arguments:
-      - App\Entity\ProjetoPessoaAreaTematicaGrupoAtuacao
+  app.usuario_repository: '@App\Repository\UsuarioRepository'
+  app.programa_repository: '@App\Repository\ProgramaRepository'
+  app.tipo_quantitativo_publicacao_repository: '@App\Repository\TipoQuantitativoPublicacaoRepository'
+  app.publicacao_repository: '@App\Repository\PublicacaoRepository'
+  app.projeto_pessoa_repository: '@App\Repository\ProjetoPessoaRepository'
+  app.pessoa_perfil_repository: '@App\Repository\PessoaPerfilRepository'
+  app.texto_saudacao_repository: '@App\Repository\TextoSaudacaoRepository'
+  app.projeto_repository: '@App\Repository\ProjetoRepository'
+  app.municipio_repository: '@App\Repository\MunicipioRepository'
+  app.dado_pessoal_repository: '@App\Repository\DadoPessoalRepository'
+  app.instituicao_repository: '@App\Repository\InstituicaoRepository'
+  app.campus_instituicao_repository: '@App\Repository\CampusInstituicaoRepository'
+  app.pessoa_juridica_repository: '@App\Repository\PessoaJuridicaRepository'
+  app.pessoa_fisica_repository: '@App\Repository\PessoaFisicaRepository'
+  app.tipo_area_tematica_repository: '@App\Repository\TipoAreaTematicaRepository'
+  app.area_tematica_repository: '@App\Repository\AreaTematicaRepository'
+  app.grupo_atuacao_repository: '@App\Repository\GrupoAtuacaoRepository'
+  app.endereco_repository: '@App\Repository\EnderecoRepository'
+  app.curso_graduacao_repository: '@App\Repository\CursoGraduacaoRepository'
+  app.titulacao_repository: '@App\Repository\TitulacaoRepository'
+  app.cbo_ocupacao_repository: '@App\Repository\CboOcupacaoRepository'
+  app.identidade_genero_repository: '@App\Repository\IdentidadeGeneroRepository'
+  app.perfil_repository: '@App\Repository\PerfilRepository'
+  app.orgao_emissor_repository: '@App\Repository\OrgaoEmissorRepository'
+  app.uf_repository: '@App\Repository\UfRepository'
+  app.estado_civil_repository: '@App\Repository\EstadoCivilRepository'
+  app.banco_repository: '@App\Repository\BancoRepository'
+  app.agencia_bancaria_repository: '@App\Repository\AgenciaBancariaRepository'
+  app.projeto_estabelecimento_repository: '@App\Repository\ProjetoEstabelecimentoRepository'
+  app.categoria_profissional_repository: '@App\Repository\CategoriaProfissionalRepository'
+  app.cep_repository: '@App\Repository\CepRepository'
+  app.folha_pagamento_repository: '@App\Repository\FolhaPagamentoRepository'
+  app.projeto_folha_pagamento_repository: '@App\Repository\ProjetoFolhaPagamentoRepository'
+  app.autorizacao_folha_repository: '@App\Repository\AutorizacaoFolhaRepository'
+  app.situacao_projeto_folha_repository: '@App\Repository\SituacaoProjetoFolhaRepository'
+  app.situacao_folha_repository: '@App\Repository\SituacaoFolhaRepository'
+  app.integracao_repository: '@App\Repository\IntegracaoRepository'
+  app.endereco_web_repository: '@App\Repository\EnderecoWebRepository'
+  app.telefone_repository: '@App\Repository\TelefoneRepository'
+  app.projeto_pessoa_grupo_atuacao_repository: '@App\Repository\ProjetoPessoaGrupoAtuacaoRepository'
+  app.vw_folha_pagamento_repository: '@App\Repository\VwFolhaPagamentoRepository'
+  app.vw_grupoatuacao_qtprofissional_repository: '@App\Repository\VwGrupoatuacaoQtprofissionalRepository'
+  app.vw_participante: '@App\Repository\VwParticipanteRepository'
+  app.participante_folhapagamento_repository: '@App\Repository\ParticipanteFolhapagamentoRepository'
+  app.tramitacao_situacao_folha_repository: '@App\Repository\TramitacaoSituacaoFolhaRepository'
+  app.fale_conosco_repository: '@App\Repository\FaleConoscoRepository'
+  app.valor_bolsa_programa_repository: '@App\Repository\ValorBolsaProgramaRepository'
+  app.emissao_certificado_repository: '@App\Repository\EmissaoCertificadoRepository'
+  app.modelo_certificado_repository: '@App\Repository\ModeloCertificadoRepository'
+  app.planejamento_ano_folha_repository: '@App\Repository\PlanejamentoAnoFolhaRepository'
+  app.planejamento_mes_folha_repository: '@App\Repository\PlanejamentoMesFolhaRepository'
+  app.formulario_avaliacao_atividade_repository: '@App\Repository\FormularioAvaliacaoAtividadeRepository'
+  app.envio_formulario_avaliacao_atividade_repository: '@App\Repository\EnvioFormularioAvaliacaoAtividadeRepository'
+  app.situacao_tramite_formulario_repository: '@App\Repository\SituacaoTramiteFormularioRepository'
+  app.tramitacao_formulario_repository: '@App\Repository\TramitacaoFormularioRepository'
+  app.autoriza_cadastro_participante_repository: '@App\Repository\AutorizaCadastroParticipanteRepository'
+  app.retorno_pagamento_repository: '@App\Repository\RetornoPagamentoRepository'
+  app.cabecalho_arquivo_retorno_pagamento_repository: '@App\Repository\CabecalhoArquivoRetornoPagamentoRepository'
+  app.detalhe_arquivo_retorno_pagamento_repository: '@App\Repository\DetalheArquivoRetornoPagamentoRepository'
+  app.rodape_arquivo_retorno_pagamento_repository: '@App\Repository\RodapeArquivoRetornoPagamentoRepository'
+  app.retorno_criacao_conta_repository: '@App\Repository\RetornoCriacaoContaRepository'
+  app.cabecalho_retorno_criacao_conta_repository: '@App\Repository\CabecalhoRetornoCriacaoContaRepository'
+  app.detalhe_retorno_criacao_conta_repository: '@App\Repository\DetalheRetornoCriacaoContaRepository'
+  app.rodape_retorno_criacao_conta_repository: '@App\Repository\RodapeRetornoCriacaoContaRepository'
+  app.projeto_pessoa_area_tematica_grupo_atuacao_repository: '@App\Repository\ProjetoPessoaAreaTematicaGrupoAtuacaoRepository'
