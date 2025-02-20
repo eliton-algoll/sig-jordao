@@ -149,7 +149,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    {% javascripts 'js/projeto/cadastrar.js' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
-    {% javascripts 'js/projeto/cadastrar_instituicao.js' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
-    {% javascripts 'js/projeto/cadastrar_secretaria.js' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
+    <script src="{{ asset('js/projeto/cadastrar.js') }}"></script>
+    <script src="{{ asset('js/projeto/cadastrar_instituicao.js') }}"></script>
+    <script src="{{ asset('js/projeto/cadastrar_secretaria.js') }}"></script>
 {% endblock %}

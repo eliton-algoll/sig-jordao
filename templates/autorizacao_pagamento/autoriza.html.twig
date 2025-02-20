@@ -165,6 +165,5 @@
 {% endblock %}
 
 {% block javascripts %}
-    {% javascripts 'js/autorizacao_pagamento/autoriza.js' %}
-        <script src="{{ asset_url }}"></script>{% endjavascripts %}
+    <script src="{{ asset('js/autorizacao_pagamento/autoriza.js') }}"></script>
 {% endblock %}

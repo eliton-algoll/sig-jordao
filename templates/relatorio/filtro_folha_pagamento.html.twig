@@ -55,9 +55,5 @@
 
 
 {% block javascripts %}
-    {% javascripts
-        'js/relatorio/folha_pagamento.js'
-    %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    <script src="{{ asset('js/relatorio/folha_pagamento.js') }}"></script>
 {% endblock %}
