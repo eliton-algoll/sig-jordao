@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * FolhaPagamento
  *
- * @ORM\Table(name="DBPET.TB_FOLHA_PAGAMENTO")
+ * @ORM\Table(name="DBPETINFOSD.TB_FOLHA_PAGAMENTO")
  * @ORM\Entity(repositoryClass="App\Repository\FolhaPagamentoRepository")
  */
 class FolhaPagamento extends AbstractEntity
@@ -26,7 +26,7 @@ class FolhaPagamento extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(name="CO_SEQ_FOLHA_PAGAMENTO", type="integer")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_FOLHAPAGAM_COSEQFOLHAPAGAM", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_FOLHAPAGAM_COSEQFOLHAPAGAM", allocationSize=1, initialValue=1)
      */
     private $coSeqFolhaPagamento;
 

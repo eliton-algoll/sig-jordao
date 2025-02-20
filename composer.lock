@@ -1669,16 +1669,16 @@
         },
         {
             "name": "league/tactician-bundle",
-            "version": "v1.5.1",
+            "version": "v1.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/tactician-bundle.git",
-                "reference": "165d9fa14eb55bf84257fc40af0a69beca9c3611"
+                "reference": "8acdfffc227295cca945ff1a964f88e4f034cdf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/tactician-bundle/zipball/165d9fa14eb55bf84257fc40af0a69beca9c3611",
-                "reference": "165d9fa14eb55bf84257fc40af0a69beca9c3611",
+                "url": "https://api.github.com/repos/thephpleague/tactician-bundle/zipball/8acdfffc227295cca945ff1a964f88e4f034cdf9",
+                "reference": "8acdfffc227295cca945ff1a964f88e4f034cdf9",
                 "shasum": ""
             },
             "require": {
@@ -1750,9 +1750,9 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/tactician-bundle/issues",
-                "source": "https://github.com/thephpleague/tactician-bundle/tree/v1.5.1"
+                "source": "https://github.com/thephpleague/tactician-bundle/tree/v1.5.2"
             },
-            "time": "2024-01-30T18:43:03+00:00"
+            "time": "2025-02-19T08:17:44+00:00"
         },
         {
             "name": "league/tactician-container",
@@ -6868,7 +6868,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
@@ -6876,6 +6876,6 @@
         "ext-ctype": "*",
         "ext-iconv": "*"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "plugin-api-version": "2.6.0"
 }

@@ -36,8 +36,8 @@ class EnvioFormularioAvaliacaoAtividadeRepository extends RepositoryAbstract
                         C.QT_N_PENDENTES,
                         COUNT(D.CO_SEQ_TRAMITACAO_FORMULARIO) AS QT_ENVIO,
                         E.PERFIS
-                      FROM DBPET.TB_ENVIO_FORM_AVALIACAO_ATIVID A
-                      INNER JOIN DBPET.TB_FORMULARIO_AVALIACAO_ATIVID B
+                      FROM DBPETINFOSD.TB_ENVIO_FORM_AVALIACAO_ATIVID A
+                      INNER JOIN DBPETINFOSD.TB_FORMULARIO_AVALIACAO_ATIVID B
                       ON A.CO_FORM_AVALIACAO_ATIVD = B.CO_SEQ_FORM_AVALIACAO_ATIVD
                       INNER JOIN
                         (SELECT CO_ENVIO_FORM_AVAL_ATIVID,
@@ -49,7 +49,7 @@ class EnvioFormularioAvaliacaoAtividadeRepository extends RepositoryAbstract
                             COALESCE(DECODE(T1.CO_SITUACAO_TRAMITE_FORM, 4, 0, COUNT(T1.CO_SEQ_TRAMITACAO_FORMULARIO)),0) AS QT_PENDENTES,
                             COALESCE(DECODE(T1.CO_SITUACAO_TRAMITE_FORM, 4, COUNT(T1.CO_SEQ_TRAMITACAO_FORMULARIO)),0)    AS QT_FINALIZADOS,
                             COALESCE(DECODE(T1.CO_SITUACAO_TRAMITE_FORM, 1, 0, COUNT(T1.CO_SEQ_TRAMITACAO_FORMULARIO)),0)    AS QT_N_PENDENTES
-                          FROM DBPET.TB_TRAMITACAO_FORMULARIO T1                          
+                          FROM DBPETINFOSD.TB_TRAMITACAO_FORMULARIO T1                          
                           WHERE T1.ST_REGISTRO_ATIVO = 'S'                          
                           GROUP BY T1.CO_ENVIO_FORM_AVAL_ATIVID,
                             T1.CO_SITUACAO_TRAMITE_FORM
@@ -57,22 +57,22 @@ class EnvioFormularioAvaliacaoAtividadeRepository extends RepositoryAbstract
                         GROUP BY CO_ENVIO_FORM_AVAL_ATIVID
                         ) C
                       ON A.CO_SEQ_ENVIO_FORM_AVAL_ATIVID = C.CO_ENVIO_FORM_AVAL_ATIVID
-                      INNER JOIN DBPET.TB_TRAMITACAO_FORMULARIO D
+                      INNER JOIN DBPETINFOSD.TB_TRAMITACAO_FORMULARIO D
                       ON A.CO_SEQ_ENVIO_FORM_AVAL_ATIVID = D.CO_ENVIO_FORM_AVAL_ATIVID
                       INNER JOIN
                         (SELECT T1.CO_FORM_AVALIACAO_ATIVD,
                           LISTAGG(T2.DS_PERFIL, ', ') WITHIN GROUP(
                         ORDER BY T2.DS_PERFIL) AS PERFIS
-                        FROM DBPET.RL_PERFIL_FORMAVALIACAOATIVID T1
-                        INNER JOIN DBPET.TB_PERFIL T2
+                        FROM DBPETINFOSD.RL_PERFIL_FORMAVALIACAOATIVID T1
+                        INNER JOIN DBPETINFOSD.TB_PERFIL T2
                         ON T1.CO_PERFIL = T2.CO_SEQ_PERFIL
                         GROUP BY T1.CO_FORM_AVALIACAO_ATIVD
                         ) E ON A.CO_FORM_AVALIACAO_ATIVD = E.CO_FORM_AVALIACAO_ATIVD
-                      INNER JOIN DBPET.TB_PROJETO_PESSOA F
+                      INNER JOIN DBPETINFOSD.TB_PROJETO_PESSOA F
                       ON D.CO_PROJETO_PESSOA = F.CO_SEQ_PROJETO_PESSOA
-                      INNER JOIN DBPET.TB_PESSOA_PERFIL G
+                      INNER JOIN DBPETINFOSD.TB_PESSOA_PERFIL G
                       ON G.CO_SEQ_PESSOA_PERFIL = F.CO_PESSOA_PERFIL
-                      INNER JOIN DBPET.TB_PROJETO H
+                      INNER JOIN DBPETINFOSD.TB_PROJETO H
                       ON F.CO_PROJETO = H.CO_SEQ_PROJETO
                       WHERE D.ST_REGISTRO_ATIVO = 'S' AND A.ST_REGISTRO_ATIVO = 'S' AND B.ST_REGISTRO_ATIVO = 'S'
                       @criteria@

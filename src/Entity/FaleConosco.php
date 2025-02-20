@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="DBPET.TB_FALE_CONOSCO")
+ * @ORM\Table(name="DBPETINFOSD.TB_FALE_CONOSCO")
  * @ORM\Entity(repositoryClass="\App\Repository\FaleConoscoRepository")
  */
 class FaleConosco extends AbstractEntity
@@ -21,7 +21,7 @@ class FaleConosco extends AbstractEntity
      * @ORM\Id
      * @ORM\Column(name="CO_SEQ_FALE_CONOSCO", type="integer")
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_FALECONOSCO_COSEQFALECONOSC", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_FALECONOSCO_COSEQFALECONOSC", allocationSize=1, initialValue=1)
      */
     private $coSeqFaleConosco;
     

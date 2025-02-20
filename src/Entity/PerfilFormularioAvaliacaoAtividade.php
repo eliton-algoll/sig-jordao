@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="DBPET.RL_PERFIL_FORMAVALIACAOATIVID")
+ * @ORM\Table(name="DBPETINFOSD.RL_PERFIL_FORMAVALIACAOATIVID")
  */
 class PerfilFormularioAvaliacaoAtividade extends AbstractEntity
 {
@@ -20,7 +20,7 @@ class PerfilFormularioAvaliacaoAtividade extends AbstractEntity
      * @ORM\Id
      * @ORM\Column(name="CO_SEQ_PERFIL_FORMAVALATIVID", type="integer")
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_PERFFORAVL_COSEQPERFFORAVL", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_PERFFORAVL_COSEQPERFFORAVL", allocationSize=1, initialValue=1)
      */
     private $coSeqPerfilFormavalativid;
     

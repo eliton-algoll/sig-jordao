@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * ProjetoFolhaPagamento
  *
- * @ORM\Table(name="DBPET.TB_PROJETO_FOLHAPAGAMENTO")
+ * @ORM\Table(name="DBPETINFOSD.TB_PROJETO_FOLHAPAGAMENTO")
  * @ORM\Entity(repositoryClass="App\Repository\ProjetoFolhaPagamentoRepository")
  */
 class ProjetoFolhaPagamento extends AbstractEntity
@@ -23,7 +23,7 @@ class ProjetoFolhaPagamento extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(name="CO_SEQ_PROJ_FOLHA_PAGAM", type="integer")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_PROJFLSPAG_COSEQPROJFLSPAG", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_PROJFLSPAG_COSEQPROJFLSPAG", allocationSize=1, initialValue=1)
      */
     private $coSeqProjFolhaPagam;
 

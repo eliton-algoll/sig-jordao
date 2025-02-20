@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="DBPET.TB_RETORNO_PAGAMENTO")
+ * @ORM\Table(name="DBPETINFOSD.TB_RETORNO_PAGAMENTO")
  * @ORM\Entity(repositoryClass="\App\Repository\RetornoPagamentoRepository")
  */
 class RetornoPagamento
@@ -21,7 +21,7 @@ class RetornoPagamento
      * @ORM\Id
      * @ORM\Column(name="CO_SEQ_RETORNO_PAGAMENTO", type="integer")
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_RETORNOPAGTO_COSEQRETPAGTO", initialValue=1, allocationSize=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_RETORNOPAGTO_COSEQRETPAGTO", initialValue=1, allocationSize=1)
      */
     private $coSeqRetornoPagamento;
     

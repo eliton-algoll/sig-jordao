@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @package App\Entity
  *
  * @ORM\Entity
- * @ORM\Table(name="DBPET.RL_PROJPES_GRPATUAC_AREATEM")
+ * @ORM\Table(name="DBPETINFOSD.RL_PROJPES_GRPATUAC_AREATEM")
  */
 class ProjetoPessoaGrupoAtuacaoAreaTematica
 {
@@ -24,7 +24,7 @@ class ProjetoPessoaGrupoAtuacaoAreaTematica
      * @ORM\Id
      * @ORM\Column(name="CO_SEQ_PROJPES_GRPATUAC_ARTEM", type="integer")
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_PJPESGRPATAT_COSEQPJPESGPAT", initialValue=1, allocationSize=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_PJPESGRPATAT_COSEQPJPESGPAT", initialValue=1, allocationSize=1)
      */
     private $coSeqProjpesGrpatuacArtem;
 

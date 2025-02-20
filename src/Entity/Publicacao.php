@@ -9,7 +9,7 @@ use App\Entity\SituacaoFolha;
 /**
  * Publicacao
  *
- * @ORM\Table(name="DBPET.TB_PUBLICACAO")
+ * @ORM\Table(name="DBPETINFOSD.TB_PUBLICACAO")
  * @ORM\Entity(repositoryClass="App\Repository\PublicacaoRepository")
  */
 class Publicacao extends AbstractEntity
@@ -27,7 +27,7 @@ class Publicacao extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\Column(name="CO_SEQ_PUBLICACAO", type="integer")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_PUBLICACAO_COSEQPUBLICACAO", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_PUBLICACAO_COSEQPUBLICACAO", allocationSize=1, initialValue=1)
      */
     private $coSeqPublicacao;
 

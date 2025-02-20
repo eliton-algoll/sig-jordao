@@ -167,37 +167,37 @@ class FolhaPagamentoRepository extends RepositoryAbstract
                             SUB_SEC.SECRETARIA_SAUDE,
                             TH.ST_REGISTROATIVO_PROJPES,
                             TH.ST_VOLUNTARIO
-            FROM   DBPET.TB_PROJETO C
-                   INNER JOIN DBPET.TB_PROJETO_FOLHAPAGAMENTO PFP
+            FROM   DBPETINFOSD.TB_PROJETO C
+                   INNER JOIN DBPETINFOSD.TB_PROJETO_FOLHAPAGAMENTO PFP
                            ON C.CO_SEQ_PROJETO = PFP.CO_PROJETO
                               AND PFP.ST_REGISTRO_ATIVO = 'S'
                               AND C.ST_REGISTRO_ATIVO = 'S'
-                   INNER JOIN DBPET.TB_FOLHA_PAGAMENTO FP
+                   INNER JOIN DBPETINFOSD.TB_FOLHA_PAGAMENTO FP
                            ON PFP.CO_FOLHA_PAGAMENTO = FP.CO_SEQ_FOLHA_PAGAMENTO
                               AND FP.ST_REGISTRO_ATIVO = 'S'
                               AND FP.TP_FOLHA_PAGAMENTO = 'M'
                               AND FP.CO_SITUACAO_FOLHA <> 7
-                   INNER JOIN DBPET.TB_PROJETO_PESSOA D
+                   INNER JOIN DBPETINFOSD.TB_PROJETO_PESSOA D
                            ON C.CO_SEQ_PROJETO = D.CO_PROJETO
-                   INNER JOIN DBPET.TB_PESSOA_PERFIL E
+                   INNER JOIN DBPETINFOSD.TB_PESSOA_PERFIL E
                            ON D.CO_PESSOA_PERFIL = E.CO_SEQ_PESSOA_PERFIL
-                   INNER JOIN DBPET.TB_PERFIL F
+                   INNER JOIN DBPETINFOSD.TB_PERFIL F
                            ON E.CO_PERFIL = F.CO_SEQ_PERFIL
                    INNER JOIN DBPESSOA.TB_PESSOA G
                            ON E.NU_CPF = G.NU_CPF_CNPJ_PESSOA
-                   INNER JOIN DBPET.TH_PARTICIPANTE_FOLHAPAGAMENTO TH
+                   INNER JOIN DBPETINFOSD.TH_PARTICIPANTE_FOLHAPAGAMENTO TH
                            ON TH.CO_PROJETO_PESSOA = D.CO_SEQ_PROJETO_PESSOA
                               AND FP.CO_SEQ_FOLHA_PAGAMENTO = TH.CO_FOLHA_PAGAMENTO
                               AND TH.ST_VOLUNTARIO = 'N'
                               AND TH.ST_REGISTROATIVO_PROJPES = 'S'
                    --DADOS CAMPUS INSTITUIÇÃO
-                   INNER JOIN DBPET.RL_PROJETO_CAMPUSINTITUICAO PC
+                   INNER JOIN DBPETINFOSD.RL_PROJETO_CAMPUSINTITUICAO PC
                            ON PC.CO_PROJETO = C.CO_SEQ_PROJETO
                               AND PC.ST_REGISTRO_ATIVO = 'S'
-                   INNER JOIN DBPET.TB_CAMPUS_INSTITUICAO CI
+                   INNER JOIN DBPETINFOSD.TB_CAMPUS_INSTITUICAO CI
                            ON PC.CO_CAMPUS_INSTITUICAO = CI.CO_SEQ_CAMPUS_INSTITUICAO
                               AND CI.ST_REGISTRO_ATIVO = 'S'
-                   INNER JOIN DBPET.TB_INSTITUICAO I
+                   INNER JOIN DBPETINFOSD.TB_INSTITUICAO I
                            ON CI.CO_INSTITUICAO = I.CO_SEQ_INSTITUICAO
                               AND I.ST_REGISTRO_ATIVO = 'S'
                    --MUNICIPIO INSTITUICAO
@@ -207,7 +207,7 @@ class FolhaPagamentoRepository extends RepositoryAbstract
                    INNER JOIN DBGERAL.TB_MUNICIPIO MI
                            ON MI.CO_MUNICIPIO_IBGE = PEI.CO_MUNICIPIO_IBGE
                    --DADOS SECRETARIA DE SAUDE
-                   INNER JOIN DBPET.TB_SECRETARIA_SAUDE SS
+                   INNER JOIN DBPETINFOSD.TB_SECRETARIA_SAUDE SS
                            ON SS.CO_PROJETO = C.CO_SEQ_PROJETO
                    INNER JOIN DBPESSOA.TB_PESSOA PES
                            ON SS.NU_CNPJ = PES.NU_CPF_CNPJ_PESSOA
@@ -231,13 +231,13 @@ class FolhaPagamentoRepository extends RepositoryAbstract
                                                  C2.CO_SEQ_INSTITUICAO) OVER(
                                                    PARTITION BY A2.CO_PROJETO)
                           NO_INSTITUICAO_PROJETO
-                               FROM   DBPET.RL_PROJETO_CAMPUSINTITUICAO A2
-                                      INNER JOIN DBPET.TB_CAMPUS_INSTITUICAO B2
+                               FROM   DBPETINFOSD.RL_PROJETO_CAMPUSINTITUICAO A2
+                                      INNER JOIN DBPETINFOSD.TB_CAMPUS_INSTITUICAO B2
                                               ON A2.CO_CAMPUS_INSTITUICAO =
                                                  B2.CO_SEQ_CAMPUS_INSTITUICAO
                                                  AND A2.ST_REGISTRO_ATIVO = 'S'
                                                  AND B2.ST_REGISTRO_ATIVO = 'S'
-                                      INNER JOIN DBPET.TB_INSTITUICAO C2
+                                      INNER JOIN DBPETINFOSD.TB_INSTITUICAO C2
                                               ON B2.CO_INSTITUICAO = C2.CO_SEQ_INSTITUICAO
                                                  AND C2.ST_REGISTRO_ATIVO = 'S'
                                GROUP  BY A2.CO_PROJETO,
@@ -268,7 +268,7 @@ class FolhaPagamentoRepository extends RepositoryAbstract
                                                    PARTITION BY A1.CO_PROJETO)
                                                SECRETARIA_SAUDE,
                                                A1.CO_PROJETO
-                               FROM   DBPET.TB_SECRETARIA_SAUDE A1
+                               FROM   DBPETINFOSD.TB_SECRETARIA_SAUDE A1
                                       INNER JOIN DBPESSOA.TB_PESSOA B1
                                               ON A1.NU_CNPJ = B1.NU_CPF_CNPJ_PESSOA
                                                  AND A1.ST_REGISTRO_ATIVO = 'S'
@@ -278,7 +278,7 @@ class FolhaPagamentoRepository extends RepositoryAbstract
                            ON C.CO_SEQ_PROJETO = SUB_SEC.CO_PROJETO
             WHERE  C.NU_SIPAR <> '99999.999999/9999-99'
                    AND D.CO_SEQ_PROJETO_PESSOA NOT IN(SELECT AF.CO_PROJETO_PESSOA
-                                                      FROM   DBPET.TB_AUTORIZACAO_FOLHA AF
+                                                      FROM   DBPETINFOSD.TB_AUTORIZACAO_FOLHA AF
                                                       WHERE
                            AF.CO_PROJ_FOLHA_PAGAM = PFP.CO_SEQ_PROJ_FOLHA_PAGAM
                            AND AF.ST_REGISTRO_ATIVO = 'S')    

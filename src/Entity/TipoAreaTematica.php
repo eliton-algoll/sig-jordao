@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * TipoAreaTematica
  *
- * @ORM\Table(name="DBPET.TB_TIPO_AREA_TEMATICA")
+ * @ORM\Table(name="DBPETINFOSD.TB_TIPO_AREA_TEMATICA")
  * @ORM\Entity(repositoryClass="App\Repository\TipoAreaTematicaRepository")
  */
 class TipoAreaTematica extends AbstractEntity
@@ -21,7 +21,7 @@ class TipoAreaTematica extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\Column(name="CO_SEQ_TIPO_AREA_TEMATICA", type="integer")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_TPAREATEM_COSEQTPAREATEM", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_TPAREATEM_COSEQTPAREATEM", allocationSize=1, initialValue=1)
      */
     private $coSeqTipoAreaTematica;
 

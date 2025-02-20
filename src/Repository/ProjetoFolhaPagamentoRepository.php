@@ -122,29 +122,29 @@ class ProjetoFolhaPagamentoRepository extends RepositoryAbstract
                                PR.DS_PROGRAMA,
                                E.VL_BOLSA,
                                MAX(A.CO_SEQ_FOLHA_PAGAMENTO) CO_SEQ_FOLHA_PAGAMENTO
-                          FROM DBPET.TB_FOLHA_PAGAMENTO A
-                         INNER JOIN DBPET.TB_PROJETO_FOLHAPAGAMENTO B
+                          FROM DBPETINFOSD.TB_FOLHA_PAGAMENTO A
+                         INNER JOIN DBPETINFOSD.TB_PROJETO_FOLHAPAGAMENTO B
                             ON A.CO_SEQ_FOLHA_PAGAMENTO = B.CO_FOLHA_PAGAMENTO
                            AND A.ST_REGISTRO_ATIVO = 'S'
-                         INNER JOIN DBPET.TB_PUBLICACAO PU
+                         INNER JOIN DBPETINFOSD.TB_PUBLICACAO PU
                             ON PU.CO_SEQ_PUBLICACAO = A.CO_PUBLICACAO
                            AND PU.ST_REGISTRO_ATIVO = 'S'
-                         INNER JOIN DBPET.TB_PROGRAMA PR
+                         INNER JOIN DBPETINFOSD.TB_PROGRAMA PR
                             ON PR.CO_SEQ_PROGRAMA = PU.CO_PROGRAMA
                            AND PR.ST_REGISTRO_ATIVO = 'S'
-                         INNER JOIN DBPET.TB_PROJETO C
+                         INNER JOIN DBPETINFOSD.TB_PROJETO C
                             ON B.CO_PROJETO = C.CO_SEQ_PROJETO
                            AND C.ST_REGISTRO_ATIVO = 'S'
-                         INNER JOIN DBPET.TB_AUTORIZACAO_FOLHA E
+                         INNER JOIN DBPETINFOSD.TB_AUTORIZACAO_FOLHA E
                             ON B.CO_SEQ_PROJ_FOLHA_PAGAM = E.CO_PROJ_FOLHA_PAGAM
                            AND E.ST_REGISTRO_ATIVO = 'S'
-                         INNER JOIN DBPET.TB_PROJETO_PESSOA F
+                         INNER JOIN DBPETINFOSD.TB_PROJETO_PESSOA F
                             ON E.CO_PROJETO_PESSOA = F.CO_SEQ_PROJETO_PESSOA
-                         INNER JOIN DBPET.TB_PESSOA_PERFIL G
+                         INNER JOIN DBPETINFOSD.TB_PESSOA_PERFIL G
                             ON F.CO_PESSOA_PERFIL = G.CO_SEQ_PESSOA_PERFIL
                          INNER JOIN DBPESSOA.TB_PESSOA_FISICA PF
                             ON PF.NU_CPF = G.NU_CPF
-                         INNER JOIN DBPET.TB_PERFIL H
+                         INNER JOIN DBPETINFOSD.TB_PERFIL H
                             ON G.CO_PERFIL = H.CO_SEQ_PERFIL
                          INNER JOIN DBPESSOA.TB_PESSOA I
                             ON G.NU_CPF = I.NU_CPF_CNPJ_PESSOA

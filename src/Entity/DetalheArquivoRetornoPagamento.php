@@ -8,7 +8,7 @@ use App\Cpb\DicionarioCpb;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="DBPET.TB_DETALHE_ARQUIVO_RETORNO")
+ * @ORM\Table(name="DBPETINFOSD.TB_DETALHE_ARQUIVO_RETORNO")
  * @ORM\Entity(repositoryClass="\App\Repository\DetalheArquivoRetornoPagamentoRepository")
  */
 class DetalheArquivoRetornoPagamento
@@ -20,7 +20,7 @@ class DetalheArquivoRetornoPagamento
      * @ORM\Id
      * @ORM\Column(name="CO_SEQ_DETALHE_ARQUIVO_RETORNO", type="integer")
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_DETARQRET_COSEQDETARQRETOR", initialValue=1, allocationSize=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_DETARQRET_COSEQDETARQRETOR", initialValue=1, allocationSize=1)
      */
     private $coSeqDetalheArquivoRetorno;
     

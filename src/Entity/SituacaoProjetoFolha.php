@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * SituacaoProjetoFolha
  *
- * @ORM\Table(name="DBPET.TB_SITUACAO_PROJETO_FOLHA")
+ * @ORM\Table(name="DBPETINFOSD.TB_SITUACAO_PROJETO_FOLHA")
  * @ORM\Entity(repositoryClass="App\Repository\SituacaoProjetoFolhaRepository")
  */
 class SituacaoProjetoFolha extends AbstractEntity
@@ -27,7 +27,7 @@ class SituacaoProjetoFolha extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(name="CO_SEQ_SITUACAO_PROJ_FOLHA", type="integer")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_SITPROJFL_COSEQSTIPROJFOLHA", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_SITPROJFL_COSEQSTIPROJFOLHA", allocationSize=1, initialValue=1)
      */
     private $coSeqSituacaoProjFolha;
 

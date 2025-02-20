@@ -7,7 +7,7 @@ use App\Cpb\RetornoCadastro\Detalhe;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="DBPET.TB_DETALHE_RET_CRIA_CONTA")
+ * @ORM\Table(name="DBPETINFOSD.TB_DETALHE_RET_CRIA_CONTA")
  * @ORM\Entity(repositoryClass="\App\Repository\DetalheRetornoCriacaoContaRepository")
  */
 class DetalheRetornoCriacaoConta
@@ -19,7 +19,7 @@ class DetalheRetornoCriacaoConta
      * @ORM\Id
      * @ORM\Column(name="CO_SEQ_DETALHE_RET_CRIA_CONTA", type="integer")
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_DETRETCRIACON_COSEQDETRETCC", initialValue=1, allocationSize=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_DETRETCRIACON_COSEQDETRETCC", initialValue=1, allocationSize=1)
      */
     private $coSeqDetalheRetCriaConta;
     

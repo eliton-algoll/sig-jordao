@@ -9,7 +9,7 @@ use App\Entity\CursoGraduacao;
 /**
  * ProjetoPessoaCursoGraduacao
  *
- * @ORM\Table(name="DBPET.RL_PROJPES_CURSOGRADUACAO")
+ * @ORM\Table(name="DBPETINFOSD.RL_PROJPES_CURSOGRADUACAO")
  * @ORM\Entity(repositoryClass="App\Repository\ProjetoPessoaCursoGraduacaoRepository")
  */
 class ProjetoPessoaCursoGraduacao extends AbstractEntity
@@ -23,7 +23,7 @@ class ProjetoPessoaCursoGraduacao extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\Column(name="CO_SEQ_PROJPES_CURSOGRAD", type="integer", unique=true)
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_PROJPESCURG_COSEQPJPESCURGR", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_PROJPESCURG_COSEQPJPESCURGR", allocationSize=1, initialValue=1)
      */
     private $coSeqProjetoPessoaCursoGraduacao;
 

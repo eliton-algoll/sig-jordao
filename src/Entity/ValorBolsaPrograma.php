@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ValorBolsaPrograma
  *
- * @ORM\Table(name="DBPET.TB_VALOR_BOLSA_PROGRAMA")
+ * @ORM\Table(name="DBPETINFOSD.TB_VALOR_BOLSA_PROGRAMA")
  * @ORM\Entity(repositoryClass="App\Repository\ValorBolsaProgramaRepository")
  */
 class ValorBolsaPrograma extends AbstractEntity
@@ -21,7 +21,7 @@ class ValorBolsaPrograma extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(name="CO_SEQ_VALOR_BOLSA_PROGRAMA", type="integer")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_VLBOLSAPROG_COSEQVLBOLSAPRG", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_VLBOLSAPROG_COSEQVLBOLSAPRG", allocationSize=1, initialValue=1)
      */
     private $coSeqValorBolsaPrograma;
 

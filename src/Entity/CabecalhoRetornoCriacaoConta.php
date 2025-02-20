@@ -7,7 +7,7 @@ use App\Cpb\RetornoCadastro\Header;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="DBPET.TB_CABECALHO_RET_CRIA_CONTA")
+ * @ORM\Table(name="DBPETINFOSD.TB_CABECALHO_RET_CRIA_CONTA")
  * @ORM\Entity(repositoryClass="\App\Repository\CabecalhoRetornoCriacaoContaRepository")
  */
 class CabecalhoRetornoCriacaoConta
@@ -19,7 +19,7 @@ class CabecalhoRetornoCriacaoConta
      * @ORM\Id
      * @ORM\Column(name="CO_SEQ_CABECALHO_RET_CRIA_CONT", type="integer")
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_CABRETCRIACON_COSEQCABRETCC", initialValue=1, allocationSize=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_CABRETCRIACON_COSEQCABRETCC", initialValue=1, allocationSize=1)
      */
     private $coSeqCabecalhoRetCriaCont;
     

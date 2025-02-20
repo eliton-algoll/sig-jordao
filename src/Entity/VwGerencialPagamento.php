@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="DBPET.VW_GERENCIAL_PAGAMENTO")
+ * @ORM\Table(name="DBPETINFOSD.VW_GERENCIAL_PAGAMENTO")
  * @ORM\Entity(repositoryClass="\App\Repository\VwGerencialPagamentoRepository")
  */
 class VwGerencialPagamento extends AbstractEntity

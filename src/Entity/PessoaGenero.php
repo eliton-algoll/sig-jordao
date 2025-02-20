@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * PessoaGenero
  *
- * @ORM\Table(name="DBPET.TB_PESSOA_GENERO")
+ * @ORM\Table(name="DBPETINFOSD.TB_PESSOA_GENERO")
  * @ORM\Entity(repositoryClass="App\Repository\PessoaGeneroRepository")
  */
 class PessoaGenero extends AbstractEntity
@@ -22,7 +22,7 @@ class PessoaGenero extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\Column(name="CO_SEQ_PESSOA_GENERO", type="integer")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_PROJPESSOA_COSEQPROJPESSOA", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_PROJPESSOA_COSEQPROJPESSOA", allocationSize=1, initialValue=1)
      */
     private $coSeqPessoaGenero;
 

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="DBPET.TB_ENVIO_FORM_AVALIACAO_ATIVID")
+ * @ORM\Table(name="DBPETINFOSD.TB_ENVIO_FORM_AVALIACAO_ATIVID")
  * @ORM\Entity(repositoryClass="\App\Repository\EnvioFormularioAvaliacaoAtividadeRepository")
  */
 class EnvioFormularioAvaliacaoAtividade extends AbstractEntity
@@ -22,7 +22,7 @@ class EnvioFormularioAvaliacaoAtividade extends AbstractEntity
      * @ORM\Id
      * @ORM\Column(name="CO_SEQ_ENVIO_FORM_AVAL_ATIVID", type="integer")
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_ENVFRMAVAT_COSEQENVFRMAVAT", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_ENVFRMAVAT_COSEQENVFRMAVAT", allocationSize=1, initialValue=1)
      */    
     private $coSeqEnvioFormAvalAtivid;
     

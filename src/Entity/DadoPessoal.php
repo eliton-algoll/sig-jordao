@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * DadoPessoal
  *
- * @ORM\Table(name="DBPET.TB_DADO_PESSOAL")
+ * @ORM\Table(name="DBPETINFOSD.TB_DADO_PESSOAL")
  * @ORM\Entity(repositoryClass="App\Repository\DadoPessoalRepository")
  */
 class DadoPessoal extends AbstractEntity
@@ -22,7 +22,7 @@ class DadoPessoal extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\Column(name="CO_SEQ_DADO_PESSOAL", type="integer", unique=true)
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_DADOPESSOAL_COSEQDADOPESSOA", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_DADOPESSOAL_COSEQDADOPESSOA", allocationSize=1, initialValue=1)
      */
     private $coSeqDadoPessoal;
 

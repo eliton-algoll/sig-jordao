@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="DBPET.TB_SITUACAO_TRAMITE_FORMULARIO")
+ * @ORM\Table(name="DBPETINFOSD.TB_SITUACAO_TRAMITE_FORMULARIO")
  * @ORM\Entity(repositoryClass="\App\Repository\SituacaoTramiteFormularioRepository")
  */
 class SituacaoTramiteFormulario extends AbstractEntity
@@ -26,7 +26,7 @@ class SituacaoTramiteFormulario extends AbstractEntity
      * @ORM\Id
      * @ORM\Column(name="CO_SEQ_SITUACAO_TRAMITE_FORM", type="integer")
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_SITTRAMFORM_COSEQSITTRAFORM", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_SITTRAMFORM_COSEQSITTRAFORM", allocationSize=1, initialValue=1)
      */ 
     private $coSeqSituacaoTramiteForm;
     

@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @package App\Entity
  *
  * @ORM\Entity
- * @ORM\Table(name="DBPET.TH_PARTICIPANTE_FOLHAPAGAMENTO")
+ * @ORM\Table(name="DBPETINFOSD.TH_PARTICIPANTE_FOLHAPAGAMENTO")
  * @ORM\Entity(repositoryClass="\App\Repository\ParticipanteFolhapagamentoRepository")
  */
 class ParticipanteFolhapagamento  extends AbstractEntity
@@ -21,7 +21,7 @@ class ParticipanteFolhapagamento  extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\Column(name="CO_SEQ_PARTICIPANTE_FOLHAPAGAM", type="integer")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_PARTFLPAG_COSEQPARTFOLHAPAG", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_PARTFLPAG_COSEQPARTFOLHAPAG", allocationSize=1, initialValue=1)
      */
     private $coSeqParticipanteFolhapagam;
 

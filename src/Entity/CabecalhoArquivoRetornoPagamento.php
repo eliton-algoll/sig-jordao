@@ -7,7 +7,7 @@ use App\Cpb\RetornoPagamento\Header;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="DBPET.TB_CABECALHO_ARQUIVO_RETORNO")
+ * @ORM\Table(name="DBPETINFOSD.TB_CABECALHO_ARQUIVO_RETORNO")
  * @ORM\Entity(repositoryClass="\App\Repository\CabecalhoArquivoRetornoPagamentoRepository")
  */
 class CabecalhoArquivoRetornoPagamento
@@ -19,7 +19,7 @@ class CabecalhoArquivoRetornoPagamento
      * @ORM\Id
      * @ORM\Column(name="CO_SEQ_CABECALHO_ARQ_RETORNO", type="integer")
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_CABARQRET_COSEQCABARQRET", initialValue=1, allocationSize=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_CABARQRET_COSEQCABARQRET", initialValue=1, allocationSize=1)
      */
     private $coSeqCabecalhoArqRetorno;
     

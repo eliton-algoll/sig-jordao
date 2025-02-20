@@ -7,7 +7,7 @@ use App\Cpb\RetornoCadastro\Trailer;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="DBPET.TB_RODAPE_RET_CRIA_CONTA")
+ * @ORM\Table(name="DBPETINFOSD.TB_RODAPE_RET_CRIA_CONTA")
  * @ORM\Entity(repositoryClass="\App\Repository\RodapeRetornoCriacaoContaRepository")
  */
 class RodapeRetornoCriacaoConta
@@ -19,7 +19,7 @@ class RodapeRetornoCriacaoConta
      * @ORM\Id
      * @ORM\Column(name="CO_SEQ_RODAPE_RET_CRIA_CONTA", type="integer")
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_RODRETCRIACON_COSEQRODRETCC", initialValue=1, allocationSize=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_RODRETCRIACON_COSEQRODRETCC", initialValue=1, allocationSize=1)
      */
     private $coSeqRodapeRetCriaConta;
     

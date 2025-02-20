@@ -7,7 +7,7 @@ use App\Cpb\RetornoPagamento\Trailer;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="DBPET.TB_RODAPE_ARQUIVO_RETORNO")
+ * @ORM\Table(name="DBPETINFOSD.TB_RODAPE_ARQUIVO_RETORNO")
  * @ORM\Entity(repositoryClass="\App\Repository\RodapeArquivoRetornoPagamentoRepository")
  */
 class RodapeArquivoRetornoPagamento
@@ -19,7 +19,7 @@ class RodapeArquivoRetornoPagamento
      * @ORM\Id
      * @ORM\Column(name="CO_SEQ_RODAPE_ARQUIVO_RETORNO", type="integer")
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_RODARQRET_COSEQRODARQRETORN", initialValue=1, allocationSize=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_RODARQRET_COSEQRODARQRETORN", initialValue=1, allocationSize=1)
      */
     private $coSeqRodapeArquivoRetorno;
     

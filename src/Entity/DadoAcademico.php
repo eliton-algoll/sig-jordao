@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * DadoAcademico
  *
- * @ORM\Table(name="DBPET.TB_DADO_ACADEMICO")
+ * @ORM\Table(name="DBPETINFOSD.TB_DADO_ACADEMICO")
  * @ORM\Entity(repositoryClass="App\Repository\DadoAcademicoRepository")
  */
 class DadoAcademico extends AbstractEntity
@@ -21,7 +21,7 @@ class DadoAcademico extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\Column(name="CO_SEQ_DADO_ACADEMICO", type="integer", unique=true)
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_DADOACADEM_COSEQDADOACADEM", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_DADOACADEM_COSEQDADOACADEM", allocationSize=1, initialValue=1)
      */
     private $coSeqDadoAcademico;
 

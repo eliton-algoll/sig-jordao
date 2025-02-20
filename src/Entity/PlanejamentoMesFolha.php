@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="DBPET.TB_PLANEJAMENTO_MES_FOLHA")
+ * @ORM\Table(name="DBPETINFOSD.TB_PLANEJAMENTO_MES_FOLHA")
  * @ORM\Entity(repositoryClass="\App\Repository\PlanejamentoMesFolhaRepository")
  */
 class PlanejamentoMesFolha extends AbstractEntity
@@ -21,7 +21,7 @@ class PlanejamentoMesFolha extends AbstractEntity
      * @ORM\Id
      * @ORM\Column(name="CO_SEQ_PLANEJAMENTO_MES_FOLHA", type="integer")
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_PLANMESFLS_COSEQPLANEJMESFL", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_PLANMESFLS_COSEQPLANEJMESFL", allocationSize=1, initialValue=1)
      */
     private $coSeqPlanejamentoMesFolha;
     

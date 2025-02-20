@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Banco
  *
- * @ORM\Table(name="DBPET.TB_BANCO")
+ * @ORM\Table(name="DBPETINFOSD.TB_BANCO")
  * @ORM\Entity(repositoryClass="App\Repository\BancoRepository")
  */
 class Banco extends AbstractEntity

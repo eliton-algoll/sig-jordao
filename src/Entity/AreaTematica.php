@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * AreaTematica
  *
- * @ORM\Table(name="DBPET.TB_AREA_TEMATICA")
+ * @ORM\Table(name="DBPETINFOSD.TB_AREA_TEMATICA")
  * @ORM\Entity(repositoryClass="App\Repository\AreaTematicaRepository")
  */
 class AreaTematica extends AbstractEntity
@@ -22,7 +22,7 @@ class AreaTematica extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\Column(name="CO_SEQ_AREA_TEMATICA", type="integer")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_AREATEMAT_COSEQAREATEMATICA", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_AREATEMAT_COSEQAREATEMATICA", allocationSize=1, initialValue=1)
      */
     private $coSeqAreaTematica;
 

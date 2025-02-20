@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CategoriaProfissional
  *
- * @ORM\Table(name="DBPET.TB_CATEGORIA_PROFISSIONAL")
+ * @ORM\Table(name="DBPETINFOSD.TB_CATEGORIA_PROFISSIONAL")
  * @ORM\Entity(repositoryClass="App\Repository\CategoriaProfissionalRepository")
  */
 class CategoriaProfissional extends AbstractEntity
@@ -21,7 +21,7 @@ class CategoriaProfissional extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\Column(name="CO_SEQ_CATEGORIA_PROFISSIONAL", type="integer", unique=true)
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_CATEGPROF_COSEQCATEGPROFIS", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_CATEGPROF_COSEQCATEGPROFIS", allocationSize=1, initialValue=1)
      */
     private $coSeqCategoriaProfissional;
 

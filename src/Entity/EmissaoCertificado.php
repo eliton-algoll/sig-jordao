@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="DBPET.TB_EMISSAO_CERTIFICADO")
+ * @ORM\Table(name="DBPETINFOSD.TB_EMISSAO_CERTIFICADO")
  * @ORM\Entity(repositoryClass="App\Repository\EmissaoCertificadoRepository")
  */
 class EmissaoCertificado extends AbstractEntity
@@ -23,7 +23,7 @@ class EmissaoCertificado extends AbstractEntity
      * @ORM\Id
      * @ORM\Column(name="CO_SEQ_EMISSAO_CERTIFICADO", type="integer")
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_EMISCERTIF_COSEQEMISCERTIF", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_EMISCERTIF_COSEQEMISCERTIF", allocationSize=1, initialValue=1)
      */
     private $coSeqHistoricoCertificado;
     

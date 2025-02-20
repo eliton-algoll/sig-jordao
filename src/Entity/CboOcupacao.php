@@ -20,7 +20,7 @@ class CboOcupacao extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\Column(name="CO_CBO_OCUPACAO", type="string", length=6, unique=true)
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_DADOPESSOAL_COSEQPROFIS", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_DADOPESSOAL_COSEQPROFIS", allocationSize=1, initialValue=1)
      */
     private $coCboOcupacao;
 

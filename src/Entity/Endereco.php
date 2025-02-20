@@ -8,7 +8,7 @@ use App\Entity\Pessoa;
 /**
  * Endereco
  *
- * @ORM\Table(name="DBPET.TB_ENDERECO")
+ * @ORM\Table(name="DBPETINFOSD.TB_ENDERECO")
  * @ORM\Entity(repositoryClass="App\Repository\EnderecoRepository")
  */
 class Endereco extends AbstractEntity
@@ -22,7 +22,7 @@ class Endereco extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\Column(name="CO_SEQ_ENDERECO", type="integer", unique=true)
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_ENDERECO_COSEQENDERECO", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_ENDERECO_COSEQENDERECO", allocationSize=1, initialValue=1)
      */
     private $coSeqEndereco;
     

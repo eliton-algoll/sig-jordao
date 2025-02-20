@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Perfil
  *
- * @ORM\Table(name="DBPET.TB_PERFIL")
+ * @ORM\Table(name="DBPETINFOSD.TB_PERFIL")
  * @ORM\Entity(repositoryClass="App\Repository\PerfilRepository")
  */
 class Perfil extends AbstractEntity
@@ -39,7 +39,7 @@ class Perfil extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\Column(name="CO_SEQ_PERFIL", type="integer")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_PERFIL_COSEQPERFIL", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_PERFIL_COSEQPERFIL", allocationSize=1, initialValue=1)
      */
     private $coSeqPerfil;
 

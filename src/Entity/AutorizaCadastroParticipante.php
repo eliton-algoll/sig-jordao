@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="DBPET.TB_AUTORIZA_CADASTRO_PARTICIP")
+ * @ORM\Table(name="DBPETINFOSD.TB_AUTORIZA_CADASTRO_PARTICIP")
  * @ORM\Entity(repositoryClass="\App\Repository\AutorizaCadastroParticipanteRepository")
  */
 class AutorizaCadastroParticipante extends AbstractEntity
@@ -21,7 +21,7 @@ class AutorizaCadastroParticipante extends AbstractEntity
      * @ORM\Id
      * @ORM\Column(name="CO_SEQ_AUTOR_CAD_PARTICIPANTE", type="integer")
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_AUTCADPART_COSEQAUTCADPART", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_AUTCADPART_COSEQAUTCADPART", allocationSize=1, initialValue=1)
      */
     private $coSeqAutorCadParticipante;
     

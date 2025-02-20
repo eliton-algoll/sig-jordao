@@ -10,7 +10,7 @@ use App\Entity\GrupoAtuacao;
 /**
  * ProjetoPessoaGrupoAtuacao
  *
- * @ORM\Table(name="DBPET.RL_PROJETOPESSOA_GRUPOATUACAO")
+ * @ORM\Table(name="DBPETINFOSD.RL_PROJETOPESSOA_GRUPOATUACAO")
  * @ORM\Entity(repositoryClass="App\Repository\ProjetoPessoaGrupoAtuacaoRepository")
  */
 class ProjetoPessoaGrupoAtuacao extends AbstractEntity
@@ -24,7 +24,7 @@ class ProjetoPessoaGrupoAtuacao extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\Column(name="CO_SEQ_PROJPES_GRUPOATUAC", type="integer", unique=true)
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_PRJPESGRPAT_COSEQPRJPESGPAT", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_PRJPESGRPAT_COSEQPRJPESGPAT", allocationSize=1, initialValue=1)
      */
     private $coSeqProjpesGrupoatuac;
 

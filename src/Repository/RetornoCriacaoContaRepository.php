@@ -43,7 +43,7 @@ class RetornoCriacaoContaRepository extends RepositoryAbstract
     public function findUniqueRefs()
     {
         $sql = "SELECT MAX(CO_SEQ_RETORNO_CRIACAO_CONTA) AS CO_SEQ_RETORNO_CRIACAO_CONTA
-                FROM DBPET.TB_RETORNO_CRIACAO_CONTA
+                FROM DBPETINFOSD.TB_RETORNO_CRIACAO_CONTA
                 WHERE ST_REGISTRO_ATIVO = 'S'
                 GROUP BY TO_CHAR(DT_INCLUSAO, 'YYYYMM')";
         

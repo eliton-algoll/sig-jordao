@@ -68,11 +68,11 @@ class VwParticipanteRepository extends RepositoryAbstract
                 VW.DT_INCLUSAO_PROJPESSOA,
                 LISTAGG(GA.NO_GRUPO_ATUACAO, ', ') 
                     WITHIN GROUP( ORDER BY GA.NO_GRUPO_ATUACAO) AS "NO_GRUPO_ATUACAO"
-            FROM DBPET.VW_PARTICIPANTE VW
-            LEFT JOIN DBPET.RL_PROJETOPESSOA_GRUPOATUACAO PRPGA
+            FROM DBPETINFOSD.VW_PARTICIPANTE VW
+            LEFT JOIN DBPETINFOSD.RL_PROJETOPESSOA_GRUPOATUACAO PRPGA
                 ON PRPGA.CO_PROJETO_PESSOA = VW.CO_SEQ_PROJETO_PESSOA
                 AND PRPGA.ST_REGISTRO_ATIVO = 'S'
-            LEFT JOIN DBPET.TB_GRUPO_ATUACAO GA 
+            LEFT JOIN DBPETINFOSD.TB_GRUPO_ATUACAO GA 
                 ON GA.CO_SEQ_GRUPO_ATUACAO = PRPGA.CO_GRUPO_ATUACAO
                 AND GA.ST_REGISTRO_ATIVO = 'S'
             WHERE VW.ST_REGISTROATIVO_PROJPESSOA = 'S'
@@ -201,24 +201,24 @@ SQL;
                                    H.CO_CNES,
                                    TO_CHAR(A.DT_DESLIGAMENTO, 'DD/MM/YYYY')         AS
                                    DT_DESLIGAMENTO
-                            FROM   DBPET.VW_PARTICIPANTE A
-                                   LEFT JOIN DBPET.TB_DADO_PESSOAL DP
+                            FROM   DBPETINFOSD.VW_PARTICIPANTE A
+                                   LEFT JOIN DBPETINFOSD.TB_DADO_PESSOAL DP
                                            ON A.NU_CPF_CNPJ_PESSOA = DP.NU_CPF
-                                   INNER JOIN DBPET.TB_PROJETO B
+                                   INNER JOIN DBPETINFOSD.TB_PROJETO B
                                            ON A.CO_SEQ_PROJETO = B.CO_SEQ_PROJETO
-                                   INNER JOIN DBPET.TB_PUBLICACAO C
+                                   INNER JOIN DBPETINFOSD.TB_PUBLICACAO C
                                            ON B.CO_PUBLICACAO = C.CO_SEQ_PUBLICACAO
                                    INNER JOIN DBPESSOA.TB_PESSOA_FISICA D
                                            ON A.NU_CPF_CNPJ_PESSOA = D.NU_CPF
-                                   INNER JOIN DBPET.TB_PROGRAMA F
+                                   INNER JOIN DBPETINFOSD.TB_PROGRAMA F
                                            ON C.CO_PROGRAMA = F.CO_SEQ_PROGRAMA
                                    LEFT JOIN (SELECT E_A.CO_PROJETO_PESSOA,
                                                      LISTAGG(E_B.NO_GRUPO_ATUACAO, ', ' ON OVERFLOW TRUNCATE)
                                                        WITHIN GROUP( ORDER BY E_B.NO_GRUPO_ATUACAO)
                                                      AS
                                                      GRUPO_ATUACAO_PROJETO
-                                              FROM   DBPET.RL_PROJETOPESSOA_GRUPOATUACAO E_A
-                                                     INNER JOIN DBPET.TB_GRUPO_ATUACAO E_B
+                                              FROM   DBPETINFOSD.RL_PROJETOPESSOA_GRUPOATUACAO E_A
+                                                     INNER JOIN DBPETINFOSD.TB_GRUPO_ATUACAO E_B
                                                              ON E_A.CO_GRUPO_ATUACAO =
                                                                 E_B.CO_SEQ_GRUPO_ATUACAO
                                               WHERE  E_A.ST_REGISTRO_ATIVO = 'S'
@@ -232,10 +232,10 @@ SQL;
                                                              || G_A.NU_TELEFONE, ', ' ON OVERFLOW TRUNCATE)
                                                        WITHIN GROUP( ORDER BY G_A.NU_TELEFONE) AS
                                                      TELEFONE
-                                              FROM   DBPET.TB_TELEFONE G_A
+                                              FROM   DBPETINFOSD.TB_TELEFONE G_A
                                               GROUP  BY G_A.NU_CPF_CNPJ_PESSOA) G
                                           ON G.NU_CPF_CNPJ_PESSOA = A.NU_CPF_CNPJ_PESSOA
-                                   LEFT JOIN DBPET.TB_DADO_ACADEMICO H
+                                   LEFT JOIN DBPETINFOSD.TB_DADO_ACADEMICO H
                                           ON A.CO_SEQ_PROJETO_PESSOA = H.CO_PROJETO_PESSOA
                                              AND H.ST_REGISTRO_ATIVO = 'S'
                                    LEFT JOIN (SELECT
@@ -246,20 +246,20 @@ SQL;
                                                        WITHIN GROUP(ORDER BY
                                                        T5.DS_TIPO_AREA_TEMATICA) AS
                                                                            TIPO_AREA_TEMATICA
-                                              FROM   DBPET.TB_GRUPO_ATUACAO T1
-                                                     INNER JOIN DBPET.RL_PROJETOPESSOA_GRUPOATUACAO
+                                              FROM   DBPETINFOSD.TB_GRUPO_ATUACAO T1
+                                                     INNER JOIN DBPETINFOSD.RL_PROJETOPESSOA_GRUPOATUACAO
                                                                 T2
                                                              ON T1.CO_SEQ_GRUPO_ATUACAO =
                                                                 T2.CO_GRUPO_ATUACAO
-                                                     LEFT JOIN DBPET.RL_PROJPES_GRPATUAC_AREATEM T3
+                                                     LEFT JOIN DBPETINFOSD.RL_PROJPES_GRPATUAC_AREATEM T3
                                                             ON T2.CO_SEQ_PROJPES_GRUPOATUAC =
                                                                T3.CO_PROJPES_GRUPOATUAC
                                                                AND T3.ST_REGISTRO_ATIVO = 'S'
-                                                     LEFT JOIN DBPET.TB_AREA_TEMATICA T4
+                                                     LEFT JOIN DBPETINFOSD.TB_AREA_TEMATICA T4
                                                             ON T3.CO_AREA_TEMATICA =
                                                                T4.CO_SEQ_AREA_TEMATICA
                                                                AND T4.ST_REGISTRO_ATIVO = 'S'
-                                                     LEFT JOIN DBPET.TB_TIPO_AREA_TEMATICA T5
+                                                     LEFT JOIN DBPETINFOSD.TB_TIPO_AREA_TEMATICA T5
                                                             ON T4.CO_TIPO_AREA_TEMATICA =
                                                                T5.CO_SEQ_TIPO_AREA_TEMATICA
                                               WHERE  T2.ST_REGISTRO_ATIVO = 'S'

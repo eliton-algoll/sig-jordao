@@ -9,7 +9,7 @@ use App\Entity\Perfil;
 /**
  * Projeto
  *
- * @ORM\Table(name="DBPET.TB_PROJETO")
+ * @ORM\Table(name="DBPETINFOSD.TB_PROJETO")
  * @ORM\Entity(repositoryClass="App\Repository\ProjetoRepository")
  */
 class Projeto extends AbstractEntity
@@ -23,7 +23,7 @@ class Projeto extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\Column(name="CO_SEQ_PROJETO", type="integer")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_PROJETO_COSEQPROJETO", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_PROJETO_COSEQPROJETO", allocationSize=1, initialValue=1)
      */
     private $coSeqProjeto;
 

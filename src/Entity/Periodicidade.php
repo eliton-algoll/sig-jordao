@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="DBPET.TB_PERIODICIDADE")
+ * @ORM\Table(name="DBPETINFOSD.TB_PERIODICIDADE")
  */
 class Periodicidade extends AbstractEntity
 {
@@ -20,7 +20,7 @@ class Periodicidade extends AbstractEntity
      * @ORM\Id
      * @ORM\Column(name="CO_SEQ_PERIODICIDADE", type="integer")
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_PERIOD_COSEQPERIODICIDADE", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_PERIOD_COSEQPERIODICIDADE", allocationSize=1, initialValue=1)
      */
     private $coSeqPeriodicidade;
     

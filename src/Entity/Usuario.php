@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * Usuario
  *
- * @ORM\Table(name="DBPET.TB_USUARIO")
+ * @ORM\Table(name="DBPETINFOSD.TB_USUARIO")
  * @ORM\Entity(repositoryClass="App\Repository\UsuarioRepository")
  */
 class Usuario extends AbstractEntity implements UserInterface, \Serializable
@@ -22,7 +22,7 @@ class Usuario extends AbstractEntity implements UserInterface, \Serializable
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\Column(name="CO_SEQ_USUARIO", type="integer")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_USUARIO_COSEQUSUARIO", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_USUARIO_COSEQUSUARIO", allocationSize=1, initialValue=1)
      */
     private $coSeqUsuario;
 

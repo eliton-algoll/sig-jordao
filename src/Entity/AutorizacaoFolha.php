@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AutorizacaoFolha
  *
- * @ORM\Table(name="DBPET.TB_AUTORIZACAO_FOLHA")
+ * @ORM\Table(name="DBPETINFOSD.TB_AUTORIZACAO_FOLHA")
  * @ORM\Entity(repositoryClass="App\Repository\AutorizacaoFolhaRepository")
  */
 class AutorizacaoFolha extends AbstractEntity
@@ -21,7 +21,7 @@ class AutorizacaoFolha extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(name="CO_SEQ_AUTORIZACAO_FOLHA", type="integer")
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_AUTORFOLHA_COSEQAUTORFOLHA", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_AUTORFOLHA_COSEQAUTORFOLHA", allocationSize=1, initialValue=1)
      */
     private $coSeqAutorizacaoFolha;
 

@@ -8,7 +8,7 @@ use App\Entity\Pessoa;
 /**
  * Telefone
  *
- * @ORM\Table(name="DBPET.TB_TELEFONE")
+ * @ORM\Table(name="DBPETINFOSD.TB_TELEFONE")
  * @ORM\Entity(repositoryClass="App\Repository\TelefoneRepository")
  */
 class Telefone extends AbstractEntity
@@ -29,7 +29,7 @@ class Telefone extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\Column(name="CO_SEQ_TELEFONE", type="integer", unique=true)
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_TELEFONE_COSEQTELEFONE", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_TELEFONE_COSEQTELEFONE", allocationSize=1, initialValue=1)
      * 
      */
     private $coSeqTelefone;

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * VwGrupoatuacaoQtprofissional
  *
- * @ORM\Table(name="DBPET.VW_GRUPOATUACAO_QTPROFISSIONAL")
+ * @ORM\Table(name="DBPETINFOSD.VW_GRUPOATUACAO_QTPROFISSIONAL")
  * @ORM\Entity(repositoryClass="App\Repository\VwGrupoatuacaoQtprofissionalRepository")
  */
 class VwGrupoatuacaoQtprofissional extends AbstractEntity

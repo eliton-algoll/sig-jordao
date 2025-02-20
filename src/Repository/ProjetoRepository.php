@@ -220,7 +220,7 @@ SQL;
                             SUB_SEC.NO_SECRETARIA_SAUDE,
                             SUB_SEC.CO_UF_IBGE,                            
                             SUB_ATUACAO.NO_GRUPO_ATUACAO
-            FROM   DBPET.TB_PROJETO PR
+            FROM   DBPETINFOSD.TB_PROJETO PR
                    INNER JOIN (SELECT DISTINCT A2.CO_PROJETO,
                                                LISTAGG('('
                                                        || ( SUBSTR(C2.NU_CNPJ, 1, 2)
@@ -239,13 +239,13 @@ SQL;
                                                  (
                                                    PARTITION BY A2.CO_PROJETO )
                                                          NO_INSTITUICAO_PROJETO
-                               FROM   DBPET.RL_PROJETO_CAMPUSINTITUICAO A2
-                                      INNER JOIN DBPET.TB_CAMPUS_INSTITUICAO B2
+                               FROM   DBPETINFOSD.RL_PROJETO_CAMPUSINTITUICAO A2
+                                      INNER JOIN DBPETINFOSD.TB_CAMPUS_INSTITUICAO B2
                                               ON A2.CO_CAMPUS_INSTITUICAO =
                                                  B2.CO_SEQ_CAMPUS_INSTITUICAO
                                                  AND A2.ST_REGISTRO_ATIVO = 'S'
                                                  AND B2.ST_REGISTRO_ATIVO = 'S'
-                                      INNER JOIN DBPET.TB_INSTITUICAO C2
+                                      INNER JOIN DBPETINFOSD.TB_INSTITUICAO C2
                                               ON B2.CO_INSTITUICAO = C2.CO_SEQ_INSTITUICAO
                                                  AND C2.ST_REGISTRO_ATIVO = 'S'
                                GROUP  BY A2.CO_PROJETO,
@@ -275,7 +275,7 @@ SQL;
                                                NO_SECRETARIA_SAUDE,
                                                D.CO_MUNICIPIO_IBGE,
                                                D.CO_UF_IBGE
-                               FROM   DBPET.TB_SECRETARIA_SAUDE A
+                               FROM   DBPETINFOSD.TB_SECRETARIA_SAUDE A
                                       INNER JOIN DBPESSOA.TB_PESSOA_JURIDICA B
                                               ON A.NU_CNPJ = B.NU_CNPJ
                                       INNER JOIN DBPESSOA.TB_PESSOA C
@@ -290,9 +290,9 @@ SQL;
                                          D.CO_MUNICIPIO_IBGE,
                                          D.CO_UF_IBGE) SUB_SEC
                            ON PR.CO_SEQ_PROJETO = SUB_SEC.CO_PROJETO
-                   INNER JOIN DBPET.TB_PROJETO_FOLHAPAGAMENTO PRFP
+                   INNER JOIN DBPETINFOSD.TB_PROJETO_FOLHAPAGAMENTO PRFP
                      ON PRFP.CO_PROJETO = PR.CO_SEQ_PROJETO
-                   INNER JOIN DBPET.TB_FOLHA_PAGAMENTO FP
+                   INNER JOIN DBPETINFOSD.TB_FOLHA_PAGAMENTO FP
                      ON FP.CO_SEQ_FOLHA_PAGAMENTO = PRFP.CO_FOLHA_PAGAMENTO
                         AND FP.TP_FOLHA_PAGAMENTO = 'M'
                         AND FP.CO_SITUACAO_FOLHA <> 7 --CANCELADA   
@@ -303,11 +303,11 @@ SQL;
                                                 (
                                                   PARTITION BY AT.CO_PROJETO)
                                               NO_GRUPO_ATUACAO
-                              FROM   DBPET.TB_AREA_TEMATICA AT
-                                     LEFT JOIN DBPET.RL_AREATEMATICA_GRUPOATUACAO ATGA
+                              FROM   DBPETINFOSD.TB_AREA_TEMATICA AT
+                                     LEFT JOIN DBPETINFOSD.RL_AREATEMATICA_GRUPOATUACAO ATGA
                                             ON ATGA.CO_AREA_TEMATICA =
                                                AT.CO_SEQ_AREA_TEMATICA
-                                     LEFT JOIN DBPET.TB_GRUPO_ATUACAO GA
+                                     LEFT JOIN DBPETINFOSD.TB_GRUPO_ATUACAO GA
                                             ON GA.CO_SEQ_GRUPO_ATUACAO =
                                                ATGA.CO_GRUPO_ATUACAO)
                              SUB_ATUACAO
@@ -316,12 +316,12 @@ SQL;
                                       PF.CO_SEQ_PROJ_FOLHA_PAGAM,
                                       PF.CO_PROJETO,
                                       SUM(AF.VL_BOLSA)                   VL_FOLHA_MES
-                               FROM   DBPET.TB_AUTORIZACAO_FOLHA AF
-                                      INNER JOIN DBPET.TB_PROJETO_FOLHAPAGAMENTO PF
+                               FROM   DBPETINFOSD.TB_AUTORIZACAO_FOLHA AF
+                                      INNER JOIN DBPETINFOSD.TB_PROJETO_FOLHAPAGAMENTO PF
                                               ON AF.CO_PROJ_FOLHA_PAGAM =
                                                  PF.CO_SEQ_PROJ_FOLHA_PAGAM
                                                  AND AF.ST_REGISTRO_ATIVO = 'S'
-                                      INNER JOIN DBPET.TB_FOLHA_PAGAMENTO FP
+                                      INNER JOIN DBPETINFOSD.TB_FOLHA_PAGAMENTO FP
                                               ON PF.CO_FOLHA_PAGAMENTO =
                                                  FP.CO_SEQ_FOLHA_PAGAMENTO
                                                  AND FP.TP_FOLHA_PAGAMENTO = 'M'
@@ -356,8 +356,8 @@ SQL;
 
         $query = <<<SQL
                    SELECT count(*) AS NR_ORIENTADOR FROM 
-                    DBPET.TB_PROJETO_PESSOA tp
-                   INNER JOIN DBPET.TB_PESSOA_PERFIL per ON per.CO_SEQ_PESSOA_PERFIL = tp.CO_PESSOA_PERFIL
+                    DBPETINFOSD.TB_PROJETO_PESSOA tp
+                   INNER JOIN DBPETINFOSD.TB_PESSOA_PERFIL per ON per.CO_SEQ_PESSOA_PERFIL = tp.CO_PESSOA_PERFIL
                    WHERE tp.ST_REGISTRO_ATIVO = 'S' AND per.ST_REGISTRO_ATIVO = 'S'
                    AND tp.CO_PROJETO = ? 
                    AND per.NU_CPF <> ? 
@@ -389,9 +389,9 @@ SQL;
                   SELECT 
                         COUNT(*) AS NR_CADASTRADO
                     FROM 
-                        DBPET.TB_PROJETO_PESSOA tp
-                    INNER JOIN DBPET.TB_PESSOA_PERFIL per ON per.CO_SEQ_PESSOA_PERFIL = tp.CO_PESSOA_PERFIL AND per.ST_REGISTRO_ATIVO = 'S'
-                    INNER JOIN DBPET.RL_PROJETOPESSOA_GRUPOATUACAO gru ON gru.CO_PROJETO_PESSOA = tp.CO_SEQ_PROJETO_PESSOA AND gru.ST_REGISTRO_ATIVO = 'S'
+                        DBPETINFOSD.TB_PROJETO_PESSOA tp
+                    INNER JOIN DBPETINFOSD.TB_PESSOA_PERFIL per ON per.CO_SEQ_PESSOA_PERFIL = tp.CO_PESSOA_PERFIL AND per.ST_REGISTRO_ATIVO = 'S'
+                    INNER JOIN DBPETINFOSD.RL_PROJETOPESSOA_GRUPOATUACAO gru ON gru.CO_PROJETO_PESSOA = tp.CO_SEQ_PROJETO_PESSOA AND gru.ST_REGISTRO_ATIVO = 'S'
                     WHERE tp.ST_REGISTRO_ATIVO = 'S'
                     AND tp.CO_PROJETO = ? 
                     AND per.CO_PERFIL in (?) 
@@ -422,9 +422,9 @@ SQL;
     {
         $query = <<<SQL
                   SELECT count(*) numero FROM
-                    DBPET.TB_PROJETO_PESSOA pes 
-                    inner join DBPET.RL_PROJETOPESSOA_GRUPOATUACAO rlpg on rlpg.co_projeto_pessoa = pes.co_seq_projeto_pessoa and rlpg.st_registro_ativo = ?
-                    inner join DBPET.TB_GRUPO_ATUACAO gru on gru.co_seq_grupo_atuacao = rlpg.co_grupo_atuacao and gru.st_registro_ativo = ?
+                    DBPETINFOSD.TB_PROJETO_PESSOA pes 
+                    inner join DBPETINFOSD.RL_PROJETOPESSOA_GRUPOATUACAO rlpg on rlpg.co_projeto_pessoa = pes.co_seq_projeto_pessoa and rlpg.st_registro_ativo = ?
+                    inner join DBPETINFOSD.TB_GRUPO_ATUACAO gru on gru.co_seq_grupo_atuacao = rlpg.co_grupo_atuacao and gru.st_registro_ativo = ?
                     WHERE pes.co_projeto = ?
                     AND pes.st_registro_ativo = ?
 SQL;
@@ -452,8 +452,8 @@ SQL;
     {
         for ($i = 1; $i <= $nrGrupos; $i++) {
             $nomeGrupo = 'Grupo '.$i;
-            $query = "INSERT INTO DBPET.TB_GRUPO_ATUACAO (CO_SEQ_GRUPO_ATUACAO, NO_GRUPO_ATUACAO, ST_REGISTRO_ATIVO, DT_INCLUSAO, CO_PROJETO, ST_CONFIRMACAO)
-                      VALUES(DBPET.SQ_GRUPOATUACAO_COSEQGRPATUAC.NEXTVAL, :NO_GRUPO_ATUACAO, :ST_REGISTRO_ATIVO, :DT_INCLUSAO, :CO_PROJETO, :ST_CONFIRMACAO)";
+            $query = "INSERT INTO DBPETINFOSD.TB_GRUPO_ATUACAO (CO_SEQ_GRUPO_ATUACAO, NO_GRUPO_ATUACAO, ST_REGISTRO_ATIVO, DT_INCLUSAO, CO_PROJETO, ST_CONFIRMACAO)
+                      VALUES(DBPETINFOSD.SQ_GRUPOATUACAO_COSEQGRPATUAC.NEXTVAL, :NO_GRUPO_ATUACAO, :ST_REGISTRO_ATIVO, :DT_INCLUSAO, :CO_PROJETO, :ST_CONFIRMACAO)";
             $statement = $this->_em->getConnection()->prepare($query);
             $statement->bindValue('NO_GRUPO_ATUACAO', $nomeGrupo);
             $statement->bindValue('ST_REGISTRO_ATIVO', 'S');
@@ -470,7 +470,7 @@ SQL;
     {
         $query = <<<SQL
                   UPDATE 
-                    DBPET.TB_GRUPO_ATUACAO GA
+                    DBPETINFOSD.TB_GRUPO_ATUACAO GA
                   SET ST_REGISTRO_ATIVO = :ST_REGISTRO_ATIVO
                   WHERE GA.CO_PROJETO = :CO_PROJETO
 SQL;
@@ -486,7 +486,7 @@ SQL;
 
         $query = <<<SQL
                   SELECT COUNT(GA.CO_SEQ_GRUPO_ATUACAO) nrGrupos
-                    FROM DBPET.TB_GRUPO_ATUACAO GA
+                    FROM DBPETINFOSD.TB_GRUPO_ATUACAO GA
                     WHERE GA.CO_PROJETO = ? 
                     AND GA.ST_REGISTRO_ATIVO = ?
 SQL;
@@ -510,8 +510,8 @@ SQL;
 
         $query = <<<SQL
                   SELECT TGA.CO_EIXO_ATUACAO FROM 
-                    DBPET.TB_GRUPO_ATUACAO TGA 
-                    INNER JOIN DBPET.TB_PROJETO_PESSOA tpp ON tpp.CO_PROJETO = TGA.CO_PROJETO AND tpp.ST_REGISTRO_ATIVO = ?
+                    DBPETINFOSD.TB_GRUPO_ATUACAO TGA 
+                    INNER JOIN DBPETINFOSD.TB_PROJETO_PESSOA tpp ON tpp.CO_PROJETO = TGA.CO_PROJETO AND tpp.ST_REGISTRO_ATIVO = ?
                     WHERE TGA.CO_PROJETO = ? 
                     AND tga.CO_EIXO_ATUACAO IS NOT NULL 
                     AND TGA.ST_REGISTRO_ATIVO = ?
@@ -539,9 +539,9 @@ SQL;
 
         $query = <<<SQL
                     SELECT TGA.CO_EIXO_ATUACAO FROM 
-                    DBPET.TB_GRUPO_ATUACAO TGA 
-                    INNER JOIN DBPET.RL_PROJETOPESSOA_GRUPOATUACAO RPG ON RPG.CO_GRUPO_ATUACAO = TGA.CO_SEQ_GRUPO_ATUACAO 
-                    INNER JOIN DBPET.TB_PROJETO_PESSOA TPP ON TPP.CO_SEQ_PROJETO_PESSOA = RPG.CO_PROJETO_PESSOA AND TPP.ST_REGISTRO_ATIVO = ?
+                    DBPETINFOSD.TB_GRUPO_ATUACAO TGA 
+                    INNER JOIN DBPETINFOSD.RL_PROJETOPESSOA_GRUPOATUACAO RPG ON RPG.CO_GRUPO_ATUACAO = TGA.CO_SEQ_GRUPO_ATUACAO 
+                    INNER JOIN DBPETINFOSD.TB_PROJETO_PESSOA TPP ON TPP.CO_SEQ_PROJETO_PESSOA = RPG.CO_PROJETO_PESSOA AND TPP.ST_REGISTRO_ATIVO = ?
                     WHERE TGA.CO_PROJETO = ? 
                     AND tga.CO_EIXO_ATUACAO IS NOT NULL 
                     AND TGA.ST_REGISTRO_ATIVO = ?

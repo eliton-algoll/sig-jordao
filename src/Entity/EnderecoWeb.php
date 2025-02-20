@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * EnderecoWeb
  *
- * @ORM\Table(name="DBPET.TB_ENDERECO_WEB")
+ * @ORM\Table(name="DBPETINFOSD.TB_ENDERECO_WEB")
  * @ORM\Entity(repositoryClass="App\Repository\EnderecoWebRepository")
  */
 class EnderecoWeb extends AbstractEntity
@@ -21,7 +21,7 @@ class EnderecoWeb extends AbstractEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\Column(name="CO_SEQ_ENDERECO_WEB", type="integer", unique=true)
-     * @ORM\SequenceGenerator(sequenceName="DBPET.SQ_ENDERECWEB_COSEQENDERECOWEB", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="DBPETINFOSD.SQ_ENDERECWEB_COSEQENDERECOWEB", allocationSize=1, initialValue=1)
      * 
      */
     private $coSeqEnderecoWeb;
