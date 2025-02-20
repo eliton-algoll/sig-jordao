@@ -76,7 +76,7 @@ class Builder
         if ($this->authorizationChecker->isGranted('ROLE_PREVIOUS_ADMIN')) {
             $menu->addChild('Sair da Representação', ['uri' => '/?_switch_user=_exit']);
         } else {
-            $menu->addChild('Sair', ['route' => 'logout']);
+            $menu->addChild('Sair', ['uri' => '/logout']);
         }
 
         return $menu;

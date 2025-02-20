@@ -69,14 +69,14 @@ class DefaultController extends ControllerAbstract
             $programa = $this->getProjetoAutenticado()->getPublicacao()->getPrograma();
         }
 
-        $saudacao = $this->get('app.texto_saudacao_query')->find();
-
+       // $saudacao = $this->get('app.texto_saudacao_query')->find();
+        $saudacao = ' a ';
         return $this->render(
             'default/index.html.twig',
             array(
                 'pessoaPerfil' => $this->getPessoaPerfilAutenticado(),
                 'programa' => $programa,
-                'saudacao' => $saudacao->getDsTextoSaudacao()
+                'saudacao' => $saudacao //$saudacao->getDsTextoSaudacao()
             )
         );
     }    
