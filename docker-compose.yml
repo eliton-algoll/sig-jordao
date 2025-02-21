@@ -8,7 +8,7 @@ services:
     working_dir: /var/www/html
     volumes:
       - .:/var/www/html
+      - /var/www/html/vendor
+      - /var/www/html/node_modules
     ports:
-      - "9000:9000" # PHP-FPM
       - "8000:8000" # Symfony Server para desenvolvimento
-

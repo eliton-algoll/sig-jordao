@@ -2,8 +2,8 @@
 FROM node:18-alpine AS node-builder
 
 WORKDIR /app
-COPY package.json ./
-RUN npm install
+COPY package.json package-lock.json ./
+RUN npm install --legacy-peer-deps
 
 COPY webpack.config.js ./
 COPY assets/ ./assets/
@@ -16,7 +16,7 @@ FROM blacknoob20/php7.4-fpm-alpine-oci8
 WORKDIR /var/www/html
 
 # Instala dependências do sistema
-RUN apk add --no-cache git unzip curl bash supervisor 
+RUN apk add --no-cache git unzip curl bash supervisor
 
 # Instala o Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -24,13 +24,13 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Copia os arquivos do projeto Symfony
 COPY . /var/www/html
 
-# Corrige permissões
-RUN chmod -R 775 /var/www/html/var /var/www/html/public
-
 # Instala as dependências do Symfony
 RUN composer install --no-interaction --optimize-autoloader --no-scripts
 
-# 🔹 Copia apenas os arquivos construídos no 1º estágio (evita instalar o Node.js no PHP)
+# Corrige permissões
+RUN chmod -R 775 /var/www/html/var /var/www/html/public
+
+# 🔹 Copia apenas os arquivos construídos no 1º estágio
 COPY --from=node-builder /app/public/build /var/www/html/public/build
 
 # Garante que o diretório de logs esteja acessível
