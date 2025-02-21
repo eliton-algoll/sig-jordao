@@ -946,7 +946,6 @@ services:
 
   app.texto_saudacao_query:
     class: App\Query\TextoSaudacaoQuery
-    public: true
     arguments: ["@app.texto_saudacao_repository"]
 
   app.autorizacao_folha_query:

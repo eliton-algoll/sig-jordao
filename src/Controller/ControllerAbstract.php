@@ -7,12 +7,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 abstract class ControllerAbstract extends Controller
 {
+    private CommandBus $commandBus;
+
+    public function __construct(CommandBus $commandBus)
+    {
+        $this->commandBus = $commandBus;
+    }
+
     /**
      * @return CommandBus
      */
     public function getBus()
     {
-        return $this->get('tactician.commandbus');
+        return $this->commandBus; //$this->get('tactician.commandbus');
     }
 
     /**

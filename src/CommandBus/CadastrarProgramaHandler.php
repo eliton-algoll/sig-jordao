@@ -41,10 +41,10 @@ class CadastrarProgramaHandler
             $command->getTpAreaTematica(),
             $command->getTpPrograma()
         );
-        
+
         $publicacao = new Publicacao(
-            $programa, 
-            $command->getNuPublicacao(), 
+            $programa,
+            $command->getNuPublicacao(),
             $command->getDtPublicacao(),
             $command->getDtInicioVigencia(),
             $command->getDtFimVigencia(),
@@ -60,9 +60,9 @@ class CadastrarProgramaHandler
                 $publicacao, TipoQuantitativoPublicacao::QTD_MAXIMA_BOLSISTAS_GRUPO, $command->getQtdMaximaBolsistasGrupo()
             )
         ;
-        
+
         $programa->addPublicacao($publicacao);
-        
+
         $this->programaRepository->add($programa);
     }
     
