@@ -63,7 +63,7 @@ class ProgramaController extends ControllerAbstract
             try {
                 $this->getBus()->handle($command);
                 $this->addFlash('success', 'Programa cadastrado com sucesso');
-                die('aqui');
+
                 return $this->redirectToRoute('programa');
 
             } catch (InvalidCommandException $e) {

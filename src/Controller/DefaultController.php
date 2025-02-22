@@ -96,7 +96,7 @@ class DefaultController extends ControllerAbstract
         }
         
         $pessoasPerfis = $this->getUser()->getPessoaFisica()->getPessoasPerfisAtivos();
-        
+
         # selciona perfil se tiver mais de um perfil ou mais de um projeto
         if ($pessoasPerfis->count() > 1 || $pessoasPerfis->first()->getProjetosPessoasAtivos()->count() > 1) {
             return $this->redirectToRoute('default_selecionar_perfil');
