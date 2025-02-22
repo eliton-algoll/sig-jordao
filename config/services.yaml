@@ -874,6 +874,7 @@ services:
 
   app.folha_pagamento_query:
     class: App\Query\FolhaPagamentoQuery
+    public: true
     arguments:
       [
         "@knp_paginator",

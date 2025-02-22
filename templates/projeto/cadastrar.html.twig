@@ -1,13 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block subtitle %}{{ title ?: 'Cadastrar Projeto' }}{% endblock %}
+{% block subtitle %}{{ title | default('Cadastrar Projeto') }}{% endblock %}
 
 {% block body %}
 
     <div class="row">
         <div class="col-md-12">
             {{ form_start(form, {'method': 'post', 'attr': {'novalidate': 'novalidate'} }) }}
-            {{ form.coSeqProjeto ? form_row(form.coSeqProjeto) }}
+            {% if form.coSeqProjeto is defined %}
+                {{ form_row(form.coSeqProjeto) }}
+            {% endif %}
             <ul class="nav nav-tabs" role="tablist">
                 <li class="active"><a href="#dados-projeto" data-toggle="tab">Projeto</a></li>
                 <li><a href="#dados-secretaria" data-toggle="tab">Secretaria de Saúde Proponente</a></li>
@@ -54,18 +56,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for secretaria in form.vars.data.secretarias if secretaria.pessoaJuridica is defined %}
-                                <tr>
-                                    <input type="hidden" name="cadastrar_projeto[secretarias][]" value="{{ secretaria.pessoaJuridica.nuCnpj }}"/>
-                                    <td>{{ secretaria.pessoaJuridica.pessoa.sgUf }}</td>
-                                    <td>{{ secretaria.pessoaJuridica.pessoa.noMunicipio }}</td>
-                                    <td>{{ secretaria.pessoaJuridica.pessoa.noPessoa }}</td>
-                                    <td>
-                                        <a href="javascript:;" class="btn-excluir-secretaria">
-                                            <span class="glyphicon glyphicon-remove" title="Remover"</span>
-                                        </a>
-                                    </td>
-                                </tr>
+                            {% for secretaria in form.vars.data.secretarias %}
+                                {% if secretaria.pessoaJuridica is defined %}
+                                    <tr>
+                                        <input type="hidden" name="cadastrar_projeto[secretarias][]" value="{{ secretaria.pessoaJuridica.nuCnpj }}"/>
+                                        <td>{{ secretaria.pessoaJuridica.pessoa.sgUf }}</td>
+                                        <td>{{ secretaria.pessoaJuridica.pessoa.noMunicipio }}</td>
+                                        <td>{{ secretaria.pessoaJuridica.pessoa.noPessoa }}</td>
+                                        <td>
+                                            <a href="javascript:;" class="btn-excluir-secretaria">
+                                                <span class="glyphicon glyphicon-remove" title="Remover"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endif %}
                             {% else %}
                                 <tr class="secretaria-placeholder">
                                     <td colspan="4">Nenhuma secretaria de saúde vinculada</td>
@@ -96,24 +100,27 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for campus in form.vars.data.campus if campus.campus is defined %}
-                                <tr data-instituicao="{{ campus.campus.instituicao.coSeqInstituicao }}">
-                                    <input type="hidden" name="cadastrar_projeto[campus][]" value="{{ campus.campus.coSeqCampusInstituicao }}"/>
-                                    <td>{{ campus.campus.noCampus }}</td>
-                                    <td>{{ campus.campus.instituicao.noInstituicaoProjeto }}</td>
-                                    <td>{{ campus.campus.municipio.noMunicipio }}</td>
-                                    <td>{{ campus.campus.municipio.sgUf }}</td>
-                                    <td>                                        
-                                        <a href="javascript:;" class="btn-excluir-campus">
-                                            <span class="glyphicon glyphicon-remove" title="Remover"</span>
-                                        </a>
-                                    </td>
-                                </tr>
+                            {% for campus in form.vars.data.campus %}
+                                {% if campus.campus is defined %}
+                                    <tr data-instituicao="{{ campus.campus.instituicao.coSeqInstituicao }}">
+                                        <input type="hidden" name="cadastrar_projeto[campus][]" value="{{ campus.campus.coSeqCampusInstituicao }}"/>
+                                        <td>{{ campus.campus.noCampus }}</td>
+                                        <td>{{ campus.campus.instituicao.noInstituicaoProjeto }}</td>
+                                        <td>{{ campus.campus.municipio.noMunicipio }}</td>
+                                        <td>{{ campus.campus.municipio.sgUf }}</td>
+                                        <td>
+                                            <a href="javascript:;" class="btn-excluir-campus">
+                                                <span class="glyphicon glyphicon-remove" title="Remover"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endif %}
                             {% else %}
                                 <tr class="campus-placeholder">
                                     <td colspan="5">Nenhum campus/instituição vinculada</td>
                                 </tr>
-                            {% endfor %}                            
+                            {% endfor %}
+                                                    
                         </tbody>
                     </table>
                 </div>                        

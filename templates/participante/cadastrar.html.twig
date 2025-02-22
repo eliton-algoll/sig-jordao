@@ -59,20 +59,22 @@
                             ">
                                 <td colspan="4">Nenhum telefone encontrado</td>
                             </tr>
-                            {% for telefone in telefones.tpTelefone if telefones.tpTelefone is defined %}
-                                <tr>
-                                <input type="hidden" name="cadastrar_participante[telefones][tpTelefone][]" value="{{ telefones.tpTelefone[loop.index0] }}" />
-                                <input type="hidden" name="cadastrar_participante[telefones][nuDdd][]" value="{{ telefones.nuDdd[loop.index0] }}" />
-                                <input type="hidden" name="cadastrar_participante[telefones][nuTelefone][]" value="{{ telefones.nuTelefone[loop.index0] }}" />
-                                    <td>{{ telefones.nuDdd[loop.index0] }}</td>
-                                    <td>{{ telefones.nuTelefone[loop.index0] }}</td>
-                                    <td>{{ telefones.tpTelefone[loop.index0] }}</td>
-                                    <td>
-                                        <a href="javascript:;" class="btn-excluir-telefone">
-                                            <span class="glyphicon glyphicon-remove"></span>
-                                        </a>
-                                    </td>
-                                </tr>
+                            {% for telefone in telefones.tpTelefone %}
+                                {% if telefones.tpTelefone is defined %}
+                                    <tr>
+                                    <input type="hidden" name="cadastrar_participante[telefones][tpTelefone][]" value="{{ telefones.tpTelefone[loop.index0] }}" />
+                                    <input type="hidden" name="cadastrar_participante[telefones][nuDdd][]" value="{{ telefones.nuDdd[loop.index0] }}" />
+                                    <input type="hidden" name="cadastrar_participante[telefones][nuTelefone][]" value="{{ telefones.nuTelefone[loop.index0] }}" />
+                                        <td>{{ telefones.nuDdd[loop.index0] }}</td>
+                                        <td>{{ telefones.nuTelefone[loop.index0] }}</td>
+                                        <td>{{ telefones.tpTelefone[loop.index0] }}</td>
+                                        <td>
+                                            <a href="javascript:;" class="btn-excluir-telefone">
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endif %}
                             {% endfor %}
                         </tbody>
                     </table>
