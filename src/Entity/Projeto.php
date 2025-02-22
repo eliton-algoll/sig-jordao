@@ -661,7 +661,7 @@ class Projeto extends AbstractEntity
         $secretarias = [];
         
         foreach ($this->getSecretariasAtivas() as $secretaria) {
-            $secretarias[] = $secretaria->getPessoaJuridica()->getPessoa()->getNoPessoa();
+            $secretarias[] = is_null($secretaria->getPessoaJuridica()) ? '' : $secretaria->getPessoaJuridica()->getPessoa()->getNoPessoa();
         }
         
         $secretarias = array_unique($secretarias);

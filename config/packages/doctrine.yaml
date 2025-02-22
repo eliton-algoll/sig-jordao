@@ -1,17 +1,15 @@
 doctrine:
   dbal:
-    driver: "oci8"
+    driver: "%env(DATABASE_DRIVER)%"
     server_version: "19c"
     default_table_options:
       charset: AL32UTF8
-    host: "exaccdfdev-scan.saude.gov" # Nome do container do Oracle no Docker
-    port: 1521
-    dbname: "DFDO1.saude.gov" # Nome do PDB correto (verificado pelo `lsnrctl status`)
-    user: "PETINFOSDWEB"
-    password: "K7iPOIsPAi9D9aVU"
-    service: true
-    options:
-      1002: "SET NLS_DATE_FORMAT='YYYY-MM-DD HH24:MI:SS'"
+    host: "%env(DATABASE_HOST)%"
+    port: "%env(DATABASE_PORT)%"
+    dbname: "%env(DATABASE_SERVICE_NAME)%"
+    user: "%env(DATABASE_USER)%"
+    password: "%env(DATABASE_PASSWORD)%"
+    service: "%env(bool:DATABASE_SERVICE_USE)%"
 
   orm:
     auto_generate_proxy_classes: "%kernel.debug%"

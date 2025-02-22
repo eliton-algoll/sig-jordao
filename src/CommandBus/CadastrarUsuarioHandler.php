@@ -8,11 +8,13 @@ use Symfony\Bundle\TwigBundle\TwigEngine;
 use App\Repository\UsuarioRepository;
 use App\Repository\PessoaFisicaRepository;
 use App\Entity\Usuario;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 class CadastrarUsuarioHandler
 {
     /**
-     * @var \Swift_Mailer
+     * @var MailerInterface
      */
     private $mailer;
     
@@ -37,13 +39,13 @@ class CadastrarUsuarioHandler
     private $pessoaFisicaRepository;
     
     /**
-     * @param \Swift_Mailer $mailer
+     * @param MailerInterface $mailer
      * @param EncoderFactoryInterface $encoderFactory
      * @param UsuarioRepository $usuarioRepository
      * @param PessoaFisicaRepository $pessoaFisicaRepository
      */
     public function __construct(
-        \Swift_Mailer $mailer,
+        MailerInterface $mailer,
         TwigEngine $templateEngine,
         EncoderFactoryInterface $encoderFactory, 
         UsuarioRepository $usuarioRepository,
@@ -92,22 +94,17 @@ class CadastrarUsuarioHandler
      */
     public function sendEmailConfirmacao(Usuario $usuario, $rawPassword, $emailUsuarioNovo = false, ProjetoPessoa $projetoPessoa = null)
     {
-        $message = new \Swift_Message();
-        $message->setFrom('info.sgtes@saude.gov.br');
-        $message->setSubject('SIGPET - Confirmação de cadastro');
-        $message->setBody($this->templateEngine->render('/participante/email_confirmacao_cadastro_usuario.html.twig', array(
-            'dsLogin' => $usuario->getDsLogin(),
-            'dsSenha' => $rawPassword,
-            'emailUsuarioNovo' => $emailUsuarioNovo,
-            'programa' => ($projetoPessoa) ? $projetoPessoa->getProjeto()->getPublicacao()->getPrograma() : null,
-        )), 'text/html');
+        $email = (new Email())
+            ->from('info.sgtes@saude.gov.br')
+            ->to($usuario->getPessoaFisica()->getPessoa()->getEnderecosWebAtivos()[0]->getDsEnderecoWeb()) // Ajuste conforme necessário
+            ->subject('SIGPET - Confirmação de cadastro')
+            ->html($this->templateEngine->render('/participante/email_confirmacao_cadastro_usuario.html.twig', [
+                'dsLogin' => $usuario->getDsLogin(),
+                'dsSenha' => $rawPassword,
+                'emailUsuarioNovo' => $emailUsuarioNovo,
+                'programa' => ($projetoPessoa) ? $projetoPessoa->getProjeto()->getPublicacao()->getPrograma() : null,
+            ]));
 
-        $emails = $usuario->getPessoaFisica()->getPessoa()->getEnderecosWebAtivos();
-
-        foreach ($emails as $email) {
-            $message->addTo($email->getDsEnderecoWeb());
-        }
-
-        $this->mailer->send($message);
+        $this->mailer->send($email);
     }
 }

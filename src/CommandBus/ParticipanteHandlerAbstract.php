@@ -363,14 +363,16 @@ class ParticipanteHandlerAbstract
      */
     protected function addCursoLecionados(ProjetoPessoa $projetoPessoa, CadastrarParticipanteCommand $command)
     {
-        if (count($command->getCursosLecionados())) {
-            foreach ($command->getCursosLecionados() as $coCursoGraduacao) {
-                $cursoGraduacaoLecionado = $this->cursoGraduacaoRepository->find($coCursoGraduacao);
-                $projetoPessoa->addCursoGraduacao($cursoGraduacaoLecionado);
+        if ( !is_null($command->getCursosLecionados()) ) {
+            if( count($command->getCursosLecionados()) ) {
+                foreach ($command->getCursosLecionados() as $coCursoGraduacao) {
+                    $cursoGraduacaoLecionado = $this->cursoGraduacaoRepository->find($coCursoGraduacao);
+                    $projetoPessoa->addCursoGraduacao($cursoGraduacaoLecionado);
+                }
             }
         }
     }
-    
+
     /**
      * @param PessoaFisica $pessoaFisica
      * @param Cep $cep
@@ -409,7 +411,7 @@ class ParticipanteHandlerAbstract
      */
     protected function addGrupoAtuacao(ProjetoPessoa $projetoPessoa, Projeto $projeto, Perfil $perfil, CadastrarParticipanteCommand $command)
     {
-        if (count($command->getAreaTematica()) && $projeto->getPublicacao()->getPrograma()->isAreaAtuacao()) {
+        if (count($command->getAreaTematica() ?? [])  && $projeto->getPublicacao()->getPrograma()->isAreaAtuacao()) {
             foreach($command->getAreaTematica() as $coGrupoAtuacao) {
                 $this->constraintCoordenadorDeGrupo($projeto, $coGrupoAtuacao, $perfil, $command->getStVoluntarioProjeto(), $projetoPessoa);
                 $grupoAtuacao = $this->grupoAtuacaoRepository->find($coGrupoAtuacao);

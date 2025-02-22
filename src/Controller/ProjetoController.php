@@ -50,6 +50,9 @@ class ProjetoController extends ControllerAbstract
                 new ParameterBag($queryParams)
             );
 
+//        echo '<pre>';
+//        var_dump($pagination); die;
+
         $form = $this->createForm(PesquisarProjetoType::class);
 
         return $this->render(

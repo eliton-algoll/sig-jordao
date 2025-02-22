@@ -141,10 +141,10 @@ class Builder
 
     private function menuCoordenadorProjeto(ItemInterface $menu)
     {
-        if ($projeto = $this->getProjetoAutenticado()) {
-            if ($projeto->getPublicacao()->getPrograma()->isAreaAtuacao()) {
-                $menu->addChild('Grupos de atuação', ['route' => 'grupo_atuacao_index']);
-            }
+        $projeto = $this->getProjetoAutenticado();
+
+        if ($projeto && $projeto->getPublicacao()->getPrograma()->isAreaAtuacao()) {
+            $menu->addChild('Grupos de atuação', array('route' => 'grupo_atuacao_index'));
         }
 
         $menu->addChild('Participantes', array('route' => 'participante'));
