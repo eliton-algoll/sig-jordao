@@ -3,7 +3,7 @@ FROM node:18-alpine AS node-builder
 
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm install --legacy-peer-deps
+RUN npm install
 
 COPY webpack.config.js ./
 COPY assets/ ./assets/
