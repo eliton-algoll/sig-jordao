@@ -84,17 +84,59 @@ class Builder
 
     private function menuAdministrador(ItemInterface $menu)
     {
-        $menu->addChild('Programas', ['route' => 'programa']);
-        $menu->addChild('Projetos', ['route' => 'projeto']);
-        $menu->addChild('Participantes', ['route' => 'participante']);
-        $menu->addChild('Folha de pagamento', ['route' => 'folha_pagamento']);
+        $menu->addChild('Programas', array('route' => 'programa'));
+        $menu->addChild('Projetos', array('route' => 'projeto'));
+        $menu->addChild('Participantes', array('route' => 'participante'));
+        $menu->addChild('Folha de pagamento', array('route' => 'folha_pagamento'));   
+        
+        $relatorios = $menu->addChild('Relatórios')
+        ->setAttribute('dropdown', true)
+        ->setAttribute('class', 'dropdown')
+        ->setChildrenAttribute('class', 'dropdown-menu');
+        
+        // $menu->addChild('Relatorios')->setAttribute('dropdown', true);
+        $relatorios->addChild('Bolsas', ['route' => 'relatorio_pagamento']);
+        $relatorios->addChild('Bolsas não autorizadas', ['route' => 'relatorio_pagamento_nao_autorizado']);
+        $relatorios->addChild('Folha de Pagamento', ['route' => 'relatorio_folha_pagamento']);
+        $relatorios->addChild('Gerencial de Participantes', array('route' => 'relatorio_gerencial_participante'));
+        $relatorios->addChild('Participantes', ['route' => 'relatorio_participante']);
+        $relatorios->addChild('Projetos', ['route' => 'relatorio_projeto']);
+        
+        $avaliacaoAtividade = $menu->addChild('Avaliação de Atividades')
+            ->setAttribute('dropdown', true)
+            ->setAttribute('class', 'nav-item dropdown') 
+            ->setLinkAttribute('class', 'nav-link dropdown-toggle') 
+            ->setLinkAttribute('data-toggle', 'dropdown') 
+            ->setLinkAttribute('aria-haspopup', 'true')
+            ->setLinkAttribute('aria-expanded', 'false')
+            ->setChildrenAttribute('class', 'dropdown-menu');
+            
+        $avaliacaoAtividade->addChild('Gerenciar Formulário de Atividades', array('route' => 'gerenciar_formulario_atividade'));
+        $avaliacaoAtividade->addChild('Tramitar Formulário de Atividades', array('route' => 'tramita_formulario_atividade'));
+        
+        $gerenciarSistema = $menu->addChild('Gerenciar Sistema')
+        ->setAttribute('dropdown', true)
+        ->setAttribute('class', 'dropdown')
+        ->setChildrenAttribute('class', 'dropdown-menu');
 
-        $menu->addChild('Relatórios')->setAttribute('dropdown', true);
-        $menu['Relatórios']->addChild('Bolsas', ['route' => 'relatorio_pagamento']);
-        $menu['Relatórios']->addChild('Bolsas não autorizadas', ['route' => 'relatorio_pagamento_nao_autorizado']);
+        $gerenciarSistema->addChild('Abrir Cadastro Participante', array('route' => 'abertura_cadastro_participante'));
+        $gerenciarSistema->addChild('Manter Valor de Bolsa', array('route' => 'valor_bolsa_index'));
+        $gerenciarSistema->addChild('Planejar Abertura de Folha', array('route' => 'planejamento_abertura_folha'));
+        $gerenciarSistema->addChild('Manter Modelo de Certificado', array('route' => 'modelo_certificado', 'routeParameters' => ['filter' => 'clear']));
+        $gerenciarSistema->addChild('Manter Banco', ['route' => 'banco_index']);
+        $gerenciarSistema->addChild('Manter Administrador', ['route' => 'administrador']);
+        $gerenciarSistema->addChild('Manter Instituição', ['route' => 'instituicao']);
+        $gerenciarSistema->addChild('Manter Campus', ['route' => 'campus']);
+        $gerenciarSistema->addChild('Manter Cursos de Formação', ['route' => 'curso_formacao']);
+        $gerenciarSistema->addChild('Manter Texto Saudação', ['route' => 'saudacao']);
 
-        $menu->addChild('Gerenciar Sistema')->setAttribute('dropdown', true);
-        $menu['Gerenciar Sistema']->addChild('Abrir Cadastro Participante', ['route' => 'abertura_cadastro_participante']);
+        $folhaPagamento = $menu->addChild('Folha de Pagamento/Arquivos Bancários')
+        ->setAttribute('dropdown', true)
+        ->setAttribute('class', 'dropdown')
+        ->setChildrenAttribute('class', 'dropdown-menu');
+
+        $folhaPagamento->addChild('Retorno de Cadastro', array('route' => 'arquivo_retorno_cadastro'));
+        $folhaPagamento->addChild('Retorno de Pagamento', array('route' => 'arquivo_retorno_pagamento'));      
     }
 
     private function menuCoordenadorProjeto(ItemInterface $menu)
@@ -105,32 +147,67 @@ class Builder
             }
         }
 
-        $menu->addChild('Participantes', ['route' => 'participante']);
-        $menu->addChild('Autorização de pagamento', ['route' => 'autorizacao_pagamento']);
+        $menu->addChild('Participantes', array('route' => 'participante'));
+        $menu->addChild('Estabelecimentos', array('route' => 'estabelecimento_index'));
+        $menu->addChild('Autorização de pagamento', array('route' => 'autorizacao_pagamento'));
+        $menu->addChild('Certificado/Declaração', array('route' => 'certificado'));
+        
+        $relatorios = $menu->addChild('Relatorios')
+            ->setAttribute('dropdown', true)
+            ->setAttribute('class', 'dropdown')
+            ->setChildrenAttribute('class', 'dropdown-menu');
+            
+        $relatorios->addChild('Gerencial de Participantes', array('route' => 'relatorio_gerencial_participante'));
+        
+        $gerenciarSistema = $menu->addChild('Gerenciar Sistema')
+            ->setAttribute('dropdown', true)
+            ->setAttribute('class', 'dropdown')
+            ->setChildrenAttribute('class', 'dropdown-menu');
+
+        $gerenciarSistema->addChild('Planejar Abertura de Folha', array('route' => 'planejamento_abertura_folha'));
+        
+        $avaliacao = $menu->addChild('Avaliação de Atividades')
+            ->setAttribute('dropdown', true)
+            ->setAttribute('class', 'dropdown')
+            ->setChildrenAttribute('class', 'dropdown-menu');
+
+        $avaliacao->addChild('Tramitar Formulário de Atividades', array('route' => 'tramita_formulario_atividade_index_retorno'));
     }
 
     private function menuCoordenadorGrupo(ItemInterface $menu)
     {
-        $menu->addChild('Avaliação de Atividades')->setAttribute('dropdown', true);
-        $menu['Avaliação de Atividades']->addChild('Tramitar Formulário de Atividades', ['route' => 'tramita_formulario_atividade_index_retorno']);
+        $avaliacao = $menu->addChild('Avaliação de Atividades')
+            ->setAttribute('dropdown', true)
+            ->setAttribute('class', 'dropdown')
+            ->setChildrenAttribute('class', 'dropdown-menu');
+        $avaliacao->addChild('Tramitar Formulário de Atividades', ['route' => 'tramita_formulario_atividade_index_retorno']);
     }
 
     private function menuPreceptor(ItemInterface $menu)
     {
-        $menu->addChild('Avaliação de Atividades')->setAttribute('dropdown', true);
-        $menu['Avaliação de Atividades']->addChild('Tramitar Formulário de Atividades', ['route' => 'tramita_formulario_atividade_index_retorno']);
+        $avaliacao = $menu->addChild('Avaliação de Atividades')
+            ->setAttribute('dropdown', true)
+            ->setAttribute('class', 'dropdown')
+            ->setChildrenAttribute('class', 'dropdown-menu');
+            $avaliacao->addChild('Tramitar Formulário de Atividades', ['route' => 'tramita_formulario_atividade_index_retorno']);
     }
 
     private function menuTutor(ItemInterface $menu)
     {
-        $menu->addChild('Avaliação de Atividades')->setAttribute('dropdown', true);
-        $menu['Avaliação de Atividades']->addChild('Tramitar Formulário de Atividades', ['route' => 'tramita_formulario_atividade_index_retorno']);
+        $avaliacao = $menu->addChild('Avaliação de Atividades')
+            ->setAttribute('dropdown', true)
+            ->setAttribute('class', 'dropdown')
+            ->setChildrenAttribute('class', 'dropdown-menu');
+        $avaliacao->addChild('Tramitar Formulário de Atividades', ['route' => 'tramita_formulario_atividade_index_retorno']);
     }
 
     private function menuEstudante(ItemInterface $menu)
     {
-        $menu->addChild('Avaliação de Atividades')->setAttribute('dropdown', true);
-        $menu['Avaliação de Atividades']->addChild('Tramitar Formulário de Atividades', ['route' => 'tramita_formulario_atividade_index_retorno']);
+        $avaliacao = $menu->addChild('Avaliação de Atividades')
+            ->setAttribute('dropdown', true)
+            ->setAttribute('class', 'dropdown')
+            ->setChildrenAttribute('class', 'dropdown-menu');
+        $avaliacao->addChild('Tramitar Formulário de Atividades', ['route' => 'tramita_formulario_atividade_index_retorno']);
     }
 
     protected function getUser(): ?UserInterface

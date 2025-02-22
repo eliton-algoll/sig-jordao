@@ -8,14 +8,12 @@
     {%- set divider_prepend = attributes.divider_prepend|default(false) %}
     {%- set divider_append = attributes.divider_append|default(false) %}
 
-{# unset bootstrap specific attributes #}
     {%- set attributes = attributes|merge({'dropdown': null, 'divider_prepend': null, 'divider_append': null }) %}
 
     {%- if divider_prepend %}
         {{ block('dividerElement') }}
     {%- endif %}
 
-{# building the class of the item #}
     {%- set classes = item.attribute('class') is not empty ? [item.attribute('class')] : [] %}
     {%- if matcher.isCurrent(item) %}
         {%- set classes = classes|merge([options.currentClass]) %}
@@ -29,24 +27,20 @@
         {%- set classes = classes|merge([options.lastClass]) %}
     {%- endif %}
 
-{# building the class of the children #}
     {%- set childrenClasses = item.childrenAttribute('class') is not empty ? [item.childrenAttribute('class')] : [] %}
     {%- set childrenClasses = childrenClasses|merge(['menu_level_' ~ item.level]) %}
 
-{# adding classes for dropdown #}
     {%- if is_dropdown %}
         {%- set classes = classes|merge(['dropdown']) %}
         {%- set childrenClasses = childrenClasses|merge(['dropdown-menu']) %}
     {%- endif %}
 
-{# putting classes together #}
     {%- if classes is not empty %}
         {%- set attributes = attributes|merge({'class': classes|join(' ')}) %}
     {%- endif %}
     {%- set listAttributes = item.childrenAttributes|merge({'class': childrenClasses|join(' ') }) %}
 
-{# displaying the item #}
-    <li{{ macros.attributes(attributes) }}>
+    <li {{ macros.attributes(attributes) }}>
         {%- if is_dropdown %}
             {{ block('dropdownElement') }}
         {%- elseif item.uri is not empty and (not item.current or options.currentAsLink) %}
@@ -54,7 +48,7 @@
         {%- else %}
             {{ block('spanElement') }}
         {%- endif %}
-{# render the list of children#}
+
         {{ block('list') }}
     </li>
 
@@ -65,44 +59,42 @@
 {% endblock %}
 
 {% block dividerElement %}
-{% if item.level == 1 %}
-    <li class="divider-vertical"></li>
-{% else %}
     <li class="divider"></li>
-{% endif %}
 {% endblock %}
 
 {% block linkElement %}
-	<a href="{{ item.uri }}"{{ macros.attributes(item.linkAttributes) }}>
-		{% if item.attribute('icon') is not empty  %}
-    		<i class="{{ item.attribute('icon') }}"></i> 
-    	{% endif %}
-		{{ block('label') }}
-	</a>
-{% endblock %}
-
-{% block spanElement %}
-	<span>{{ macros.attributes(item.labelAttributes) }}>
-		{% if item.attribute('icon') is not empty  %}
-    		<i class="{{ item.attribute('icon') }}"></i> 
-    	{% endif %}
-		{{ block('label') }}
-	</span>
-{% endblock %}
-
-{% block dropdownElement %}
-    {%- set classes = item.linkAttribute('class') is not empty ? [item.linkAttribute('class')] : [] %}
-    {%- set classes = classes|merge(['dropdown-toggle']) %}
-    {%- set attributes = item.linkAttributes %}
-    {%- set attributes = attributes|merge({'class': classes|join(' ')}) %}
-    {%- set attributes = attributes|merge({'data-toggle': 'dropdown'}) %}
-    <a href="#"{{ macros.attributes(attributes) }}>
-    	{% if item.attribute('icon') is not empty  %}
-    		<i class="{{ item.attribute('icon') }}"></i> 
-    	{% endif %}
-    	{{ block('label') }} 
-    	<b class="caret"></b>
+    <a href="{{ item.uri }}" {{ macros.attributes(item.linkAttributes) }}>
+        {% if item.attribute('icon') is not empty %}
+            <i class="{{ item.attribute('icon') }}"></i>
+        {% endif %}
+        {{ block('label') }}
     </a>
 {% endblock %}
 
-{% block label %}{{ item.label|trans }}{% endblock %}
+{% block spanElement %}
+    <span {{ macros.attributes(item.labelAttributes) }}>
+        {% if item.attribute('icon') is not empty %}
+            <i class="{{ item.attribute('icon') }}"></i>
+        {% endif %}
+        {{ block('label') }}
+    </span>
+{% endblock %}
+
+{% block dropdownElement %}
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        {% if item.attribute('icon') is not empty %}
+            <i class="{{ item.attribute('icon') }}"></i>
+        {% endif %}
+        {{ block('label') }}
+        <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+        {% for child in item.children %}
+            <li><a href="{{ child.uri }}">{{ child.label }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block label %}
+    {{ item.label|trans }}
+{% endblock %}
