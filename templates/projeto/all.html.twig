@@ -34,19 +34,19 @@
                 </thead>
                 <tbody>
                     {% for projeto in pagination %}
-                        <tr>
-                            <td>{{ projeto.coSeqProjeto }}</td>
-                            <td>{{ projeto.nuSipar }}</td>
-                            <td>{{ projeto.publicacao.descricaoCompleta }}</td>
-                            <td>{{ projeto.descricaoInstituicaoEnsino }}</td>
-                            <td>{{ projeto.descricaoSecretariaSaude }}</td>
-                            <td>
-                                <a href="{{ path('projeto_atualizar', {projeto: projeto.coSeqProjeto}) }}"><span class="glyphicon glyphicon-pencil"></span></a>
-                                {% if projeto.noDocumentoProjeto %}
-                                    <a href="{{ asset('uploads/' ~ projeto.noDocumentoProjeto) }}" download="" title="Download do arquivo anexado"><span class="glyphicon glyphicon-download-alt"></span></a>
-                                {% endif %}
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>{{ projeto.coSeqProjeto }}</td>
+                                <td>{{ projeto.nuSipar }}</td>
+                                <td>{{ projeto.publicacao.descricaoCompleta }}</td>
+                                <td>{{ projeto.descricaoInstituicaoEnsino }}</td>
+                                <td>{{ projeto.descricaoSecretariaSaude }}</td>
+                                <td>
+                                    <a href="{{ path('projeto_atualizar', {projeto: projeto.coSeqProjeto}) }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    {% if projeto.noDocumentoProjeto %}
+                                        <a href="{{ asset('uploads/' ~ projeto.noDocumentoProjeto) }}" download="" title="Download do arquivo anexado"><span class="glyphicon glyphicon-download-alt"></span></a>
+                                    {% endif %}
+                                </td>
+                            </tr>
                     {% else %}
                         <tr>
                             <td colspan="6">Nenhum projeto cadastrado.</td>

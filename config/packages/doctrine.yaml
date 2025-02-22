@@ -10,8 +10,6 @@ doctrine:
     user: "PETINFOSDWEB"
     password: "K7iPOIsPAi9D9aVU"
     service: true
-    options:
-      1002: "SET NLS_DATE_FORMAT='YYYY-MM-DD HH24:MI:SS'"
 
   orm:
     auto_generate_proxy_classes: "%kernel.debug%"

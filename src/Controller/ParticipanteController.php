@@ -135,6 +135,8 @@ class ParticipanteController extends ControllerAbstract
             } catch (InvalidCommandException $e) {
                 $erros = array();
 
+                dd($e);
+
                 if (method_exists($e, 'getViolations')) {
                     foreach ($e->getViolations() as $violation) {
                         $message = $violation->getMessage();
@@ -160,6 +162,7 @@ class ParticipanteController extends ControllerAbstract
             } catch (\DomainException $e) {
                 $this->addFlash('danger', $e->getMessage());
             } catch (\Exception $e) {
+                dd($e);
                 $this->addFlash('danger', $e->getMessage());
                 $this->addFlashValidationError();
             }
