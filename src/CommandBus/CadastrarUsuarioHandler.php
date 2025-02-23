@@ -2,14 +2,14 @@
 
 namespace App\CommandBus;
 
+use Twig\Environment;
+use App\Entity\Usuario;
 use App\Entity\ProjetoPessoa;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Bundle\TwigBundle\TwigEngine;
+use Symfony\Component\Mime\Email;
 use App\Repository\UsuarioRepository;
 use App\Repository\PessoaFisicaRepository;
-use App\Entity\Usuario;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class CadastrarUsuarioHandler
 {
@@ -19,7 +19,7 @@ class CadastrarUsuarioHandler
     private $mailer;
     
     /**
-     * @var TwigEngine
+     * @var Environment
      */
     private $templateEngine;
     
@@ -46,7 +46,7 @@ class CadastrarUsuarioHandler
      */
     public function __construct(
         MailerInterface $mailer,
-        TwigEngine $templateEngine,
+        Environment $templateEngine,
         EncoderFactoryInterface $encoderFactory, 
         UsuarioRepository $usuarioRepository,
         PessoaFisicaRepository $pessoaFisicaRepository

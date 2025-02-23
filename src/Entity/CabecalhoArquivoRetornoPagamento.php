@@ -8,7 +8,7 @@ use App\Cpb\RetornoPagamento\Header;
 /**
  * @ORM\Entity
  * @ORM\Table(name="DBPETINFOSD.TB_CABECALHO_ARQUIVO_RETORNO")
- * @ORM\Entity(repositoryClass="\App\Repository\CabecalhoArquivoRetornoPagamentoRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CabecalhoArquivoRetornoPagamentoRepository")
  */
 class CabecalhoArquivoRetornoPagamento
 {

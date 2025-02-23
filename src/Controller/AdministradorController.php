@@ -48,9 +48,8 @@ final class AdministradorController extends ControllerAbstract
         $pagination = null;
 
         if (($request->isMethod('GET'))) {
-            if( $form->isValid() ) {
-                $request->query->add((array)$form->getData());
-            }
+            $request->query->add((array)$form->getData());
+            
             $pagination = $this->get('app.administrador_query')->search($request->query);
         }
 

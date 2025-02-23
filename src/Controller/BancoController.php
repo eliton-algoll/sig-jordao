@@ -39,7 +39,7 @@ final class BancoController extends ControllerAbstract
         $form->handleRequest($request);
         $pagination = null;
 
-        if (($request->isMethod('GET') && $form->isValid())) {
+        if (($request->isMethod('GET'))) {
             $request->query->add((array)$form->getData());
             $pagination = $this->get('app.banco_query')->search($request->query);
 

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="DBPETINFOSD.TB_AUTORIZA_CADASTRO_PARTICIP")
- * @ORM\Entity(repositoryClass="\App\Repository\AutorizaCadastroParticipanteRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\AutorizaCadastroParticipanteRepository")
  */
 class AutorizaCadastroParticipante extends AbstractEntity
 {

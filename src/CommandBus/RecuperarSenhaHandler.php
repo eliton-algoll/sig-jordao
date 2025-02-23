@@ -5,18 +5,20 @@ namespace App\CommandBus;
 use App\CommandBus\RecuperarSenhaCommand;
 use App\Entity\Usuario;
 use App\Repository\UsuarioRepository;
-use Symfony\Bundle\TwigBundle\TwigEngine;
+use Twig\Environment;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 class RecuperarSenhaHandler
 {
     /**
-     * @var \Swift_Mailer
+     * @var MailerInterface
      */
     private $mailer;
     
     /**
-     * @var TwigEngine
+     * @var Environment
      */
     private $templateEngine;
     
@@ -34,13 +36,13 @@ class RecuperarSenhaHandler
     
     /**
      * 
-     * @param \Swift_Mailer $mailer
+     * @param MailerInterface $mailer
      * @param UsuarioRepository $usuarioRepository
      * @param EncoderFactoryInterface $encoderFactory
      */
     public function __construct(
-        \Swift_Mailer $mailer, 
-        TwigEngine $templateEngine,
+        MailerInterface $mailer, 
+        Environment $templateEngine,
         EncoderFactoryInterface $encoderFactory,
         UsuarioRepository $usuarioRepository         
     ) {
@@ -77,26 +79,19 @@ class RecuperarSenhaHandler
         $this->sendEmail($usuario, $command->getEmail(), $senha);        
     }
     
-    /**
-     * 
-     * @param Usuario $usuario
-     * @param string $email
-     * @param string $plainPassword
-     */
-    public function sendEmail(Usuario $usuario, $email, $plainPassword)
+    private function sendEmail(Usuario $usuario, string $email, string $plainPassword)
     {
-        $message = new \Swift_Message();
-        $message->setFrom('info.sgtes@saude.gov.br');
-        $message->setSubject('SIGPET - Recuperação de Senha');
-        $message->addTo($email);
-        $message->setBody(
-            $this->templateEngine->render(
-                '/default/email_recuperacao_senha.html.twig',
-                array('dsLogin' => $usuario->getDsLogin(), 'dsSenha' => $plainPassword)
-            ), 
-            'text/html'
-        );        
-        
-        $this->mailer->send($message);
+        $htmlBody = $this->templateEngine->render('/default/email_recuperacao_senha.html.twig', [
+            'dsLogin' => $usuario->getDsLogin(),
+            'dsSenha' => $plainPassword,
+        ]);
+
+        $emailMessage = (new Email())
+            ->from('info.sgtes@saude.gov.br')
+            ->to($email)
+            ->subject('SIGPET - Recuperação de Senha')
+            ->html($htmlBody);
+
+        $this->mailer->send($emailMessage);
     }
 }

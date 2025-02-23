@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use PDO;
 use Doctrine\ORM\Query;
 use App\Entity\RetornoCriacaoConta;
 use App\Repository\RepositoryAbstract;

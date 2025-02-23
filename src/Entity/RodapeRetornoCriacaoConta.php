@@ -8,7 +8,7 @@ use App\Cpb\RetornoCadastro\Trailer;
 /**
  * @ORM\Entity
  * @ORM\Table(name="DBPETINFOSD.TB_RODAPE_RET_CRIA_CONTA")
- * @ORM\Entity(repositoryClass="\App\Repository\RodapeRetornoCriacaoContaRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\RodapeRetornoCriacaoContaRepository")
  */
 class RodapeRetornoCriacaoConta
 {

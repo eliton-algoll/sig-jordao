@@ -9,7 +9,7 @@ use App\Cpb\DicionarioCpb;
 /**
  * @ORM\Entity
  * @ORM\Table(name="DBPETINFOSD.TB_DETALHE_ARQUIVO_RETORNO")
- * @ORM\Entity(repositoryClass="\App\Repository\DetalheArquivoRetornoPagamentoRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\DetalheArquivoRetornoPagamentoRepository")
  */
 class DetalheArquivoRetornoPagamento
 {

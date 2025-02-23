@@ -987,6 +987,7 @@ services:
 
   app.valor_bolsa_query:
     class: App\Query\ValorBolsaQuery
+    public: true
     arguments: ["@knp_paginator", "@app.valor_bolsa_programa_repository"]
 
   app.banco_query:

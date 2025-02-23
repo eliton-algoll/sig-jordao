@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="DBPETINFOSD.TB_RETORNO_CRIACAO_CONTA")
- * @ORM\Entity(repositoryClass="\App\Repository\RetornoCriacaoContaRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\RetornoCriacaoContaRepository")
  */
 class RetornoCriacaoConta
 {

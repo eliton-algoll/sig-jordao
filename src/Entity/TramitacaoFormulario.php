@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="DBPETINFOSD.TB_TRAMITACAO_FORMULARIO")
- * @ORM\Entity(repositoryClass="\App\Repository\TramitacaoFormularioRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\TramitacaoFormularioRepository")
  */
 class TramitacaoFormulario extends AbstractEntity
 {

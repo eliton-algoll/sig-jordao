@@ -36,7 +36,7 @@ final class ValorBolsaController extends ControllerAbstract
         $form = $this->createForm(ConsultarValorBolsaType::class);
         $form->handleRequest($request);        
         
-        if (($request->isMethod('GET') && $form->isValid())) {
+        if (($request->isMethod('GET') )) {
             $request->query->add((array) $form->getData());
             $pagination = $this->get('app.valor_bolsa_query')->search($request->query);
             

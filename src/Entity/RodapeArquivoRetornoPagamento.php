@@ -8,7 +8,7 @@ use App\Cpb\RetornoPagamento\Trailer;
 /**
  * @ORM\Entity
  * @ORM\Table(name="DBPETINFOSD.TB_RODAPE_ARQUIVO_RETORNO")
- * @ORM\Entity(repositoryClass="\App\Repository\RodapeArquivoRetornoPagamentoRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\RodapeArquivoRetornoPagamentoRepository")
  */
 class RodapeArquivoRetornoPagamento
 {

@@ -8,7 +8,7 @@ use App\Cpb\RetornoCadastro\Header;
 /**
  * @ORM\Entity
  * @ORM\Table(name="DBPETINFOSD.TB_CABECALHO_RET_CRIA_CONTA")
- * @ORM\Entity(repositoryClass="\App\Repository\CabecalhoRetornoCriacaoContaRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CabecalhoRetornoCriacaoContaRepository")
  */
 class CabecalhoRetornoCriacaoConta
 {

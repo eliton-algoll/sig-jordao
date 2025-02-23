@@ -8,7 +8,7 @@ use App\Cpb\RetornoCadastro\Detalhe;
 /**
  * @ORM\Entity
  * @ORM\Table(name="DBPETINFOSD.TB_DETALHE_RET_CRIA_CONTA")
- * @ORM\Entity(repositoryClass="\App\Repository\DetalheRetornoCriacaoContaRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\DetalheRetornoCriacaoContaRepository")
  */
 class DetalheRetornoCriacaoConta
 {

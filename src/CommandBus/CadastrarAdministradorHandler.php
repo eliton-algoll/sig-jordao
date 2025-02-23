@@ -5,20 +5,22 @@ namespace App\CommandBus;
 use App\Entity\EnderecoWeb;
 use App\Repository\PerfilRepository;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Bundle\TwigBundle\TwigEngine;
 use App\Repository\UsuarioRepository;
 use App\Repository\PessoaFisicaRepository;
 use App\Entity\Usuario;
+use Symfony\Component\Mailer\MailerInterface;
+use Twig\Environment;
+use Symfony\Component\Mime\Email;
 
 class CadastrarAdministradorHandler
 {
     /**
-     * @var \Swift_Mailer
+     * @var MailerInterface
      */
     private $mailer;
     
     /**
-     * @var TwigEngine
+     * @var Environment
      */
     private $templateEngine;
     
@@ -43,14 +45,14 @@ class CadastrarAdministradorHandler
     private $perfilRepository;
     
     /**
-     * @param \Swift_Mailer $mailer
+     * @param MailerInterface $mailer
      * @param EncoderFactoryInterface $encoderFactory
      * @param UsuarioRepository $usuarioRepository
      * @param PessoaFisicaRepository $pessoaFisicaRepository
      */
     public function __construct(
-        \Swift_Mailer $mailer,
-        TwigEngine $templateEngine,
+        MailerInterface $mailer,
+        Environment $templateEngine,
         EncoderFactoryInterface $encoderFactory, 
         UsuarioRepository $usuarioRepository,
         PessoaFisicaRepository $pessoaFisicaRepository,
@@ -114,28 +116,28 @@ class CadastrarAdministradorHandler
         }
     }
 
-    /**
-     * @param Usuario $usuario
-     * @param $rawPassword
-     * @param bool $emailUsuarioNovo
-     * @throws \Twig_Error
-     */
-    public function sendEmailConfirmacao(Usuario $usuario, $rawPassword)
+    public function sendEmailConfirmacao(Usuario $usuario, string $rawPassword)
     {
-        $message = new \Swift_Message();
-        $message->setFrom('info.sgtes@saude.gov.br');
-        $message->setSubject('SIGPET - Confirmação de cadastro');
-        $message->setBody($this->templateEngine->render('/participante/email_confirmacao_cadastro_adm.html.twig', array(
-            'dsLogin' => $usuario->getDsLogin(),
-            'dsSenha' => $rawPassword,
-        )), 'text/html');
-
-        $emails = $usuario->getPessoaFisica()->getPessoa()->getEnderecosWebAtivos();
-
-        foreach ($emails as $email) {
-            $message->addTo($email->getDsEnderecoWeb());
+        $emails = [];
+        foreach ($usuario->getPessoaFisica()->getPessoa()->getEnderecosWebAtivos() as $email) {
+            $emails[] = $email->getDsEnderecoWeb();
         }
 
-        $this->mailer->send($message);
+        if (empty($emails)) {
+            throw new \RuntimeException('Nenhum e-mail válido encontrado para envio.');
+        }
+
+        $htmlBody = $this->templateEngine->render('/participante/email_confirmacao_cadastro_adm.html.twig', [
+            'dsLogin' => $usuario->getDsLogin(),
+            'dsSenha' => $rawPassword,
+        ]);
+
+        $email = (new Email())
+            ->from('info.sgtes@saude.gov.br')
+            ->to(...$emails)
+            ->subject('SIGPET - Confirmação de cadastro')
+            ->html($htmlBody);
+
+        $this->mailer->send($email);
     }
 }

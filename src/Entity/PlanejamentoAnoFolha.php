@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="DBPETINFOSD.TB_PLANEJAMENTO_ANO_FOLHA")
- * @ORM\Entity(repositoryClass="\App\Repository\PlanejamentoAnoFolhaRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\PlanejamentoAnoFolhaRepository")
  */
 class PlanejamentoAnoFolha extends AbstractEntity
 {

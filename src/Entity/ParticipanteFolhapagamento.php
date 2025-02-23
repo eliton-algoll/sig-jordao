@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity
  * @ORM\Table(name="DBPETINFOSD.TH_PARTICIPANTE_FOLHAPAGAMENTO")
- * @ORM\Entity(repositoryClass="\App\Repository\ParticipanteFolhapagamentoRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ParticipanteFolhapagamentoRepository")
  */
 class ParticipanteFolhapagamento  extends AbstractEntity
 {
